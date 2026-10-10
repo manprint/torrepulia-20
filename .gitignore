@@ -2,3 +2,5 @@
 odoo/
 __pycache__/
 *.pyc
+key-github
+.serena

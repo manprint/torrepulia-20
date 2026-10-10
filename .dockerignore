@@ -9,3 +9,5 @@ odoo/
 **/*.pyo
 *.log
 README.md
+key-github
+.serena

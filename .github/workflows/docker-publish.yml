@@ -156,3 +156,79 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy on VM
+    needs: publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: deploy-vm
+      cancel-in-progress: false
+    env:
+      VM_HOST: 212.227.88.91
+      VM_USER: ubuntu
+      ODOO_URL: http://212.227.88.91:10000
+    steps:
+      - name: Configure SSH
+        env:
+          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+          VM_KNOWN_HOSTS: ${{ secrets.VM_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$VM_SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$VM_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/deploy_key ~/.ssh/known_hosts
+
+      - name: Compose up on VM (dind-to20)
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes "$VM_USER@$VM_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          dc() { docker exec -u alpine -w /home/alpine/docker dind-to20 docker compose "$@"; }
+          START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          echo "::group::docker compose up -d (pull always)"
+          dc up -d
+          echo "::endgroup::"
+
+          echo "::group::Stato container"
+          ok=0
+          for i in $(seq 1 30); do
+            ps=$(dc ps -a --format '{{.Service}} {{.State}} {{.Health}}')
+            echo "$ps"
+            [ -n "$ps" ] || { echo "::error::nessun container nel compose"; exit 1; }
+            if echo "$ps" | awk '$2 != "running" || $3 == "unhealthy" { bad = 1 } END { exit !bad }'; then
+              echo "::error::container non running o unhealthy"
+              dc logs --no-color --tail=100
+              exit 1
+            fi
+            if echo "$ps" | awk '$3 == "starting" { s = 1 } END { exit !s }'; then
+              sleep 5
+              continue
+            fi
+            ok=1
+            break
+          done
+          [ "$ok" = 1 ] || { echo "::error::timeout, container ancora in starting"; dc logs --no-color --tail=100; exit 1; }
+          echo "::endgroup::"
+
+          echo "::group::Log dal deploy"
+          logs=$(dc logs --no-color --since "$START" 2>&1 || true)
+          if grep -qE 'CRITICAL|Traceback' <<<"$logs"; then
+            echo "::error::errori critici nei log dal deploy"
+            grep -E 'CRITICAL|Traceback' <<<"$logs" | head -n 20
+            exit 1
+          fi
+          echo "ERROR nei log: $(grep -c ' ERROR ' <<<"$logs" || true)"
+          echo "::endgroup::"
+          REMOTE
+
+      - name: Check Odoo reachable
+        run: |
+          curl -fsS --retry 12 --retry-delay 5 --retry-all-errors -o /dev/null -w 'health %{http_code}\n' "$ODOO_URL/web/health"
+          curl -fsS --retry 3 --retry-delay 3 -o /dev/null -w 'login %{http_code}\n' "$ODOO_URL/web/login"
+
+      - name: Deploy result
+        run: echo "::notice::DEPLOY OK - container up senza errori, Odoo raggiungibile su $ODOO_URL"
