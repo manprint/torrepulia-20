@@ -1,0 +1,158 @@
+name: Build, test and publish Odoo image
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  REGISTRY: ghcr.io
+  # Repo "manprint/torrepulia-20" -> ghcr.io/manprint/torrepulia-20 (nome in minuscolo)
+  IMAGE_NAME: ${{ github.repository }}
+  LOCAL_IMAGE: torrepulia-odoo:ci
+  PG_PASSWORD: ci-password
+
+jobs:
+  test:
+    name: Build and test image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image for testing
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ${{ env.LOCAL_IMAGE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Start PostgreSQL 17
+        run: |
+          docker network create odoo-ci
+          docker run -d --name pg --network odoo-ci \
+            -e POSTGRES_USER=odoo \
+            -e POSTGRES_PASSWORD=${{ env.PG_PASSWORD }} \
+            -e POSTGRES_DB=postgres \
+            postgres:17
+
+      - name: Wait for PostgreSQL
+        run: |
+          for i in $(seq 1 30); do
+            if docker exec pg pg_isready -U odoo -d postgres; then exit 0; fi
+            sleep 2
+          done
+          docker logs pg
+          exit 1
+
+      - name: Install dummy modules into a fresh database
+        run: |
+          docker run --rm --network odoo-ci \
+            -e HOST=pg \
+            -e USER=odoo \
+            -e PASSWORD=${{ env.PG_PASSWORD }} \
+            ${{ env.LOCAL_IMAGE }} \
+            -d odoo_ci -i base,dummy_contrib,dummy_custom --stop-after-init
+
+      - name: Verify dummy modules are installed
+        run: |
+          states=$(docker exec pg psql -U odoo -d odoo_ci -At -c \
+            "select name || '=' || state from ir_module_module where name in ('dummy_contrib','dummy_custom') order by name")
+          echo "$states"
+          test "$(echo "$states" | grep -c '=installed$')" = "2"
+
+      - name: Start Odoo server
+        run: |
+          docker run -d --name odoo-ci --network odoo-ci \
+            -e HOST=pg \
+            -e USER=odoo \
+            -e PASSWORD=${{ env.PG_PASSWORD }} \
+            -p 127.0.0.1:8069:8069 \
+            ${{ env.LOCAL_IMAGE }}
+
+      - name: Wait for Odoo healthcheck
+        run: |
+          for i in $(seq 1 60); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' odoo-ci)
+            echo "health: $status"
+            if [ "$status" = "healthy" ]; then exit 0; fi
+            if [ "$status" = "unhealthy" ]; then break; fi
+            sleep 3
+          done
+          docker logs odoo-ci
+          exit 1
+
+      - name: Check web endpoints
+        run: |
+          curl -fsS -o /dev/null -w 'health %{http_code}\n' http://127.0.0.1:8069/web/health
+          curl -fsS -o /dev/null -w 'login %{http_code}\n' http://127.0.0.1:8069/web/login
+
+      - name: Dump logs on failure
+        if: failure()
+        run: |
+          docker logs odoo-ci || true
+          docker logs pg || true
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f odoo-ci pg || true
+          docker network rm odoo-ci || true
+
+  publish:
+    name: Publish image to GHCR
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

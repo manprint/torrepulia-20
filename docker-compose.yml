@@ -1,0 +1,42 @@
+name: torrepulia-20
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      # Evita il DB "odoo" vuoto che l'immagine creerebbe di default
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${POSTGRES_USER:?Imposta POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Imposta POSTGRES_PASSWORD in .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  odoo:
+    build:
+      context: .
+    image: torrepulia-odoo:20.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Letti dall'entrypoint dell'immagine base ufficiale
+      HOST: db
+      USER: ${POSTGRES_USER:?Imposta POSTGRES_USER in .env}
+      PASSWORD: ${POSTGRES_PASSWORD:?Imposta POSTGRES_PASSWORD in .env}
+    ports:
+      # Solo localhost: master password di default (admin) non va esposta in rete
+      - "127.0.0.1:${ODOO_PORT:-8069}:8069"
+    volumes:
+      - odoo-data:/var/lib/odoo
+
+volumes:
+  db-data:
+  odoo-data:
