@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="torrepulia_header_brand" inherit_id="website.header_brand" name="Torrepulia Header Brand">
+        <xpath expr="//a[hasclass('navbar-brand')]" position="replace">
+            <a href="/" class="navbar-brand logo">
+                <img src="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png" alt="Torrepulia"/>
+            </a>
+        </xpath>
+    </template>
+</odoo>

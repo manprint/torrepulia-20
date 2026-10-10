@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_cta" name="Torrepulia CTA">
+        <section class="s_torrepulia_snippet tp-section tp-cta-band" data-snippet="s_torrepulia_cta" data-name="Torrepulia CTA">
+            <div class="container">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <p class="tp-eyebrow">La Regina</p>
+                        <h2 class="display-4 mb-0">Porta in tavola il carattere della Peranzana.</h2>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="btn btn-light btn-lg" href="/shop">Acquista ora</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="torrepulia_footer" inherit_id="website.footer_custom" name="Torrepulia Footer">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="tp-footer o_footer oe_structure" t-if="not no_footer">
+                <div class="container py-5">
+                    <div class="row g-4">
+                        <div class="col-lg-5">
+                            <img src="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png" alt="Torrepulia" style="max-height:64px"/>
+                            <p class="mt-4 mb-0">Azienda agricola della famiglia Leone, produttrice di olio extravergine di oliva da cultivar Peranzana a Torremaggiore.</p>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h3 class="h6 text-uppercase">Naviga</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/aboutus">Storia</a></li>
+                                <li><a href="/l-olio">L'olio</a></li>
+                                <li><a href="/contactus">Contatti</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-lg-2">
+                            <h3 class="h6 text-uppercase">Prodotto</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="/shop">La Regina</a></li>
+                                <li><a href="/shop">Bottiglia 500 ml</a></li>
+                                <li><a href="/shop">Latta 5 L</a></li>
+                                <li><a href="/shop">Bag in Box 5 L</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3">
+                            <h3 class="h6 text-uppercase">Contatti</h3>
+                            <p class="mb-1"><a href="tel:+393401705648">+39 340 170 5648</a></p>
+                            <p class="mb-1"><a href="mailto:info@torrepulia.it">info@torrepulia.it</a></p>
+                            <p class="mb-0">Torremaggiore, Puglia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

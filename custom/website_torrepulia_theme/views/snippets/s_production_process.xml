@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_production_process" name="Torrepulia Production Process">
+        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_production_process" data-name="Torrepulia Processo">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-lg-7">
+                        <p class="tp-eyebrow">Dal campo al prodotto</p>
+                        <h2 class="display-4">Ogni fase seguita con attenzione.</h2>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3 tp-process-step">
+                        <span>01</span>
+                        <h3 class="h4 mt-3">Raccolta</h3>
+                        <p>Le olive vengono raccolte nei mesi indicati dal sito aziendale, durante la fase di invaiatura.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3 tp-process-step">
+                        <span>02</span>
+                        <h3 class="h4 mt-3">Stoccaggio</h3>
+                        <p>Le olive vengono stoccate in contenitori forati per favorire la giusta areazione prima della molitura.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3 tp-process-step">
+                        <span>03</span>
+                        <h3 class="h4 mt-3">Molitura</h3>
+                        <p>La molitura avviene in frantoio con impianto continuo di estrazione a freddo, secondo le informazioni pubblicate.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3 tp-process-step">
+                        <span>04</span>
+                        <h3 class="h4 mt-3">Confezionamento</h3>
+                        <p>L'olio viene filtrato e confezionato nei diversi formati per preservarne al meglio le caratteristiche.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_brand_story" name="Torrepulia Brand Story">
+        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_brand_story" data-name="Torrepulia Storia">
+            <div class="container">
+                <div class="tp-editorial-grid">
+                    <div>
+                        <p class="tp-eyebrow">Famiglia Leone</p>
+                        <h2 class="display-4">Agricoltori da tre generazioni.</h2>
+                        <p class="lead mt-4">La nostra azienda fonda le sue origini nella più antica tradizione familiare. Coltiviamo la nostra terra con la passione di chi ama il proprio lavoro e la tramandiamo di generazione in generazione.</p>
+                        <p class="tp-muted">Dal nonno Santino Vincenzo a Michele, fino alla nuova visione di Franco e Salvatore, Torrepulia nasce per portare l'olio extravergine di oliva in una dimensione più ampia di commercializzazione.</p>
+                        <a class="btn btn-outline-primary mt-3" href="/aboutus">Approfondisci</a>
+                    </div>
+                    <div class="tp-image-frame">
+                        <img class="tp-img-cover" src="/website_torrepulia_theme/static/src/img/content/franco-salvatore-uliveto.jpg" alt="Franco e Salvatore nell'uliveto Torrepulia" loading="lazy"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

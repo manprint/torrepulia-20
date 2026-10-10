@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="torrepulia_product_page" inherit_id="website_sale.product" name="Torrepulia Product Page">
+        <xpath expr="//div[@id='wrap']" position="attributes">
+            <attribute name="class" add="tp-product-page" separator=" "/>
+        </xpath>
+    </template>
+</odoo>

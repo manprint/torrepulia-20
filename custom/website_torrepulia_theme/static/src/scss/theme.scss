@@ -1,0 +1,229 @@
+:root {
+    --tp-olive: #263a2b;
+    --tp-sage: #87927a;
+    --tp-ivory: #f6f2e9;
+    --tp-sand: #d9cdb9;
+    --tp-gold: #b39a62;
+    --tp-charcoal: #24251f;
+    --tp-line: rgba(36, 37, 31, .14);
+}
+
+body {
+    background: var(--tp-ivory);
+    color: var(--tp-charcoal);
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+h1, h2, h3, .tp-serif {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: 0;
+}
+
+.btn {
+    border-radius: 2px;
+    text-transform: none;
+}
+
+.btn-primary {
+    --btn-color: #fff;
+    --btn-bg: var(--tp-olive);
+    --btn-border-color: var(--tp-olive);
+    --btn-hover-bg: #1d2c21;
+    --btn-hover-border-color: #1d2c21;
+}
+
+.btn-outline-primary {
+    color: var(--tp-olive);
+    border-color: var(--tp-olive);
+}
+
+.tp-eyebrow {
+    color: var(--tp-gold);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.tp-section {
+    padding: clamp(4rem, 8vw, 8rem) 0;
+}
+
+.tp-section-dark {
+    background: var(--tp-olive);
+    color: var(--tp-ivory);
+}
+
+.tp-muted {
+    color: rgba(36, 37, 31, .72);
+}
+
+.tp-section-dark .tp-muted {
+    color: rgba(246, 242, 233, .72);
+}
+
+.tp-hero {
+    // Preserve CSS min() for the browser; LibSass cannot compare px and vh.
+    min-height: unquote("min(760px, 92vh)");
+    display: flex;
+    align-items: stretch;
+    background: var(--tp-olive);
+    color: var(--tp-ivory);
+    overflow: hidden;
+}
+
+.tp-hero__media {
+    min-height: 360px;
+}
+
+.tp-hero img,
+.tp-img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tp-hero__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(3rem, 7vw, 7rem);
+}
+
+.tp-hero h1 {
+    max-width: 11ch;
+    font-size: clamp(3rem, 7vw, 6.9rem);
+    line-height: .92;
+}
+
+.tp-hero p {
+    max-width: 36rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+}
+
+.tp-editorial-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+}
+
+.tp-image-frame {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #fff;
+}
+
+.tp-image-frame--wide {
+    aspect-ratio: 16 / 10;
+}
+
+.tp-product-stage {
+    background: #fff;
+    padding: clamp(2rem, 4vw, 4rem);
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tp-product-stage img {
+    max-height: 560px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.tp-format-card {
+    border-top: 1px solid var(--tp-line);
+    padding-top: 1.5rem;
+}
+
+.tp-format-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: contain;
+    background: #fff;
+}
+
+.tp-process-step {
+    border-left: 1px solid rgba(179, 154, 98, .55);
+    padding-left: 1.5rem;
+}
+
+.tp-process-step span {
+    color: var(--tp-gold);
+    font-weight: 700;
+}
+
+.tp-cta-band {
+    background: var(--tp-charcoal);
+    color: var(--tp-ivory);
+}
+
+.tp-footer {
+    background: #1f241e;
+    color: var(--tp-ivory);
+}
+
+.tp-footer a {
+    color: var(--tp-ivory);
+}
+
+#top_menu_container .navbar-brand img {
+    max-height: 52px;
+}
+
+.navbar {
+    border-bottom: 1px solid rgba(36, 37, 31, .08);
+}
+
+#products_grid .oe_product,
+.o_wsale_product_grid_wrapper .oe_product {
+    border: 0;
+}
+
+#products_grid .oe_product_cart,
+.s_dynamic_snippet_products .o_carousel_product_card {
+    border-radius: 0;
+    border: 1px solid var(--tp-line);
+    background: #fff;
+    box-shadow: none;
+}
+
+#products_grid .oe_product_image,
+.s_dynamic_snippet_products .oe_product_image_link {
+    background: #fbfaf6;
+}
+
+.o_wsale_product_page .o_wsale_product_information {
+    background: rgba(246, 242, 233, .65);
+    border-left: 1px solid var(--tp-line);
+    padding: clamp(1.5rem, 3vw, 3rem);
+}
+
+.o_wsale_product_page h1 {
+    font-size: clamp(2.2rem, 4vw, 4.5rem);
+}
+
+@media (max-width: 991.98px) {
+    .tp-hero {
+        min-height: auto;
+    }
+
+    .tp-hero__copy {
+        padding: 3rem 1.5rem;
+    }
+
+    .tp-editorial-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+    }
+}

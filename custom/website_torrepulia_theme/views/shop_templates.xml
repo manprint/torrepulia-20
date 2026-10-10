@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="torrepulia_shop_page" inherit_id="website_sale.products" name="Torrepulia Shop Page">
+        <xpath expr="//div[@id='wrap']" position="attributes">
+            <attribute name="class" add="tp-shop-page" separator=" "/>
+        </xpath>
+        <xpath expr="//h1" position="attributes">
+            <attribute name="class" add="tp-serif" separator=" "/>
+        </xpath>
+    </template>
+
+</odoo>

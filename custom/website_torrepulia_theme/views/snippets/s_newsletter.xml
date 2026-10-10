@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_newsletter" name="Torrepulia Newsletter">
+        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_newsletter" data-name="Torrepulia Newsletter">
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-lg-7">
+                        <p class="tp-eyebrow">Aggiornamenti</p>
+                        <h2 class="display-5">Segui la campagna olearia e le novità Torrepulia.</h2>
+                        <p class="tp-muted">Questo blocco può essere sostituito con il form newsletter standard quando la funzionalità mailing è configurata nel database.</p>
+                        <a class="btn btn-outline-primary" href="/contactus">Contattaci</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

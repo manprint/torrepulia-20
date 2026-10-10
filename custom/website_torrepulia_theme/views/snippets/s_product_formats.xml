@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_product_formats" name="Torrepulia Product Formats">
+        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_product_formats" data-name="Torrepulia Formati">
+            <div class="container">
+                <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-5">
+                    <div>
+                        <p class="tp-eyebrow">I nostri formati</p>
+                        <h2 class="display-4">La Regina, nei formati disponibili.</h2>
+                    </div>
+                    <a class="btn btn-outline-primary align-self-lg-end" href="/shop">Acquista</a>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <article class="tp-format-card">
+                            <img src="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg" alt="Bottiglia in vetro La Regina 500 ml" loading="lazy"/>
+                            <h3 class="h4 mt-4">Bottiglia in vetro</h3>
+                            <p>Formato disponibile: 500 ml. Vetro scuro e tappo antirabbocco.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-4">
+                        <article class="tp-format-card">
+                            <img src="/website_torrepulia_theme/static/src/img/content/la-regina-latta-5l.jpeg" alt="Lattina in alluminio La Regina 5 litri" loading="lazy"/>
+                            <h3 class="h4 mt-4">Lattina alluminio 5 L</h3>
+                            <p>Lattina di alluminio ideale per il trasporto.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-4">
+                        <article class="tp-format-card">
+                            <img src="/website_torrepulia_theme/static/src/img/content/la-regina-bag-in-box-5l.jpeg" alt="Bag in Box La Regina 5 litri" loading="lazy"/>
+                            <h3 class="h4 mt-4">Bag in Box 5 L</h3>
+                            <p>Formato comodo ed efficiente, progettato per una buona conservazione dell'olio.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>
