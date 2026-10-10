@@ -4,7 +4,7 @@
 
 - `Dockerfile`: immagine `odoo:20.0` ufficiale + config + addon.
 - `docker-compose.yml`: servizi `db` (postgres:17) e `odoo`.
-- `config/odoo.conf`: config Odoo, copiata nell'immagine (non montata).
+- `config/odoo.conf`: config Odoo, montata in `/etc/odoo` (read-only); l'immagine ne contiene una copia di default.
 - `contrib/` e `custom/`: addon Odoo, copiati in `/opt/odoo/extra-addons/`.
 - `.env`: credenziali (non versionato). Partire da `.env.example`.
 
@@ -24,6 +24,7 @@ Tag pubblicati: `latest` (solo `main`), nome del branch, `sha-<commit>`, `vX.Y.Z
 
 ```bash
 cp .env.example .env              # poi imposta POSTGRES_PASSWORD
+mkdir -p odoo/postgres odoo/data  # directory dei dati su disco
 docker compose build
 docker compose up -d db
 
@@ -35,10 +36,19 @@ docker compose up -d
 
 Web: http://localhost:8069 (porta modificabile con `ODOO_PORT` in `.env`; pubblicata solo su 127.0.0.1).
 
+## Dati su disco
+
+- I dati stanno in `./odoo/postgres` (PostgreSQL) e `./odoo/data` (Odoo: filestore, sessioni).
+- Docker li gestisce come named volume `db-data` e `odoo-data` (`docker volume ls`), con bind sulle directory sopra.
+- `docker compose down -v` rimuove solo i riferimenti dei volumi, NON i file su disco.
+  Per cancellare i dati elimina le directory a mano: sono di proprietà uid 999 (postgres) e 100 (odoo), serve root o un container.
+- `odoo/` è in `.gitignore` e `.dockerignore`: i dati non finiscono nel repo né nell'immagine.
+
 ## Modifiche
 
-- Codice addon o `config/odoo.conf` cambiati: rebuild, poi `docker compose up -d`.
-  Il codice vive nell'immagine, non in un volume: senza rebuild le modifiche non arrivano.
+- `config/odoo.conf` cambiato: `docker compose restart odoo`, nessun rebuild.
+- Codice addon cambiato: rebuild, poi `docker compose up -d`.
+  Gli addon vivono nell'immagine, non in un volume: senza rebuild le modifiche non arrivano.
 - Aggiornare un modulo nel DB:
   `docker compose run --rm odoo -d odoo_dev -u <modulo> --stop-after-init`
 

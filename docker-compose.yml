@@ -35,8 +35,22 @@ services:
       # Solo localhost: master password di default (admin) non va esposta in rete
       - "127.0.0.1:${ODOO_PORT:-8069}:8069"
     volumes:
+      # Config locale montata a runtime (modifiche senza rebuild); l'immagine ne ha una copia di default
+      - ./config:/etc/odoo:ro
       - odoo-data:/var/lib/odoo
 
+# Named volumes gestiti da Docker (docker volume ls), ma con i dati su disco nel progetto.
+# Le directory ./odoo/postgres e ./odoo/data devono esistere prima del primo avvio.
 volumes:
   db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./odoo/postgres
   odoo-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./odoo/data
