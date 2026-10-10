@@ -169,7 +169,6 @@ jobs:
     env:
       VM_HOST: 212.227.88.91
       VM_USER: ubuntu
-      ODOO_URL: http://212.227.88.91:10000
     steps:
       - name: Configure SSH
         env:
@@ -193,9 +192,9 @@ jobs:
           dc up -d
           echo "::endgroup::"
 
-          echo "::group::Stato container"
-          ok=0
-          for i in $(seq 1 30); do
+          echo "::group::Attesa stack e Odoo interno (max 3 min)"
+          deadline=$(( $(date +%s) + 180 ))
+          while :; do
             ps=$(dc ps -a --format '{{.Service}} {{.State}} {{.Health}}')
             echo "$ps"
             [ -n "$ps" ] || { echo "::error::nessun container nel compose"; exit 1; }
@@ -204,14 +203,18 @@ jobs:
               dc logs --no-color --tail=100
               exit 1
             fi
-            if echo "$ps" | awk '$3 == "starting" { s = 1 } END { exit !s }'; then
-              sleep 5
-              continue
+            if ! echo "$ps" | awk '$3 == "starting" { s = 1 } END { exit !s }'; then
+              body=$(curl -fsS -m 10 http://127.0.0.1:10000/web/health 2>/dev/null || true)
+              grep -q pass <<<"$body" && break
             fi
-            ok=1
-            break
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              echo "::error::timeout 3 min: stack non healthy o Odoo non risponde su 127.0.0.1:10000"
+              dc logs --no-color --tail=100
+              exit 1
+            fi
+            sleep 5
           done
-          [ "$ok" = 1 ] || { echo "::error::timeout, container ancora in starting"; dc logs --no-color --tail=100; exit 1; }
+          echo "Odoo interno: $body"
           echo "::endgroup::"
 
           echo "::group::Log dal deploy"
@@ -225,10 +228,5 @@ jobs:
           echo "::endgroup::"
           REMOTE
 
-      - name: Check Odoo reachable
-        run: |
-          curl -fsS --retry 12 --retry-delay 5 --retry-all-errors -o /dev/null -w 'health %{http_code}\n' "$ODOO_URL/web/health"
-          curl -fsS --retry 3 --retry-delay 3 -o /dev/null -w 'login %{http_code}\n' "$ODOO_URL/web/login"
-
       - name: Deploy result
-        run: echo "::notice::DEPLOY OK - container up senza errori, Odoo raggiungibile su $ODOO_URL"
+        run: echo "::notice::DEPLOY OK - stack healthy, Odoo risponde internamente su 127.0.0.1:10000 della VM (porta pubblica 10000 non ancora aperta)"
