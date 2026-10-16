@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="cinematic_snippets" inherit_id="website.snippets" name="Mediterranean Cinematic blocks">
+    <xpath expr="//t[@t-snippet='website.s_banner']" position="before">
+      <t t-snippet="website_torrepulia_theme.s_cinematic_0" string="Apertura Torrepulia" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_1" string="La Regina" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_2" string="Famiglia Leone" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_3" string="Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_4" string="A tavola" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_5" string="Formati La Regina" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+      <t t-snippet="website_torrepulia_theme.s_cinematic_6" string="Torremaggiore" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
+    </xpath>
+  </template>
+</odoo>

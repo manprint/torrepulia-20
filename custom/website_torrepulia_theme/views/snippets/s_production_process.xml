@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="s_torrepulia_production_process" name="Torrepulia Production Process">
-        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_production_process" data-name="Torrepulia Processo">
+        <section id="processo" class="s_torrepulia_snippet tp-section tp-production-cards o_colored_level" data-snippet="s_torrepulia_production_process" data-name="La cura, in ogni passaggio">
             <div class="container">
-                <div class="row mb-5">
-                    <div class="col-lg-7">
-                        <p class="tp-eyebrow">Dal campo al prodotto</p>
-                        <h2 class="display-4">Ogni fase seguita con attenzione.</h2>
-                    </div>
-                </div>
+                <h2 class="text-center mb-5">La cura, in ogni passaggio.</h2>
                 <div class="row g-4">
-                    <div class="col-md-6 col-lg-3 tp-process-step">
-                        <span>01</span>
-                        <h3 class="h4 mt-3">Raccolta</h3>
-                        <p>Le olive vengono raccolte nei mesi indicati dal sito aziendale, durante la fase di invaiatura.</p>
+                    <div class="col-lg-3 col-md-6 col-12 mb-4 o_colored_level">
+                        <article class="card border-0 shadow-sm h-100 p-3 text-center o_colored_level">
+                            <div class="tp-phase-mark d-flex align-items-center justify-content-center gap-3 mb-3"><img src="/website_torrepulia_theme/static/src/cinematic/icons/sprout.svg" width="28" height="28" alt=""/><span class="tp-phase-number fw-bold">01</span></div>
+                            <div class="tp-phase-media rounded mb-3"><img class="img img-fluid rounded" src="/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp" alt="Raccolta delle olive direttamente dal ramo" width="640" height="427" loading="lazy"/></div>
+                            <h3 class="h5 fw-bold mb-2">Raccolta Precoce</h3>
+                            <p class="small text-muted mb-0">Tra ottobre e novembre, all'inizio dell'invaiatura, cogliamo le olive direttamente dalla pianta per preservare la massima concentrazione di polifenoli e antiossidanti naturali.</p>
+                        </article>
                     </div>
-                    <div class="col-md-6 col-lg-3 tp-process-step">
-                        <span>02</span>
-                        <h3 class="h4 mt-3">Stoccaggio</h3>
-                        <p>Le olive vengono stoccate in contenitori forati per favorire la giusta areazione prima della molitura.</p>
+                    <div class="col-lg-3 col-md-6 col-12 mb-4 o_colored_level">
+                        <article class="card border-0 shadow-sm h-100 p-3 text-center o_colored_level">
+                            <div class="tp-phase-mark d-flex align-items-center justify-content-center gap-3 mb-3"><img src="/website_torrepulia_theme/static/src/cinematic/icons/wind.svg" width="28" height="28" alt=""/><span class="tp-phase-number fw-bold">02</span></div>
+                            <div class="tp-phase-media rounded mb-3"><img class="img img-fluid rounded" src="/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp" alt="Olive appena raccolte nei contenitori forati, tra gli ulivi" width="960" height="960" loading="lazy"/></div>
+                            <h3 class="h5 fw-bold mb-2">Aerazione Protetta</h3>
+                            <p class="small text-muted mb-0">Disponiamo immediatamente le olive in contenitori forati e aerati. Questo evita schiacciamenti e principi di fermentazione, mantenendo intatta la purezza del frutto.</p>
+                        </article>
                     </div>
-                    <div class="col-md-6 col-lg-3 tp-process-step">
-                        <span>03</span>
-                        <h3 class="h4 mt-3">Molitura</h3>
-                        <p>La molitura avviene in frantoio con impianto continuo di estrazione a freddo, secondo le informazioni pubblicate.</p>
+                    <div class="col-lg-3 col-md-6 col-12 mb-4 o_colored_level">
+                        <article class="card border-0 shadow-sm h-100 p-3 text-center o_colored_level">
+                            <div class="tp-phase-mark d-flex align-items-center justify-content-center gap-3 mb-3"><img src="/website_torrepulia_theme/static/src/cinematic/icons/thermometer-snowflake.svg" width="28" height="28" alt=""/><span class="tp-phase-number fw-bold">03</span></div>
+                            <div class="tp-phase-media rounded mb-3"><img class="img img-fluid rounded" src="/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp" alt="Olio appena estratto all'uscita dell'impianto in frantoio" width="950" height="960" loading="lazy"/></div>
+                            <h3 class="h5 fw-bold mb-2">Molitura a Freddo</h3>
+                            <p class="small text-muted mb-0">Trasferiamo il raccolto in frantoio entro sole 6 ore. L'estrazione avviene rigidamente sotto i 27&#176;C per mantenere un'acidit&#224; minima e catturare i profumi autentici.</p>
+                        </article>
                     </div>
-                    <div class="col-md-6 col-lg-3 tp-process-step">
-                        <span>04</span>
-                        <h3 class="h4 mt-3">Confezionamento</h3>
-                        <p>L'olio viene filtrato e confezionato nei diversi formati per preservarne al meglio le caratteristiche.</p>
+                    <div class="col-lg-3 col-md-6 col-12 mb-4 o_colored_level">
+                        <article class="card border-0 shadow-sm h-100 p-3 text-center o_colored_level">
+                            <div class="tp-phase-mark d-flex align-items-center justify-content-center gap-3 mb-3"><img src="/website_torrepulia_theme/static/src/cinematic/icons/droplet.svg" width="28" height="28" alt=""/><span class="tp-phase-number fw-bold">04</span></div>
+                            <div class="tp-phase-media rounded mb-3"><img class="img img-fluid rounded" src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp" alt="Confezionamento dell'olio La Regina direttamente in frantoio" width="586" height="586" loading="lazy"/></div>
+                            <h3 class="h5 fw-bold mb-2">Confezionamento Accurato</h3>
+                            <p class="small text-muted mb-0">Filtriamo l'olio e lo confezioniamo direttamente in frantoio. Dai formati in bottiglia al Bag in Box, custodiamo il carattere della nostra Peranzana fino alla tua tavola.</p>
+                        </article>
                     </div>
                 </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_pairings" name="Torrepulia A Tavola">
+        <section class="s_torrepulia_snippet tp-section tp-oil-pairings o_colored_level" data-snippet="s_torrepulia_pairings" data-name="A tavola">
+            <div class="container">
+                <h2 class="text-start mb-5">Un filo d'olio.<br/>Un altro sapore.</h2>
+                <div class="row g-5">
+                    <div class="col-12 col-md-6 o_colored_level"><h3 class="h4 mb-3">A crudo, Pane e Verdure</h3><p>Su una bruschetta appena grigliata, su un'insalata o sulle verdure: il modo pi&#249; diretto di incontrare la Peranzana.</p></div>
+                    <div class="col-12 col-md-6 o_colored_level"><h3 class="h4 mb-3">Pesce, Pasta e Primi Piatti</h3><p>A crudo sul pesce alla griglia o sulla pasta appena scolata, per ritrovare il suo finale erbaceo.</p></div>
+                </div>
+                <div class="text-start mt-4"><a class="btn btn-primary btn-lg px-5 d-inline-flex align-items-center justify-content-center gap-3" href="/shop">Portalo in tavola <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" width="20" height="20" alt=""/></a></div>
             </div>
         </section>
     </template>

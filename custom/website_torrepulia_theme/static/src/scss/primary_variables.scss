@@ -1,20 +1,10 @@
-$o-color-palettes: map-merge(
-    $o-color-palettes,
-    (
-        "torrepulia": (
-            "o-color-1": #263a2b,
-            "o-color-2": #87927a,
-            "o-color-3": #f6f2e9,
-            "o-color-4": #d9cdb9,
-            "o-color-5": #b39a62,
-        ),
-    )
-);
-
-$o-selected-color-palettes-names: append($o-selected-color-palettes-names, "torrepulia");
-
-$font-family-sans-serif: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
-$headings-font-family: "Georgia", "Times New Roman", serif;
-$body-color: #24251f;
-$primary: #263a2b;
-$secondary: #87927a;
+$o-color-palettes: map-merge($o-color-palettes, (
+    "torrepulia": (
+        "o-color-1": #2e493b,
+        "o-color-2": #b4931e,
+        "o-color-3": #f1e7e8,
+        "o-color-4": #ffffff,
+        "o-color-5": #18231f,
+    ),
+));
+// Expose the palette in Website Builder without overriding other websites.

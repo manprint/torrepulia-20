@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <template id="s_torrepulia_packaging" name="Torrepulia Bag in Box interattiva">
+    <section class="s_torrepulia_snippet tp-bib mc-section o_colored_level" data-snippet="s_torrepulia_packaging" data-name="Bag in Box interattiva">
+      <div class="tp-bib-layout">
+        <div class="tp-bib-visual"><div class="tp-bib-diagram tp-bib-raster-diagram"><img class="tp-bib-product-image img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/images/bag-box-transparent.webp" alt="Bag in Box Torrepulia La Regina aperta: etichetta frontale e sacca dell'olio visibile sul lato" width="1199" height="1312" loading="lazy"/><button class="tp-bib-hotspot o_not_editable" type="button" aria-label="Aroma dentro" aria-expanded="false"><span class="visually-hidden">Aroma dentro</span><span class="tp-bib-tooltip" role="tooltip" hidden="hidden">La sacca si contrae mentre versi: meno contatto con l'aria, piu cura per gli aromi.</span></button></div></div><div class="tp-bib-copy">
+          <p class="tp-bib-kicker">L'evoluzione della conservazione</p>
+          <h2>Fresco come appena franto.<br/>Fino all'ultima goccia.</h2>
+          <p class="tp-bib-lead">Il formato Bag in Box protegge il nostro Olio Extravergine La Regina dalla luce e limita il contatto con l'ossigeno. Per custodirlo al meglio, tienilo al fresco e lontano da fonti di calore.</p>
+          <div class="tp-bib-pillars">
+            <div class="tp-bib-pillar"><img src="/website_torrepulia_theme/static/src/cinematic/icons/wind.svg" alt="" width="24" height="24" loading="lazy"/><div><h3>Meno aria, più protezione</h3><p>La speciale sacca interna flessibile si contrae man mano che l'olio viene spillato. Questo limita l'ingresso dell'aria a contatto con l'olio e aiuta a rallentare i processi di ossidazione.</p></div></div>
+            <div class="tp-bib-pillar"><img src="/website_torrepulia_theme/static/src/cinematic/icons/sun-dim.svg" alt="" width="24" height="24" loading="lazy"/><div><h3>Al riparo dalla luce</h3><p>Il cartone esterno crea uno schermo opaco che protegge l'olio dalla luce. Una barriera in più per preservare il carattere e gli aromi della nostra Peranzana.</p></div></div>
+            <div class="tp-bib-pillar"><img src="/website_torrepulia_theme/static/src/cinematic/icons/recycle.svg" alt="" width="24" height="24" loading="lazy"/><div><h3>Comodità e meno sprechi</h3><p>Il rubinetto dosatore permette di spillare la quantità necessaria, direttamente nella tua oliera. Un formato pratico e leggero: per lo smaltimento, separa cartone e sacca secondo le indicazioni riportate sulla confezione.</p></div></div>
+          </div>
+          <a class="button dark tp-bib-cta" href="/shop?search=Bag"><span>Scegli il formato Bag in Box (5 Litri)</span><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt="" width="20" height="20"/></a>
+        </div>
+      </div>
+    </section>
+  </template>
+</odoo>

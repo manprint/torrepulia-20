@@ -5,17 +5,26 @@
             <t snippet-group="torrepulia" t-snippet="website.s_snippet_group" string="Torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png"/>
         </xpath>
         <xpath expr="//t[@t-snippet='website.s_banner']" position="before">
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_hero" string="Hero editoriale" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-grove-editorial.jpg"/>
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_product_showcase" string="Prodotto protagonista" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_catalog" string="Catalogo La Regina" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-latta-5l.jpeg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_contact_form" string="Form contatti" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_reservation_form" string="Form prenotazione" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-latta-5l.jpeg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_story_opening" string="Famiglia Leone" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/franco-salvatore-uliveto.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_story_chapters" string="Generazioni" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_roots_transition" string="Radici: il patto" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_roots_values" string="Radici: i valori" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_roots_cta" string="Radici: lo shop" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_cultivar_opening" string="La Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-peranzana-raccolta.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_cultivar_history" string="Origini della Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_sensory" string="Profilo sensoriale" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-peranzana-raccolta.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_pairings" string="A tavola" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_landscape" string="Paesaggio" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/alto-tavoliere.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_land_story" string="La terra" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/alto-tavoliere.jpg"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_packaging" string="Bag in Box interattiva" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/box-original.jpeg"/>
             <t t-snippet="website_sale.s_dynamic_snippet_products_grid" string="Vetrina prodotti" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-latta-5l.jpeg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_brand_story" string="Storia aziendale" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/franco-salvatore-uliveto.jpg"/>
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_peranzana" string="Cultivar Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-peranzana-raccolta.jpg"/>
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_terroir" string="Territorio" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-grove-editorial.jpg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_production_process" string="Processo produttivo" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-peranzana-raccolta.jpg"/>
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_product_formats" string="Formati" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bag-in-box-5l.jpeg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_editorial" string="Editoriale" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_cta" string="CTA acquisto" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg"/>
-            <t t-snippet="website_torrepulia_theme.s_torrepulia_newsletter" string="Newsletter" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-grove-editorial.jpg"/>
         </xpath>
     </template>
 </odoo>

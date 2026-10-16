@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_cultivar_opening" name="Torrepulia La Cultivar Reale">
+        <section class="s_torrepulia_snippet tp-cultivar-intro tp-oil-opening o_colored_level" data-snippet="s_torrepulia_cultivar_opening" data-name="La Cultivar Reale">
+            <div class="container py-5">
+                <div class="row gy-5 gx-4 gx-xl-5 align-items-center">
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <h1 class="display-5 fw-bold mb-4">La Peranzana.<br/>Il nostro punto <span class="text-nowrap">di origine.</span></h1>
+                        <p class="lead text-dark mb-4">La <strong>Peranzana</strong> custodisce una doppia vocazione: dona un olio extravergine ricco di carattere ed &#232; apprezzata anche come oliva da tavola. Nelle nostre terre di <strong>Torremaggiore, nel cuore dell&#8217;Alto Tavoliere pugliese</strong>, la coltiviamo con la cura e l&#8217;esperienza tramandate nella nostra famiglia. Dalle sue olive nasce <strong>La Regina</strong>, il nostro olio extravergine di oliva che racconta, in ogni assaggio, il legame con questa terra.</p>
+                        <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="#processo">Scopri il ciclo di produzione <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-right.svg" alt="" width="20" height="20"/></a>
+                    </div>
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <img class="img img-fluid w-100 rounded-3 tp-oil-photo" src="/website_torrepulia_theme/static/src/cinematic/campaign/olive-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/campaign/olive-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/campaign/olive-1600.webp 1600w" sizes="(min-width: 992px) 42vw, 100vw" width="1280" height="853" alt="Olive Peranzana sul ramo, tra gli ulivi di Torrepulia" loading="eager" fetchpriority="high"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_cultivar_history" name="Torrepulia Origini della Peranzana">
+        <section class="s_torrepulia_snippet tp-oil-history o_colored_level" data-snippet="s_torrepulia_cultivar_history" data-name="Origini della Peranzana">
+            <div class="container py-5">
+                <div class="row gy-4 gx-5 tp-oil-history-story">
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <h2 class="fw-bold mb-4">Peranzana: un nome che viene da lontano, un&#8217;anima pugliese.</h2>
+                    </div>
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <p class="fs-5 text-dark mb-4">Dalla Provenza alle terre dell&#8217;Alto Tavoliere: la tradizione lega le origini della <strong>Peranzana</strong> al principe Raimondo de Sangro, che avrebbe introdotto questa variet&#224; di olivo nei possedimenti della sua famiglia. Anche il nome custodisce una traccia di quel viaggio: da &#8220;Provenzale&#8221;, attraverso la parlata locale, sarebbe nata la parola &#8220;Peranzana&#8221;.</p>
+                        <p class="fs-5 text-dark mb-4">Qui questa cultivar ha trovato una terra a cui appartenere. E a <strong>Torremaggiore</strong>, tra gli ulivi della nostra famiglia, la sua storia incontra quella di Torrepulia.</p>
+                    </div>
+                </div>
+                <div class="tp-oil-territory o_colored_level">
+                    <h3 class="mb-4">Il cuore della Peranzana, la nostra terra.</h3>
+                    <div class="row gy-4 gx-4 tp-oil-places mb-5">
+                        <div class="col-12 col-md-4 tp-oil-place o_colored_level">
+                            <img class="tp-oil-pin mb-3" src="/website_torrepulia_theme/static/src/cinematic/icons/map-pin.svg" width="24" height="24" alt="" loading="lazy"/>
+                            <h4>Torremaggiore</h4>
+                            <span class="tp-oil-place-note">Qui coltiviamo i nostri ulivi.</span>
+                        </div>
+                        <div class="col-12 col-md-4 tp-oil-place o_colored_level">
+                            <img class="tp-oil-pin mb-3" src="/website_torrepulia_theme/static/src/cinematic/icons/map-pin.svg" width="24" height="24" alt="" loading="lazy"/>
+                            <h4>San Severo</h4>
+                        </div>
+                        <div class="col-12 col-md-4 tp-oil-place o_colored_level">
+                            <img class="tp-oil-pin mb-3" src="/website_torrepulia_theme/static/src/cinematic/icons/map-pin.svg" width="24" height="24" alt="" loading="lazy"/>
+                            <h4>San Paolo<br class="d-none d-md-block"/> di Civitate</h4>
+                        </div>
+                    </div>
+                    <div class="row gy-3 gx-5">
+                        <div class="col-12 col-lg-6 o_colored_level">
+                            <p>Tra <strong>Torremaggiore, San Severo e San Paolo di Civitate</strong> si estende il cuore della coltivazione della Peranzana: un angolo di Puglia dove la cultura dell&#8217;olio si tramanda da generazioni.</p>
+                        </div>
+                        <div class="col-12 col-lg-6 o_colored_level">
+                            <p class="mb-0">&#200; qui che coltiviamo le nostre olive, seguendo un sapere di famiglia che continua a crescere con noi. Da questi ulivi nasce <strong>l&#8217;olio extravergine di oliva Torrepulia</strong>, espressione della nostra terra e della cura che le dedichiamo ogni giorno.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

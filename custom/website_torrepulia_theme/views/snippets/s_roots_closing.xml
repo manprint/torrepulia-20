@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_roots_transition" name="Torrepulia Radici: il patto con la Puglia">
+        <section class="s_torrepulia_snippet tp-section tp-roots-transition text-white o_colored_level" data-snippet="s_torrepulia_roots_transition" data-name="Radici: il patto con la Puglia">
+            <div class="container">
+                <div class="row gx-5 gy-4 align-items-center">
+                    <div class="col-12 col-md-6 order-1 o_colored_level">
+                        <img class="img img-fluid w-100 rounded-3" src="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg" alt="Fotografia storica della famiglia Leone al lavoro con il trattore tra i campi" width="690" height="445" loading="lazy"/>
+                    </div>
+                    <div class="col-12 col-md-6 order-2 order-md-3 o_colored_level">
+                        <h2 class="text-white mb-0">Dal secondo dopoguerra, un patto indissolubile con la Puglia.</h2>
+                    </div>
+                    <div class="col-12 col-md-6 order-3 order-md-2 o_colored_level">
+                        <div class="p-md-4 pe-2 pe-md-5 tp-roots-transition-copy">
+                            <p class="lead text-light mb-0">La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_roots_values" name="Torrepulia Radici: la filosofia">
+        <section class="s_torrepulia_snippet tp-section tp-roots-values o_colored_level" data-snippet="s_torrepulia_roots_values" data-name="Radici: la nostra filosofia">
+            <div class="container">
+                <h2 class="text-center mb-3">I Pilastri della nostra Filosofia</h2>
+                <p class="tp-roots-values-subtitle text-center text-muted small mx-auto mb-5">La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.</p>
+                <div class="row g-4 g-lg-5">
+                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
+                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">I</p>
+                        <h3 class="h4 fw-bold mb-3">Filiera Corta Certificata</h3>
+                        <p class="text-dark tp-roots-description mb-0">Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.</p>
+                    </div>
+                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
+                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">II</p>
+                        <h3 class="h4 fw-bold mb-3">Trasparenza Totale</h3>
+                        <p class="text-dark tp-roots-description mb-0">La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.</p>
+                    </div>
+                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
+                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">III</p>
+                        <h3 class="h4 fw-bold mb-3">Rispetto del Territorio</h3>
+                        <p class="text-dark tp-roots-description mb-0">Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_roots_cta" name="Torrepulia Radici: entra nello shop">
+        <section class="s_torrepulia_snippet tp-section tp-roots-cta text-center text-white o_colored_level" data-snippet="s_torrepulia_roots_cta" data-name="Radici: il prossimo assaggio">
+            <div class="container">
+                <h2 class="text-white mx-auto mb-3">Il prossimo assaggio comincia qui.</h2>
+                <p class="lead text-light mb-4">La Peranzana della famiglia Leone, sulla tua tavola.</p>
+                <a class="btn btn-light btn-lg px-4 px-sm-5" href="/shop">
+                    <span>Entra nello Shop Online</span>
+                    <img class="ms-2" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt="" width="20" height="20" loading="lazy"/>
+                </a>
+            </div>
+        </section>
+    </template>
+</odoo>

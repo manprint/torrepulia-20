@@ -1,0 +1,115 @@
+.tp-site.tp-cinematic .territory.mc-home-closing {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 640px;
+    height: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: var(--tp-ink);
+    color: var(--white);
+    text-align: left;
+
+    > .mc-territory-photo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        margin: 0;
+        z-index: 0;
+    }
+    > .mc-territory-photo > img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: none;
+    }
+    .mc-hero-breath { animation-duration: 18s; }
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        // The footer-colored fade must cover the lateral shade, including at the left edge.
+        background:
+            linear-gradient(0deg, var(--tp-ink) 0%, rgba(24,35,31,.99) 7%, rgba(24,35,31,.94) 15%, rgba(24,35,31,.72) 27%, rgba(24,35,31,.28) 43%, rgba(24,35,31,0) 60%),
+            linear-gradient(90deg, rgba(12,31,22,.88), rgba(12,31,22,.68) 35%, rgba(12,31,22,.12) 72%, transparent);
+    }
+    > .territory-copy {
+        position: relative;
+        grid-column: 1;
+        grid-row: 1;
+        z-index: 2;
+        align-self: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 820px;
+        min-width: 0;
+        margin: 0;
+        padding: 88px var(--gutter);
+        background: transparent;
+        color: var(--white);
+        pointer-events: none;
+        > * { pointer-events: auto; }
+    }
+    .territory-copy h2 {
+        max-width: 100%;
+        color: var(--white);
+        font-size: 64px;
+        line-height: 1.1;
+        text-wrap: balance;
+        overflow-wrap: break-word;
+    }
+    .territory-copy p {
+        max-width: 46ch;
+        margin-top: 28px;
+        color: var(--white);
+        font-size: 18px;
+        line-height: 1.75;
+        text-wrap: pretty;
+    }
+    .territory-copy .text-link {
+        min-height: 44px;
+        max-width: 100%;
+        margin-top: 32px;
+        color: var(--white);
+        border-color: rgba(255,255,255,.65);
+        font-size: 16px;
+        line-height: 1.5;
+        transition: border-color 200ms ease;
+        &:hover { border-color: var(--white); }
+    }
+    > .mc-breeze-toggle {
+        top: 24px;
+        right: var(--gutter);
+        left: auto;
+        z-index: 4;
+        width: 44px;
+        height: 44px;
+    }
+    @media (max-width: 1100px) {
+        > .territory-copy { width: 100%; max-width: 700px; padding-top: 80px; padding-bottom: 80px; }
+        .territory-copy h2 { font-size: 56px; }
+    }
+    @media (max-width: 760px) {
+        min-height: 0;
+        > .mc-territory-photo > img { object-position: 44% 60% !important; }
+        > .territory-copy { align-self: end; width: 100%; max-width: none; padding: 184px 22px 64px; }
+        .territory-copy h2 { font-size: 44px; line-height: 1.12; }
+        .territory-copy p { margin-top: 24px; font-size: 16px; line-height: 1.75; }
+        .territory-copy .text-link { margin-top: 28px; }
+        &::after {
+            background: linear-gradient(0deg, var(--tp-ink) 0%, rgba(24,35,31,.99) 10%, rgba(24,35,31,.9) 32%, rgba(24,35,31,.7) 68%, rgba(24,35,31,.15));
+        }
+        > .mc-breeze-toggle { top: 22px; right: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .territory-copy .text-link { transition: none; }
+    }
+}

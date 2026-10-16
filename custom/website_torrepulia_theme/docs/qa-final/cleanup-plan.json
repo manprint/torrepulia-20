@@ -1,0 +1,607 @@
+{
+  "unused_assets": [],
+  "retained_assets": [
+    {
+      "path": "static/description/cover.png",
+      "bytes": 5884,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/fonts/LibreCaslonDisplay-Regular.ttf",
+      "bytes": 101384,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/fonts/Manrope.ttf",
+      "bytes": 164700,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/alto-tavoliere.jpg",
+      "bytes": 122920,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/bag-in-box-schema.png",
+      "bytes": 103754,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/franco-salvatore-uliveto.jpg",
+      "bytes": 82661,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/la-regina-bag-in-box-5l.jpeg",
+      "bytes": 42558,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/la-regina-bottiglia-500ml.jpeg",
+      "bytes": 19818,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/la-regina-latta-5l.jpeg",
+      "bytes": 31440,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/Logo Oro.png",
+      "bytes": 139460,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/LOGO_TORREPULIA_BLUG.png",
+      "bytes": 369966,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/olive-grove-editorial.jpg",
+      "bytes": 83476,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/olive-peranzana-raccolta.jpg",
+      "bytes": 454653,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/santino-michele-storia.jpg",
+      "bytes": 104866,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/torrepulia-logo.png",
+      "bytes": 5884,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/img/content/uliveto-hero.jpg",
+      "bytes": 221235,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/bottle-1280.webp",
+      "bytes": 50176,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/bottle-1600.webp",
+      "bytes": 69468,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/bottle-640.webp",
+      "bytes": 17726,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/box-1280.webp",
+      "bytes": 112322,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/box-1600.webp",
+      "bytes": 165788,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/box-640.webp",
+      "bytes": 33776,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/duetto-1280.webp",
+      "bytes": 152268,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/duetto-1600.webp",
+      "bytes": 232418,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/duetto-640.webp",
+      "bytes": 43380,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/family-1280.webp",
+      "bytes": 318856,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/family-1600.webp",
+      "bytes": 453440,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/family-640.webp",
+      "bytes": 99960,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-1280.webp",
+      "bytes": 161628,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-1920.webp",
+      "bytes": 293170,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-640.webp",
+      "bytes": 57892,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-desktop-poster.webp",
+      "bytes": 155316,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-desktop.mp4",
+      "bytes": 840068,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-desktop.webm",
+      "bytes": 519914,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-mobile-poster.webp",
+      "bytes": 89274,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-mobile.mp4",
+      "bytes": 468630,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/hero-mobile.webm",
+      "bytes": 298358,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-1280.webp",
+      "bytes": 202368,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-1920.webp",
+      "bytes": 430046,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-640.webp",
+      "bytes": 52804,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-desktop-poster.webp",
+      "bytes": 189348,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-desktop.mp4",
+      "bytes": 1243731,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-desktop.webm",
+      "bytes": 665852,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-mobile-poster.webp",
+      "bytes": 84484,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-mobile.mp4",
+      "bytes": 567364,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/land-mobile.webm",
+      "bytes": 306498,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/olive-1280.webp",
+      "bytes": 136498,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/olive-1600.webp",
+      "bytes": 180190,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/olive-640.webp",
+      "bytes": 54948,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/still-life-1280.webp",
+      "bytes": 60408,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/still-life-1920.webp",
+      "bytes": 112282,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/still-life-640.webp",
+      "bytes": 20948,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/tin-1280.webp",
+      "bytes": 84314,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/tin-1600.webp",
+      "bytes": 119874,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/campaign/tin-640.webp",
+      "bytes": 28378,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/arrow-right.svg",
+      "bytes": 261,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/arrow-up-right.svg",
+      "bytes": 260,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/droplet.svg",
+      "bytes": 302,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/leaf.svg",
+      "bytes": 380,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/map-pin.svg",
+      "bytes": 354,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/menu.svg",
+      "bytes": 279,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/pause.svg",
+      "bytes": 313,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/play.svg",
+      "bytes": 306,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/plus.svg",
+      "bytes": 256,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/recycle.svg",
+      "bytes": 630,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/shopping-bag.svg",
+      "bytes": 422,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/sprout.svg",
+      "bytes": 372,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/sun-dim.svg",
+      "bytes": 477,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/thermometer-snowflake.svg",
+      "bytes": 452,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/utensils.svg",
+      "bytes": 323,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/icons/wind.svg",
+      "bytes": 336,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/bag-box-supplied.webp",
+      "bytes": 915210,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/bag-box-transparent.webp",
+      "bytes": 878996,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/bottle-original.jpeg",
+      "bytes": 19818,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/box-original.jpeg",
+      "bytes": 42558,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/culinary-campaign-1280.webp",
+      "bytes": 349160,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/culinary-campaign-1536.webp",
+      "bytes": 519062,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/culinary-campaign-640.webp",
+      "bytes": 99070,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/family-archive-640.webp",
+      "bytes": 113772,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/family-archive-690.webp",
+      "bytes": 148686,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/family-today-640.webp",
+      "bytes": 90352,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/family-today-690.webp",
+      "bytes": 111014,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/harvest-1280.webp",
+      "bytes": 475682,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/harvest-1440.webp",
+      "bytes": 597356,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/harvest-640.webp",
+      "bytes": 158334,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/hero-foglie-1280.webp",
+      "bytes": 116824,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/hero-foglie-1920.webp",
+      "bytes": 186898,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/hero-foglie-640.webp",
+      "bytes": 41238,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/hero-ulivi-regina-1280.webp",
+      "bytes": 218642,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/la-regina-500-studio.webp",
+      "bytes": 70048,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/logo-original.png",
+      "bytes": 5884,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/peranzana-botanical-v1.png",
+      "bytes": 1427825,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/raimondo-castello.webp",
+      "bytes": 48562,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/territory-1080.webp",
+      "bytes": 155134,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/territory-640.webp",
+      "bytes": 68996,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/uliveto-hero-1280.webp",
+      "bytes": 194348,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/uliveto-hero-1920.webp",
+      "bytes": 327364,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/images/uliveto-hero-640.webp",
+      "bytes": 70206,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/about-franco-salvatore-750.webp",
+      "bytes": 120950,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/about-franco-salvatore.webp",
+      "bytes": 203322,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/closing-landscape-706.webp",
+      "bytes": 531624,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-615.webp",
+      "bytes": 66066,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-656.webp",
+      "bytes": 243536,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-657.webp",
+      "bytes": 163344,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-683.webp",
+      "bytes": 130646,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-684.webp",
+      "bytes": 71368,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/image-685.webp",
+      "bytes": 94352,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/process-bottling.webp",
+      "bytes": 25908,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/process-crates.webp",
+      "bytes": 187684,
+      "reason": "source/runtime or generated family"
+    },
+    {
+      "path": "static/src/cinematic/owner/process-mill.webp",
+      "bytes": 96702,
+      "reason": "source/runtime or generated family"
+    }
+  ],
+  "retired_tools": [],
+  "historical_docs": [
+    {
+      "path": "docs/qa-final/runtime-odoo_dev.json",
+      "bytes": 575580,
+      "reason": "historical evidence or intermediate owner snapshot; archived outside runtime module"
+    },
+    {
+      "path": "docs/qa-final/runtime-torrepulia_cinematic_install.json",
+      "bytes": 2563723,
+      "reason": "historical evidence or intermediate owner snapshot; archived outside runtime module"
+    },
+    {
+      "path": "docs/qa-final/axe-4.10.3.min.js",
+      "bytes": 553457,
+      "reason": "historical evidence or intermediate owner snapshot; archived outside runtime module"
+    }
+  ],
+  "active_bag_views": [
+    [
+      "website_torrepulia_theme.before_reference_visual_page_home_view_20261016",
+      false
+    ],
+    [
+      "website_torrepulia_theme.before_reference_visual_page_oil_view_20261016",
+      false
+    ],
+    [
+      "website_torrepulia_theme.before_reference_visual_s_torrepulia_packaging_20261016",
+      false
+    ],
+    [
+      "website_torrepulia_theme.before_supplied_bag_restore_page_home_view_20261016",
+      false
+    ],
+    [
+      "website_torrepulia_theme.before_supplied_bag_restore_page_oil_view_20261016",
+      false
+    ],
+    [
+      "website_torrepulia_theme.before_supplied_bag_restore_s_torrepulia_packaging_20261016",
+      false
+    ]
+  ],
+  "totals": {
+    "unused_assets": 0,
+    "asset_bytes": 0,
+    "retired_tools": 0,
+    "tool_bytes": 0,
+    "historical_docs": 3,
+    "historical_bytes": 3692760
+  }
+}

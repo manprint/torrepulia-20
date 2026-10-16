@@ -1,0 +1,103 @@
+/* Layout and editor ownership stay with Bootstrap/Odoo; only brand styling lives here. */
+.tp-site.tp-cinematic .tp-roots-transition {
+    padding: 88px 0;
+    background: #203b2f;
+}
+.tp-site.tp-cinematic .tp-roots-transition h2 {
+    max-width: 20ch;
+    font: 400 46px/1.12 "Libre Caslon Display", Georgia, serif;
+    text-wrap: balance;
+}
+.tp-site.tp-cinematic .tp-roots-transition .lead {
+    max-width: 56ch;
+    font-size: 18px;
+    line-height: 1.9;
+}
+.tp-site.tp-cinematic .tp-roots-transition img {
+    display: block;
+    /* Builder saves intrinsic dimensions inline; retain a proportional responsive image. */
+    height: auto !important;
+    aspect-ratio: 690 / 445;
+    object-fit: contain;
+}
+.tp-site.tp-cinematic .tp-roots-values {
+    padding: 96px 0;
+    background: var(--tp-white);
+    color: var(--tp-ink);
+}
+.tp-site.tp-cinematic .tp-roots-values h2 {
+    color: var(--tp-olive);
+    font: 400 52px/1.12 "Libre Caslon Display", Georgia, serif;
+    text-wrap: balance;
+}
+.tp-site.tp-cinematic .tp-roots-values h3 {
+    color: var(--tp-olive);
+    font-family: "Libre Caslon Display", Georgia, serif;
+    font-size: 30px;
+    line-height: 1.15;
+    text-wrap: balance;
+}
+.tp-site.tp-cinematic .tp-roots-values .tp-roots-numeral {
+    color: #8e7014;
+    font-size: 24px;
+}
+.tp-site.tp-cinematic .tp-roots-values .tp-roots-description {
+    color: rgba(24, 35, 31, .8) !important;
+    font-size: 16px;
+    line-height: 1.85;
+}
+.tp-site.tp-cinematic .tp-roots-values .tp-roots-values-subtitle {
+    max-width: 68ch;
+    color: var(--tp-muted) !important;
+    line-height: 1.7;
+}
+.tp-site.tp-cinematic .tp-roots-cta {
+    padding: 104px 0;
+    background: var(--tp-ink);
+}
+.tp-site.tp-cinematic .tp-roots-cta h2 {
+    max-width: 1040px;
+    font: 400 58px/1.1 "Libre Caslon Display", Georgia, serif;
+    text-wrap: balance;
+}
+.tp-site.tp-cinematic .tp-roots-cta .lead {
+    max-width: none;
+    font-size: 18px;
+    line-height: 1.7;
+}
+.tp-site.tp-cinematic .tp-roots-cta .btn {
+    max-width: 100%;
+    min-height: 56px;
+    gap: 12px;
+    font-size: 16px;
+    transition: background-color 180ms var(--tp-ease-out), transform 160ms var(--tp-ease-out);
+}
+.tp-site.tp-cinematic .tp-roots-cta .btn span { min-width: 0; }
+.tp-site.tp-cinematic .tp-roots-cta .btn img { flex: none; }
+.tp-site.tp-cinematic .tp-roots-cta .btn-light:hover,
+.tp-site.tp-cinematic .tp-roots-cta .btn-light:focus-visible {
+    background: var(--tp-pale);
+    border-color: var(--tp-pale);
+    color: var(--tp-ink);
+}
+@media (max-width: 991px) {
+    .tp-site.tp-cinematic .tp-roots-transition h2 { font-size: 38px; }
+    .tp-site.tp-cinematic .tp-roots-transition .lead { font-size: 16px; line-height: 1.85; }
+    .tp-site.tp-cinematic .tp-roots-values h2 { font-size: 44px; }
+    .tp-site.tp-cinematic .tp-roots-values h3 { font-size: 28px; }
+    .tp-site.tp-cinematic .tp-roots-cta h2 { font-size: 48px; }
+}
+@media (max-width: 767px) {
+    .tp-site.tp-cinematic .tp-roots-transition,
+    .tp-site.tp-cinematic .tp-roots-values,
+    .tp-site.tp-cinematic .tp-roots-cta { padding: 64px 0; }
+    .tp-site.tp-cinematic .tp-roots-transition h2,
+    .tp-site.tp-cinematic .tp-roots-values h2 { font-size: 36px; }
+    .tp-site.tp-cinematic .tp-roots-values h3 { font-size: 30px; }
+    .tp-site.tp-cinematic .tp-roots-cta h2 { font-size: 40px; }
+    .tp-site.tp-cinematic .tp-roots-cta .lead,
+    .tp-site.tp-cinematic .tp-roots-cta .btn { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .tp-site.tp-cinematic .tp-roots-cta .btn { transition: none; }
+}

@@ -2,5 +2,14 @@
 odoo/
 __pycache__/
 *.pyc
+custom/website_torrepulia_theme/docs/**/screenshots/
+custom/website_torrepulia_theme/docs/**/*.png
+custom/website_torrepulia_theme/docs/**/*.jpg
+custom/website_torrepulia_theme/docs/**/*.jpeg
+custom/website_torrepulia_theme/docs/**/*.webm
+custom/website_torrepulia_theme/docs/**/*.mp4
+custom/website_torrepulia_theme/docs/**/runtime-*.json
+custom/website_torrepulia_theme/docs/**/axe-*.min.js
+design/**/screenshots/
 key-github
 .serena

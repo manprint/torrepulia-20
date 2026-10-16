@@ -1,0 +1,182 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "overflow": 0,
+      "backgrounds": [
+        "rgb(255, 255, 255)",
+        "rgb(255, 255, 255)"
+      ],
+      "header": "rgb(255, 255, 255)",
+      "border": "rgba(0, 0, 0, 0)",
+      "columnsSideBySide": true,
+      "stacked": false,
+      "imageLoaded": true,
+      "h1": 1,
+      "brokenImages": [],
+      "headings": [
+        "Peranzana: un nome che viene da lontano, un\u2019anima pugliese.",
+        "Il cuore della Peranzana, la nostra terra."
+      ],
+      "leftAligned": true,
+      "heroTextWidth": 724.671875,
+      "historyColumns": true,
+      "places": [
+        "Torremaggiore",
+        "San Severo",
+        "San Paolo di Civitate"
+      ],
+      "placesRows": 1,
+      "territoryBackground": "rgba(0, 0, 0, 0)",
+      "pinsLoaded": true,
+      "anchor": {
+        "hash": "#processo",
+        "top": 120.015625
+      },
+      "scrollHeader": "rgba(255, 255, 255, 0.97)"
+    },
+    {
+      "width": 1024,
+      "overflow": 0,
+      "backgrounds": [
+        "rgb(255, 255, 255)",
+        "rgb(255, 255, 255)"
+      ],
+      "header": "rgb(255, 255, 255)",
+      "border": "rgba(0, 0, 0, 0)",
+      "columnsSideBySide": true,
+      "stacked": false,
+      "imageLoaded": true,
+      "h1": 1,
+      "brokenImages": [],
+      "headings": [
+        "Peranzana: un nome che viene da lontano, un\u2019anima pugliese.",
+        "Il cuore della Peranzana, la nostra terra."
+      ],
+      "leftAligned": true,
+      "heroTextWidth": 532.5,
+      "historyColumns": true,
+      "places": [
+        "Torremaggiore",
+        "San Severo",
+        "San Paolo di Civitate"
+      ],
+      "placesRows": 1,
+      "territoryBackground": "rgba(0, 0, 0, 0)",
+      "pinsLoaded": true,
+      "anchor": {
+        "hash": "#processo",
+        "top": 120.359375
+      },
+      "scrollHeader": "rgba(255, 255, 255, 0.97)"
+    },
+    {
+      "width": 834,
+      "overflow": 0,
+      "backgrounds": [
+        "rgb(255, 255, 255)",
+        "rgb(255, 255, 255)"
+      ],
+      "header": "rgb(255, 255, 255)",
+      "border": "rgba(0, 0, 0, 0)",
+      "columnsSideBySide": false,
+      "stacked": true,
+      "imageLoaded": true,
+      "h1": 1,
+      "brokenImages": [],
+      "headings": [
+        "Peranzana: un nome che viene da lontano, un\u2019anima pugliese.",
+        "Il cuore della Peranzana, la nostra terra."
+      ],
+      "leftAligned": true,
+      "heroTextWidth": 690,
+      "historyColumns": false,
+      "places": [
+        "Torremaggiore",
+        "San Severo",
+        "San Paolo di Civitate"
+      ],
+      "placesRows": 1,
+      "territoryBackground": "rgba(0, 0, 0, 0)",
+      "pinsLoaded": true,
+      "anchor": {
+        "hash": "#processo",
+        "top": 120.296875
+      },
+      "scrollHeader": "rgba(255, 255, 255, 0.97)"
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "backgrounds": [
+        "rgb(255, 255, 255)",
+        "rgb(255, 255, 255)"
+      ],
+      "header": "rgb(255, 255, 255)",
+      "border": "rgba(0, 0, 0, 0)",
+      "columnsSideBySide": false,
+      "stacked": true,
+      "imageLoaded": true,
+      "h1": 1,
+      "brokenImages": [],
+      "headings": [
+        "Peranzana: un nome che viene da lontano, un\u2019anima pugliese.",
+        "Il cuore della Peranzana, la nostra terra."
+      ],
+      "leftAligned": true,
+      "heroTextWidth": 322,
+      "historyColumns": false,
+      "places": [
+        "Torremaggiore",
+        "San Severo",
+        "San Paolo di Civitate"
+      ],
+      "placesRows": 3,
+      "territoryBackground": "rgba(0, 0, 0, 0)",
+      "pinsLoaded": true,
+      "anchor": {
+        "hash": "#processo",
+        "top": 119.734375
+      },
+      "scrollHeader": "rgba(255, 255, 255, 0.97)",
+      "menuVisible": true,
+      "menuBackground": "rgb(255, 255, 255)"
+    },
+    {
+      "width": 360,
+      "overflow": 0,
+      "backgrounds": [
+        "rgb(255, 255, 255)",
+        "rgb(255, 255, 255)"
+      ],
+      "header": "rgb(255, 255, 255)",
+      "border": "rgba(0, 0, 0, 0)",
+      "columnsSideBySide": false,
+      "stacked": true,
+      "imageLoaded": true,
+      "h1": 1,
+      "brokenImages": [],
+      "headings": [
+        "Peranzana: un nome che viene da lontano, un\u2019anima pugliese.",
+        "Il cuore della Peranzana, la nostra terra."
+      ],
+      "leftAligned": true,
+      "heroTextWidth": 292,
+      "historyColumns": false,
+      "places": [
+        "Torremaggiore",
+        "San Severo",
+        "San Paolo di Civitate"
+      ],
+      "placesRows": 3,
+      "territoryBackground": "rgba(0, 0, 0, 0)",
+      "pinsLoaded": true,
+      "anchor": {
+        "hash": "#processo",
+        "top": 119.84375
+      },
+      "scrollHeader": "rgba(255, 255, 255, 0.97)"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,41 @@
+.tp-site.tp-cinematic {
+    .brand.mc-official-brand { display:flex;align-items:center;justify-content:center;padding:0;width:96px;height:96px;min-width:96px;line-height:0; }
+    .mc-header .mc-official-logo { width:88px!important;height:86px!important;object-fit:contain;filter:none; }
+    #mc-footer .brand.mc-official-brand { width:168px;height:164px;min-width:168px; }
+    #mc-footer .mc-official-logo { width:160px!important;height:156px!important;object-fit:contain;filter:none; }
+    .hero, .territory { position: relative; }
+    .mc-photo-film { position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;transition:opacity 240ms ease; }
+    .mc-photo-film.is-playing { opacity:1; }
+    .hero-shade { z-index:1;pointer-events:none; }
+    .hero-copy, .hero-bottom { z-index:2; }
+    .territory .mc-photo-film { grid-area:1 / 1;width:100%; }
+    .territory-copy { position:relative;z-index:1; }
+    .mc-film-toggle { display:none;position:absolute;top:104px;right:var(--gutter);z-index:3;width:44px;height:44px;padding:12px;border:1px solid #ffffff99;background:#18231fe6;color:white;align-items:center;justify-content:center;border-radius:0; }
+    .mc-film-toggle.is-ready { display:flex; }
+    .mc-film-toggle[hidden] { display:none!important; }
+    .mc-film-toggle:focus-visible { outline:3px solid white;outline-offset:4px; }
+    .mc-film-toggle img { width:18px;height:18px;filter:invert(1); }
+    .territory .mc-film-toggle { top:22px;left:22px;right:auto; }
+    .bottle-portrait img.mc-master-bottle { top:0;left:0;width:100%;height:calc(100% - 56px);object-fit:contain; }
+    .pack-unit img { top:0;left:0;width:100%;height:100%;object-fit:contain; }
+    .culinary:has(img[src*="/campaign/"]) { background:white; }
+    .culinary picture img[src*="/campaign/"] { object-fit:contain;object-position:right center;background:white; }
+    .culinary-copy { z-index:1;max-width:410px; }
+    .process { position:relative; }
+    .mc-process-trace { position:absolute;left:var(--gutter);right:var(--gutter);top:0;height:1px;background:#ffffff80;transform-origin:left; }
+}
+@media (max-width:760px) { .tp-site.tp-cinematic {
+    .mc-header .brand.mc-official-brand { width:78px;height:78px;min-width:78px; }
+    .mc-header .mc-official-logo { width:70px!important;height:69px!important; }
+    .hero .mc-photo-film { height:55%;object-position:center; }
+    .territory .mc-photo-film { width:100%;height:280px; }
+    .hero .mc-film-toggle { top:100px;right:22px; }
+    .culinary-copy { max-width:none; }
+    .culinary picture img[src*="/campaign/"] { object-position:center; }
+}}
+@media (prefers-reduced-motion:reduce) { .tp-site.tp-cinematic {
+    .mc-photo-film, .mc-film-toggle { display:none!important; }
+}}
+html:has(.tp-cinematic) .o-website-builder_wrapper {
+    .mc-photo-film, .mc-film-toggle { display:none!important; }
+}

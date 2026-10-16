@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_catalog" name="Torrepulia Catalogo">
+        <section class="s_dynamic_snippet_products_grid s_dynamic_snippet_products s_dynamic oe_website_sale tp-section tp-catalog o_wsale_products_opt_layout_catalog o_wsale_products_opt_design_thumbs o_wsale_products_opt_thumb_contain o_wsale_products_opt_name_color_regular o_wsale_products_opt_cc1"
+            data-snippet="s_dynamic_snippet_products_grid" data-name="Catalogo La Regina"
+            data-template-key="website_sale.dynamic_filter_template_product_product_products_item"
+            t-att-data-filter-id="env.ref('website_sale.dynamic_filter_all_products').id"
+            data-number-of-records="4" data-grid-columns="4" data-mobile-columns="1"
+            data-product-names="La Regina" data-custom-template-data="{}">
+            <div class="container s_dynamic_snippet_container">
+                <div class="tp-section-heading s_dynamic_snippet_title"><h2>Scegli il tuo La Regina.</h2><a class="tp-text-link" href="/shop">Tutti i prodotti <i class="oi ms-2" data-icon="arrow_forward" aria-hidden="true"/></a></div>
+                <div class="s_dynamic_snippet_content o_not_editable">
+                    <div class="dynamic_snippet_template"/>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_story_opening" name="Torrepulia Famiglia">
+        <section class="s_torrepulia_snippet tp-section tp-story-intro tp-about-opening o_colored_level" data-snippet="s_torrepulia_story_opening" data-name="Famiglia Leone">
+            <div class="tp-about-container">
+                <h1>La terra si coltiva.<br/>La passione si tramanda.</h1>
+                <p class="tp-about-subtitle">Azienda Agricola Michele Leone: tre generazioni di olivicoltori a Torremaggiore, legati alla purezza della cultivar Peranzana.</p>
+                <figure class="tp-about-photo">
+                    <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore-750.webp 750w, /website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore.webp 1035w" sizes="(max-width: 575px) calc(100vw - 44px), (max-width: 1199px) calc(100vw - 80px), (max-width: 1440px) calc(100vw - 128px), 1312px" alt="Franco e Salvatore Leone tra gli ulivi di famiglia, in bianco e nero" width="1035" height="690" loading="eager" fetchpriority="high"/>
+                    <figcaption>Franco e Salvatore, la terza generazione.</figcaption>
+                </figure>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_story_chapters" name="Torrepulia Generazioni">
+        <section class="s_torrepulia_snippet tp-section tp-story-chapters tp-about-generations o_colored_level" data-snippet="s_torrepulia_story_chapters" data-name="Tre generazioni">
+            <div class="tp-about-container">
+                <h2 class="visually-hidden">Tre generazioni della famiglia Leone</h2>
+                <!-- DOM order stays chronological when the stagger collapses on mobile. -->
+                <div class="tp-about-grid">
+                    <article>
+                        <span class="tp-about-year" aria-hidden="true">1945</span>
+                        <p class="tp-about-period"><strong>Nel secondo dopoguerra</strong></p>
+                        <h3>La <span class="tp-about-title-tail">pietra miliare.</span></h3>
+                        <p>Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.</p>
+                    </article>
+                    <article>
+                        <span class="tp-about-year" aria-hidden="true">1980</span>
+                        <p class="tp-about-period"><strong>Gli anni della crescita</strong></p>
+                        <h3>La visione <span class="tp-about-title-tail">e lo sviluppo.</span></h3>
+                        <p>Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.</p>
+                    </article>
+                    <article>
+                        <span class="tp-about-year" aria-hidden="true">2020</span>
+                        <p class="tp-about-period"><strong>Dal 2020 a oggi</strong></p>
+                        <h3>L'innovazione <span class="tp-about-title-tail">di Torrepulia.</span></h3>
+                        <p>Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_sensory" name="Torrepulia Profilo Sensoriale">
+        <section id="profilo" class="s_torrepulia_snippet tp-section tp-sensory" data-snippet="s_torrepulia_sensory" data-name="Profilo sensoriale">
+            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Un equilibrio<br/>da assaporare.</h2><p class="lead">Fruttato medio. Amaro e piccante, in equilibrio.</p></div><div class="col-lg-6 offset-lg-1"><dl class="tp-sensory-list"><dt>Alla vista</dt><dd>Verde brillante con riflessi dorati.</dd><dt>Al profumo</dt><dd>Oliva, erbe, <strong>pomodoro verde</strong> e <strong>carciofo</strong>, con note di mela e lattuga.</dd><dt>Al gusto</dt><dd>Sentori vegetali e un finale di pomodoro, carciofo e <strong>mandorla fresca</strong>.</dd></dl></div></div></div>
+        </section>
+    </template>
+    <template id="s_torrepulia_landscape" name="Torrepulia Paesaggio">
+        <section class="s_torrepulia_snippet tp-landscape" data-snippet="s_torrepulia_landscape" data-name="Alto Tavoliere">
+            <img src="/website_torrepulia_theme/static/src/img/content/alto-tavoliere.jpg" alt="Il paesaggio dell'Alto Tavoliere delle Puglie" loading="eager"/>
+            <div class="container"><h1>Il nostro orizzonte<br/>è l'Alto Tavoliere.</h1><p>Torremaggiore, Puglia.</p></div>
+        </section>
+    </template>
+    <template id="s_torrepulia_land_story" name="Torrepulia Terra">
+        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_land_story" data-name="Torremaggiore">
+            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Una terra.<br/>Il suo carattere.</h2></div><div class="col-lg-6 offset-lg-1"><p class="lead">I nostri uliveti si trovano nell'agro di Torremaggiore, in provincia di Foggia.</p><p>Il terreno del Tavoliere, il vento e la luce della Puglia accompagnano il lavoro della famiglia Leone. Terreni drenanti e clima continentale favoriscono la coltivazione della Peranzana.</p><p>Torremaggiore, San Severo e San Paolo di Civitate sono il territorio di origine di questa cultivar. Un paesaggio agricolo e una storia a cui il nostro olio appartiene.</p><a class="tp-text-link" href="/l-olio">Conosci la Peranzana <i class="oi ms-2" data-icon="arrow_forward" aria-hidden="true"/></a></div></div></div>
+        </section>
+    </template>
+</odoo>

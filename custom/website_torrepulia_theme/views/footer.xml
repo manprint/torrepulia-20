@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="torrepulia_footer" inherit_id="website.footer_custom" name="Torrepulia Footer">
+    <template id="torrepulia_footer" inherit_id="website.footer_custom" name="Torrepulia Footer" active="False">
         <xpath expr="//div[@id='footer']" position="replace">
             <div id="footer" class="tp-footer o_footer oe_structure" t-if="not no_footer">
-                <div class="container py-5">
+                <div class="container">
                     <div class="row g-4">
                         <div class="col-lg-5">
-                            <img src="/website_torrepulia_theme/static/src/img/content/torrepulia-logo.png" alt="Torrepulia" style="max-height:64px"/>
-                            <p class="mt-4 mb-0">Azienda agricola della famiglia Leone, produttrice di olio extravergine di oliva da cultivar Peranzana a Torremaggiore.</p>
+                            <a href="/" class="tp-footer__brand">Torrepulia</a>
+                            <p class="mt-3">Azienda agricola Michele Leone.<br/>Tre generazioni, una terra, la Peranzana.</p>
+                            <p class="small">Contrada Pagliara Vecchia SNC<br/>71017 Torremaggiore (FG), Italia<br/>P. IVA 00722360716</p>
                         </div>
                         <div class="col-6 col-lg-2">
-                            <h3 class="h6 text-uppercase">Naviga</h3>
-                            <ul class="list-unstyled">
-                                <li><a href="/shop">Shop</a></li>
-                                <li><a href="/aboutus">Storia</a></li>
-                                <li><a href="/l-olio">L'olio</a></li>
-                                <li><a href="/contactus">Contatti</a></li>
-                            </ul>
+                            <h2 class="h6">La nostra terra</h2>
+                            <ul class="list-unstyled"><li><a href="/aboutus">La famiglia Leone</a></li><li><a href="/l-olio">La Peranzana</a></li><li><a href="/territorio">Il territorio</a></li></ul>
                         </div>
                         <div class="col-6 col-lg-2">
-                            <h3 class="h6 text-uppercase">Prodotto</h3>
-                            <ul class="list-unstyled">
-                                <li><a href="/shop">La Regina</a></li>
-                                <li><a href="/shop">Bottiglia 500 ml</a></li>
-                                <li><a href="/shop">Latta 5 L</a></li>
-                                <li><a href="/shop">Bag in Box 5 L</a></li>
-                            </ul>
+                            <h2 class="h6">Il tuo olio</h2>
+                            <ul class="list-unstyled"><li><a href="/shop">Shop</a></li><li><a href="/prenotailtuoolio">Prenota l'olio nuovo</a></li><li><a href="/shop/cart">Carrello</a></li><li><a href="/contactus">Contatti</a></li></ul>
                         </div>
                         <div class="col-lg-3">
-                            <h3 class="h6 text-uppercase">Contatti</h3>
-                            <p class="mb-1"><a href="tel:+393401705648">+39 340 170 5648</a></p>
-                            <p class="mb-1"><a href="mailto:info@torrepulia.it">info@torrepulia.it</a></p>
-                            <p class="mb-0">Torremaggiore, Puglia</p>
+                            <h2 class="h6">Parliamone</h2>
+                            <a class="d-block" href="mailto:info@torrepulia.it">info@torrepulia.it</a>
+                            <a class="d-block" href="tel:+393806375074">+39 380 637 5074</a>
+                            <p class="small mt-3">Per informazioni sui prodotti<br/>e richieste commerciali.</p>
                         </div>
+                    </div>
+                    <div class="tp-footer__legal d-flex flex-wrap justify-content-between gap-3">
+                        <span>© Azienda agricola Michele Leone</span>
+                        <div class="d-flex flex-wrap gap-3"><a href="/termini-e-condizioni">Termini di vendita</a><a href="/privacy-policy">Privacy</a><a href="/cookie-policy">Cookie</a></div>
                     </div>
                 </div>
             </div>

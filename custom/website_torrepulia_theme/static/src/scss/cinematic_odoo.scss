@@ -1,0 +1,101 @@
+.tp-site.tp-cinematic {
+    --tp-olive:#294d3b; --tp-wine:#294d3b; --tp-pale:#edf2ec; --tp-ink:#18231f; --tp-muted:#536057; --tp-line:#cbd4ce;
+    >header {height:100px;position:relative;background:white;box-shadow:none!important;}
+    >header:has(.on-photo){height:0;}
+    // Native affixing adds main padding, so the header must leave normal flow.
+    >header.o_header_affixed {
+        position:fixed;
+        background:var(--tp-white)!important;
+        .mc-header {background:var(--tp-white)!important;}
+        &:has(.on-photo) {
+            background:var(--tp-ink)!important;
+            .mc-header {background:var(--tp-ink)!important;}
+        }
+    }
+    >header >:not(.mc-chrome){display:none!important;}
+    >footer >:not(#mc-footer){display:none!important;}
+    >footer{background:#294d3b!important;padding:0!important;border:0!important;}
+    .mc-header.on-photo{color:white;}
+    .mc-header.on-white{color:#18231f;border-color:#cbd4ce;}
+    .mc-header.on-white .icon{filter:none;}
+    .mc-cart-list{list-style:none;margin:0;padding:0;}
+    .mobile-menu.collapse:not(.show){display:none;}
+    #wrap.mc-page{padding:0;margin:0;max-width:none;}
+    .mc-page p{max-width:none;}
+    .mc-page h2{font-size:76px;line-height:1.05;}
+    .mc-page .regina h2{font-size:78px;}
+    .mc-page .peranzana h2{font-size:88px;}
+    .mc-page .culinary h2{font-size:60px;}
+    .mc-page .territory h2{font-size:54px;}
+    .mc-page h3{font:400 48px/1.05 Caslon,Georgia,serif;}
+    .mc-page .process h3{font-size:42px;}
+    .mc-pack-preview{position:absolute;inset:0;}
+    .mc-commerce-composition{position:relative;min-height:650px;background:white;}
+    .mc-commerce-composition>p{position:absolute;bottom:16px;left:24px;right:24px;text-align:center;}
+    .mc-tile-composition{height:100%;min-height:380px;}
+    .mc-pack-preview>.format-image{left:24px;top:24px;width:calc(100% - 48px);height:calc(100% - 90px);object-fit:contain;}
+    [hidden]{display:none!important;}
+    .mc-sensory-panel{min-height:230px;}
+    .mc-product-formats .shop-layout{display:block;}
+    .mc-product-formats .shop-stage,.mc-product-formats .format-summary{display:none;}
+    .mc-product-formats h2{font:400 28px/1.2 Caslon,serif;}
+    .mc-product-formats{margin-top:30px;}
+    .mc-product-formats .format-option[aria-current="page"]{background:#edf2ec;border-color:#294d3b;}
+    .mc-sticky-summary{display:none;}
+    #product_detail{max-width:1920px;padding:36px var(--gutter) 80px;}
+    #product_detail_main{gap:64px;display:grid;grid-template-columns:1.15fr 1fr;}
+    #product_detail_main>.col{width:100%;max-width:none;min-width:0;padding:0;}
+    #product_details #o_wsale_product_details_content{width:100%;max-width:none;padding:0;}
+    .btn-primary{color:white;}
+    .btn-primary:hover,.btn-primary:focus{color:white;}
+    .btn-light,.btn-light:hover,.btn-light:focus{color:#18231f;background:white;}
+    #product_details h1{font:400 64px/1.05 Caslon,Georgia,serif;}
+    .o_wsale_product_images{background:white;min-height:650px;}
+    .o_wsale_product_images img{object-fit:contain!important;max-height:720px;}
+    #product_details .oe_price{font-size:32px;}
+    .o_wsale_products_grid_table_wrapper .oe_product_image{min-height:380px;}
+    .o_wsale_products_grid_table_wrapper .oe_product_cart{border-radius:0;box-shadow:none;}
+    .tp-shop-title{font:400 76px/1.05 Caslon,Georgia,serif;}
+    .mc-institutional h1{font:400 76px/1.05 Caslon,Georgia,serif;}
+}
+html:has(.tp-cinematic) .o-website-builder_wrapper {
+    .mc-section .mc-sensory-panel[hidden]{display:block!important;}
+}
+@media(max-width:1100px){.tp-site.tp-cinematic{
+    .mc-page h2{font-size:62px;}.mc-page .regina h2{font-size:68px;}
+    #product_detail_main{gap:36px;}
+}}
+@media(max-width:760px){.tp-site.tp-cinematic{
+    >header{height:82px;}
+    .mc-header .brand .original-logo{width:40px!important;height:40px!important;}
+    .mc-page .hero:not(.mc-banner-contained){height:calc(100svh - 38px)!important;}
+    .mc-page h2{font-size:50px;}.mc-page .regina h2{font-size:56px;}.mc-page .peranzana h2{font-size:55px;}.mc-page .culinary h2,.mc-page .territory h2{font-size:44px;}
+    .mc-page h3{font-size:38px;}.mc-page .process h3{font-size:36px;}
+    #product_detail_main{grid-template-columns:1fr;gap:30px;}
+    #product_detail{padding:24px 22px 54px;}
+    .o_wsale_product_images{min-height:460px;}
+    .mc-commerce-composition{min-height:460px;}
+    .mc-tile-composition{min-height:240px;}
+    #product_details h1,.tp-shop-title,.mc-institutional h1{font-size:50px;}
+    .mc-institutional .tp-process-timeline h3{font-size:32px;overflow-wrap:anywhere;}
+    .o_wsale_products_grid_table_wrapper .oe_product_image{min-height:240px;}
+    #o_wsale_product_cta_section{position:fixed;bottom:0;left:0;right:0;z-index:9;background:white;border-top:1px solid #cbd4ce;padding:12px 22px Max(12px,env(safe-area-inset-bottom));margin:0!important;max-width:none;width:100%;display:flex;flex-direction:row-reverse;gap:12px;align-items:center;}
+    #o_wsale_product_cta_section #o_wsale_cta_wrapper{margin:0!important;flex:1;}
+    #o_wsale_product_cta_section .availability_messages:empty{display:none;}
+    #o_wsale_product_cta_section #add_to_cart_wrap:not(.d-none){display:grid!important;grid-template-columns:72px minmax(0,1fr);width:100%;gap:8px;}
+    #o_wsale_product_cta_section .css_quantity{width:72px;min-width:0;height:50px;}
+    #o_wsale_product_cta_section .css_quantity .btn{padding:4px!important;}
+    #o_wsale_product_cta_section .css_quantity input{padding:0;min-width:16px;}
+    #o_wsale_product_cta_section button[name="add_to_cart"]{min-height:50px;padding:8px;font-size:13px;}
+    #o_wsale_product_cta_section button[name="add_to_cart"]>i{display:none;}
+    #o_wsale_product_cta_section #product_option_block{position:absolute;bottom:calc(100% + 8px);right:22px;width:44px!important;height:44px;}
+    #o_wsale_product_cta_section .o_add_wishlist_dyn{width:44px;height:44px;padding:12px;background:white;}
+    #o_wsale_product_cta_section .o_add_wishlist_dyn span{display:none!important;}
+    #o_wsale_product_cta_section .o_add_wishlist_dyn i{font-size:18px;margin:0!important;}
+    .mc-sticky-summary{display:block;min-width:74px;flex-shrink:0;font-size:13px;}
+    .mc-sticky-summary .product_price{margin:0!important;}
+    .mc-sticky-summary .oe_price{font-size:18px!important;}
+    .mc-sticky-summary .text-muted{display:none;}
+    .tp-product-page{padding-bottom:100px;}
+}}
+@media(prefers-reduced-motion:reduce){.tp-site.tp-cinematic *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}

@@ -1,48 +1,75 @@
-# Torrepulia Premium Website Theme
+# Torrepulia: Mediterranean Cinematic
 
-Addon Odoo 20 nativo per il tema e-commerce Torrepulia.
+Modulo Odoo 20 `website_torrepulia_theme`, baseline **20.0.3.1.2**.
+Stack locale: http://localhost:8069, database `torrepulia_cinematic_install`.
+Con piu database selezionare prima `/web/login?db=torrepulia_cinematic_install`.
 
-## Installazione locale
+## Struttura
 
-Lo stack locale in `torrepulia-20-local-dev` monta live `custom/` dal repository.
+- `models/`, `controllers/`, `data/`: provisioning, prodotti reali e prezzi contestuali.
+- `views/cinematic*.xml`: homepage, header/footer e commerce nativo.
+- `views/snippets/`: blocchi necessari alle pagine istituzionali e ai form.
+- `static/src/cinematic/`: fotografie, film responsive, icone e licenze.
+- `static/src/js/`, `static/src/scss/`, `static/src/xml/`: frontend ed editor Odoo.
+- `docs/source/`: fonti aziendali e testi legali usati dal provisioning.
+- `tools/`: produzione media e regressioni locali; nessuna dipendenza runtime.
+
+Homepage e nove altre pagine sono gia pubblicate. Shop, schede, quantita,
+disponibilita, carrello e checkout sono nativi `website_sale`. Gli aggiornamenti
+non riscrivono pagine salvate nel Builder. Nessun import automatico del catalogo.
+
+## Aggiornamento
 
 ```powershell
-cd C:\Users\salvatore.leone\Downloads\torrepulia_odoo20\torrepulia-20-local-dev
+cd ..\torrepulia-20-local-dev
+docker compose up -d
 .\scripts\upgrade-module.ps1 -Module website_torrepulia_theme
 ```
 
-Aprire poi `http://localhost:8069`, aggiornare l'elenco applicazioni se necessario e installare il modulo.
+Dipendenze: `website`, `website_sale`, `website_sale_stock`, `website_crm`.
+Nessuna patch al core o framework frontend esterno.
 
-## Contenuti
+## Editor e Asset
 
-- 11 snippet editabili nel gruppo Website Builder `Torrepulia`.
-- Homepage iniziale disponibile su `/torrepulia-home`.
-- Vetrina prodotti basata sullo snippet dinamico standard `website_sale.s_dynamic_snippet_products_grid`.
-- Stili premium per header, footer, catalogo, card prodotto e pagina prodotto.
-- Immagini locali tratte dal sito pubblico Torrepulia consultato durante l'audit.
+Testi, foto, collegamenti e ordine delle sezioni sono modificabili nel Builder.
+La CTA anticipata promuove il primo prodotto scelto in Prodotti Torrepulia.
+I prezzi dinamici non vengono salvati nell'HTML. Se si sostituisce la foto
+hero/territorio, il vecchio film non copre il nuovo upload. I film sono
+animazioni fotografiche degli originali, non riprese documentarie.
 
-## Odoo e Owl
+[Inventario e materiali mancanti](docs/ASSETS.md).
+[Baseline e collaudo](docs/STABILIZATION.md).
 
-Versione Odoo verificata nello stack locale: `20.0-20260926`.
+## Regressione Locale
 
-Il container include `web/static/lib/owl/owl.js` e `web/static/src/owl2/owl3_compatibility_layer.js`, ma non espone un `package.json` Owl con versione semantica verificabile. Non sono stati introdotti componenti Owl custom: per hero, sezioni editoriali, formati e processo produttivo i template QWeb nativi sono più stabili e completamente compatibili con Website Builder. La parte e-commerce resta affidata a `website_sale`.
+```powershell
+python custom/website_torrepulia_theme/tools/inspect_compiled_css.py
+python custom/website_torrepulia_theme/tools/final_home_qa.py final
+python custom/website_torrepulia_theme/tools/final_builder_qa.py
+python custom/website_torrepulia_theme/tools/release_check.py
+python custom/website_torrepulia_theme/tools/release_browser_qa.py
+```
 
-## Limiti noti
+Eseguire dalla root con Python, Playwright e Chromium. I test Builder usano
+account QA e bozza privata; il cleanup disattiva l'account. Screenshot e video
+di test possono essere salvati fuori dal modulo impostando `TORREPULIA_QA_IMAGES`.
+Non confermare ordini o pagamenti reali. La home pubblicata non viene modificata.
+La cache axe resta nella cartella temporanea del sistema (personalizzabile con
+`TORREPULIA_QA_CACHE`), non negli asset del modulo. Gli inventari runtime
+contengono copie delle viste: vanno archiviati fuori dal repository dopo la pulizia.
 
-- La homepage viene creata su `/torrepulia-home` per evitare di sovrascrivere una home già presente nel database. Può essere impostata come pagina principale da Website.
-- La newsletter è un blocco editoriale con CTA contatti; può essere sostituita con lo snippet mailing standard se `website_mass_mailing` è installato e configurato.
-- I link prodotto dei formati puntano allo shop generale perché gli ID prodotto variano per database.
+La versione `20.0.3.2.0` include home, Radici e La Peranzana aggiornate, foto
+WebP e snippet Bootstrap modificabili. Le pagine gia salvate nel database
+mantengono la proprieta del builder: l'upgrade non le sostituisce con i default.
+I tool di pubblicazione locale richiedono flag espliciti e creano un backup;
+non fanno parte dell'esecuzione ordinaria del sito.
 
-## Test eseguiti
+## Go-Live
 
-- XML parse locale dei file in `views/`: OK.
-- Installazione modulo su stack locale `torrepulia-20-local-dev`, database `odoo_dev`: OK.
-- Riavvio servizio Odoo locale: OK.
-- Verifica HTTP `http://localhost:8069/torrepulia-home`: 200, contenuti tema presenti.
-- Verifica HTTP `http://localhost:8069/shop`: 200, classe tema shop presente.
-
-## Note di verifica
-
-Durante l'installazione sono stati corretti XPath non compatibili con Odoo 20 per homepage, header, tile prodotto e scheda prodotto. Le personalizzazioni e-commerce finali usano CSS e classi native per preservare i flussi standard di `website_sale`.
-
-Non sono stati eseguiti test browser completi su checkout e Website Builder visuale con login interattivo. Il modulo registra gli snippet in `website.snippets` e usa il building block dinamico prodotti nativo di Odoo per la vetrina commerciale.
+Configurare pagamento, fiscalita, spedizioni, stock e SMTP. Confermare testi
+legali, campagna olio nuovo, attualita delle etichette e liberatorie. Servono
+foto della confezione sei bottiglie. I due loghi utilizzati sono conservati:
+oro/bianco su hero e footer scuro, blu-grigio nell'header su sfondo chiaro.
+Safari/iOS fisico e matrice fiscale completa non sono certificati dai test locali.
+Il catalogo locale mostra attualmente prezzi in USD: verificare la configurazione
+commerciale prima della pubblicazione.

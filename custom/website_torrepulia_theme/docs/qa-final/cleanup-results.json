@@ -1,0 +1,22 @@
+﻿{
+    "archive":  "C:\\Users\\salvatore.leone\\Downloads\\torrepulia_odoo20\\torrepulia-theme-cleanup-20261017-013258",
+    "files":  3,
+    "bytes":  3692760,
+    "entries":  [
+                    {
+                        "path":  "docs/qa-final/runtime-odoo_dev.json",
+                        "bytes":  575580,
+                        "reason":  "historical evidence or intermediate owner snapshot; archived outside runtime module"
+                    },
+                    {
+                        "path":  "docs/qa-final/runtime-torrepulia_cinematic_install.json",
+                        "bytes":  2563723,
+                        "reason":  "historical evidence or intermediate owner snapshot; archived outside runtime module"
+                    },
+                    {
+                        "path":  "docs/qa-final/axe-4.10.3.min.js",
+                        "bytes":  553457,
+                        "reason":  "historical evidence or intermediate owner snapshot; archived outside runtime module"
+                    }
+                ]
+}

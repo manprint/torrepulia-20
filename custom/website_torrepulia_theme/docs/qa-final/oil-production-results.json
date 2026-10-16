@@ -1,0 +1,219 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "overflow": 0,
+      "cards": 4,
+      "rows": 1,
+      "overlaps": [],
+      "headings": [
+        "Raccolta Precoce",
+        "Aerazione Protetta",
+        "Molitura a Freddo",
+        "Confezionamento Accurato"
+      ],
+      "descriptionsLeft": true,
+      "squareMedia": true,
+      "pairingsLeft": true,
+      "ctaBackground": "rgb(24, 35, 31)",
+      "ctaColor": "rgb(255, 255, 255)",
+      "sensory": {
+        "case": "uppercase",
+        "labelSize": 12,
+        "descriptionSize": 32,
+        "font": "\"Libre Caslon Display\", Georgia, serif",
+        "notes": [
+          "pomodoro verde",
+          "carciofo",
+          "mandorla fresca"
+        ]
+      },
+      "nitrogen": false,
+      "mediaLoaded": true,
+      "imageSources": [
+        "/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp"
+      ],
+      "pairingsSideBySide": true,
+      "pairingsStacked": false,
+      "cta": "/shop",
+      "text": "Portalo in tavola",
+      "hasLegacyTimeline": false
+    },
+    {
+      "width": 1024,
+      "overflow": 0,
+      "cards": 4,
+      "rows": 1,
+      "overlaps": [],
+      "headings": [
+        "Raccolta Precoce",
+        "Aerazione Protetta",
+        "Molitura a Freddo",
+        "Confezionamento Accurato"
+      ],
+      "descriptionsLeft": true,
+      "squareMedia": true,
+      "pairingsLeft": true,
+      "ctaBackground": "rgb(24, 35, 31)",
+      "ctaColor": "rgb(255, 255, 255)",
+      "sensory": {
+        "case": "uppercase",
+        "labelSize": 12,
+        "descriptionSize": 32,
+        "font": "\"Libre Caslon Display\", Georgia, serif",
+        "notes": [
+          "pomodoro verde",
+          "carciofo",
+          "mandorla fresca"
+        ]
+      },
+      "nitrogen": false,
+      "mediaLoaded": true,
+      "imageSources": [
+        "/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp"
+      ],
+      "pairingsSideBySide": true,
+      "pairingsStacked": false,
+      "cta": "/shop",
+      "text": "Portalo in tavola",
+      "hasLegacyTimeline": false
+    },
+    {
+      "width": 834,
+      "overflow": 0,
+      "cards": 4,
+      "rows": 2,
+      "overlaps": [],
+      "headings": [
+        "Raccolta Precoce",
+        "Aerazione Protetta",
+        "Molitura a Freddo",
+        "Confezionamento Accurato"
+      ],
+      "descriptionsLeft": true,
+      "squareMedia": true,
+      "pairingsLeft": true,
+      "ctaBackground": "rgb(24, 35, 31)",
+      "ctaColor": "rgb(255, 255, 255)",
+      "sensory": {
+        "case": "uppercase",
+        "labelSize": 12,
+        "descriptionSize": 32,
+        "font": "\"Libre Caslon Display\", Georgia, serif",
+        "notes": [
+          "pomodoro verde",
+          "carciofo",
+          "mandorla fresca"
+        ]
+      },
+      "nitrogen": false,
+      "mediaLoaded": true,
+      "imageSources": [
+        "/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp"
+      ],
+      "pairingsSideBySide": true,
+      "pairingsStacked": false,
+      "cta": "/shop",
+      "text": "Portalo in tavola",
+      "hasLegacyTimeline": false
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "cards": 4,
+      "rows": 4,
+      "overlaps": [],
+      "headings": [
+        "Raccolta Precoce",
+        "Aerazione Protetta",
+        "Molitura a Freddo",
+        "Confezionamento Accurato"
+      ],
+      "descriptionsLeft": true,
+      "squareMedia": true,
+      "pairingsLeft": true,
+      "ctaBackground": "rgb(24, 35, 31)",
+      "ctaColor": "rgb(255, 255, 255)",
+      "sensory": {
+        "case": "uppercase",
+        "labelSize": 12,
+        "descriptionSize": 28,
+        "font": "\"Libre Caslon Display\", Georgia, serif",
+        "notes": [
+          "pomodoro verde",
+          "carciofo",
+          "mandorla fresca"
+        ]
+      },
+      "nitrogen": false,
+      "mediaLoaded": true,
+      "imageSources": [
+        "/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp"
+      ],
+      "pairingsSideBySide": false,
+      "pairingsStacked": true,
+      "cta": "/shop",
+      "text": "Portalo in tavola",
+      "hasLegacyTimeline": false
+    },
+    {
+      "width": 360,
+      "overflow": 0,
+      "cards": 4,
+      "rows": 4,
+      "overlaps": [],
+      "headings": [
+        "Raccolta Precoce",
+        "Aerazione Protetta",
+        "Molitura a Freddo",
+        "Confezionamento Accurato"
+      ],
+      "descriptionsLeft": true,
+      "squareMedia": true,
+      "pairingsLeft": true,
+      "ctaBackground": "rgb(24, 35, 31)",
+      "ctaColor": "rgb(255, 255, 255)",
+      "sensory": {
+        "case": "uppercase",
+        "labelSize": 12,
+        "descriptionSize": 28,
+        "font": "\"Libre Caslon Display\", Georgia, serif",
+        "notes": [
+          "pomodoro verde",
+          "carciofo",
+          "mandorla fresca"
+        ]
+      },
+      "nitrogen": false,
+      "mediaLoaded": true,
+      "imageSources": [
+        "/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-crates.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp",
+        "/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp"
+      ],
+      "pairingsSideBySide": false,
+      "pairingsStacked": true,
+      "cta": "/shop",
+      "text": "Portalo in tavola",
+      "hasLegacyTimeline": false
+    }
+  ],
+  "errors": [],
+  "hoverTransform": "matrix(1.045, 0, 0, 1.045, 0, 0)",
+  "stableCard": true,
+  "reducedTransform": "none",
+  "shopReached": true
+}

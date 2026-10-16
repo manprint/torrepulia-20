@@ -1,0 +1,87 @@
+{
+  "database": "torrepulia_release_20261017",
+  "cases": [
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 0,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/",
+      "width": 1440,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 1,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/aboutus",
+      "width": 1440,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 1,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/l-olio",
+      "width": 1440,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 0,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/shop",
+      "width": 1440,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 0,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/",
+      "width": 390,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 1,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/aboutus",
+      "width": 390,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 1,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/l-olio",
+      "width": 390,
+      "status": 200
+    },
+    {
+      "overflow": 0,
+      "missingImages": [],
+      "h1": 1,
+      "ctaCount": 0,
+      "footerColor": "rgb(24, 35, 31)",
+      "route": "/shop",
+      "width": 390,
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "failedResponses": []
+}

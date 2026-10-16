@@ -1,0 +1,94 @@
+.tp-site.tp-cinematic {
+    // Match the opening canvas; keep Radici and the photographic home unchanged.
+    &:has(.tp-oil-opening) {
+        > header { background: var(--tp-white); }
+        .mc-header.on-white {
+            background: var(--tp-white);
+            color: var(--tp-olive);
+            border-bottom-color: transparent;
+        }
+        > header.o_header_affixed {
+            background: transparent !important;
+            .mc-header {
+                background: var(--tp-white) !important;
+                @supports (backdrop-filter: blur(8px)) {
+                    background: rgba(255, 255, 255, .97) !important;
+                    backdrop-filter: blur(8px);
+                }
+            }
+        }
+        .mobile-menu { background: var(--tp-white); color: var(--tp-olive); }
+        #processo { scroll-margin-top: 120px; }
+    }
+    .tp-oil-opening, .tp-oil-history {
+        background: #fff;
+        color: var(--tp-ink);
+        text-align: left;
+        padding: 24px 0;
+        h1, h2, h3 {
+            font-family: "Libre Caslon Display", Georgia, serif;
+            color: var(--tp-olive);
+            text-wrap: balance;
+            overflow-wrap: break-word;
+        }
+        p { line-height: 1.8; text-wrap: pretty; }
+    }
+    .tp-oil-opening {
+        h1 { font-size: 56px; line-height: 1.08; }
+        .lead { font-size: 18px; max-width: 66ch; }
+        .tp-oil-photo {
+            display: block;
+            height: auto !important;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            object-position: 42% center;
+            box-shadow: 0 12px 32px rgba(24, 35, 31, .09);
+        }
+    }
+    .tp-oil-process-link { color: var(--tp-olive); min-height: 44px; }
+    .tp-oil-process-link .icon { transform: rotate(90deg); }
+    .tp-oil-process-link:hover { color: var(--tp-ink); text-decoration: underline !important; text-underline-offset: 5px; }
+    .tp-oil-history {
+        padding-bottom: 64px;
+        h2 { font-size: 48px; line-height: 1.12; }
+        .tp-oil-history-story p { font-size: 18px !important; }
+        .tp-oil-territory {
+            margin-top: 80px;
+            padding-top: 56px;
+            border-top: 1px solid var(--tp-line);
+            h3 { font-size: 40px; line-height: 1.15; }
+            h4 {
+                font: 400 36px/1.15 "Libre Caslon Display", Georgia, serif;
+                color: var(--tp-olive);
+                margin: 0 0 12px;
+                text-wrap: balance;
+                overflow-wrap: break-word;
+            }
+            p { margin: 0; }
+        }
+        .tp-oil-pin { display: block; width: 24px; height: 24px; }
+        .tp-oil-place-note { display: block; font-size: 13px; color: var(--tp-muted); }
+    }
+    @media (min-width: 1200px) {
+        .tp-oil-opening .container, .tp-oil-history .container { max-width: 1400px; padding-left: 40px; padding-right: 40px; }
+        .tp-oil-opening h1 { font-size: 64px; }
+    }
+    @media (min-width: 768px) {
+        .tp-oil-history .tp-oil-place + .tp-oil-place { border-left: 1px solid var(--tp-line); padding-left: 32px; }
+    }
+    @media (max-width: 991px) {
+        .tp-oil-opening .tp-oil-photo { aspect-ratio: 3 / 2; }
+        .tp-oil-history .tp-oil-territory { margin-top: 56px; padding-top: 40px; }
+        .tp-oil-history .tp-oil-territory h4 { font-size: 30px; }
+    }
+    @media (max-width: 767px) {
+        .tp-oil-opening, .tp-oil-history { padding: 0 10px; }
+        .tp-oil-opening h1 { font-size: 44px; }
+        .tp-oil-opening .tp-oil-photo { aspect-ratio: 4 / 3; }
+        .tp-oil-history { padding-bottom: 32px; }
+        .tp-oil-history h2 { font-size: 38px; }
+        .tp-oil-history .tp-oil-territory h3 { font-size: 34px; }
+        .tp-oil-history .tp-oil-place + .tp-oil-place { border-top: 1px solid var(--tp-line); padding-top: 24px; }
+        .tp-oil-history .fs-5 { font-size: 18px !important; }
+    }
+}

@@ -1,0 +1,487 @@
+{
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": 0,
+      "sections": [
+        "s_torrepulia_roots_transition",
+        "s_torrepulia_roots_values",
+        "s_torrepulia_roots_cta"
+      ],
+      "textOverflow": [],
+      "copy": [
+        "La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.",
+        "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+        "Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.",
+        "La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.",
+        "Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.",
+        "La Peranzana della famiglia Leone, sulla tua tavola."
+      ],
+      "nativeEditable": true,
+      "photoLoaded": true,
+      "transition": [
+        {
+          "x": 51,
+          "y": -587.15625,
+          "width": 669,
+          "height": 400.5,
+          "top": -587.15625,
+          "right": 720,
+          "bottom": -186.65625,
+          "left": 51
+        },
+        {
+          "x": 720,
+          "y": -530.5625,
+          "width": 669,
+          "height": 287.3125,
+          "top": -530.5625,
+          "right": 1389,
+          "bottom": -243.25,
+          "left": 720
+        }
+      ],
+      "values": [
+        {
+          "x": 51,
+          "y": 270.40625,
+          "width": 446,
+          "height": 235.265625,
+          "top": 270.40625,
+          "right": 497,
+          "bottom": 505.671875,
+          "left": 51
+        },
+        {
+          "x": 497,
+          "y": 270.40625,
+          "width": 446,
+          "height": 235.265625,
+          "top": 270.40625,
+          "right": 943,
+          "bottom": 505.671875,
+          "left": 497
+        },
+        {
+          "x": 943,
+          "y": 270.40625,
+          "width": 446,
+          "height": 235.265625,
+          "top": 270.40625,
+          "right": 1389,
+          "bottom": 505.671875,
+          "left": 943
+        }
+      ],
+      "photoTextCenterDelta": 0,
+      "rightPadding": "48px",
+      "subtitle": "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+      "numeralSize": "24px",
+      "descriptionColor": "rgba(24, 35, 31, 0.8)",
+      "ctaLines": 1,
+      "footerColors": [
+        "rgb(24, 35, 31)",
+        "rgb(24, 35, 31)"
+      ],
+      "backgrounds": [
+        "rgb(32, 59, 47)",
+        "rgb(255, 255, 255)",
+        "rgb(24, 35, 31)"
+      ],
+      "cta": {
+        "href": "/shop",
+        "label": "Entra nello Shop Online",
+        "height": 56
+      },
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "overflow": 0,
+      "sections": [
+        "s_torrepulia_roots_transition",
+        "s_torrepulia_roots_values",
+        "s_torrepulia_roots_cta"
+      ],
+      "textOverflow": [],
+      "copy": [
+        "La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.",
+        "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+        "Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.",
+        "La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.",
+        "Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.",
+        "La Peranzana della famiglia Leone, sulla tua tavola."
+      ],
+      "nativeEditable": true,
+      "photoLoaded": true,
+      "transition": [
+        {
+          "x": 23,
+          "y": -912.984375,
+          "width": 489,
+          "height": 284.40625,
+          "top": -912.984375,
+          "right": 512,
+          "bottom": -628.578125,
+          "left": 23
+        },
+        {
+          "x": 512,
+          "y": -982.8125,
+          "width": 489,
+          "height": 424.0625,
+          "top": -982.8125,
+          "right": 1001,
+          "bottom": -558.75,
+          "left": 512
+        }
+      ],
+      "values": [
+        {
+          "x": 23,
+          "y": -50.171875,
+          "width": 325.984375,
+          "height": 324.046875,
+          "top": -50.171875,
+          "right": 348.984375,
+          "bottom": 273.875,
+          "left": 23
+        },
+        {
+          "x": 348.984375,
+          "y": -50.171875,
+          "width": 325.984375,
+          "height": 324.046875,
+          "top": -50.171875,
+          "right": 674.96875,
+          "bottom": 273.875,
+          "left": 348.984375
+        },
+        {
+          "x": 674.96875,
+          "y": -50.171875,
+          "width": 325.984375,
+          "height": 324.046875,
+          "top": -50.171875,
+          "right": 1000.953125,
+          "bottom": 273.875,
+          "left": 674.96875
+        }
+      ],
+      "photoTextCenterDelta": 0,
+      "rightPadding": "48px",
+      "subtitle": "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+      "numeralSize": "24px",
+      "descriptionColor": "rgba(24, 35, 31, 0.8)",
+      "ctaLines": 1,
+      "footerColors": [
+        "rgb(24, 35, 31)",
+        "rgb(24, 35, 31)"
+      ],
+      "backgrounds": [
+        "rgb(32, 59, 47)",
+        "rgb(255, 255, 255)",
+        "rgb(24, 35, 31)"
+      ],
+      "cta": {
+        "href": "/shop",
+        "label": "Entra nello Shop Online",
+        "height": 56
+      },
+      "violations": []
+    },
+    {
+      "width": 834,
+      "overflow": 0,
+      "sections": [
+        "s_torrepulia_roots_transition",
+        "s_torrepulia_roots_values",
+        "s_torrepulia_roots_cta"
+      ],
+      "textOverflow": [],
+      "copy": [
+        "La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.",
+        "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+        "Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.",
+        "La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.",
+        "Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.",
+        "La Peranzana della famiglia Leone, sulla tua tavola."
+      ],
+      "nativeEditable": true,
+      "photoLoaded": true,
+      "transition": [
+        {
+          "x": 48,
+          "y": -997.015625,
+          "width": 369,
+          "height": 207.015625,
+          "top": -997.015625,
+          "right": 417,
+          "bottom": -790,
+          "left": 48
+        },
+        {
+          "x": 417,
+          "y": -1124.65625,
+          "width": 369,
+          "height": 462.3125,
+          "top": -1124.65625,
+          "right": 786,
+          "bottom": -662.34375,
+          "left": 417
+        }
+      ],
+      "values": [
+        {
+          "x": 60,
+          "y": -147.09375,
+          "width": 238,
+          "height": 413.109375,
+          "top": -147.09375,
+          "right": 298,
+          "bottom": 266.015625,
+          "left": 60
+        },
+        {
+          "x": 298,
+          "y": -147.09375,
+          "width": 238,
+          "height": 413.109375,
+          "top": -147.09375,
+          "right": 536,
+          "bottom": 266.015625,
+          "left": 298
+        },
+        {
+          "x": 536,
+          "y": -147.09375,
+          "width": 238,
+          "height": 413.109375,
+          "top": -147.09375,
+          "right": 774,
+          "bottom": 266.015625,
+          "left": 536
+        }
+      ],
+      "photoTextCenterDelta": 0.0078125,
+      "rightPadding": "48px",
+      "subtitle": "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+      "numeralSize": "24px",
+      "descriptionColor": "rgba(24, 35, 31, 0.8)",
+      "ctaLines": 1,
+      "footerColors": [
+        "rgb(24, 35, 31)",
+        "rgb(24, 35, 31)"
+      ],
+      "backgrounds": [
+        "rgb(32, 59, 47)",
+        "rgb(255, 255, 255)",
+        "rgb(24, 35, 31)"
+      ],
+      "cta": {
+        "href": "/shop",
+        "label": "Entra nello Shop Online",
+        "height": 56
+      },
+      "violations": []
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "sections": [
+        "s_torrepulia_roots_transition",
+        "s_torrepulia_roots_values",
+        "s_torrepulia_roots_cta"
+      ],
+      "textOverflow": [],
+      "copy": [
+        "La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.",
+        "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+        "Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.",
+        "La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.",
+        "Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.",
+        "La Peranzana della famiglia Leone, sulla tua tavola."
+      ],
+      "nativeEditable": true,
+      "photoLoaded": true,
+      "transition": [
+        {
+          "x": 0,
+          "y": -1715.375,
+          "width": 390,
+          "height": 220.5625,
+          "top": -1715.375,
+          "right": 390,
+          "bottom": -1494.8125,
+          "left": 0
+        },
+        {
+          "x": 0,
+          "y": -1325.875,
+          "width": 390,
+          "height": 325.53125,
+          "top": -1325.875,
+          "right": 390,
+          "bottom": -1000.34375,
+          "left": 0
+        }
+      ],
+      "values": [
+        {
+          "x": 12,
+          "y": -680.125,
+          "width": 366,
+          "height": 264.859375,
+          "top": -680.125,
+          "right": 378,
+          "bottom": -415.265625,
+          "left": 12
+        },
+        {
+          "x": 12,
+          "y": -367.265625,
+          "width": 366,
+          "height": 235.265625,
+          "top": -367.265625,
+          "right": 378,
+          "bottom": -132,
+          "left": 12
+        },
+        {
+          "x": 12,
+          "y": -84,
+          "width": 366,
+          "height": 235.265625,
+          "top": -84,
+          "right": 378,
+          "bottom": 151.265625,
+          "left": 12
+        }
+      ],
+      "photoTextCenterDelta": 441.984375,
+      "rightPadding": "8px",
+      "subtitle": "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+      "numeralSize": "24px",
+      "descriptionColor": "rgba(24, 35, 31, 0.8)",
+      "ctaLines": 2,
+      "footerColors": [
+        "rgb(24, 35, 31)",
+        "rgb(24, 35, 31)"
+      ],
+      "backgrounds": [
+        "rgb(32, 59, 47)",
+        "rgb(255, 255, 255)",
+        "rgb(24, 35, 31)"
+      ],
+      "cta": {
+        "href": "/shop",
+        "label": "Entra nello Shop Online",
+        "height": 56
+      },
+      "violations": []
+    },
+    {
+      "width": 320,
+      "overflow": 0,
+      "sections": [
+        "s_torrepulia_roots_transition",
+        "s_torrepulia_roots_values",
+        "s_torrepulia_roots_cta"
+      ],
+      "textOverflow": [],
+      "copy": [
+        "La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.",
+        "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+        "Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.",
+        "La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.",
+        "Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.",
+        "La Peranzana della famiglia Leone, sulla tua tavola."
+      ],
+      "nativeEditable": true,
+      "photoLoaded": true,
+      "transition": [
+        {
+          "x": 0,
+          "y": -2051.03125,
+          "width": 320,
+          "height": 175.40625,
+          "top": -2051.03125,
+          "right": 320,
+          "bottom": -1875.625,
+          "left": 0
+        },
+        {
+          "x": 0,
+          "y": -1666.375,
+          "width": 320,
+          "height": 414.3125,
+          "top": -1666.375,
+          "right": 320,
+          "bottom": -1252.0625,
+          "left": 0
+        }
+      ],
+      "values": [
+        {
+          "x": 12,
+          "y": -931.84375,
+          "width": 296,
+          "height": 324.046875,
+          "top": -931.84375,
+          "right": 308,
+          "bottom": -607.796875,
+          "left": 12
+        },
+        {
+          "x": 12,
+          "y": -559.796875,
+          "width": 296,
+          "height": 294.453125,
+          "top": -559.796875,
+          "right": 308,
+          "bottom": -265.34375,
+          "left": 12
+        },
+        {
+          "x": 12,
+          "y": -217.34375,
+          "width": 296,
+          "height": 294.453125,
+          "top": -217.34375,
+          "right": 308,
+          "bottom": 77.109375,
+          "left": 12
+        }
+      ],
+      "photoTextCenterDelta": 504.109375,
+      "rightPadding": "8px",
+      "subtitle": "La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.",
+      "numeralSize": "24px",
+      "descriptionColor": "rgba(24, 35, 31, 0.8)",
+      "ctaLines": 3,
+      "footerColors": [
+        "rgb(24, 35, 31)",
+        "rgb(24, 35, 31)"
+      ],
+      "backgrounds": [
+        "rgb(32, 59, 47)",
+        "rgb(255, 255, 255)",
+        "rgb(24, 35, 31)"
+      ],
+      "cta": {
+        "href": "/shop",
+        "label": "Entra nello Shop Online",
+        "height": 56
+      },
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "hoverChanged": true,
+  "shopStatus": 200,
+  "otherFooters": {
+    "/": "rgb(24, 35, 31)",
+    "/shop": "rgb(24, 35, 31)"
+  }
+}

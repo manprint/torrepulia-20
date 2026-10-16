@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="cinematic_pack">
+        <div t-if="p.torrepulia_composite and p.torrepulia_unit_count in [2,6]" class="pack-composition" t-att-data-count="p.torrepulia_unit_count" role="img" t-att-aria-label="p.torrepulia_format_detail">
+            <div class="pack-unit" t-foreach="range(p.torrepulia_unit_count)" t-as="unit"><img t-att-src="'/web/image/product.template/%s/image_1024' % p.id" alt=""/></div>
+        </div>
+        <img t-else="" class="format-image" t-att-src="'/web/image/product.template/%s/image_1024' % p.id" t-att-alt="p.name"/>
+    </template>
+    <template id="cinematic_promoted">
+        <a t-if="products" t-att-href="products[0].website_url" class="button dark early-purchase">
+            <span><strong>Acquista <t t-out="products[0].torrepulia_format_name"/></strong><small><t t-out="products[0].torrepulia_format_detail"/> · <t t-out="format_amount(prices[products[0].id]['price_reduce'])"/></small></span>
+            <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/>
+        </a>
+        <a t-else="" href="/shop" class="button dark">Scopri i formati disponibili</a>
+    </template>
+    <template id="cinematic_formats">
+        <div class="shop-layout" t-if="products">
+            <div class="shop-stage">
+                <div class="mc-pack-preview" t-foreach="products" t-as="p" t-att-data-preview="p.id" t-att-hidden="p_index != 0">
+                    <t t-call="website_torrepulia_theme.cinematic_pack"/>
+                    <span class="stage-caption">LA REGINA / <t t-out="p.torrepulia_format_detail"/></span>
+                </div>
+            </div>
+            <div class="shop-choice">
+                <div class="format-options" role="tablist" aria-label="Formati La Regina" aria-orientation="vertical">
+                    <button t-foreach="products" t-as="p" type="button" class="format-option" role="tab" t-att-data-product="p.id" t-att-aria-selected="'true' if p_index == 0 else 'false'" t-att-tabindex="0 if p_index == 0 else -1">
+                        <span class="format-thumb" t-att-data-count="p.torrepulia_unit_count if p.torrepulia_composite else 1" aria-hidden="true"><img t-foreach="range(p.torrepulia_unit_count if p.torrepulia_composite and p.torrepulia_unit_count in [2,6] else 1)" t-as="unit" t-att-src="'/web/image/product.template/%s/image_128' % p.id" alt=""/></span>
+                        <span><strong t-out="p.torrepulia_format_name"/><small t-out="p.torrepulia_format_detail"/></span>
+                        <span class="option-price"><t t-out="format_amount(prices[p.id]['price_reduce'])"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></span>
+                    </button>
+                </div>
+                <div class="format-summary" t-foreach="products" t-as="p" t-att-data-summary="p.id" t-att-hidden="p_index != 0" role="tabpanel">
+                    <p class="format-description" t-out="p.description_sale"/>
+                    <a class="button dark format-link" t-att-href="p.website_url">Acquista <t t-out="p.torrepulia_format_name"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></a>
+                    <p class="small">Spedizione calcolata alla conferma dell'ordine.</p>
+                </div>
+            </div>
+        </div>
+        <p t-else="">Nessun formato disponibile. <a href="/contactus">Contattaci</a></p>
+    </template>
+    <template id="cinematic_product_formats" inherit_id="website_sale.product" name="Cinematic native product formats">
+        <xpath expr="//t[@t-call='website_sale.shop_product_images']" position="replace">
+            <div t-if="website.torrepulia_theme_enabled and product.torrepulia_composite" class="mc-commerce-composition"><t t-set="p" t-value="product"/><t t-call="website_torrepulia_theme.cinematic_pack"/><p class="small">Contenuto del formato: <span t-field="product.torrepulia_format_detail"/></p></div>
+            <t t-else="" t-call="website_sale.shop_product_images"/>
+        </xpath>
+        <xpath expr="//div[@id='o_wsale_product_cta_section']" position="inside">
+            <div class="mc-sticky-summary" t-if="website.torrepulia_theme_enabled and product.torrepulia_format_name"><span t-field="product.torrepulia_format_name"/><t t-call="website_sale.product_price"/></div>
+        </xpath>
+        <xpath expr="//div[@id='product_details']" position="inside">
+            <div class="mc-product-formats mc-section" t-if="website.torrepulia_theme_enabled and product.torrepulia_format_name" data-snippet="s_cinematic_5" t-att-data-current-product="product.id">
+                <h2 class="h4">Gli altri formati</h2><div class="mc-catalog o_not_editable"><a href="/shop">Tutti i formati</a></div>
+            </div>
+        </xpath>
+    </template>
+    <template id="cinematic_shop_pack" inherit_id="website_sale.product_image_and_ribbon" name="Native shop provisional pack composition">
+        <xpath expr="//span[hasclass('oe_product_image_img_wrapper_primary')]" position="replace">
+            <div t-if="website.torrepulia_theme_enabled and product.torrepulia_composite" class="mc-commerce-composition mc-tile-composition"><t t-set="p" t-value="product"/><t t-call="website_torrepulia_theme.cinematic_pack"/></div>
+            <span t-else="" t-field="primary_image_holder.image_1920" t-options="{'widget': 'image', 'preview_image': 'image_1024', 'class': 'oe_product_image_img h-100 w-100'}" class="oe_product_image_img_wrapper oe_product_image_img_wrapper_primary d-flex h-100 justify-content-center align-items-center"/>
+        </xpath>
+    </template>
+    <template id="cinematic_product_title" inherit_id="website_sale.product_title" name="La Regina product heading">
+        <xpath expr="//h1" position="replace">
+            <t t-if="website.torrepulia_theme_enabled and product.torrepulia_format_name"><h1>La Regina</h1><p class="product-subtitle"><span t-field="product.torrepulia_format_name"/> · <span t-field="product.torrepulia_format_detail"/></p></t>
+            <h1 t-else="" class="h3" t-field="product.name"/>
+        </xpath>
+    </template>
+    <record id="cinematic_product_metadata" model="ir.ui.view">
+        <field name="name">Torrepulia format configuration</field><field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Torrepulia">
+                    <group>
+                        <field name="torrepulia_format_name"/>
+                        <field name="torrepulia_format_detail"/>
+                        <field name="torrepulia_unit_count"/>
+                        <field name="torrepulia_composite"/>
+                    </group>
+                    <p>Disattivare la composizione provvisoria quando viene caricata la fotografia reale della confezione.</p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,436 @@
+{
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "88px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "80px",
+        "160px"
+      ],
+      "chapters": [
+        {
+          "x": 64,
+          "y": 1290.0625,
+          "width": 394.65625,
+          "height": 252.1875,
+          "top": 1290.0625,
+          "right": 458.65625,
+          "bottom": 1542.25,
+          "left": 64
+        },
+        {
+          "x": 522.65625,
+          "y": 1370.0625,
+          "width": 394.671875,
+          "height": 252.1875,
+          "top": 1370.0625,
+          "right": 917.328125,
+          "bottom": 1622.25,
+          "left": 522.65625
+        },
+        {
+          "x": 981.328125,
+          "y": 1450.0625,
+          "width": 394.65625,
+          "height": 281.78125,
+          "top": 1450.0625,
+          "right": 1375.984375,
+          "bottom": 1731.84375,
+          "left": 981.328125
+        }
+      ],
+      "chapterStarts": [
+        1290.0625,
+        1370.0625,
+        1450.0625
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    },
+    {
+      "width": 1280,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "88px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "80px",
+        "160px"
+      ],
+      "chapters": [
+        {
+          "x": 64,
+          "y": 1210.0625,
+          "width": 341.328125,
+          "height": 252.1875,
+          "top": 1210.0625,
+          "right": 405.328125,
+          "bottom": 1462.25,
+          "left": 64
+        },
+        {
+          "x": 469.328125,
+          "y": 1290.0625,
+          "width": 341.328125,
+          "height": 281.78125,
+          "top": 1290.0625,
+          "right": 810.65625,
+          "bottom": 1571.84375,
+          "left": 469.328125
+        },
+        {
+          "x": 874.65625,
+          "y": 1370.0625,
+          "width": 341.34375,
+          "height": 352.40625,
+          "top": 1370.0625,
+          "right": 1216,
+          "bottom": 1722.46875,
+          "left": 874.65625
+        }
+      ],
+      "chapterStarts": [
+        1210.0625,
+        1290.0625,
+        1370.0625
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    },
+    {
+      "width": 1024,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "72px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "80px",
+        "160px"
+      ],
+      "chapters": [
+        {
+          "x": 40,
+          "y": 1071.5,
+          "width": 290.65625,
+          "height": 309.21875,
+          "top": 1071.5,
+          "right": 330.65625,
+          "bottom": 1380.71875,
+          "left": 40
+        },
+        {
+          "x": 366.65625,
+          "y": 1151.5,
+          "width": 290.671875,
+          "height": 348.09375,
+          "top": 1151.5,
+          "right": 657.328125,
+          "bottom": 1499.59375,
+          "left": 366.65625
+        },
+        {
+          "x": 693.328125,
+          "y": 1231.5,
+          "width": 290.65625,
+          "height": 377.6875,
+          "top": 1231.5,
+          "right": 983.984375,
+          "bottom": 1609.1875,
+          "left": 693.328125
+        }
+      ],
+      "chapterStarts": [
+        1071.5,
+        1151.5,
+        1231.5
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    },
+    {
+      "width": 834,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "64px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "chapters": [
+        {
+          "x": 40,
+          "y": 903.21875,
+          "width": 754,
+          "height": 190.84375,
+          "top": 903.21875,
+          "right": 794,
+          "bottom": 1094.0625,
+          "left": 40
+        },
+        {
+          "x": 40,
+          "y": 1142.0625,
+          "width": 754,
+          "height": 190.84375,
+          "top": 1142.0625,
+          "right": 794,
+          "bottom": 1332.90625,
+          "left": 40
+        },
+        {
+          "x": 40,
+          "y": 1380.90625,
+          "width": 754,
+          "height": 220.4375,
+          "top": 1380.90625,
+          "right": 794,
+          "bottom": 1601.34375,
+          "left": 40
+        }
+      ],
+      "chapterStarts": [
+        903.21875,
+        1142.0625,
+        1380.90625
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "44px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "chapters": [
+        {
+          "x": 22,
+          "y": 704.5,
+          "width": 346,
+          "height": 239.875,
+          "top": 704.5,
+          "right": 368,
+          "bottom": 944.375,
+          "left": 22
+        },
+        {
+          "x": 22,
+          "y": 992.375,
+          "width": 346,
+          "height": 269.46875,
+          "top": 992.375,
+          "right": 368,
+          "bottom": 1261.84375,
+          "left": 22
+        },
+        {
+          "x": 22,
+          "y": 1309.84375,
+          "width": 346,
+          "height": 335.78125,
+          "top": 1309.84375,
+          "right": 368,
+          "bottom": 1645.625,
+          "left": 22
+        }
+      ],
+      "chapterStarts": [
+        704.5,
+        992.375,
+        1309.84375
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    },
+    {
+      "width": 320,
+      "overflow": 0,
+      "textOverflow": [],
+      "h1": 1,
+      "titleFont": "40px",
+      "background": "rgb(255, 255, 255)",
+      "imageLoaded": true,
+      "nativeImage": true,
+      "captionInside": true,
+      "years": [
+        "1945",
+        "1980",
+        "2020"
+      ],
+      "yearsDecorative": true,
+      "margins": [
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "chapters": [
+        {
+          "x": 22,
+          "y": 673.5625,
+          "width": 276,
+          "height": 299.0625,
+          "top": 673.5625,
+          "right": 298,
+          "bottom": 972.625,
+          "left": 22
+        },
+        {
+          "x": 22,
+          "y": 1020.625,
+          "width": 276,
+          "height": 365.375,
+          "top": 1020.625,
+          "right": 298,
+          "bottom": 1386,
+          "left": 22
+        },
+        {
+          "x": 22,
+          "y": 1434,
+          "width": 276,
+          "height": 394.96875,
+          "top": 1434,
+          "right": 298,
+          "bottom": 1828.96875,
+          "left": 22
+        }
+      ],
+      "chapterStarts": [
+        673.5625,
+        1020.625,
+        1434
+      ],
+      "copy": [
+        "Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.",
+        "Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.",
+        "Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari."
+      ],
+      "a11y": []
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "motion": {
+    "enhanced": true,
+    "initial": [
+      {
+        "opacity": "0",
+        "transform": "matrix(1, 0, 0, 1, 0, 20)",
+        "delay": "0s",
+        "duration": "0s"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(1, 0, 0, 1, 0, 20)",
+        "delay": "0.2s",
+        "duration": "0s"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(1, 0, 0, 1, 0, 20)",
+        "delay": "0.4s",
+        "duration": "0s"
+      }
+    ],
+    "visible": true,
+    "settings": [
+      {
+        "delay": "0s",
+        "duration": "0.7s"
+      },
+      {
+        "delay": "0.2s",
+        "duration": "0.7s"
+      },
+      {
+        "delay": "0.4s",
+        "duration": "0.7s"
+      }
+    ],
+    "reducedVisible": true,
+    "noJsVisible": true
+  }
+}

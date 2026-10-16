@@ -1,0 +1,62 @@
+.tp-site .tp-bib {
+    background: #faf9f5;
+    color: #203b2f;
+    padding: 96px 64px;
+    text-align: left;
+    .tp-bib-layout { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
+    .tp-bib-layout > * { min-width: 0; }
+    .tp-bib-visual { align-self: center; }
+    .tp-bib-diagram { position: relative; width: 100%; max-width: 620px; margin: 0 auto; aspect-ratio: 640 / 650; }
+    .tp-bib-hotspot {
+        position: absolute; left: 79%; top: 57%; width: 21%; height: 12%; z-index: 1;
+        display: flex; align-items: center; justify-content: flex-start; padding: 4px;
+        border: 0; border-radius: 2px; background: transparent; color: #203b2f;
+        font: 600 16px/1.4 Manrope, sans-serif; cursor: pointer;
+    }
+    .tp-bib-hotspot:focus-visible { outline: 2px solid #8e7014; outline-offset: 4px; }
+    .tp-bib-tooltip {
+        position: absolute; top: 100%; right: 0; width: 280px; max-width: 70vw;
+        padding: 16px 20px; background: #203b2f; color: #fff; font: 400 14px/1.6 Manrope, sans-serif;
+        border-radius: 4px; text-align: left; z-index: 3; box-shadow: 0 8px 24px #203b2f1a;
+    }
+    .tp-bib-tooltip[hidden] { display: none !important; }
+    .tp-bib-raster-diagram {
+        aspect-ratio: auto;
+        .tp-bib-product-image { display: block; width: 100%; height: auto; }
+        .tp-bib-hotspot { left: 85%; top: 43%; width: 15%; height: 8%; min-height: 44px; }
+    }
+    .tp-bib-kicker { margin: 0 0 20px; color: #68735c; font-size: 14px; line-height: 1.5; }
+    .tp-bib-copy h2 { font: 400 48px/1.12 Caslon, Georgia, serif; color: #203b2f; margin: 0; text-wrap: balance; }
+    .tp-bib-lead { margin: 28px 0 0; max-width: 56ch; font-size: 16px; line-height: 1.75; color: #52604e; }
+    .tp-bib-pillars { display: grid; gap: 24px; margin: 32px 0; }
+    .tp-bib-pillar { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 16px; align-items: start; }
+    .tp-bib-pillar > img { width: 24px; height: 24px; margin-top: 2px; }
+    .tp-bib-pillar h3 { font: 600 16px/1.5 Manrope, sans-serif; color: #203b2f; margin: 0 0 8px; }
+    .tp-bib-pillar p { margin: 0; font-size: 14px; line-height: 1.75; color: #52604e; max-width: 64ch; }
+    .tp-bib-cta.button.dark { max-width: 100%; gap: 20px; background: #203b2f; color: #fff; padding: 18px 24px; display: inline-flex; align-items: center; justify-content: space-between; min-height: 56px; border: 0; border-radius: 2px; font-size: 14px; line-height: 1.5; text-decoration: none; transition: background-color 300ms ease-in-out, transform 150ms ease-out; }
+    .tp-bib-cta.button.dark:hover { background: #304e3c; color: #fff; }
+    .tp-bib-cta:active { transform: translateY(1px); }
+    .tp-bib-cta .icon { width: 20px; height: 20px; flex: none; filter: invert(1); }
+    @media (max-width: 1100px) {
+        padding: 72px 36px;
+        .tp-bib-layout { gap: 32px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+        .tp-bib-copy h2 { font-size: 42px; }
+    }
+    @media (max-width: 900px) {
+        .tp-bib-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .tp-bib-diagram { max-width: 500px; }
+        .tp-bib-copy { max-width: 680px; margin: 0 auto; width: 100%; }
+    }
+    @media (max-width: 760px) {
+        padding: 48px 22px;
+        .tp-bib-diagram { max-width: 420px; }
+        .tp-bib-copy h2 { font-size: 38px; }
+        .tp-bib-hotspot { font-size: 14px; min-height: 44px; }
+        .tp-bib-pillars { gap: 28px; }
+        .tp-bib-pillar p { font-size: 16px; }
+        .tp-bib-cta { width: 100%; text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .tp-bib-cta { transition: none; }
+    }
+}

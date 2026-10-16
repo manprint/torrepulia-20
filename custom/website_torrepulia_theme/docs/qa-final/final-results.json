@@ -1,0 +1,407 @@
+{
+  "round": "final",
+  "screenshotsRoot": "C:\\Users\\salvatore.leone\\Downloads\\torrepulia_odoo20\\torrepulia-theme-cleanup-20261016-110332\\qa-screenshots",
+  "viewports": [
+    {
+      "width": 1440,
+      "metrics": {
+        "lang": "it-IT",
+        "heroSource": "http://127.0.0.1:8069/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp",
+        "heroCovered": true,
+        "overflow": 0,
+        "overflowNodes": [],
+        "images": [],
+        "textOverflow": [],
+        "h1": 1,
+        "textAlign": [
+          "left",
+          "left"
+        ],
+        "reducedRunning": [],
+        "sections": [
+          {
+            "id": "",
+            "snippet": "s_cinematic_0",
+            "height": 1000
+          },
+          {
+            "id": "regina",
+            "snippet": "s_cinematic_1",
+            "height": 973
+          },
+          {
+            "id": "formati",
+            "snippet": "s_cinematic_5",
+            "height": 1124
+          },
+          {
+            "id": "",
+            "snippet": "s_torrepulia_packaging",
+            "height": 914
+          },
+          {
+            "id": "famiglia",
+            "snippet": "s_cinematic_2",
+            "height": 836
+          },
+          {
+            "id": "peranzana",
+            "snippet": "s_cinematic_3",
+            "height": 1810
+          },
+          {
+            "id": "territorio",
+            "snippet": "s_cinematic_6",
+            "height": 640
+          }
+        ],
+        "anchors": []
+      },
+      "errors": [],
+      "failed": [],
+      "a11y": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 16
+          }
+        ],
+        "passes": 21
+      }
+    },
+    {
+      "width": 1920,
+      "metrics": {
+        "lang": "it-IT",
+        "heroSource": "http://127.0.0.1:8069/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp",
+        "heroCovered": true,
+        "overflow": 0,
+        "overflowNodes": [],
+        "images": [],
+        "textOverflow": [],
+        "h1": 1,
+        "textAlign": [
+          "left",
+          "left"
+        ],
+        "reducedRunning": [],
+        "sections": [
+          {
+            "id": "",
+            "snippet": "s_cinematic_0",
+            "height": 1080
+          },
+          {
+            "id": "regina",
+            "snippet": "s_cinematic_1",
+            "height": 973
+          },
+          {
+            "id": "formati",
+            "snippet": "s_cinematic_5",
+            "height": 1124
+          },
+          {
+            "id": "",
+            "snippet": "s_torrepulia_packaging",
+            "height": 886
+          },
+          {
+            "id": "famiglia",
+            "snippet": "s_cinematic_2",
+            "height": 947
+          },
+          {
+            "id": "peranzana",
+            "snippet": "s_cinematic_3",
+            "height": 1840
+          },
+          {
+            "id": "territorio",
+            "snippet": "s_cinematic_6",
+            "height": 640
+          }
+        ],
+        "anchors": []
+      },
+      "errors": [],
+      "failed": [],
+      "a11y": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 16
+          }
+        ],
+        "passes": 21
+      }
+    },
+    {
+      "width": 834,
+      "metrics": {
+        "lang": "it-IT",
+        "heroSource": "http://127.0.0.1:8069/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1280.webp",
+        "heroCovered": true,
+        "overflow": 0,
+        "overflowNodes": [],
+        "images": [],
+        "textOverflow": [],
+        "h1": 1,
+        "textAlign": [
+          "left",
+          "left"
+        ],
+        "reducedRunning": [],
+        "sections": [
+          {
+            "id": "",
+            "snippet": "s_cinematic_0",
+            "height": 1112
+          },
+          {
+            "id": "regina",
+            "snippet": "s_cinematic_1",
+            "height": 1216
+          },
+          {
+            "id": "formati",
+            "snippet": "s_cinematic_5",
+            "height": 1025
+          },
+          {
+            "id": "",
+            "snippet": "s_torrepulia_packaging",
+            "height": 1387
+          },
+          {
+            "id": "famiglia",
+            "snippet": "s_cinematic_2",
+            "height": 924
+          },
+          {
+            "id": "peranzana",
+            "snippet": "s_cinematic_3",
+            "height": 2048
+          },
+          {
+            "id": "territorio",
+            "snippet": "s_cinematic_6",
+            "height": 640
+          }
+        ],
+        "anchors": []
+      },
+      "errors": [],
+      "failed": [],
+      "a11y": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 16
+          }
+        ],
+        "passes": 21
+      }
+    },
+    {
+      "width": 390,
+      "metrics": {
+        "lang": "it-IT",
+        "heroSource": "http://127.0.0.1:8069/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp",
+        "heroCovered": true,
+        "overflow": 0,
+        "overflowNodes": [],
+        "images": [],
+        "textOverflow": [],
+        "h1": 1,
+        "textAlign": [
+          "left",
+          "left"
+        ],
+        "reducedRunning": [],
+        "sections": [
+          {
+            "id": "",
+            "snippet": "s_cinematic_0",
+            "height": 844
+          },
+          {
+            "id": "regina",
+            "snippet": "s_cinematic_1",
+            "height": 1680
+          },
+          {
+            "id": "formati",
+            "snippet": "s_cinematic_5",
+            "height": 1224
+          },
+          {
+            "id": "",
+            "snippet": "s_torrepulia_packaging",
+            "height": 1520
+          },
+          {
+            "id": "famiglia",
+            "snippet": "s_cinematic_2",
+            "height": 1195
+          },
+          {
+            "id": "peranzana",
+            "snippet": "s_cinematic_3",
+            "height": 2367
+          },
+          {
+            "id": "territorio",
+            "snippet": "s_cinematic_6",
+            "height": 611
+          }
+        ],
+        "anchors": []
+      },
+      "errors": [],
+      "failed": [],
+      "a11y": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 13
+          }
+        ],
+        "passes": 21
+      }
+    },
+    {
+      "width": 320,
+      "metrics": {
+        "lang": "it-IT",
+        "heroSource": "http://127.0.0.1:8069/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp",
+        "heroCovered": true,
+        "overflow": 0,
+        "overflowNodes": [],
+        "images": [],
+        "textOverflow": [],
+        "h1": 1,
+        "textAlign": [
+          "left",
+          "left"
+        ],
+        "reducedRunning": [],
+        "sections": [
+          {
+            "id": "",
+            "snippet": "s_cinematic_0",
+            "height": 740
+          },
+          {
+            "id": "regina",
+            "snippet": "s_cinematic_1",
+            "height": 1763
+          },
+          {
+            "id": "formati",
+            "snippet": "s_cinematic_5",
+            "height": 1306
+          },
+          {
+            "id": "",
+            "snippet": "s_torrepulia_packaging",
+            "height": 1703
+          },
+          {
+            "id": "famiglia",
+            "snippet": "s_cinematic_2",
+            "height": 1271
+          },
+          {
+            "id": "peranzana",
+            "snippet": "s_cinematic_3",
+            "height": 2383
+          },
+          {
+            "id": "territorio",
+            "snippet": "s_cinematic_6",
+            "height": 716
+          }
+        ],
+        "anchors": []
+      },
+      "errors": [],
+      "failed": [],
+      "a11y": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 13
+          }
+        ],
+        "passes": 21
+      }
+    }
+  ],
+  "functional": [
+    {
+      "test": "sensory-taste",
+      "passed": true
+    },
+    {
+      "test": "sensory-table",
+      "passed": true
+    },
+    {
+      "test": "sensory-aroma",
+      "passed": true
+    },
+    {
+      "test": "sensory-keyboard",
+      "passed": true
+    },
+    {
+      "test": "format-3",
+      "passed": true
+    },
+    {
+      "test": "format-4",
+      "passed": true
+    },
+    {
+      "test": "shop-link",
+      "url": "/shop",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "test": "shop-link",
+      "url": "/shop/latta-5-lt-3",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "test": "shop-link",
+      "url": "/shop/bag-in-box-5-lt-4",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "test": "mobile-menu-open",
+      "passed": true
+    },
+    {
+      "test": "touch-tooltip",
+      "passed": true
+    },
+    {
+      "test": "tooltip-escape",
+      "passed": true
+    }
+  ],
+  "motion": {
+    "paused": "paused",
+    "resumed": "running",
+    "staticHero": "none"
+  }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="home_content_language" inherit_id="website.layout" name="Italian language for the Torrepulia homepage">
+    <xpath expr="//t[@t-set='html_data']" position="after">
+      <t t-if="website.torrepulia_theme_enabled and request.httprequest.path.strip('/') in ['', request.lang.url_code]" t-set="nothing" t-value="html_data.update({'lang': 'it-IT'})"/>
+    </xpath>
+  </template>
+</odoo>

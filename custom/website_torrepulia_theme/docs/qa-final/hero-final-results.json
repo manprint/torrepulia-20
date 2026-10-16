@@ -1,0 +1,94 @@
+{
+  "round": "hero-final",
+  "viewports": [
+    {
+      "width": 1366,
+      "height": 600,
+      "heroHeight": 678.890625,
+      "ctaFooterGap": 40,
+      "headerCopyGap": 50,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "heroHeight": 720,
+      "ctaFooterGap": 51.109375,
+      "headerCopyGap": 80,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 1024,
+      "height": 600,
+      "heroHeight": 720,
+      "ctaFooterGap": 81.109375,
+      "headerCopyGap": 50,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 768,
+      "height": 600,
+      "heroHeight": 720,
+      "ctaFooterGap": 81.109375,
+      "headerCopyGap": 50,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "heroHeight": 1000,
+      "ctaFooterGap": 261.109375,
+      "headerCopyGap": 150,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 390,
+      "height": 568,
+      "heroHeight": 572.796875,
+      "ctaFooterGap": 44,
+      "headerCopyGap": 32,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "heroHeight": 599.1875,
+      "ctaFooterGap": 44,
+      "headerCopyGap": 32,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    },
+    {
+      "width": 740,
+      "height": 360,
+      "heroHeight": 546.40625,
+      "ctaFooterGap": 44,
+      "headerCopyGap": 32,
+      "footerContained": true,
+      "heroCovered": true,
+      "overflow": 0,
+      "staticHero": "none"
+    }
+  ],
+  "errors": []
+}

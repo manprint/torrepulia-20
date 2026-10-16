@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="website_torrepulia_theme.CinematicProductsOption">
+        <BuilderRow label.translate="Prodotti Torrepulia" preview="false">
+            <BuilderMany2Many id="'cinematic_products'" model="'product.template'" dataAttributeAction="'productIds'" domain="[['sale_ok', '=', true], ['is_published', '=', true], ['torrepulia_format_name', '!=', false]]" limit="24"/>
+        </BuilderRow>
+        <p class="small px-3">Nella CTA viene promosso il primo prodotto selezionato. Senza selezione vengono usati i formati Torrepulia pubblicati.</p>
+    </t>
+    <t t-inherit="website.BuilderOptions" t-inherit-mode="extension">
+        <xpath expr="//t[@id='image_options']" position="before"><cinematic_products_option selector=".mc-section:has(.mc-promoted, .mc-catalog)"/></xpath>
+    </t>
+</templates>

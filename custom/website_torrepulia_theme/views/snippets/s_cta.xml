@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="s_torrepulia_cta" name="Torrepulia CTA">
-        <section class="s_torrepulia_snippet tp-section tp-cta-band" data-snippet="s_torrepulia_cta" data-name="Torrepulia CTA">
-            <div class="container">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-8">
-                        <p class="tp-eyebrow">La Regina</p>
-                        <h2 class="display-4 mb-0">Porta in tavola il carattere della Peranzana.</h2>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="btn btn-light btn-lg" href="/shop">Acquista ora</a>
-                    </div>
-                </div>
+        <section class="s_torrepulia_snippet tp-section tp-cta-band" data-snippet="s_torrepulia_cta" data-name="Porta La Regina in tavola">
+            <div class="container d-lg-flex align-items-center justify-content-between gap-5">
+                <div><h2>Il prossimo assaggio<br/>comincia qui.</h2><p class="lead mb-lg-0">La Peranzana della famiglia Leone, sulla tua tavola.</p></div>
+                <a class="btn btn-light btn-lg flex-shrink-0 mt-3 mt-lg-0" href="/shop">Acquista il nostro olio <i class="oi ms-2" data-icon="arrow_forward" aria-hidden="true"/></a>
             </div>
         </section>
     </template>
