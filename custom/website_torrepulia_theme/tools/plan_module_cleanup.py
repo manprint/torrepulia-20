@@ -34,6 +34,7 @@ for path in (ROOT / 'static').rglob('*'):
 
 keepers = {'local_qa.py','diagnose_builder.py','final_home_qa.py','hero_layout_qa.py','about_editorial.py','about_editorial_qa.py','roots_closing.py','roots_closing_qa.py','closing_blend_qa.py','header_media_qa.py','oil_editorial.py','oil_editorial_qa.py','inventory_runtime.py','inspect_compiled_css.py','plan_module_cleanup.py','final_builder_qa.py','archive_module_cleanup.ps1'}
 keepers.update({'oil_production.py','oil_production_qa.py','prepare_production_media.py','oil_closing.py','release_check.py','release_browser_qa.py'})
+keepers.add('regina_cta.py')
 tools = [{'path':p.relative_to(ROOT).as_posix(),'bytes':p.stat().st_size,'reason':'retired one-time migration/generation or superseded fixture'}
     for p in (ROOT/'tools').glob('*') if p.is_file() and p.name not in keepers]
 historical = [p for p in (ROOT/'docs').glob('*') if p.is_file() and p.suffix in ['.xml','.json']]

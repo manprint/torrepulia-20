@@ -32,7 +32,9 @@ Nessuna patch al core o framework frontend esterno.
 ## Editor e Asset
 
 Testi, foto, collegamenti e ordine delle sezioni sono modificabili nel Builder.
-La CTA anticipata promuove il primo prodotto scelto in Prodotti Torrepulia.
+La CTA della sezione La Regina e un pulsante nativo: testo e URL sono
+modificabili direttamente dal builder. La selezione Prodotti Torrepulia
+controlla i formati dinamici, le cui immagini provengono dalle schede prodotto.
 I prezzi dinamici non vengono salvati nell'HTML. Se si sostituisce la foto
 hero/territorio, il vecchio film non copre il nuovo upload. I film sono
 animazioni fotografiche degli originali, non riprese documentarie.

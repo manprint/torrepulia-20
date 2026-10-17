@@ -9,6 +9,7 @@ from playwright.sync_api import sync_playwright
 from local_qa import shell
 
 ROOT = Path(__file__).resolve().parents[1]
+REGINA = '--regina' in sys.argv
 ROOTS = '--roots' in sys.argv
 PRODUCTION = '--oil-production' in sys.argv
 OIL = '--oil' in sys.argv or PRODUCTION
@@ -67,11 +68,27 @@ try:
         media_heading.wait_for(state='hidden',timeout=30000)
         paragraph=frame.locator('.tp-production-cards p.small' if PRODUCTION else '.tp-oil-opening .lead' if OIL else '.tp-roots-transition .lead' if ROOTS else '.tp-about-subtitle' if ABOUT else '#regina .regina-copy > p').first
         paragraph.click();page.keyboard.press('End');page.keyboard.type(' [QA finale]')
+        if REGINA:
+            target_url=frame.locator('.mc-catalog [data-summary] a').last.get_attribute('href')
+            link=frame.locator('#regina .mc-regina-cta a')
+            link.scroll_into_view_if_needed()
+            report['reginaEditable']=link.evaluate('el=>el.isContentEditable && !el.closest(".o_not_editable")')
+            link.click()
+            page.wait_for_timeout(500)
+            popover=page.locator('.o-we-linkpopover')
+            if not popover.count():popover=frame.locator('.o-we-linkpopover')
+            popover.wait_for(state='visible',timeout=15000)
+            edit=popover.locator('.o_we_edit_link')
+            if edit.is_visible():edit.click()
+            popover.locator('#o_we_label_link').fill('Scegli il mio formato')
+            popover.locator('#o_linkpopover_url').fill(target_url)
+            popover.locator('.o_we_apply_link').click()
+            paragraph.click()
         save.click();save.wait_for(state='hidden',timeout=60000)
         report['errors']=errors
         screenshot_root=Path(os.environ.get('TORREPULIA_QA_IMAGES',OUT))
         screenshot_root.mkdir(parents=True,exist_ok=True)
-        page.screenshot(path=str(screenshot_root/('builder-oil-production.png' if PRODUCTION else 'builder-oil.png' if OIL else 'builder-roots.png' if ROOTS else 'builder-about.png' if ABOUT else 'builder-final.png')))
+        page.screenshot(path=str(screenshot_root/('builder-regina.png' if REGINA else 'builder-oil-production.png' if PRODUCTION else 'builder-oil.png' if OIL else 'builder-roots.png' if ROOTS else 'builder-about.png' if ABOUT else 'builder-final.png')))
         browser.close()
     saved=json.loads(shell('''
 import json
@@ -79,6 +96,8 @@ from lxml import etree
 view=env['ir.ui.view'].browse(%s).with_context(lang='en_US')
 root=etree.fromstring(view.arch_db.encode())
 print(json.dumps({'textSaved':'[QA finale]' in view.arch_db,
+ 'reginaHref':root.xpath('.//div[@class="mc-regina-cta"]/a/@href'),
+ 'reginaLabel':[''.join(n.itertext()) for n in root.xpath('.//div[@class="mc-regina-cta"]/a')],
  'dynamicPricesNotPersisted':not bool(root.xpath('.//div[contains(@class,"mc-catalog")]//*[@data-product or @data-summary]')),
  'sensoryPanelsHidden':len(root.xpath('.//div[@class="mc-sensory-panel"][@hidden]')),
  'editorialRuntimeNotPersisted':not bool(root.xpath('.//*[contains(@class,"has-editorial-reveal") or contains(@class,"is-editorial-visible")]')),
@@ -94,7 +113,7 @@ if view.exists():view.unlink()
 env['res.users'].browse(%s).active=False
 env.cr.commit()
 ''' % (account['page'],account['view'],account['id']),database='torrepulia_cinematic_install')
-    (OUT/('builder-oil-production-results.json' if PRODUCTION else 'builder-oil-results.json' if OIL else 'builder-roots-results.json' if ROOTS else 'builder-final-results.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
+    (OUT/('builder-regina-results.json' if REGINA else 'builder-oil-production-results.json' if PRODUCTION else 'builder-oil-results.json' if OIL else 'builder-roots-results.json' if ROOTS else 'builder-final-results.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
 print(json.dumps(report),flush=True)
 assert not report['errors'], report['errors']
 assert report['disabledSnippetGroups'] == 0, report
@@ -102,3 +121,5 @@ assert report['editable'] == 'true', report
 assert report['sensoryPanelsHidden'] == (0 if ABOUT or OIL else 2), report
 assert all(report[key] for key in ['savable','mediaDialogOpened','textSaved','dynamicPricesNotPersisted','homeUnchanged']), report
 assert report['editorialRuntimeNotPersisted'], report
+if REGINA:
+    assert report['reginaEditable'] and report['reginaHref']==[target_url] and report['reginaLabel']==['Scegli il mio formato'],report

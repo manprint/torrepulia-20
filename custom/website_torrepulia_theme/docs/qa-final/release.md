@@ -40,3 +40,13 @@ Le verifiche sono locali, non una certificazione WCAG o una prova di incasso,
 fiscalita, spedizioni, SMTP o compatibilita Safari/iOS su dispositivi fisici.
 Valuta, catalogo, analisi e dichiarazioni commerciali restano da confermare per
 il deployment reale come indicato nella documentazione del modulo.
+
+## Pulsante La Regina
+
+Successiva richiesta del proprietario: CTA resa nativa e modificabile nel
+builder, eliminando il wrapper dinamico e non editabile dalla sola sezione
+La Regina. Le immagini dei formati restano collegate ai campi immagine del
+prodotto, con composizioni provvisorie facoltative per confezioni multiple.
+Prova su copia privata: modificati dal popover nativo sia testo sia URL verso
+un formato specifico; salvataggio riuscito, home originale invariata.
+Report: `builder-regina-results.json` e `regina-cta-results.json`.
