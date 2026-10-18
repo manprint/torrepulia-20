@@ -12,8 +12,6 @@
             .mc-header {background:var(--tp-ink)!important;}
         }
     }
-    >header >:not(.mc-chrome){display:none!important;}
-    >footer >:not(#mc-footer){display:none!important;}
     >footer{background:#294d3b!important;padding:0!important;border:0!important;}
     .mc-header.on-photo{color:white;}
     .mc-header.on-white{color:#18231f;border-color:#cbd4ce;}
@@ -30,6 +28,16 @@
     .mc-page h3{font:400 48px/1.05 Caslon,Georgia,serif;}
     .mc-page .process h3{font-size:42px;}
     .mc-pack-preview{position:absolute;inset:0;}
+    .mc-format-details{flex:1;min-width:0;}
+    .mc-format-stock{display:block;font-size:14px;line-height:1.5;overflow-wrap:anywhere;}
+    .mc-format-stock:empty{display:none;}
+    .mc-format-ribbon{display:inline-block;padding:3px 8px;margin:6px 0;font-size:14px;line-height:1.4;border-radius:3px;}
+    .mc-format-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+    .mc-format-badges:empty{display:none;}
+    .mc-format-badge{display:inline-block;max-width:100%;padding:3px 8px;border-radius:3px;font-size:14px;line-height:1.4;font-weight:600;overflow-wrap:anywhere;}
+    .mc-format-stock-message{font-size:16px;line-height:1.5;}
+    .format-link:disabled{opacity:.55;cursor:not-allowed;}
+    .mc-format-details-link{display:inline-flex;margin-top:14px;}
     .mc-commerce-composition{position:relative;min-height:650px;background:white;}
     .mc-commerce-composition>p{position:absolute;bottom:16px;left:24px;right:24px;text-align:center;}
     .mc-tile-composition{height:100%;min-height:380px;}

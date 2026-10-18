@@ -1,0 +1,89 @@
+// Shared semantic tokens; legacy cinematic names remain aliases for editable snippets.
+.tp-site.tp-cinematic {
+    --tp-olive: #2e493b;
+    --tp-ink: #18231f;
+    --tp-white: #fff;
+    --tp-pale: #eef2ed;
+    --tp-muted: #526056;
+    --tp-line: #d2dcd4;
+    --tp-gold: #b4931e;
+    --tp-gold-text: #746014;
+    --tp-action-hover: #20362a;
+    --tp-focus: #746014;
+    --tp-content: 90rem;
+    --tp-reading: 68ch;
+    --tp-section-space: clamp(3rem, 6vw, 5.5rem);
+    --tp-title-1: clamp(2.75rem, 5.8vw, 5.5rem);
+    --tp-title-2: clamp(2.25rem, 4.6vw, 4.5rem);
+    --tp-title-3: clamp(1.75rem, 3vw, 3rem);
+    --tp-body: 1.0625rem;
+    --tp-small: .9375rem;
+    --tp-control: 3rem;
+    --tp-control-radius: 3px;
+    --tp-control-padding: .75rem 1.5rem;
+    --white: var(--tp-white); --ink: var(--tp-ink); --green: var(--tp-olive);
+    --pale: var(--tp-pale); --line: var(--tp-line); --muted: var(--tp-muted);
+    --gold: var(--tp-gold); --tp-wine: var(--tp-gold-text);
+    --gutter: clamp(1.375rem, 4.45vw, 4rem);
+    font-size: var(--tp-body);
+
+    :focus-visible { outline: 3px solid var(--tp-focus); outline-offset: 4px; }
+    .on-photo, #mc-footer, .mc-family-editorial, .peranzana {
+        --tp-focus: #e3d39d;
+    }
+    // Keep each original section's width and spacing. A shared shorthand here
+    // would override Regina's compact opening and constrain colored surfaces.
+    .mc-section { min-width: 0; }
+    .mc-section p { max-width: var(--tp-reading); }
+    .mc-page h1, .mc-institutional h1, #product_details h1, .tp-shop-title { font-size: var(--tp-title-1); line-height: 1.08; overflow-wrap: break-word; }
+    .mc-page .mc-section h2 { font-size: var(--tp-title-2); line-height: 1.1; overflow-wrap: break-word; }
+    .mc-page .mc-section h3 { font-size: var(--tp-title-3); line-height: 1.15; }
+    .mc-section :is(.family-story, .hero-description, .sensory-text, .process p, .format-description, .territory p, .culinary p) { font-size: var(--tp-body); line-height: 1.7; }
+    :is(.format-option small, .format-summary .small, .product-note, .mc-sticky-summary, .footer-bottom, figcaption, .stage-caption) { font-size: var(--tp-small); line-height: 1.6; }
+    .small { color: var(--tp-muted); font-size: var(--tp-small); }
+    .text-link { font-size: 1rem; min-height: 44px; }
+    .button, .btn { min-height: var(--tp-control); border-radius: var(--tp-control-radius); padding: var(--tp-control-padding); font-size: 1rem; white-space: normal; }
+    .button.dark, .btn-primary {
+        background: var(--tp-olive); color: var(--tp-white); border-color: var(--tp-olive);
+        &:hover { background: var(--tp-action-hover); color: var(--tp-white); border-color: var(--tp-action-hover); }
+        &:active { background: var(--tp-ink); color: var(--tp-white); }
+    }
+    .btn-outline-primary { color: var(--tp-olive); border-color: var(--tp-olive); background: transparent;
+        &:hover, &:active { color: var(--tp-white); background: var(--tp-olive); }
+    }
+    .button:disabled, .button.disabled, .btn:disabled, .btn.disabled { opacity: .55; cursor: not-allowed; filter: grayscale(.8); }
+    .mc-header { max-width: 100%; gap: 20px; }
+    .mc-menu-items { list-style: none; margin: 0; padding: 0; }
+    .desktop-nav { min-width: 0; font-size: 1rem; }
+    .desktop-nav > .mc-menu-items { display: flex; gap: clamp(1rem, 2vw, 2rem); align-items: center; }
+    .mc-menu-items a, .mc-menu-items summary { min-height: 44px; display: flex; align-items: center; padding: 10px 0; }
+    .mc-menu-items a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
+    .mc-menu-group { position: relative; summary { cursor: pointer; } ul { list-style: none; padding: 12px 24px; background: var(--tp-white); color: var(--tp-ink); } }
+    .desktop-nav .mc-menu-group > ul { position: absolute; z-index: 15; min-width: 200px; }
+    .mobile-menu { max-height: calc(100dvh - 82px); overflow-y: auto; color: var(--tp-ink); }
+    .mobile-menu .mc-menu-items a { font-size: 1.25rem; }
+    .mc-account { color: inherit; }
+    .cart-count { font-size: var(--tp-small); }
+    .mc-footer-groups { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin: 48px 0; }
+    .mc-footer-groups h2 { font: 600 1.0625rem/1.4 Manrope, sans-serif; color: var(--tp-white); margin-bottom: 16px; }
+    .mc-footer-groups a { display: block; font-size: var(--tp-small); line-height: 1.5; padding: 10px 0; min-height: 44px; }
+    .mc-footer-groups a:hover { text-decoration: underline; }
+    #mc-footer .footer-top { padding-bottom: 0; }
+    #mc-footer .footer-bottom { display: block; }
+    .o_footer_copyright { color: var(--tp-ink); background: var(--tp-pale); }
+
+    @media (max-width: 1100px) {
+        .desktop-nav { display: none; }
+        .menu-toggle { display: inline-flex; }
+        .mc-footer-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1101px) { .mobile-menu { display: none; } }
+    @media (max-width: 760px) {
+        .mc-account { display: none; }
+        .mc-header { gap: 12px; }
+        .mc-footer-groups { gap: 24px; }
+        .mc-footer-groups nav { min-width: 0; overflow-wrap: break-word; }
+        #o_wsale_product_cta_section button[name='add_to_cart'] { font-size: var(--tp-small); }
+        .footer-top { min-width: 0; flex-wrap: wrap; gap: 24px; }
+    }
+}

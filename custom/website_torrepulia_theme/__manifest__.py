@@ -8,7 +8,7 @@ Includes editable editorial snippets, a curated homepage, product/shop styling,
 and local brand imagery sourced from the current Torrepulia website.
     """,
     "category": "Theme",
-    "version": "20.0.3.2.0",
+    "version": "20.0.3.6.0",
     "author": "Torrepulia",
     "license": "LGPL-3",
     "depends": [
@@ -27,6 +27,7 @@ and local brand imagery sourced from the current Torrepulia website.
         "views/snippets/s_cultivar_editorial.xml",
         "views/snippets/s_roots_closing.xml",
         "views/snippets/s_bag_in_box.xml",
+        "views/snippets/s_reservation_campaign.xml",
         "views/snippets/s_forms.xml",
         "views/header.xml",
         "views/footer.xml",
@@ -41,6 +42,7 @@ and local brand imagery sourced from the current Torrepulia website.
         "data/cinematic.xml",
         "data/photo_campaign.xml",
         "views/branding.xml",
+        "views/navigation.xml",
         "data/branding.xml",
     ],
     "assets": {
@@ -64,6 +66,10 @@ and local brand imagery sourced from the current Torrepulia website.
             "website_torrepulia_theme/static/src/scss/oil_production.scss",
             "website_torrepulia_theme/static/src/js/about_editorial.js",
             "website_torrepulia_theme/static/src/js/bag_in_box.js",
+            "website_torrepulia_theme/static/src/scss/design_system.scss",
+            "website_torrepulia_theme/static/src/js/navigation.js",
+            "website_torrepulia_theme/static/src/scss/reservation_campaign.scss",
+            "website_torrepulia_theme/static/src/js/reservation_campaign.js",
         ],
         "website.website_builder_assets": [
             "website_torrepulia_theme/static/src/scss/builder.scss",

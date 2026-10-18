@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_torrepulia_value_proofs" name="Torrepulia Prove di valore">
+        <section class="tp-value-proofs mc-section o_colored_level" data-snippet="s_torrepulia_value_proofs" data-name="Prove di valore">
+            <div class="tp-value-grid">
+                <div class="tp-value-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V10M12 14C5 14 3 10 3 5c6 0 9 3 9 9ZM12 10c0-5 3-8 9-8 0 5-3 8-9 8Z"/></svg>
+                    <h3>100% Olive Aziendali</h3>
+                    <p>Solo olive Peranzana coltivate e raccolte nei nostri uliveti, molite in frantoio.</p>
+                </div>
+                <div class="tp-value-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    <h3>Origine Torremaggiore</h3>
+                    <p>I nostri uliveti storici affondano le radici nell'alto Tavoliere delle Puglie, territorio d'elezione della Peranzana.</p>
+                </div>
+                <div class="tp-value-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M21 21v-3a6 6 0 0 0-4-5.65"/></svg>
+                    <h3>Lavoro di Famiglia</h3>
+                    <p>Seguiamo direttamente ogni fase della filiera, da nonno Santino fino a Franco e Salvatore Leone.</p>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_reservation_hero" name="Torrepulia Olio nuovo apertura">
+        <section class="tp-reservation-hero mc-section o_colored_level" data-snippet="s_torrepulia_reservation_hero" data-name="Olio nuovo: apertura">
+            <div class="tp-reservation-hero-copy">
+                <p class="tp-reservation-kicker">CAMPAGNA OLEARIA 2026 / 2027</p>
+                <h1>Il primo olio della stagione, direttamente a casa tua.</h1>
+                <p class="tp-reservation-intro">Prenota oggi senza alcun anticipo la tua quota di La Regina Nuovo. Dopo la molitura in frantoio, lo confezioniamo e lo spediamo entro 48 ore.</p>
+            </div>
+            <img class="tp-reservation-hero-image" src="/website_torrepulia_theme/static/src/cinematic/campaign/land-1920.webp" srcset="/website_torrepulia_theme/static/src/cinematic/campaign/land-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/campaign/land-1920.webp 1920w" sizes="(max-width: 767px) 100vw, 50vw" alt="Gli uliveti di Torrepulia a Torremaggiore" loading="eager"/>
+        </section>
+    </template>
+    <template id="s_torrepulia_reservation_conditions" name="Torrepulia Condizioni campagna">
+        <section class="tp-reservation-conditions mc-section o_colored_level" data-snippet="s_torrepulia_reservation_conditions" data-name="Olio nuovo: condizioni">
+            <div class="tp-value-grid">
+                <div class="tp-value-item"><h3>Prezzo Bloccato</h3><p>14 € / Litro garantito per tutta la campagna, senza rincari successivi.</p></div>
+                <div class="tp-value-item"><h3>Freschezza Assoluta</h3><p>Spedizione rapida entro 48 ore dalla molitura in frantoio.</p></div>
+                <div class="tp-value-item"><h3>Zero Rischi</h3><p>Nessun anticipo richiesto. Paghi solo alla conferma della spedizione.</p></div>
+            </div>
+        </section>
+    </template>
+</odoo>

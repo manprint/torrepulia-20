@@ -1,5 +1,6 @@
 import copy
 import json
+import re
 from lxml import etree
 from odoo import api, fields, models
 
@@ -11,6 +12,35 @@ class ProductTemplate(models.Model):
     torrepulia_format_detail = fields.Char('Torrepulia contents')
     torrepulia_unit_count = fields.Integer('Units in provisional composition', default=1)
     torrepulia_composite = fields.Boolean('Provisional composition from single unit')
+    torrepulia_format_badge_ids = fields.Many2many(
+        'product.tag', 'torrepulia_format_badge_product_rel', 'product_tmpl_id', 'tag_id',
+        string='Badge nei formati',
+        help='Etichette colorate dello snippet Formati. Apri una etichetta per '
+             'configurarne testo, colore e visibilita. Non modifica i tag dello shop.',
+    )
+
+    def _torrepulia_format_badges(self, website):
+        self.ensure_one()
+        tags = self.env['product.tag'].search([
+            ('id', 'in', self.torrepulia_format_badge_ids.ids),
+            ('visible_to_customers', '=', True),
+        ] + website.website_domain())
+        badges = []
+        for tag in tags:
+            color = tag.color or '#294d3b'
+            if re.fullmatch(r'#[0-9a-fA-F]{3}', color):
+                color = '#' + ''.join(character * 2 for character in color[1:])
+            if not re.fullmatch(r'#[0-9a-fA-F]{6}', color):
+                color = '#294d3b'
+            channels = [int(color[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+            linear = [value / 12.92 if value <= .04045 else ((value + .055) / 1.055) ** 2.4
+                      for value in channels]
+            luminance = sum(value * weight for value, weight in zip(linear, (.2126, .7152, .0722)))
+            badges.append({
+                'name': tag.name, 'color': color,
+                'text_color': '#000000' if luminance > .179 else '#ffffff',
+            })
+        return badges
 
 
 class Website(models.Model):
@@ -78,6 +108,9 @@ class Website(models.Model):
                         if i == 1:
                             section.set('data-product-ids',json.dumps([{'id':p.id,'display_name':p.name} for p in duetto]))
                         wrap.append(section)
+                        if i == 0:
+                            proofs = etree.fromstring(self.env.ref(module + '.s_torrepulia_value_proofs').arch_db.encode())
+                            wrap.append(copy.deepcopy(proofs[0]))
                         if i == 5:
                             packaging = etree.fromstring(self.env.ref(module + '.s_torrepulia_packaging').arch_db.encode())
                             wrap.append(copy.deepcopy(packaging[0]))

@@ -1,4 +1,6 @@
-.tp-site .tp-bib {
+// Retain the snippet's original typography inside the cinematic homepage too.
+.tp-site .tp-bib,
+.tp-site.tp-cinematic .mc-page .tp-bib {
     background: #faf9f5;
     color: #203b2f;
     padding: 96px 64px;
@@ -32,6 +34,8 @@
     .tp-bib-pillar { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 16px; align-items: start; }
     .tp-bib-pillar > img { width: 24px; height: 24px; margin-top: 2px; }
     .tp-bib-pillar h3 { font: 600 16px/1.5 Manrope, sans-serif; color: #203b2f; margin: 0 0 8px; }
+    // A saved Builder heading-size span must follow its compact pillar label.
+    .tp-bib-pillar h3 .h3-fs { font-size: inherit; line-height: inherit; }
     .tp-bib-pillar p { margin: 0; font-size: 14px; line-height: 1.75; color: #52604e; max-width: 64ch; }
     .tp-bib-cta.button.dark { max-width: 100%; gap: 20px; background: #203b2f; color: #fff; padding: 18px 24px; display: inline-flex; align-items: center; justify-content: space-between; min-height: 56px; border: 0; border-radius: 2px; font-size: 14px; line-height: 1.5; text-decoration: none; transition: background-color 300ms ease-in-out, transform 150ms ease-out; }
     .tp-bib-cta.button.dark:hover { background: #304e3c; color: #fff; }

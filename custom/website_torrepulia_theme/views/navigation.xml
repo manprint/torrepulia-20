@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Applied to the combined layout, including website-specific Builder copies. -->
+    <template id="navigation_layout" inherit_id="website.layout" priority="90" name="Torrepulia shared navigation and footer">
+        <xpath expr="//header[@id='top']" position="attributes">
+            <attribute name="t-attf-class" add="#{website.torrepulia_theme_enabled and 'o_no_autohide_menu' or ''}" separator=" "/>
+        </xpath>
+        <xpath expr="//header/t[@t-call='website.navbar']" position="attributes">
+            <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+        <xpath expr="//header/t[@t-call='website.template_header_mobile']" position="attributes">
+            <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+        <xpath expr="//footer/div[@id='footer']" position="attributes">
+            <attribute name="t-if">not no_footer and not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+        <xpath expr="//nav[hasclass('desktop-nav')]" position="replace">
+            <nav class="desktop-nav" aria-label="Navigazione principale">
+                <t t-call="website_torrepulia_theme.navigation_items"/>
+            </nav>
+        </xpath>
+        <xpath expr="//nav[@id='mc-mobile-menu']" position="replace">
+            <nav id="mc-mobile-menu" class="mobile-menu collapse" aria-label="Navigazione mobile">
+                <t t-call="website_torrepulia_theme.navigation_items"/>
+                <a href="/my/home">Il mio account</a>
+            </nav>
+        </xpath>
+        <xpath expr="//div[hasclass('header-tools')]/ul" position="before">
+            <a class="icon-button mc-account" href="/my/home" aria-label="Il mio account" title="Il mio account"><i class="oi" data-icon="person" aria-hidden="true"/></a>
+        </xpath>
+        <xpath expr="//div[@id='mc-footer']/div[hasclass('footer-bottom')]" position="before">
+            <div class="mc-footer-groups">
+                <nav aria-label="Acquisto"><h2>Acquisto</h2><a href="/shop">Acquista olio</a><a href="/shop/cart">Carrello</a>
+                    <t t-if="website.torrepulia_seasonal_navigation"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
+                </nav>
+                <nav aria-label="Storia e territorio"><h2>Storia e territorio</h2>
+                    <a t-foreach="website._torrepulia_footer_pages(['oil', 'story', 'land'])" t-as="page" t-att-href="page.url"><t t-out="page.name.split(' | ')[0]"/></a>
+                </nav>
+                <nav class="mc-footer-assistance" aria-label="Assistenza"><h2>Assistenza</h2><a t-foreach="website._torrepulia_footer_pages(['contact'])" t-as="page" t-att-href="page.url">Contatti</a><a href="/my/home">Il mio account</a></nav>
+                <nav class="mc-footer-documents" aria-label="Documenti"><h2>Documenti</h2>
+                </nav>
+            </div>
+            <div class="mc-footer-system d-flex flex-wrap gap-3">
+                <t t-call="website.language_selector_inline" _div_classes.f="dropup"/>
+                <t t-call="website_sale.pricelist_selector" _div_classes.f="dropup" _btn_class.f="btn btn-secondary"/>
+            </div>
+        </xpath>
+        <!-- Move existing editable links, retaining Builder labels and destinations. -->
+        <xpath expr="//div[hasclass('mc-footer-groups')]/nav[hasclass('mc-footer-documents')]" position="inside">
+            <xpath expr="//div[@id='mc-footer']/div[hasclass('footer-bottom')]/div[a[@href='/termini-e-condizioni']]" position="move"/>
+        </xpath>
+        <xpath expr="//div[hasclass('mc-footer-groups')]/nav[hasclass('mc-footer-assistance')]" position="inside">
+            <xpath expr="//div[@id='mc-footer']/div[hasclass('footer-bottom')]/div[a[starts-with(@href, 'mailto:')]]" position="move"/>
+        </xpath>
+    </template>
+    <template id="navigation_items" name="Torrepulia menu records">
+        <ul class="mc-menu-items top_menu">
+            <t t-foreach="website._torrepulia_navigation()" t-as="menu">
+                <t t-call="website_torrepulia_theme.navigation_item"/>
+            </t>
+        </ul>
+    </template>
+    <template id="navigation_item" name="Torrepulia menu item">
+        <li t-if="menu.is_visible and not menu.torrepulia_navigation_hidden and (not menu.torrepulia_seasonal or website.torrepulia_seasonal_navigation)">
+            <details t-if="menu.child_id" class="mc-menu-group"><summary><span t-field="menu.name"/></summary><ul>
+                <t t-foreach="menu.child_id" t-as="menu"><t t-call="website_torrepulia_theme.navigation_item"/></t>
+            </ul></details>
+            <a t-elif="menu.url and menu.url != '#'" t-att-href="menu._clean_url()" t-att-target="'_blank' if menu.new_window else None" t-att-rel="'noopener' if menu.new_window else None" t-att-aria-current="'page' if menu._is_active() else None"><span t-field="menu.name"/></a>
+        </li>
+    </template>
+    <record id="navigation_website_form" model="ir.ui.view">
+        <field name="name">website.form.torrepulia.navigation</field><field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="torrepulia_seasonal_navigation"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="navigation_menu_form" model="ir.ui.view">
+        <field name="name">website.menu.form.torrepulia.navigation</field><field name="model">website.menu</field>
+        <field name="inherit_id" ref="website.website_menus_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="torrepulia_navigation_hidden"/>
+                <field name="torrepulia_seasonal"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

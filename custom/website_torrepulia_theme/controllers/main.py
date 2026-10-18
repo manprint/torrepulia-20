@@ -1,5 +1,7 @@
 from odoo import http
 from odoo.http import request
+from odoo.tools import is_html_empty
+from odoo.tools.mail import html2plaintext
 from odoo.tools.misc import format_amount
 
 
@@ -17,7 +19,41 @@ class TorrepuliaPrivacy(http.Controller):
         # Odoo 20 deliberately returns an empty pricelist when that feature is disabled.
         # Its native sales-price API already computes amounts in the website currency.
         currency = website.currency_id
+        availability = {}
+        for product in products:
+            # Use the installed product-page API, including website warehouse, UoM,
+            # current cart, minimum quantity and the sell-out-of-stock setting.
+            multiple = product.product_variant_count != 1
+            info = product.with_context(website_sale_product_page=True)._get_combination_info(
+                only_template=multiple,
+                pricelist=request.pricelist,
+                fiscal_position=request.fiscal_position,
+            )
+            remaining = info.get('free_qty', 0)
+            if not info.get('allow_out_of_stock_order'):
+                remaining = max(0, remaining - int(info.get('cart_qty', 0)))
+                if remaining < info.get('minimum_qty', 0):
+                    remaining = 0
+            sold_out = product._is_sold_out() if multiple else (
+                info.get('is_storable', False)
+                and not info.get('allow_out_of_stock_order') and remaining < 1
+            )
+            message = info.get('out_of_stock_message')
+            availability[product.id] = {
+                'info': info,
+                'remaining': remaining,
+                'blocked': sold_out or info['prevent_sale'] or (
+                    not multiple and not info['is_combination_possible']
+                ),
+                # A template may have both sold-out and available variants: leave
+                # its configurator reachable and never sum quantities across them.
+                'show_stock': not multiple and info.get('is_storable') and not info['prevent_sale'],
+                'has_message': not is_html_empty(message),
+                'message_text': html2plaintext(message) if not is_html_empty(message) else '',
+                'ribbon': product._get_ribbon(price_vals=prices[product.id]),
+            }
         values = {'products':products,'prices':prices,'currency':currency,
+            'availability': availability,
             'format_amount':lambda amount:format_amount(request.env,amount,currency)}
         template = 'website_torrepulia_theme.cinematic_promoted' if promoted else 'website_torrepulia_theme.cinematic_formats'
         return {'html':str(request.env['ir.ui.view']._render_template(template,values))}

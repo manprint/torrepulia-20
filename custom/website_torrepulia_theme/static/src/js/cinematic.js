@@ -47,9 +47,8 @@ export class CinematicCommerce extends Interaction {
         for (const button of options) {
             const id = button.dataset.product;
             if (this.el.classList.contains('mc-product-formats')) {
-                const target = holder.querySelector(`[data-summary="${id}"] a`);
                 const link = holder.ownerDocument.createElement('a');
-                link.className=button.className;link.href=target.getAttribute('href');link.innerHTML=button.innerHTML;
+                link.className=button.className;link.href=button.dataset.productUrl;link.innerHTML=button.innerHTML;
                 link.dataset.product=id;link.setAttribute('aria-current',id===this.el.dataset.currentProduct?'page':'false');
                 button.replaceWith(link);
                 continue;

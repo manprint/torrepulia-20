@@ -2,6 +2,9 @@
 <odoo>
   <template id="cinematic_snippets" inherit_id="website.snippets" name="Mediterranean Cinematic blocks">
     <xpath expr="//t[@t-snippet='website.s_banner']" position="before">
+      <t t-snippet="website_torrepulia_theme.s_torrepulia_value_proofs" string="Prove di valore" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/uliveto-hero-640.webp"/>
+      <t t-snippet="website_torrepulia_theme.s_torrepulia_reservation_hero" string="Olio nuovo: apertura" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/uliveto-hero-640.webp"/>
+      <t t-snippet="website_torrepulia_theme.s_torrepulia_reservation_conditions" string="Olio nuovo: condizioni" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/uliveto-hero-640.webp"/>
       <t t-snippet="website_torrepulia_theme.s_cinematic_0" string="Apertura Torrepulia" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
       <t t-snippet="website_torrepulia_theme.s_cinematic_1" string="La Regina" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>
       <t t-snippet="website_torrepulia_theme.s_cinematic_2" string="Famiglia Leone" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/bottle-original.jpeg"/>

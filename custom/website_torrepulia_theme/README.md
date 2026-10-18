@@ -1,6 +1,6 @@
 # Torrepulia: Mediterranean Cinematic
 
-Modulo Odoo 20 `website_torrepulia_theme`, baseline **20.0.3.1.2**.
+Modulo Odoo 20 `website_torrepulia_theme`, versione **20.0.3.6.0**.
 Stack locale: http://localhost:8069, database `torrepulia_cinematic_install`.
 Con piu database selezionare prima `/web/login?db=torrepulia_cinematic_install`.
 
@@ -41,6 +41,9 @@ animazioni fotografiche degli originali, non riprese documentarie.
 
 [Inventario e materiali mancanti](docs/ASSETS.md).
 [Baseline e collaudo](docs/STABILIZATION.md).
+[Navigazione, sistema visivo e procedura reversibile del menu](docs/navigation-design-system.md).
+[Disponibilita e badge configurabili dei formati](docs/formats-availability.md).
+[Prove di valore, prenotazione e aggiornamento reversibile dei contenuti](docs/reservation-campaign.md).
 
 ## Regressione Locale
 
