@@ -38,7 +38,7 @@
     .tp-review-privacy { display: flex; align-items: flex-start; gap: 10px; margin-block: 24px; line-height: 1.6; font-size: 13px; }
     .tp-review-privacy input { width: 22px; height: 22px; flex-shrink: 0; accent-color: #2e493b; }
     .tp-review-send { display: flex; flex-direction: column; gap: 12px; }
-    .tp-review-send .btn { width: 100%; min-height: 52px; background: #2e493b; border-color: #2e493b; font-family: Manrope, sans-serif; font-size: 12px; letter-spacing: .04em; white-space: normal; }
+    .tp-review-send .btn { width: 100%; min-height: 52px; background: #2e493b; border-color: #2e493b; font: 600 15px/1.4 Manrope, sans-serif; white-space: normal; }
     .tp-review-order-summary > p:last-of-type { font-size: 13px; line-height: 1.6; }
 }
 .tp-campaign .tp-campaign-review { margin-top: 48px; max-width: none; border-top: 1px solid #d8ded9; padding-top: 16px; }

@@ -235,7 +235,7 @@ export class RequestReview extends Interaction {
         this.form.querySelector('[data-review-fields]').disabled = busy || Boolean(this.attempt.pending) || !this.viewState?.can_submit;
         const button = this.form.querySelector('button[type="submit"]');
         button.disabled = busy || Boolean(this.changing) || (!this.attempt.pending && !this.viewState?.can_submit) || Boolean(this.store.pending);
-        button.textContent = busy ? _t('Invio in corso…') : this.attempt.pending ? _t('Riprova invio') : _t('CONFERMA LA MIA PRENOTAZIONE');
+        button.textContent = busy ? _t('Invio in corso…') : this.attempt.pending ? _t('Riprova invio') : _t('Conferma la mia prenotazione');
         this.form.querySelector('[data-review-sending]').hidden = !busy;
         this.form.elements.namedItem('privacy_accepted').disabled = busy || Boolean(this.attempt.pending) || !this.viewState?.can_submit;
         for (const input of this.el.querySelectorAll('[data-review-key], [data-review-remove], [data-review-step]')) input.disabled = busy || Boolean(this.changing);

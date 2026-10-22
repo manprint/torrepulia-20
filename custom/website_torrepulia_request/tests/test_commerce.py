@@ -220,7 +220,7 @@ class TestCommerceHttp(HttpCase):
         shop = self.url_open('/shop')
         self.assertEqual(shop.status_code, 200)
         self.assertIn('data-tp-request-mode="1"', shop.text)
-        self.assertIn('AGGIUNGI ALLA RICHIESTA', shop.text)
+        self.assertIn('Aggiungi alla richiesta', shop.text)
         self.assertIn('data-tp-request-header', shop.text)
         page = self.url_open(self.product.website_url)
         self.assertEqual(page.status_code, 200)

@@ -26,7 +26,7 @@ class TestThemeRequestCommerce(HttpCase):
             return data['result']['html']
 
         visible = formats()
-        self.assertIn('AGGIUNGI ALLA RICHIESTA', visible)
+        self.assertIn('Aggiungi alla richiesta', visible)
         self.assertIn('data-tp-request-add-template', visible)
         self.assertIn('option-price', visible)
         promoted = formats(promoted=True)
@@ -42,7 +42,7 @@ class TestThemeRequestCommerce(HttpCase):
         product.allow_out_of_stock_order = True
         website.torrepulia_request_show_prices = False
         hidden = formats()
-        self.assertIn('AGGIUNGI ALLA RICHIESTA', hidden)
+        self.assertIn('Aggiungi alla richiesta', hidden)
         self.assertNotIn('143.25', hidden)
         self.assertNotIn('143,25', hidden)
         self.assertNotIn('option-price', hidden)

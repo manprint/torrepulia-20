@@ -47,7 +47,7 @@
                             <span>Ho letto l'<a href="/privacy-policy" target="_blank" rel="noopener">informativa sulla privacy</a> e acconsento al trattamento dei dati per rispondere alla richiesta.</span>
                         </label>
                     <p>L’invio non conferma un ordine e non richiede un pagamento.</p>
-                    <div class="tp-review-send"><button type="submit" class="btn btn-primary" disabled="disabled">CONFERMA LA MIA PRENOTAZIONE</button>
+                    <div class="tp-review-send"><button type="submit" class="btn btn-primary" disabled="disabled">Conferma la mia prenotazione</button>
                         <span data-review-sending="" role="status" hidden="hidden">Invio in corso. Attendi la conferma…</span>
                     </div>
                 </div>

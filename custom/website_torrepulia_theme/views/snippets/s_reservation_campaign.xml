@@ -5,17 +5,17 @@
             <div class="tp-value-grid">
                 <div class="tp-value-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V10M12 14C5 14 3 10 3 5c6 0 9 3 9 9ZM12 10c0-5 3-8 9-8 0 5-3 8-9 8Z"/></svg>
-                    <h3>100% Olive Aziendali</h3>
+                    <h2>100% Olive Aziendali</h2>
                     <p>Solo olive Peranzana coltivate e raccolte nei nostri uliveti, molite in frantoio.</p>
                 </div>
                 <div class="tp-value-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                    <h3>Origine Torremaggiore</h3>
+                    <h2>Origine Torremaggiore</h2>
                     <p>I nostri uliveti storici affondano le radici nell'alto Tavoliere delle Puglie, territorio d'elezione della Peranzana.</p>
                 </div>
                 <div class="tp-value-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M21 21v-3a6 6 0 0 0-4-5.65"/></svg>
-                    <h3>Lavoro di Famiglia</h3>
+                    <h2>Lavoro di Famiglia</h2>
                     <p>Seguiamo direttamente ogni fase della filiera, da nonno Santino fino a Franco e Salvatore Leone.</p>
                 </div>
             </div>

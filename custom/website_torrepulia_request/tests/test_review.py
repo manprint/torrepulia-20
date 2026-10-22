@@ -41,7 +41,7 @@ class TestRequestReview(HttpCase):
         self.assertEqual(form.get('action'), '/torrepulia/request/submit')
         self.assertTrue(form.xpath('.//*[@name="privacy_accepted"]'))
         self.assertTrue(form.xpath('.//*[@data-review-lines]'))
-        self.assertIn('CONFERMA LA MIA PRENOTAZIONE', response.text)
+        self.assertIn('Conferma la mia prenotazione', response.text)
         self.website.torrepulia_commercial_mode = 'shop'
         self.assertEqual(self.url_open('/torrepulia/request/form').status_code, 404)
 

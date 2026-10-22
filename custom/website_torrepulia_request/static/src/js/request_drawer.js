@@ -30,7 +30,7 @@ export class RequestDrawer extends Interaction {
         const footer = this.node('div', '', 'tp-drawer-footer');
         this.total = this.node('p', '', 'tp-drawer-total');
         this.total.hidden = true;
-        this.review = this.node('a', _t('VAI AL RIEPILOGO'), 'btn btn-primary');
+        this.review = this.node('a', _t('Vai al riepilogo'), 'btn btn-primary');
         this.review.href = document.body.dataset.tpRequestSummaryUrl;
         footer.append(this.total, this.review);
         dialog.append(header, this.content, footer);

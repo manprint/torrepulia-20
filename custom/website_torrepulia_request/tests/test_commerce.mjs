@@ -147,7 +147,7 @@ test('confirmation gives product and added quantity, continue closes and review 
     assert.equal(aside.children[2].hidden, false);
     const [close, review] = aside.children[4].children;
     assert.equal(close.textContent, 'Continua a scegliere');
-    assert.equal(review.textContent, 'VAI AL RIEPILOGO'); assert.equal(review.href, '/review-configured');
+    assert.equal(review.textContent, 'Vai al riepilogo'); assert.equal(review.href, '/review-configured');
     close.listeners.click(); assert.equal(aside.hidden, true);
     f.store.add = async () => ({ addition: { quantity: 1, name: 'Prezzi riservati' }, lines: [] });
     await f.cart.add({ productTemplateId: 7, quantity: 1 });

@@ -114,6 +114,10 @@
     }
     .s_website_form input[type='checkbox'] { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; accent-color: var(--tp-olive); }
 
+    // Value proofs are the first section titles under the hero H1.
+    .mc-page .mc-section .tp-value-item h2 { font: 700 1.125rem/1.4 Manrope, sans-serif; margin: 0 0 .75rem; color: var(--tp-ink); }
+    .tp-bib-pillar p { max-width: 65ch; }
+
     // Title set on the brightest part of the landscape photo.
     .tp-landscape::before {
         background: linear-gradient(to top, rgba(15, 34, 22, .72), rgba(15, 34, 22, .32) 55%, rgba(15, 34, 22, .12));

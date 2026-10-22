@@ -4,7 +4,7 @@
         <span class="tp-stock-status">Temporaneamente esaurito</span>
         <p t-if="notice['message']" class="tp-stock-copy" t-out="notice['message']"/>
         <a t-foreach="notice['links']" t-as="link" class="tp-stock-information-link" t-att-href="link['url']" t-out="link['label']"/>
-        <a t-if="notice['preorder_url']" class="btn btn-primary tp-request-preorder-link" t-att-href="notice['preorder_url']">PRENOTA IL NUOVO RACCOLTO</a>
+        <a t-if="notice['preorder_url']" class="btn btn-primary tp-request-preorder-link" t-att-href="notice['preorder_url']">Prenota il nuovo raccolto</a>
     </template>
     <template id="request_card_controls" name="Quantita e variante della richiesta"><t t-set="request_sold_out" t-value="product._is_sold_out()"/>
         <div class="o_wsale_product_action_row tp-request-action-row">
@@ -33,7 +33,7 @@
                     </span>
                 </label>
                 <button t-if="not request_sold_out" type="button" class="btn btn-primary o_wsale_product_btn_primary tp-request-tile-add" t-att-data-tp-request-add-template="product.id">
-                    AGGIUNGI ALLA RICHIESTA
+                    Aggiungi alla richiesta
                 </button>
             </div>
         </template><template id="request_tile" inherit_id="website_sale.shop_product_buttons" priority="100">

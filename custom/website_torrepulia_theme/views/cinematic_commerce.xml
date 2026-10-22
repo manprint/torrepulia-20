@@ -80,6 +80,49 @@
             </div>
         </xpath>
     </template>
+    <template id="product_stock_notification_it" inherit_id="website_sale.cta_wrapper" name="Italian stock notification labels">
+        <!-- Odoo 20 ships no Italian translation for these website_sale labels. -->
+        <xpath expr="//button[@id='stock_notification_button']" position="replace">
+            <button
+                id="stock_notification_button"
+                t-attf-class="{{'d-none' if combination_info.get('has_stock_notification') else ''}} btn btn-primary flex-grow-1 align-items-center"
+                t-att-data-product-id="product.id"
+            >
+                <i class="oi me-2" data-icon="mail"/>
+                Avvisami quando torna disponibile
+            </button>
+        </xpath>
+        <xpath expr="//button[@id='stock_notification_subscribed_button']" position="replace">
+            <button
+                id="stock_notification_subscribed_button"
+                t-attf-class="{{'' if combination_info.get('has_stock_notification') else 'd-none'}} btn btn-outline-primary flex-grow-1 align-items-center"
+                disabled=""
+            >
+                <i class="oi oi-filled me-2" data-icon="notifications"/>
+                Ti avviseremo
+            </button>
+        </xpath>
+        <xpath expr="//button[@id='stock_notification_submit_button']" position="replace">
+            <button id="stock_notification_submit_button" class="btn btn-primary" t-att-data-product-id="product.id">
+                Avvisami
+            </button>
+        </xpath>
+    </template>
+    <template id="search_placeholder_it" inherit_id="website.website_search_box_input" name="Italian search placeholder">
+        <xpath expr="//t[@t-set='placeholder']" position="replace">
+            <t t-if="not placeholder" t-set="placeholder">Cerca…</t>
+        </xpath>
+    </template>
+    <template id="shop_tile_title_level" inherit_id="website_sale.product_title_and_details" name="Shop tile title level">
+        <!-- Product names follow the shop H1; the h6 class keeps the native tile size. -->
+        <xpath expr="//h6[hasclass('o_wsale_products_item_title')]" position="before">
+            <h2 class="o_wsale_products_item_title text-break h6"/>
+        </xpath>
+        <xpath expr="//h2[hasclass('o_wsale_products_item_title')]" position="inside">
+            <xpath expr="//h6[hasclass('o_wsale_products_item_title')]/a" position="move"/>
+        </xpath>
+        <xpath expr="//h6[hasclass('o_wsale_products_item_title')]" position="replace"/>
+    </template>
     <template id="product_breadcrumb_icons" inherit_id="website_sale.product" name="Decorative breadcrumb icons">
         <!-- The chevron repeats the link text; screen readers should not announce an unnamed image. -->
         <xpath expr="//li[hasclass('d-lg-none')]//i[@data-icon='chevron_backward']" position="attributes">

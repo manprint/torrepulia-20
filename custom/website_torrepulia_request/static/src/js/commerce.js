@@ -205,7 +205,7 @@ export class RequestCommerce extends Interaction {
         close.type = 'button'; close.className = 'btn btn-outline-secondary';
         close.textContent = _t('Continua a scegliere');
         const review = doc.createElement('a');
-        review.className = 'btn btn-primary'; review.textContent = _t('VAI AL RIEPILOGO');
+        review.className = 'btn btn-primary'; review.textContent = _t('Vai al riepilogo');
         review.href = document.body.dataset.tpRequestSummaryUrl;
         const retry = doc.createElement('button');
         retry.type = 'button'; retry.className = 'btn btn-outline-secondary'; retry.textContent = _t('Riprova'); retry.hidden = true;
