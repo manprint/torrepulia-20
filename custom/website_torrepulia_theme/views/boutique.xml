@@ -69,6 +69,68 @@
         </section>
     </template>
 
+    <!-- Shop: the new oil opens the page in season, then one format per row. -->
+    <template id="shop_season" name="New oil season band">
+        <t t-set="tp_season" t-value="website._torrepulia_preorder_season()"/>
+        <section t-if="tp_season" class="tp-season" aria-labelledby="tp-season-title">
+            <img class="tp-season-photo" src="/website_torrepulia_theme/static/src/cinematic/campaign/land-640.webp"
+                 srcset="/website_torrepulia_theme/static/src/cinematic/campaign/land-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/campaign/land-1280.webp 1280w"
+                 sizes="(max-width: 760px) 100vw, 260px" alt="Gli uliveti di Torremaggiore" width="640" height="360"/>
+            <div class="tp-season-copy">
+                <h2 id="tp-season-title" t-out="tp_season['title']"/>
+                <p t-if="tp_season['text']" t-out="tp_season['text']"/>
+            </div>
+            <a class="btn tp-season-action" t-att-href="tp_season['url']">Prenota</a>
+        </section>
+    </template>
+
+    <template id="shop_rows" name="Shop formats, one per row">
+        <t t-set="tp_season" t-value="website._torrepulia_preorder_season()"/>
+        <ul class="tp-shop-rows" aria-label="Formati">
+            <li t-foreach="products" t-as="p" class="tp-shop-row">
+                <t t-set="tp_info" t-value="p._get_combination_info(product_id=p.product_variant_id.id)"/>
+                <t t-set="tp_preorder" t-value="website._torrepulia_format_preorder(p)"/>
+                <t t-set="tp_sold_out" t-value="not tp_preorder and p._is_sold_out()"/>
+                <a class="tp-shop-row-photo" t-att-href="p.website_url" tabindex="-1" aria-hidden="true">
+                    <t t-call="website_torrepulia_theme.cinematic_pack"/>
+                </a>
+                <div class="tp-shop-row-copy">
+                    <span t-if="tp_preorder" class="tp-shop-state is-preorder" t-out="tp_season['label'] if tp_season else 'In prenotazione'"/>
+                    <span t-elif="tp_sold_out" class="tp-shop-state is-sold-out" t-out="website.torrepulia_shop_sold_out_label or 'Temporaneamente esaurito'"/>
+                    <span t-else="" class="tp-shop-state is-available" t-out="website.torrepulia_shop_available_label or 'Disponibile subito'"/>
+                    <h2><a t-att-href="p.website_url" t-out="p.torrepulia_format_name or p.name"/></h2>
+                    <p t-if="p.torrepulia_shop_audience" class="tp-shop-audience" t-out="p.torrepulia_shop_audience"/>
+                    <p t-if="not tp_info.get('hide_price') and tp_info.get('base_unit_price')" class="tp-shop-unit-price">
+                        <span t-out="tp_info['base_unit_price']" t-options="{'widget': 'monetary', 'display_currency': tp_info['currency']}"/> / <t t-out="tp_info.get('base_unit_name')"/>
+                    </p>
+                </div>
+                <div class="tp-shop-row-action">
+                    <span t-if="not tp_info.get('hide_price')" class="tp-shop-price" t-out="tp_info['price']" t-options="{'widget': 'monetary', 'display_currency': tp_info['currency']}"/>
+                    <a t-if="tp_preorder" class="btn btn-primary" t-att-href="tp_preorder">Prenota</a>
+                    <a t-elif="tp_sold_out and tp_season" class="btn btn-outline-primary" t-att-href="tp_season['url']">Prenota il nuovo raccolto</a>
+                    <a t-elif="tp_sold_out" class="btn btn-outline-primary" t-att-href="p.website_url">Dettagli</a>
+                    <a t-else="" class="btn btn-primary" t-att-href="p.website_url">Acquista</a>
+                </div>
+            </li>
+        </ul>
+    </template>
+
+    <template id="shop_boutique" inherit_id="website_sale.products" name="Torrepulia boutique shop">
+        <!-- Three formats need no search, sorting or wishlist. -->
+        <xpath expr="//div[hasclass('products_header')]" position="attributes">
+            <attribute name="t-if">not opt_wsale_floating_bar and not website._torrepulia_shop_rows_enabled()</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_wsale_products_grid_table_wrapper')]" position="before">
+            <t t-if="website.torrepulia_theme_enabled and not search and not category" t-call="website_torrepulia_theme.shop_season"/>
+        </xpath>
+        <xpath expr="//section[@id='o_wsale_products_grid']" position="attributes">
+            <attribute name="t-if">not website._torrepulia_shop_rows_enabled()</attribute>
+        </xpath>
+        <xpath expr="//section[@id='o_wsale_products_grid']" position="before">
+            <t t-if="website._torrepulia_shop_rows_enabled()" t-call="website_torrepulia_theme.shop_rows"/>
+        </xpath>
+    </template>
+
     <template id="base_unit_name_variant" inherit_id="website_sale.base_unit_price" name="Variant base unit name">
         <!-- With several variants the template has no base unit: name the one of the shown combination. -->
         <xpath expr="//span[hasclass('oe_custom_base_unit')]" position="attributes">

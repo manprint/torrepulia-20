@@ -85,7 +85,22 @@ class Website(models.Model):
     torrepulia_shipping_note = fields.Char('Nota spedizione sulla scheda prodotto', translate=True,
         default='Spedizione gratuita da 89 €, altrimenti 9,90 €. Consegna in 24-72 ore lavorative.')
 
+    torrepulia_shop_available_label = fields.Char('Etichetta shop: disponibile', translate=True,
+        default='Disponibile subito', help='Stato dei formati acquistabili subito. Vuoto: Disponibile subito.')
+    torrepulia_shop_sold_out_label = fields.Char('Etichetta shop: esaurito', translate=True,
+        default='Temporaneamente esaurito', help='Stato dei formati esauriti. Vuoto: Temporaneamente esaurito.')
+
     def _torrepulia_format_preorder(self, product):
         """Preorder destination of a format; the request bridge provides the real one."""
+        self.ensure_one()
+        return False
+
+    def _torrepulia_shop_rows_enabled(self):
+        """The shop lists one format per row; a request-only catalogue keeps the native grid."""
+        self.ensure_one()
+        return self.torrepulia_theme_enabled
+
+    def _torrepulia_preorder_season(self):
+        """Open new-oil season as {'url', 'label', 'title', 'text'}, else False; the campaign addon provides it."""
         self.ensure_one()
         return False

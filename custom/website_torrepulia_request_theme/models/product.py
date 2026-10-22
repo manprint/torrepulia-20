@@ -21,3 +21,7 @@ class Website(models.Model):
 
     def _torrepulia_format_preorder(self, product):
         return self._torrepulia_preorder_product_url(product)
+
+    def _torrepulia_shop_rows_enabled(self):
+        # A request-only catalogue keeps the native tiles with their request controls.
+        return super()._torrepulia_shop_rows_enabled() and not self._torrepulia_request_enabled()

@@ -78,6 +78,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="torrepulia_shipping_note"/>
+                <field name="torrepulia_shop_available_label"/>
+                <field name="torrepulia_shop_sold_out_label"/>
             </xpath>
         </field>
     </record>

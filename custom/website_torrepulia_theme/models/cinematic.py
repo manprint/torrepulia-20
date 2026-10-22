@@ -12,6 +12,8 @@ class ProductTemplate(models.Model):
     torrepulia_format_detail = fields.Char('Torrepulia contents')
     torrepulia_unit_count = fields.Integer('Units in provisional composition', default=1)
     torrepulia_composite = fields.Boolean('Provisional composition from single unit')
+    torrepulia_shop_audience = fields.Char('Per chi è questo formato', translate=True,
+        help='Una frase sotto il formato nello shop, per esempio: La scorta di famiglia.')
     torrepulia_format_badge_ids = fields.Many2many(
         'product.tag', 'torrepulia_format_badge_product_rel', 'product_tmpl_id', 'tag_id',
         string='Badge nei formati',

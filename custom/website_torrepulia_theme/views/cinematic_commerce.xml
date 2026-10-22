@@ -150,6 +150,7 @@
                     <group>
                         <field name="torrepulia_format_name"/>
                         <field name="torrepulia_format_detail"/>
+                        <field name="torrepulia_shop_audience"/>
                         <field name="torrepulia_unit_count"/>
                         <field name="torrepulia_composite"/>
                         <field name="torrepulia_format_badge_ids" widget="many2many_tags" options="{'on_tag_click': 'open_form'}"/>

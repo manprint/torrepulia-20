@@ -84,6 +84,75 @@
     .tp-lab-scale { position: relative; display: block; min-width: 6rem; height: 6px; border-radius: 3px; background: var(--tp-line); }
     .tp-lab-scale > span { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--tp-olive); }
 
+    // Shop: the season band, then one format per row with a large photo.
+    .tp-season {
+        display: grid;
+        grid-template-columns: minmax(0, 16rem) minmax(0, 1fr) auto;
+        gap: clamp(1.25rem, 3vw, 2.5rem);
+        align-items: center;
+        margin: .5rem 0 1.5rem;
+        overflow: hidden;
+        border-radius: 4px;
+        background: var(--tp-ink);
+        color: var(--tp-white);
+        --tp-focus: #e3d39d;
+    }
+    .tp-season-photo { display: block; width: 100%; height: 100%; min-height: 9rem; object-fit: cover; }
+    .tp-season-copy { padding-block: 1.25rem; }
+    .tp-season h2 { margin: 0 0 .375rem; color: inherit; font: 400 clamp(1.625rem, 2.4vw, 2rem)/1.15 Caslon, Georgia, serif; }
+    .tp-season p { margin: 0; max-width: 46ch; color: #c9d3cb; font-size: var(--tp-small); line-height: 1.6; }
+    .tp-season-action {
+        margin-right: clamp(1.25rem, 3vw, 2.5rem);
+        background: #f1f3ef; color: var(--tp-ink); border: 0;
+        transition: background-color .16s ease-out;
+        &:hover, &:active { background: var(--tp-white); color: var(--tp-ink); }
+    }
+
+    .tp-shop-rows { margin: 0 0 1rem; padding: 0; list-style: none; border-top: 1px solid var(--tp-line); }
+    .tp-shop-row {
+        display: grid;
+        grid-template-columns: minmax(0, 19rem) minmax(0, 1fr) auto;
+        gap: clamp(1.25rem, 3vw, 3rem);
+        align-items: center;
+        padding-block: 1.75rem;
+        border-bottom: 1px solid var(--tp-line);
+    }
+    .tp-shop-row-photo {
+        position: relative;
+        display: grid;
+        place-items: center;
+        aspect-ratio: 5 / 4;
+        overflow: hidden;
+        border-radius: 4px;
+        background: #f6f6f4;
+        // Product photos are shot on white: multiply lets them sit on the photo ground.
+        .format-image { position: absolute; inset: 6%; width: 88%; height: 88%; max-width: none; object-fit: contain; mix-blend-mode: multiply; transition: transform .4s var(--tp-ease-out, ease-out); }
+        .pack-composition { width: 88%; height: 88%; }
+    }
+    .tp-shop-row:hover .tp-shop-row-photo .format-image { transform: scale(1.03); }
+    .tp-shop-state {
+        display: inline-block;
+        margin-bottom: .75rem;
+        padding: .375rem .5rem;
+        border: 1px solid var(--tp-line);
+        border-radius: var(--tp-control-radius);
+        color: var(--tp-olive);
+        font: 600 .6875rem/1 Manrope, sans-serif;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        &.is-preorder { border-color: #dccf9f; color: var(--tp-gold-text); }
+        &.is-sold-out { color: var(--tp-muted); }
+    }
+    .tp-shop-row h2 { margin: 0 0 .5rem; font: 400 clamp(1.625rem, 2.4vw, 2.125rem)/1.1 Caslon, Georgia, serif; }
+    .tp-shop-row h2 a { color: var(--tp-ink); text-decoration: none; }
+    .tp-shop-row h2 a:hover { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+    .tp-shop-audience { margin: 0; max-width: 44ch; line-height: 1.6; }
+    .tp-shop-unit-price { margin: .5rem 0 0; color: var(--tp-muted); font-size: .875rem; font-variant-numeric: tabular-nums; }
+    .tp-shop-row-action { display: grid; gap: .75rem; justify-items: end; text-align: right; }
+    .tp-shop-price { font-size: 1.375rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tp-shop-row-action .btn { min-width: 10rem; }
+    .tp-shop-page #products_grid > .products_pager:not(:has(.pagination li)) { display: none !important; }
+
     // Three formats need no wishlist; the identity card replaces the native attribute table.
     .o_add_wishlist, .o_add_wishlist_dyn, #product_full_spec { display: none !important; }
 
@@ -99,8 +168,16 @@
         .tp-lab :is(th, td):nth-child(4) { display: none; }
         .tp-lab :is(thead th, .tp-lab-limit, .tp-lab-value) { white-space: normal; }
         .tp-idcard { padding: 1.25rem; }
+        // Each row stacks: photo, copy, price and action.
+        .tp-season { grid-template-columns: minmax(0, 1fr); gap: 0; }
+        .tp-season-photo { aspect-ratio: 16 / 7; min-height: 0; }
+        .tp-season-copy { padding: 1.25rem 1.25rem 1rem; }
+        .tp-season-action { margin: 0 1.25rem 1.25rem; justify-self: start; }
+        .tp-shop-row { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding-block: 1.5rem; }
+        .tp-shop-row-action { grid-template-columns: auto 1fr; align-items: center; justify-items: stretch; text-align: left; }
+        .tp-shop-row-action .btn { min-width: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
-        .tp-format, .o_variant_pills.btn { transition: none; }
+        .tp-format, .o_variant_pills.btn, .tp-shop-row-photo .format-image { transition: none; }
     }
 }

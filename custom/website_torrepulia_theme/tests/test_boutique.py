@@ -1,5 +1,7 @@
 from datetime import date
 
+from lxml import html
+
 from odoo.tests import HttpCase, TransactionCase, tagged
 
 
@@ -38,3 +40,25 @@ class TestBoutiqueProductPage(HttpCase):
         self.assertIn("Carta d'identità dell'olio", page)
         self.assertIn('Raccolto di prova', page)
         self.assertNotIn("Carta d'identità dell'olio", self.url_open(box.website_url).text)
+
+    def test_shop_lists_one_format_per_row_without_search_or_sorting(self):
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        litre = self.env['product.base.unit'].create({'name': 'L'})
+        website.show_product_reference_price = True
+        tin = self.env['product.template'].create({
+            'name': 'Row tin', 'is_published': True, 'website_id': website.id, 'list_price': 69,
+            'torrepulia_format_name': 'Latta 5 L', 'torrepulia_shop_audience': 'La scorta di famiglia.',
+            'base_unit_id': litre.id, 'base_unit_count': 5})
+        page = html.fromstring(self.url_open('/shop').content)
+        rows = [row for row in page.xpath('//li[@class="tp-shop-row"]') if row.xpath('string(.//h2)') == 'Latta 5 L']
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertIn('Disponibile subito', row.text_content())
+        self.assertIn('La scorta di famiglia.', row.text_content())
+        # 69 for 5 L, whatever the test database's language and currency.
+        self.assertRegex(row.xpath('string(.//*[@class="tp-shop-unit-price"])'), r'13[.,]80')
+        self.assertEqual(row.xpath('.//div[@class="tp-shop-row-action"]/a/@href'), [tin.website_url])
+        self.assertFalse(page.xpath('//*[contains(concat(" ", @class, " "), " products_header ")] | //*[@id="o_wsale_products_grid"]'))
+        # Without a seasonal campaign there is no new-oil band.
+        self.assertFalse(page.xpath('//section[@class="tp-season"]'))

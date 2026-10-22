@@ -16,7 +16,7 @@ function fixture(fetch) {
     const context = { Interaction: class {}, registry: { category: () => ({ add() {} }) }, URLSearchParams,
         document: { documentElement: { lang: 'it' } },
         _t: (text, ...values) => text.replace(/%s/g, () => values.shift()), fetch, clearTimeout, setTimeout };
-    runInNewContext(source + '\n globalThis.exports = { campaignCounts, sameCampaignConfiguration, SeasonalCampaign };', context);
+    runInNewContext(source + '\n globalThis.exports = { campaignCounts, campaignAmount, sameCampaignConfiguration, SeasonalCampaign };', context);
     return context.exports;
 }
 
@@ -55,6 +55,14 @@ test('zero, one, multiple and outside products have distinct campaign/request co
         const result = campaignCounts(state, configs);
         assert.deepEqual([result.campaign, result.request, result.other], expected);
     }
+});
+
+test('fixed summary amount covers the page counters and hides when a price is missing', () => {
+    const { campaignAmount } = fixture();
+    const state = { lines: [line(1, 2), line(2, 1), line(99, 5)], quantity: 8 };
+    assert.equal(campaignAmount(state, [{ config: configs[0], price: 69 }, { config: configs[1], price: 13.8 }]), 151.8);
+    assert.equal(campaignAmount({ lines: [], quantity: 0 }, [{ config: configs[0], price: 69 }]), 0);
+    assert.equal(campaignAmount(state, [{ config: configs[0], price: 69 }, { config: configs[1], price: null }]), null);
 });
 
 test('variant, UoM and custom configurations never silently share a quantity control', () => {

@@ -12,6 +12,18 @@ export function campaignCounts(state, configurations) {
     return { campaign, request: state.quantity, other: state.quantity - campaign };
 }
 
+// Products amount of the campaign counters on the page; null when a price is not shown.
+export function campaignAmount(state, choices) {
+    let amount = 0;
+    for (const { config, price } of choices) {
+        const quantity = state.lines.find(line => sameCampaignConfiguration(line, config))?.quantity || 0;
+        if (!quantity) continue;
+        if (price === null) return null;
+        amount += quantity * price;
+    }
+    return Math.round(amount * 100) / 100;
+}
+
 export class SeasonalCampaign extends Interaction {
     static selector = '.tp-campaign';
     editing = false;
@@ -44,6 +56,9 @@ export class SeasonalCampaign extends Interaction {
             if (event.target.closest('[data-campaign-scroll]')) {
                 this.holder.scrollIntoView({ block: 'start' });
             }
+            if (event.target.closest('[data-campaign-dock-go]')) {
+                this.el.querySelector('.tp-campaign-review')?.scrollIntoView({ block: 'start' });
+            }
             if (!this.editing && event.target.closest('[data-campaign-retry]')) {
                 this.perform(() => this.store.retryPending());
             }
@@ -58,6 +73,16 @@ export class SeasonalCampaign extends Interaction {
         const observer = new MutationObserver(() => this.load());
         observer.observe(this.el, { attributes: true, attributeFilter: ['data-campaign', 'data-demo-state'] });
         this.registerCleanup(() => observer.disconnect());
+        const review = this.el.querySelector('.tp-campaign-review');
+        if (!this.editing && review && typeof IntersectionObserver === 'function') {
+            // The dock steps aside once the review form is on screen or already passed.
+            const reviewObserver = new IntersectionObserver(([entry]) => {
+                this.reviewReached = entry.isIntersecting || entry.boundingClientRect.top < 0;
+                this.renderDock();
+            });
+            reviewObserver.observe(review);
+            this.registerCleanup(() => reviewObserver.disconnect());
+        }
         await this.load();
         if (!this.editing) await this.perform(() => this.store.read());
     }
@@ -138,6 +163,25 @@ export class SeasonalCampaign extends Interaction {
         other.textContent = _t('La richiesta comprende anche %s confezioni di altri prodotti o configurazioni. Le ritrovi nel riepilogo qui sotto.', number(counts.other));
         const warning = state.lines.filter(line => line.warning).map(line => line.warning).join(' ');
         this.message(warning);
+        this.renderDock();
+    }
+
+    renderDock() {
+        const dock = this.holder?.querySelector('[data-campaign-dock]');
+        const state = this.store?.state;
+        if (!dock || !state) return;
+        const choices = [...this.holder.querySelectorAll('[data-campaign-config]')].map(choice => ({
+            config: JSON.parse(choice.dataset.campaignConfig),
+            price: choice.dataset.unitPrice ? Number(choice.dataset.unitPrice) : null }));
+        const count = campaignCounts(state, choices.map(choice => choice.config)).campaign;
+        dock.hidden = !this.open || !count || Boolean(this.reviewReached);
+        if (dock.hidden) return;
+        const lang = document.documentElement.lang || 'it';
+        dock.querySelector('[data-campaign-dock-count]').textContent = count === 1
+            ? _t('1 confezione') : _t('%s confezioni', new Intl.NumberFormat(lang).format(count));
+        const amount = campaignAmount(state, choices);
+        dock.querySelector('[data-campaign-dock-total]').textContent = amount !== null && dock.dataset.currency
+            ? new Intl.NumberFormat(lang, { style: 'currency', currency: dock.dataset.currency }).format(amount) : '';
     }
 
     message(text) {

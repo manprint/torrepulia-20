@@ -17,7 +17,12 @@
     </record>
     <template id="review_component" name="Componi e invia la richiesta"><p data-review-status="" role="status">Caricamento della richiesta…</p>
                 <div data-review-error="" role="alert" tabindex="-1" hidden="hidden"/>
-                <div data-review-empty="" hidden="hidden"><h2>La tua richiesta è ancora vuota</h2>
+                <div t-if="campaign_review" data-review-empty="" class="tp-review-empty" hidden="hidden">
+                    <h2>Nessuna confezione scelta</h2>
+                    <p>Scegli le quantità nei formati qui sopra: il riepilogo e i recapiti compaiono qui.</p>
+                    <a href="#tp-campaign-formats" class="btn btn-outline-primary">Torna ai formati</a>
+                </div>
+                <div t-else="" data-review-empty="" hidden="hidden"><h2>La tua richiesta è ancora vuota</h2>
                     <a href="/shop" class="btn btn-primary">Scopri i nostri prodotti</a>
                 </div>
                 <form data-tp-review-form="" data-captcha="website_form" t-att-action="'/torrepulia/campaign/submit' if campaign_review else '/torrepulia/request/submit'" method="post" hidden="hidden" t-att-class="'tp-review-layout tp-review-layout-compact' if campaign_review else 'tp-review-layout'" t-att-data-review-compact="'1' if campaign_review else None">

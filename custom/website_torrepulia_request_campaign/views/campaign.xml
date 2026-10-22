@@ -13,6 +13,12 @@
                 <group><field name="opens_at"/><field name="closes_at"/><field name="delivery_period"/></group></group>
             <field name="introduction" placeholder="Testo editoriale della campagna"/><field name="closed_message"/>
             <group string="Indicazioni commerciali approvate"><field name="shipping_note"/><field name="payment_note"/><field name="price_note"/></group>
+            <group string="Shop durante la campagna">
+                <field name="shop_state_label" placeholder="Raccolto 2026 · in prenotazione"/>
+                <field name="shop_band_title" placeholder="Olio nuovo 2026"/>
+                <field name="shop_band_text" placeholder="Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione."/>
+            </group>
+            <p>I campi vuoti usano il testo indicato, con l'anno di apertura della campagna.</p>
             <p>Seleziona i prodotti filtrati desiderati e trascina le righe per ordinarli. Le varianti sono indipendenti; nessun prodotto viene creato automaticamente.</p>
             <field name="line_ids"><list editable="bottom">
                 <field name="sequence" widget="handle"/><field name="company_id" column_invisible="True"/><field name="website_id" column_invisible="True"/>

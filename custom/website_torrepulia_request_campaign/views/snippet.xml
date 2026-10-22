@@ -13,7 +13,7 @@
     </template>
     <template id="campaign_content" name="Prodotti della campagna">
         <t t-if="campaign and (opened or editing)">
-            <h2 class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
+            <h2 id="tp-campaign-formats" class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
             <p class="tp-campaign-formats-description" t-if="campaign.introduction" t-out="campaign.introduction"/>
             <div class="tp-campaign-benefits-banner">
             <ul class="tp-campaign-benefits" aria-label="La prenotazione in breve">
@@ -24,31 +24,42 @@
             </div>
             <p t-if="editing" class="tp-campaign-demo">Anteprima dimostrativa: nessuna modifica alla richiesta del visitatore.</p>
             <div class="tp-campaign-grid">
-                <article t-foreach="cards" t-as="card" class="tp-campaign-card" t-att-data-campaign-config="card['config']" t-att-data-campaign-editable="'1' if card['can_set'] else '0'">
+                <article t-foreach="cards" t-as="card" class="tp-campaign-card">
                     <a t-att-href="card['product'].website_url" class="tp-campaign-image-link" tabindex="-1" aria-hidden="true">
-                        <img t-att-src="'/web/image/product.product/%s/image_512' % card['product'].id" t-att-alt="card['name']" loading="lazy" class="tp-campaign-product-image"/>
+                        <img t-att-src="'/web/image/product.template/%s/image_512' % card['product'].product_tmpl_id.id" alt="" loading="lazy" class="tp-campaign-product-image"/>
                     </a>
                     <div class="tp-campaign-card-copy">
-                    <h3><a t-att-href="card['product'].website_url" t-out="card['name']"/></h3>
-                    <p t-if="card['content']" class="tp-campaign-pack" t-out="card['content']"/>
-                    <p t-if="card['description']" t-out="card['description']"/>
-                    <div t-if="card['price']" class="product_price tp-campaign-price"><span t-out="card['price']"/>
-                        <small t-if="card['reference_price']"><span t-out="card['reference_price']"/> / <span t-out="card['reference_unit']"/></small>
-                    </div>
-                    <div t-if="card['can_set']" class="tp-campaign-quantity-label">
-                        <span>Confezioni</span>
-                        <div class="tp-quantity-stepper">
-                            <button type="button" data-campaign-step="-1" t-att-aria-label="'Riduci quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None">−</button>
-                            <input type="number" value="0" min="0" step="1" class="tp-campaign-quantity" inputmode="numeric" t-att-aria-label="'Quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None"/>
-                            <button type="button" data-campaign-step="1" t-att-aria-label="'Aumenta quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None">+</button>
+                        <h3><a t-att-href="card['product'].website_url" t-out="card['name']"/></h3>
+                        <p t-if="card['content']" class="tp-campaign-pack" t-out="card['content']"/>
+                        <p t-if="card['description']" class="tp-campaign-description" t-out="card['description']"/>
+                        <p t-if="card['price'] and card['same_price']" class="product_price tp-campaign-price"><span t-out="card['price']"/>
+                            <small t-if="card['reference_price']"><span t-out="card['reference_price']"/> / <span t-out="card['reference_unit']"/></small>
+                        </p>
+                        <div class="tp-campaign-choices" role="group" t-att-aria-label="'Confezioni di %s' % card['name']">
+                            <div t-foreach="card['choices']" t-as="choice" class="tp-campaign-choice" t-att-data-campaign-config="choice['config']"
+                                 t-att-data-campaign-editable="'1' if choice['can_set'] else '0'" t-att-data-unit-price="choice['unit_price']">
+                                <t t-set="choice_name" t-value="'%s, %s' % (card['name'], choice['label']) if choice['label'] else card['name']"/>
+                                <span class="tp-campaign-choice-label"><t t-out="choice['label'] or 'Confezioni'"/>
+                                    <small t-if="choice['price'] and not card['same_price']" t-out="choice['price']"/>
+                                </span>
+                                <div t-if="choice['can_set']" class="tp-quantity-stepper">
+                                    <button type="button" data-campaign-step="-1" t-att-aria-label="'Riduci quantità di %s' % choice_name" t-att-disabled="'disabled' if editing else None">−</button>
+                                    <input type="number" value="0" min="0" step="1" class="tp-campaign-quantity" inputmode="numeric" t-att-aria-label="'Quantità di %s' % choice_name" t-att-disabled="'disabled' if editing else None"/>
+                                    <button type="button" data-campaign-step="1" t-att-aria-label="'Aumenta quantità di %s' % choice_name" t-att-disabled="'disabled' if editing else None">+</button>
+                                </div>
+                                <a t-else="" t-att-href="choice['product'].website_url" class="btn btn-outline-primary">Scegli la configurazione</a>
+                            </div>
                         </div>
-                    </div>
-                    <a t-else="" t-att-href="card['product'].website_url" class="btn btn-outline-primary">Scegli la configurazione del prodotto</a>
-
                     </div>
                 </article>
             </div>
             <p t-if="not cards">Il gestore sta preparando i formati di questa campagna. Puoi scegliere dal <a href="/shop">catalogo</a>.</p>
+            <!-- Phones: the selection stays in view until the visitor reaches the review form. -->
+            <div t-if="cards and not editing" class="tp-campaign-dock" data-campaign-dock="" hidden="hidden"
+                 t-att-data-currency="cards[0].get('currency')">
+                <p><strong data-campaign-dock-count=""/> <span data-campaign-dock-total=""/></p>
+                <button type="button" class="btn btn-primary" data-campaign-dock-go="">Completa la prenotazione</button>
+            </div>
         </t>
         <t t-else="">
             <h2>Campagna non aperta</h2>

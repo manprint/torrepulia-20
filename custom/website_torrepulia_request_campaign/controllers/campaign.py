@@ -79,6 +79,7 @@ class SeasonalCampaign(http.Controller):
             by_id = {product.id: product for product in products}
             configurations = [{'product_id': product.id, 'uom_id': product.uom_id.id} for product in products]
         if campaign and (opened or editing):
+            by_template = {}
             for line in campaign.line_ids.sorted(lambda row: (row.sequence, row.id)):
                 product = by_id.get(line.product_id.id)
                 if not product:
@@ -87,21 +88,35 @@ class SeasonalCampaign(http.Controller):
                 can_set = (template.type != 'combo' and
                            not template.valid_product_template_attribute_line_ids.filtered(
                                lambda attr: attr.attribute_id.create_variant == 'no_variant'))
-                card = {'product': product, 'name': product.with_context(display_default_code=False).display_name,
-                        'content': line.content or template.torrepulia_format_detail,
-                        'description': line.description or product.description_sale or '',
-                        'config': json.dumps({'product_id': product.id, 'uom_id': product.uom_id.id}),
-                        'can_set': can_set, 'price': None, 'reference_price': None, 'reference_unit': ''}
+                # One card per format; each campaign variant (Filtrato, Non filtrato) is a counter in it.
+                card = by_template.get(template.id)
+                if not card:
+                    card = by_template[template.id] = {
+                        'product': product, 'name': template.torrepulia_format_name or template.name,
+                        'content': line.content or template.torrepulia_shop_audience or '',
+                        'description': line.description or '',
+                        'price': None, 'reference_price': None, 'reference_unit': '', 'choices': []}
+                    cards.append(card)
+                choice = {'product': product, 'label': ', '.join(product.product_template_attribute_value_ids.mapped('name')),
+                          'config': json.dumps({'product_id': product.id, 'uom_id': product.uom_id.id}),
+                          'can_set': can_set, 'unit_price': None, 'price': None}
                 if website._torrepulia_request_prices_visible() and not editing:
                     info = template._get_combination_info(combination=product.product_template_attribute_value_ids,
                         product_id=product.id, add_qty=1, pricelist=request.pricelist, fiscal_position=request.fiscal_position)
                     if not info.get('hide_price'):
                         currency = info['currency']
-                        card['price'] = format_amount(request.env, info['price'], currency)
-                        if info.get('base_unit_price') and info.get('base_unit_name'):
-                            card['reference_price'] = format_amount(request.env, info['base_unit_price'], currency)
-                            card['reference_unit'] = info['base_unit_name']
-                cards.append(card)
+                        choice['unit_price'] = info['price']
+                        choice['price'] = format_amount(request.env, info['price'], currency)
+                        card['currency'] = currency.name
+                        if not card['price']:
+                            card['price'] = choice['price']
+                            if info.get('base_unit_price') and info.get('base_unit_name'):
+                                card['reference_price'] = format_amount(request.env, info['base_unit_price'], currency)
+                                card['reference_unit'] = info['base_unit_name']
+                card['choices'].append(choice)
+            for card in cards:
+                # A single price for the format unless its variants are priced differently.
+                card['same_price'] = len({choice['price'] for choice in card['choices']}) == 1
         values = {'campaign': campaign, 'cards': cards, 'opened': opened, 'editing': editing,
                   'summary_url': website._torrepulia_request_url(), 'website': website}
         rendered = request.env['ir.ui.view']._render_template('website_torrepulia_request_campaign.campaign_content', values)

@@ -25,6 +25,12 @@ class Campaign(models.Model):
     closed_message = fields.Text('Messaggio campagna chiusa', required=True, translate=True,
         default='La campagna non è aperta. Puoi continuare a scegliere i prodotti dal catalogo.')
     line_ids = fields.One2many('torrepulia.request.campaign.line', 'campaign_id', string='Prodotti e varianti')
+    shop_state_label = fields.Char('Etichetta dei formati in prenotazione', translate=True,
+        help="Stato dei formati della campagna nello shop. Vuoto: Raccolto <anno> · in prenotazione.")
+    shop_band_title = fields.Char('Titolo della fascia nello shop', translate=True,
+        help='Vuoto: Olio nuovo <anno>.')
+    shop_band_text = fields.Char('Testo della fascia nello shop', translate=True,
+        help='Vuoto: Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione.')
 
     _unique_reference = models.Constraint('UNIQUE(website_id, reference)', 'Il riferimento deve essere univoco per website.')
 
@@ -101,6 +107,18 @@ class Website(models.Model):
         if product._name == 'product.template':
             return url if product.id in products.product_tmpl_id.ids else False
         return url if product.id in products.ids else False
+
+    def _torrepulia_preorder_season(self):
+        """Shop band of the open default campaign, hybrid mode only."""
+        self.ensure_one()
+        if self._torrepulia_request_enabled() or not (url := self._request_preorder_url()):
+            return False
+        campaign = self._public_request_campaign()
+        year = (campaign.opens_at or fields.Datetime.now()).year
+        return {'url': url,
+                'label': campaign.shop_state_label or _('Raccolto %s · in prenotazione', year),
+                'title': campaign.shop_band_title or _('Olio nuovo %s', year),
+                'text': campaign.shop_band_text or _('Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione.')}
 
     def _public_request_campaign(self, campaign_id=None):
         """Only a website/company scoped editorial projection; no public model ACL.

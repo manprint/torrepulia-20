@@ -102,19 +102,71 @@ class TestHybridMode(HttpCase):
             'website_id': self.website.id, 'is_storable': True, 'allow_out_of_stock_order': False, 'list_price': 12})
         self.assertIn('o_wsale_my_cart', self.url_open('/shop').text)
         tree = html.fromstring(self.url_open('/shop').content)
-        # Tile action of the campaign product; sold-out stock tiles carry the notice link instead.
-        links = tree.xpath('//div[contains(@class, "tp-request-action-row")]/a[contains(@class, "tp-request-preorder-link")]/@href')
-        self.assertEqual(links, ['/prenotailtuoolio'])
-        self.assertFalse(tree.xpath('//*[@data-product-template-id="%s"][@name="add_to_cart"]' % self.seasonal.product_tmpl_id.id))
-        notices = tree.xpath('//div[contains(@class, "tp-request-action-row")]/div[@class="tp-request-stock-message"]')
-        self.assertTrue(notices)
-        self.assertEqual(notices[0].xpath('.//a[contains(@class, "tp-request-preorder-link")]/@href'), ['/prenotailtuoolio'])
-        self.assertFalse(tree.xpath('//*[contains(@class, "tp-request-tile-add")]'))
+        # One row per format: the state label and the single action follow stock and campaign.
+        rows = {row.xpath('string(.//h2)').strip(): row for row in tree.xpath('//li[@class="tp-shop-row"]')}
+        year = str(self.campaign.opens_at.year if self.campaign.opens_at else fields.Datetime.now().year)
+        seasonal = rows['Hybrid new harvest']
+        self.assertEqual(seasonal.xpath('string(.//*[contains(@class, "tp-shop-state")])').split(),
+                         ['Raccolto', year, '·', 'in', 'prenotazione'])
+        self.assertEqual(seasonal.xpath('.//div[@class="tp-shop-row-action"]/a/@href'), ['/prenotailtuoolio'])
+        stock = rows['Hybrid stock bottle']
+        self.assertIn('Disponibile subito', stock.text_content())
+        self.assertEqual(stock.xpath('.//div[@class="tp-shop-row-action"]/a/@href'),
+                         [self.stock.product_tmpl_id.website_url])
+        sold_out = rows['Hybrid sold-out stock']
+        self.assertIn('Temporaneamente esaurito', sold_out.text_content())
+        self.assertEqual(sold_out.xpath('.//div[@class="tp-shop-row-action"]/a/@href'), ['/prenotailtuoolio'])
+        # The new oil opens the page; search, sorting and wishlist are gone.
+        band = tree.xpath('//section[@class="tp-season"]')
+        self.assertEqual(band[0].xpath('string(.//h2)').split(), ['Olio', 'nuovo', year])
+        self.assertFalse(tree.xpath('//*[contains(concat(" ", @class, " "), " products_header ")] | //*[@id="o_wsale_products_grid"]'))
+        self.assertFalse(tree.xpath('//*[contains(@class, "o_add_wishlist")]'))
         seasonal = html.fromstring(self.url_open(self.seasonal.product_tmpl_id.website_url).content)
         self.assertTrue(seasonal.xpath('//*[@class="tp-preorder-cta"]//a[@href="/prenotailtuoolio"]'))
         stock = html.fromstring(self.url_open(self.stock.product_tmpl_id.website_url).content)
         self.assertFalse(stock.xpath('//*[@class="tp-preorder-cta"]'))
         self.assertTrue(stock.xpath('//button[@name="add_to_cart"]'))
+        # Every label can be rewritten: seasonal ones on the campaign, the others on the website.
+        self.campaign.write({'shop_state_label': 'Olio nuovo, consegna a novembre',
+                             'shop_band_title': 'La nuova annata', 'shop_band_text': ''})
+        self.website.write({'torrepulia_shop_available_label': 'Pronta in cantina',
+                            'torrepulia_shop_sold_out_label': 'Finita per ora'})
+        tree = html.fromstring(self.url_open('/shop').content)
+        states = {row.xpath('string(.//h2)').strip(): row.xpath('string(.//*[contains(@class, "tp-shop-state")])')
+                  for row in tree.xpath('//li[@class="tp-shop-row"]')}
+        self.assertEqual(states['Hybrid new harvest'], 'Olio nuovo, consegna a novembre')
+        self.assertEqual(states['Hybrid stock bottle'], 'Pronta in cantina')
+        self.assertEqual(states['Hybrid sold-out stock'], 'Finita per ora')
+        self.assertEqual(tree.xpath('string(//section[@class="tp-season"]//h2)'), 'La nuova annata')
+        self.assertIn('Lo moliamo e lo spediamo entro 48 ore', tree.xpath('string(//section[@class="tp-season"]//p)'))
+        # Out of season the band goes away.
+        self.campaign.state = 'closed'
+        self.assertFalse(html.fromstring(self.url_open('/shop').content).xpath('//section[@class="tp-season"]'))
+
+    def test_preorder_page_groups_filtration_counters_in_one_card(self):
+        attribute = self.env['product.attribute'].create({'name': 'Filtrazione prova', 'value_ids': [
+            fields.Command.create({'name': 'Filtrato'}), fields.Command.create({'name': 'Non filtrato'})]})
+        tin = self.env['product.template'].create({
+            'name': 'Hybrid tin', 'is_published': True, 'website_id': self.website.id, 'list_price': 69,
+            'torrepulia_format_name': 'Latta 5 L', 'torrepulia_shop_audience': 'La scorta di famiglia.',
+            'attribute_line_ids': [fields.Command.create({'attribute_id': attribute.id,
+                                                          'value_ids': [fields.Command.set(attribute.value_ids.ids)]})]})
+        self.campaign.line_ids = [fields.Command.create({'product_id': variant.id}) for variant in tin.product_variant_ids]
+        tree = html.fromstring(self.url_open('/torrepulia/campaign/content').json()['html'])
+        cards = tree.xpath('//article[@class="tp-campaign-card"]')
+        self.assertEqual([card.xpath('string(.//h3)') for card in cards], ['Hybrid new harvest', 'Latta 5 L'])
+        choices = cards[1].xpath('.//*[@data-campaign-config]')
+        self.assertEqual([json.loads(choice.get('data-campaign-config'))['product_id'] for choice in choices],
+                         tin.product_variant_ids.ids)
+        self.assertEqual([choice.xpath('string(.//*[@class="tp-campaign-choice-label"])').strip() for choice in choices],
+                         ['Filtrato', 'Non filtrato'])
+        self.assertEqual([float(choice.get('data-unit-price')) for choice in choices], [69.0, 69.0])
+        self.assertIn('La scorta di famiglia.', cards[1].text_content())
+        self.assertTrue(tree.xpath('//*[@data-campaign-dock]//button[@data-campaign-dock-go]'))
+        # An empty selection keeps the visitor on the page, pointing back to the formats.
+        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-formats'])
+        form = html.fromstring(self.url_open('/torrepulia/request/form?layout=campaign').content)
+        self.assertEqual(form.xpath('//*[@data-review-empty]//a/@href'), ['#tp-campaign-formats'])
 
     def test_campaign_submission_creates_opportunity_without_order(self):
         state = self.update('set_configuration', self.seasonal, 2).json()['state']
