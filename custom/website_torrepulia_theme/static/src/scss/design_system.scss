@@ -87,3 +87,40 @@
         .footer-top { min-width: 0; flex-wrap: wrap; gap: 24px; }
     }
 }
+
+// Storefront legibility (audit 22/10/2026).
+.tp-site.tp-cinematic {
+    // Native ribbons keep their configured names, not their configured colours:
+    // one quiet label in the brand palette, readable on every product photo.
+    :is(.o_wsale_ribbon, .o_wsale_badge, .mc-format-ribbon) {
+        color: var(--tp-olive) !important;
+        background: var(--tp-white) !important;
+        border: 1px solid var(--tp-line);
+        border-radius: var(--tp-control-radius) !important;
+        width: auto;
+        padding: .375rem .625rem;
+        font: 600 .6875rem/1.2 Manrope, sans-serif;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    .o_wsale_ribbon:is(.o_left, .o_right) { top: .75rem; transform: none; }
+    .o_wsale_ribbon.o_left { left: .75rem; }
+    .o_wsale_ribbon.o_right { right: .75rem; left: auto; }
+
+    // Standalone text links: a 44px hit area without moving the surrounding layout.
+    :is(.hero-bottom a, .o_wsale_products_item_title a, .breadcrumb-item a, .tp-text-link) {
+        padding-block: .6875rem;
+        margin-block: -.6875rem;
+    }
+    .s_website_form input[type='checkbox'] { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; accent-color: var(--tp-olive); }
+
+    // Title set on the brightest part of the landscape photo.
+    .tp-landscape::before {
+        background: linear-gradient(to top, rgba(15, 34, 22, .72), rgba(15, 34, 22, .32) 55%, rgba(15, 34, 22, .12));
+    }
+
+    @media (max-width: 760px) {
+        // The details column has no gutter of its own inside the -15px row.
+        #product_detail_main > #product_details { padding-inline: 15px; }
+    }
+}

@@ -80,6 +80,17 @@
             </div>
         </xpath>
     </template>
+    <template id="product_breadcrumb_icons" inherit_id="website_sale.product" name="Decorative breadcrumb icons">
+        <!-- The chevron repeats the link text; screen readers should not announce an unnamed image. -->
+        <xpath expr="//li[hasclass('d-lg-none')]//i[@data-icon='chevron_backward']" position="attributes">
+            <attribute name="role"/>
+            <attribute name="aria-hidden">true</attribute>
+        </xpath>
+        <xpath expr="//li[hasclass('d-none')]//i[@data-icon='chevron_backward']" position="attributes">
+            <attribute name="role"/>
+            <attribute name="aria-hidden">true</attribute>
+        </xpath>
+    </template>
     <template id="cinematic_shop_pack" inherit_id="website_sale.product_image_and_ribbon" name="Native shop provisional pack composition">
         <xpath expr="//span[hasclass('oe_product_image_img_wrapper_primary')]" position="replace">
             <div t-if="website.torrepulia_theme_enabled and product.torrepulia_composite" class="mc-commerce-composition mc-tile-composition"><t t-set="p" t-value="product"/><t t-call="website_torrepulia_theme.cinematic_pack"/></div>
