@@ -169,6 +169,9 @@ jobs:
     env:
       VM_HOST: 212.227.88.91
       VM_USER: ubuntu
+      DB_NAME: torrepulia
+      # -u agisce solo sui moduli gia' installati: gli altri vengono ignorati
+      UPGRADE_MODULES: website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign
     steps:
       - name: Configure SSH
         env:
@@ -183,16 +186,43 @@ jobs:
       - name: Compose up on VM (dind-to20)
         run: |
           ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes "$VM_USER@$VM_HOST" 'bash -s' <<'REMOTE'
+            -o StrictHostKeyChecking=yes "$VM_USER@$VM_HOST" \
+            "DB_NAME=$DB_NAME UPGRADE_MODULES=$UPGRADE_MODULES bash -s" <<'REMOTE'
           set -euo pipefail
           dc() { docker exec -u alpine -w /home/alpine/docker dind-to20 docker compose "$@"; }
           dk() { docker exec -u alpine dind-to20 docker "$@"; }
           # Immagine in esecuzione vs immagine appena scaricata per il servizio odoo
           odoo_image() { dk inspect "$(dc ps -q odoo)" --format '{{.Image}} avviato {{.State.StartedAt}}'; }
-          START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
-          echo "::group::docker compose up -d (pull always)"
+          echo "::group::Pull immagine"
           echo "Odoo prima: $(odoo_image 2>/dev/null || echo n/d)"
+          dc pull odoo
+          echo "::endgroup::"
+
+          echo "::group::Backup DB $DB_NAME"
+          backups="$HOME/backups/$DB_NAME"
+          mkdir -p "$backups"
+          dump="$backups/$DB_NAME-$(date -u +%Y%m%dT%H%M%SZ).dump"
+          dc exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -Fc "$1"' sh "$DB_NAME" > "$dump"
+          [ -s "$dump" ] || { echo "::error::backup vuoto: $dump"; exit 1; }
+          echo "Backup: $dump ($(du -h "$dump" | cut -f1))"
+          ls -1t "$backups"/*.dump | tail -n +11 | xargs -r rm --
+          echo "::endgroup::"
+
+          echo "::group::Upgrade moduli: $UPGRADE_MODULES"
+          dc stop odoo
+          if ! out=$(dc run --rm --no-deps -T odoo -d "$DB_NAME" -u "$UPGRADE_MODULES" --stop-after-init 2>&1) \
+              || grep -qE 'CRITICAL|Traceback' <<<"$out"; then
+            echo "$out" | tail -n 150
+            echo "::error::upgrade fallito; ripristino possibile da $dump"
+            dc up -d
+            exit 1
+          fi
+          echo "$out" | grep -E 'loading|Modules loaded|Registry loaded' | tail -n 10
+          echo "::endgroup::"
+
+          START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "::group::docker compose up -d"
           dc up -d
           tag=$(dk inspect "$(dc ps -q odoo)" --format '{{.Config.Image}}')
           want=$(dk image inspect "$tag" --format '{{.Id}}')
