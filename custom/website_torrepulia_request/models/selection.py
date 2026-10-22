@@ -45,7 +45,7 @@ class Website(models.Model):
             return draft._selection_state(self)
         return {
             'website_id': self.id,
-            'enabled': self._torrepulia_request_enabled() and self.has_ecommerce_access(),
+            'enabled': self._torrepulia_selection_enabled() and self.has_ecommerce_access(),
             'selection_id': None, 'revision': 0, 'lines': [], 'line_count': 0, 'quantity': 0,
             'summary_url': self._torrepulia_request_url(),
             'show_prices': self._torrepulia_request_prices_visible(),
@@ -56,9 +56,12 @@ class Website(models.Model):
     def _request_selection_apply(self, session, payload):
         """Only the current visitor website and real server session may be passed here."""
         self.ensure_one()
-        if not self._torrepulia_request_enabled() or not self.has_ecommerce_access():
+        if not self._torrepulia_selection_enabled() or not self.has_ecommerce_access():
             raise AccessError(_('La selezione richieste non è disponibile.'))
         operation, fingerprint = self.env['torrepulia.request']._validate_selection_payload(payload)
+        if operation == 'add' and not self._torrepulia_request_enabled():
+            # Hybrid mode: catalogue additions belong to the native cart.
+            raise AccessError(_('Aggiungi il prodotto al carrello per acquistarlo.'))
         draft = self._torrepulia_session_request(session, create=True)
         if not draft:
             return {'ok': False, 'code': 'conflict', 'state': self._request_selection_state(session)}

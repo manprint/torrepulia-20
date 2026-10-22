@@ -164,7 +164,7 @@ class Website(models.Model):
 
     def _request_receipt(self, review_digest, selection_id=None, *, submission=False):
         self.ensure_one()
-        if not self._torrepulia_request_enabled() or not self.has_ecommerce_access():
+        if not self._torrepulia_selection_enabled() or not self.has_ecommerce_access():
             return self.env['torrepulia.request']
         if not isinstance(review_digest, str) or not re.fullmatch(r'[0-9a-f]{64}', review_digest):
             return self.env['torrepulia.request']

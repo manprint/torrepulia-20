@@ -13,6 +13,7 @@ class Website(models.Model):
 
     torrepulia_commercial_mode = fields.Selection([
         ('shop', 'Acquisto online standard'), ('request', 'Richiesta di preventivo'),
+        ('hybrid', 'Acquisto online + prenotazione stagionale'),
     ], required=True, default='shop')
     torrepulia_request_show_prices = fields.Boolean('Mostra prezzi nelle richieste', default=True)
     torrepulia_request_team_id = fields.Many2one('crm.team', string='Team destinatario')
@@ -30,7 +31,7 @@ class Website(models.Model):
     def _check_torrepulia_request_settings(self):
         for site in self:
             team, user = site.torrepulia_request_team_id, site.torrepulia_request_user_id
-            if site.torrepulia_commercial_mode == 'request' and not team:
+            if site.torrepulia_commercial_mode in ('request', 'hybrid') and not team:
                 raise ValidationError(_('Scegliere un team destinatario per le richieste.'))
             if team and (not team.active or team.company_id and team.company_id != site.company_id):
                 raise ValidationError(_('Il team deve essere attivo e appartenere all’azienda del website.'))
@@ -52,8 +53,30 @@ class Website(models.Model):
         return self.torrepulia_request_summary_url
 
     def _torrepulia_request_enabled(self):
+        """Whole catalogue collected as requests: cart and checkout are suspended."""
         self.ensure_one()
         return self.torrepulia_commercial_mode == 'request'
+
+    def _torrepulia_selection_enabled(self):
+        """Private selection, review and CRM submission are available.
+
+        In hybrid mode the native shop keeps its checkout and only seasonal
+        preorders use the selection.
+        """
+        self.ensure_one()
+        return self.torrepulia_commercial_mode in ('request', 'hybrid')
+
+    def _torrepulia_preorder_product_url(self, product):
+        """Hybrid-mode preorder destination for a product or variant, else False.
+
+        The base addon knows no seasonal campaign; the campaign addon overrides it.
+        """
+        self.ensure_one()
+        return False
+
+    def _torrepulia_selection_allows(self, product):
+        self.ensure_one()
+        return self._torrepulia_request_enabled() or bool(self._torrepulia_preorder_product_url(product))
 
     def _torrepulia_request_prices_visible(self):
         self.ensure_one()
@@ -74,7 +97,7 @@ class Website(models.Model):
         No contact, lead, cart or order is created here.
         """
         self.ensure_one()
-        if not self._torrepulia_request_enabled() or not self.has_ecommerce_access():
+        if not self._torrepulia_selection_enabled() or not self.has_ecommerce_access():
             return self.env['torrepulia.request']
         key = 'torrepulia_request_%s' % self.id
         token = session.get(key)

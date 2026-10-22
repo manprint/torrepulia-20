@@ -225,3 +225,15 @@ Non richiede altre migrazioni dei contenuti: il banner viene renderizzato a
 runtime; gli stili della hero si applicano anche ai blocchi già salvati.
 Copy, prodotti e personalizzazioni editoriali restano quelli configurati.
 [Report e screenshot](../../docs/qa-20261021-seasonal-banner/REPORT.md).
+
+
+## Modalità mista — 22/10/2026, versione 20.0.1.6.0
+
+La vetrina si apre in modalità `request` e nella nuova modalità mista `hybrid`.
+In modalità mista `_torrepulia_preorder_product_url()` restituisce
+`/prenotailtuoolio` per i prodotti e le varianti della campagna predefinita aperta:
+il catalogo mostra «Prenota» al posto dell'aggiunta al carrello e la selezione
+accetta solo quelle configurazioni. Chiusa la campagna, i prodotti tornano al
+comportamento nativo e le bozze già composte non sono più inviabili.
+`_request_preorder_url()` restituisce un collegamento solo quando il website usa
+una modalità con selezione attiva. Test: `tests/test_hybrid.py`.

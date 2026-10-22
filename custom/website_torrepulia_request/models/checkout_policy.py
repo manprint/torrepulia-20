@@ -135,9 +135,21 @@ class SaleOrder(models.Model):
         if self._torrepulia_suspended_catalog_carts():
             raise ValidationError(_('Il checkout del carrello è sospeso. Rivolgiti al commerciale per un preventivo.'))
 
-    def _cart_add(self, *args, **kwargs):
+    def _torrepulia_preorder_carts(self):
+        # Hybrid mode: seasonal products are reserved, never paid through the cart.
+        return self.filtered(lambda order: order.state in ('draft', 'sent') and order.website_id
+            and not order.torrepulia_request_id and any(
+                order.website_id._torrepulia_preorder_product_url(product) for product in order.order_line.product_id))
+
+    def _torrepulia_check_preorder_checkout(self):
+        if self._torrepulia_preorder_carts():
+            raise ValidationError(_('Il carrello contiene olio del nuovo raccolto: rimuovilo e prenotalo dalla pagina dedicata.'))
+
+    def _cart_add(self, product_id, *args, **kwargs):
         self._torrepulia_check_cart_checkout()
-        return super()._cart_add(*args, **kwargs)
+        if self.website_id and self.website_id._torrepulia_preorder_product_url(self.env['product.product'].browse(product_id)):
+            raise ValidationError(_('Questo olio è in prenotazione: completala dalla pagina del nuovo raccolto.'))
+        return super()._cart_add(product_id, *args, **kwargs)
 
     def _cart_update_line_quantity(self, *args, **kwargs):
         self._torrepulia_check_cart_checkout()
@@ -145,6 +157,7 @@ class SaleOrder(models.Model):
 
     def _validate_order(self):
         self._torrepulia_check_cart_checkout()
+        self._torrepulia_check_preorder_checkout()
         return super()._validate_order()
 
     def action_recovery_email_send(self):
@@ -169,4 +182,5 @@ class PaymentTransaction(models.Model):
             # Native controllers already verify document tokens and construct
             # links; check the actual order before any charge/processing call.
             transactions.sale_order_ids._torrepulia_check_cart_checkout()
+            transactions.sale_order_ids._torrepulia_check_preorder_checkout()
         return transactions

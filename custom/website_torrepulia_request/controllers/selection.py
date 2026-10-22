@@ -11,7 +11,7 @@ class RequestSelection(http.Controller):
     def _website(self):
         website = request.env.website
         key = 'torrepulia_request_%s' % website.id
-        if not request.session.get(key) and website._torrepulia_request_enabled() and website.has_ecommerce_access():
+        if not request.session.get(key) and website._torrepulia_selection_enabled() and website.has_ecommerce_access():
             # Same established session in parallel tabs starts with the same
             # capability. Login rotates sid but preserves this server-side value.
             secret = request.env['ir.config_parameter'].sudo().get_str('database.secret')

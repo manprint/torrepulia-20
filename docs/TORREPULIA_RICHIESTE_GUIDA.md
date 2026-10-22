@@ -35,6 +35,23 @@ Il collaudo e i limiti dell'ambiente sono nella [matrice](TORREPULIA_RICHIESTE_C
    può aprirli con **Esamina carrelli**. Controllare anche eventuali transazioni
    già avviate e email di recupero già nella coda nativa Odoo.
 
+## Modalità mista: scorte online e olio nuovo in prenotazione
+
+Per vendere subito le scorte di magazzino e raccogliere prenotazioni del nuovo
+raccolto, scegliere **Acquisto online + prenotazione stagionale** come modalità
+commerciale (serve comunque il team destinatario).
+
+- Le scorte si comprano con carrello, checkout e pagamento online standard.
+  Configurare metodi di pagamento e spedizioni nelle impostazioni eCommerce.
+- I prodotti inseriti nella campagna aperta mostrano **Prenota** e portano a
+  `/prenotailtuoolio`: non possono essere messi nel carrello né pagati online.
+  La prenotazione crea l'opportunità CRM come nella modalità richiesta.
+- I prodotti a magazzino esauriti invitano a prenotare l'olio nuovo finché la
+  campagna è aperta. Chiusa la campagna, tutto torna al comportamento standard.
+- Per non confondere scorte e nuovo raccolto, gestire l'olio nuovo con prodotti
+  distinti (per esempio con l'anno del raccolto nel nome) e inserire solo quelli
+  nella campagna.
+
 ## Prodotti e campagne
 
 1. Preparare nel catalogo Odoo i prodotti e le varianti reali, pubblicandoli nel

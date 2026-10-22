@@ -50,7 +50,7 @@ class RequestCommerce(RequestSelection):
     @http.route('/la-tua-richiesta', type='http', auth='public', website=True, methods=['GET'], sitemap=False)
     def summary(self, **kwargs):
         website = request.env.website
-        if not website._torrepulia_request_enabled():
+        if not website._torrepulia_selection_enabled():
             return request.env['ir.http']._serve_page() or request.not_found()
         return request.render('website_torrepulia_request.selection_summary')
 

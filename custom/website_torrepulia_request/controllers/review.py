@@ -15,7 +15,7 @@ class RequestReview(RequestCommerce):
                 methods=['GET'], sitemap=False)
     def request_form(self, layout=None, **kwargs):
         website = self._website()
-        if not website._torrepulia_request_enabled():
+        if not website._torrepulia_selection_enabled():
             return request.not_found()
         partner = website._torrepulia_request_partner()
         prefill = {'contact_name': partner.name or '', 'email': partner.email or '',
@@ -44,7 +44,7 @@ class RequestReview(RequestCommerce):
     @http.route()
     def summary(self, **kwargs):
         website = self._website()
-        if not website._torrepulia_request_enabled():
+        if not website._torrepulia_selection_enabled():
             return super().summary(**kwargs)
         self._review_digest()
         partner = website._torrepulia_request_partner()

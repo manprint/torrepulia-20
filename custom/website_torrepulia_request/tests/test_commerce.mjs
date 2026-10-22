@@ -99,6 +99,20 @@ test('stock-zero combination preserves native hiding and quantity bound', async 
     assert.equal(input.dataset.tpRequestStockMax, '0');
 });
 
+test('hybrid shop keeps native quantities and hides notify beside the seasonal preorder', async () => {
+    const f = fixture(); f.document.body.dataset.tpRequestMode = '0';
+    const input = { value: '3', dataset: {} };
+    const notify = { classList: { added: [], add(name) { this.added.push(name); } } };
+    const parent = { querySelector: selector => selector === '#out_of_stock_buttons_wrapper' ? notify : input };
+    const page = new f.ProductPage(); page.services = { 'torrepulia.request': f.store };
+    await page._onChangeCombination({}, parent, { is_storable: true, free_qty: 0, allow_out_of_stock_order: false,
+        tp_request_stock_notice: { preorder_url: '/prenotailtuoolio' } });
+    assert.deepEqual(notify.classList.added, ['d-none']);
+    assert.equal(input.dataset.tpRequestStockMax, undefined);
+    await page._onChangeCombination({}, parent, { is_storable: true, free_qty: 4, allow_out_of_stock_order: false });
+    assert.deepEqual(notify.classList.added, ['d-none']);
+});
+
 test('sell when exhausted retains selected quantity and request limits', async () => {
     const f = fixture();
     const input = { value: '3', dataset: {} };

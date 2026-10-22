@@ -78,21 +78,28 @@ patch(CartService.prototype, {
     },
 });
 
+function hideStockNotification(parent, combination) {
+    // Native stock policy controls the shop. Seasonal preorders use their
+    // separate set_configuration path and never this product-page interaction.
+    if (combination.tp_request_stock_notice?.preorder_url && combination.is_storable
+            && !combination.allow_out_of_stock_order && combination.free_qty < 1) {
+        // Avoid a second primary action alongside the seasonal preorder.
+        parent.querySelector('#out_of_stock_buttons_wrapper')?.classList.add('d-none');
+    }
+}
+
 patch(ProductPage.prototype, {
     async _onChangeCombination(event, parent, combination, images) {
         if (!requestMode()) {
-            return super._onChangeCombination(...arguments);
+            // Standard or hybrid shop: native cart, plus the seasonal link when sold out.
+            const result = await super._onChangeCombination(...arguments);
+            hideStockNotification(parent, combination);
+            return result;
         }
         const input = parent.querySelector('input[name="add_qty"]');
         const desired = input?.value;
         await super._onChangeCombination(...arguments);
-        // Native stock policy controls the shop. Seasonal preorders use their
-        // separate set_configuration path and never this product-page interaction.
-        if (combination.tp_request_stock_notice?.preorder_url && combination.is_storable
-                && !combination.allow_out_of_stock_order && combination.free_qty < 1) {
-            // Avoid a second primary action alongside the seasonal preorder.
-            parent.querySelector('#out_of_stock_buttons_wrapper')?.classList.add('d-none');
-        }
+        hideStockNotification(parent, combination);
         const limits = this.services['torrepulia.request'].state?.limits;
         if (input) {
             const stockLimited = combination.is_storable && !combination.allow_out_of_stock_order;

@@ -47,7 +47,7 @@ class SeasonalCampaign(http.Controller):
             response = request.render('website_torrepulia_request_campaign.legacy_receipt', {
                 'recent_contact': recent_contact,
                 'legacy_no_index': legacy_no_index,
-                'summary_url': website._torrepulia_request_url() if website._torrepulia_request_enabled() else '/shop'})
+                'summary_url': website._torrepulia_request_url() if website._torrepulia_selection_enabled() else '/shop'})
         response.headers['Cache-Control'] = 'private, no-store, max-age=0'
         response.headers['Vary'] = 'Cookie'
         response.headers['Referrer-Policy'] = 'same-origin'
@@ -66,7 +66,7 @@ class SeasonalCampaign(http.Controller):
         campaign = website._public_request_campaign(selected)
         now = fields.Datetime.now()
         transitions = [value for value in (campaign.opens_at, campaign.closes_at) if value and value > now] if campaign else []
-        opened = bool(campaign and campaign._is_open() and website._torrepulia_request_enabled())
+        opened = bool(campaign and campaign._is_open() and website._torrepulia_selection_enabled())
         cards = []
         configurations = []
         if campaign:

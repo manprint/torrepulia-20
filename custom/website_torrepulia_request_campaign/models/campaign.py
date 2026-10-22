@@ -76,7 +76,7 @@ class Website(models.Model):
     _inherit = 'website'
 
     torrepulia_campaign_id = fields.Many2one('torrepulia.request.campaign', string='Campagna stagionale predefinita',
-        domain="[('website_id', '=', id)]", check_company=True)
+        domain="[('website_id', '=', id)]", check_company=True, copy=False)
     torrepulia_campaign_page_backup = fields.Json(groups='base.group_system', copy=False, readonly=True)
 
     @api.constrains('torrepulia_campaign_id', 'company_id')
@@ -87,8 +87,20 @@ class Website(models.Model):
 
     def _request_preorder_url(self):
         self.ensure_one()
+        if not self._torrepulia_selection_enabled():
+            return False
         campaign = self._public_request_campaign()
         return '/prenotailtuoolio' if campaign and campaign._is_open() else False
+
+    def _torrepulia_preorder_product_url(self, product):
+        """Hybrid mode: products of the open default campaign are reserved, not bought."""
+        self.ensure_one()
+        if self._torrepulia_request_enabled() or not product or not (url := self._request_preorder_url()):
+            return False
+        products = self._public_request_campaign().line_ids.product_id
+        if product._name == 'product.template':
+            return url if product.id in products.product_tmpl_id.ids else False
+        return url if product.id in products.ids else False
 
     def _public_request_campaign(self, campaign_id=None):
         """Only a website/company scoped editorial projection; no public model ACL.

@@ -87,8 +87,11 @@ class ProductTemplate(models.Model):
 
     def _get_combination_info(self, *args, **kwargs):
         info = super()._get_combination_info(*args, **kwargs)
-        if (public_storefront() and self.env.website._torrepulia_request_enabled()
-                and info.get('is_storable') and not info.get('allow_out_of_stock_order')):
+        website = public_storefront() and self.env.website
+        # Seasonal products carry their own preorder action instead of a stock notice.
+        if (website and website._torrepulia_selection_enabled()
+                and info.get('is_storable') and not info.get('allow_out_of_stock_order')
+                and not website._torrepulia_preorder_product_url(self)):
             info['tp_request_stock_notice'] = self._request_stock_notice(self.env.website)
         return info
 

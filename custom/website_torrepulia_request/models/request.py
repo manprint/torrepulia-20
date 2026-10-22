@@ -84,7 +84,7 @@ class QuoteRequest(models.Model):
         Zero quantity removes only the specified line of this draft.
         """
         self._lock_draft()
-        if (visitor_website.id != self.website_id.id or not visitor_website._torrepulia_request_enabled()
+        if (visitor_website.id != self.website_id.id or not visitor_website._torrepulia_selection_enabled()
                 or not visitor_website.has_ecommerce_access()):
             raise AccessError(_('Website non autorizzato.'))
         try:
@@ -121,6 +121,8 @@ class QuoteRequest(models.Model):
     def _validate_selection_configuration(self, visitor_website, product, uom, no_variant_values, custom_values):
         product.ensure_one()
         product.check_access('read')
+        if not visitor_website._torrepulia_selection_allows(product):
+            raise ValidationError(_('Il prodotto non è prenotabile: acquistalo dal carrello o attendi la prossima campagna.'))
         template = product.product_tmpl_id
         domain = visitor_website.sale_product_domain()
         if (not product.active or not template.is_published
@@ -150,7 +152,7 @@ class QuoteRequest(models.Model):
         Notifications are persisted here; rendering and delivery run separately.
         """
         self._lock_draft()
-        if (visitor_website.id != self.website_id.id or not visitor_website._torrepulia_request_enabled()
+        if (visitor_website.id != self.website_id.id or not visitor_website._torrepulia_selection_enabled()
                 or not visitor_website.has_ecommerce_access()):
             raise AccessError(_('Website non autorizzato.'))
         if not self.line_ids:

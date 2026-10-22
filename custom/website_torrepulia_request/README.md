@@ -287,3 +287,26 @@ libero e confluisce nelle note CRM. Se i prezzi sono nascosti, la versione
 stagionale non mostra importi e dice «Nessun pagamento richiesto oggi».
 
 [Report, file modificati e verifiche](../../docs/qa-20261021-seasonal-summary/REPORT.md).
+
+
+### Modalità mista: scorte online e prenotazione stagionale (22/10/2026, 20.0.1.13.0)
+
+Terza modalità commerciale `hybrid` («Acquisto online + prenotazione stagionale»),
+per vendere subito le scorte e produrre sulla base delle prenotazioni:
+
+- carrello, checkout, pagamento e recuperi restano quelli nativi di `website_sale`;
+  nessuna riscrittura di header, pulsanti o prezzi delle risposte pubbliche;
+- la selezione privata, il riepilogo e l'invio CRM restano disponibili
+  (`_torrepulia_selection_enabled()`), ma accettano soltanto i prodotti della
+  campagna aperta (`_torrepulia_selection_allows()`); l'operazione `add` dal
+  catalogo è rifiutata perché le scorte passano dal carrello;
+- i prodotti della campagna aperta mostrano «Prenota» nella card e nella scheda
+  prodotto (`_torrepulia_preorder_product_url()`, implementato dall'addon campagna);
+  `_cart_add`, `_validate_order` e la creazione delle transazioni li rifiutano,
+  anche se presenti in un carrello composto prima dell'apertura;
+- i prodotti a magazzino esauriti mostrano il collegamento alla campagna aperta.
+
+`_torrepulia_request_enabled()` mantiene il significato originario: intero catalogo
+a richiesta, checkout sospeso. Il team destinatario è obbligatorio anche in modalità
+mista. Le modalità `shop` e `request` non cambiano comportamento.
+Aggiornare `website_torrepulia_request` e `website_torrepulia_request_campaign`.

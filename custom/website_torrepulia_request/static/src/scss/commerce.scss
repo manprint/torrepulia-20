@@ -157,9 +157,21 @@ body[data-tp-request-mode="1"][data-tp-request-prices="0"] {
     }
 }
 
+// Hybrid mode: a seasonal product page offers only the preorder action.
+#wrapwrap #o_wsale_product_cta_section:has(.tp-preorder-cta) {
+    .availability_messages, #o_wsale_cta_wrapper { display: none !important; }
+    .tp-preorder-cta { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+    .tp-preorder-note { margin: 0; color: #46584c; font: 400 14px/1.5 Manrope, sans-serif; }
+    // The theme turns this section into a fixed bottom bar on phones: action only.
+    @media (max-width: 760px) {
+        .tp-preorder-cta { flex: 1; margin: 0; }
+        .tp-preorder-note { display: none; }
+    }
+}
+
 // Leave the native wishlist control its own row above the full-width alert.
 #wrapwrap .oe_product_cart:has(.tp-request-action-row)
-    .tp-request-action-row:has(> .tp-request-stock-message:not([hidden])) {
+    .tp-request-action-row:has(> .tp-request-stock-message:not([hidden]), > .tp-request-preorder-link) {
     padding-top: 32px;
 }
 

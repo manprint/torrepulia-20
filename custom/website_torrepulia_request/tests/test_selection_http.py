@@ -36,7 +36,9 @@ class TestSelectionHttp(HttpCase):
         })
         self.assertEqual(retry.json()['state']['quantity'], 2)
         self.assertTrue(retry.json()['replayed'])
-        self.assertEqual(self.url_open('/torrepulia/request/current').json()['state'], state)
+        # Only the add response carries the transient confirmation details.
+        self.assertEqual(self.url_open('/torrepulia/request/current').json()['state'],
+                         {key: value for key, value in state.items() if key != 'addition'})
         # Reject authoritative commercial fields instead of trusting them.
         forged = dict(payload, operation_id=secrets.token_hex(16), price_unit=0)
         response = self.url_open('/torrepulia/request/update', data={

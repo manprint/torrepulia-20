@@ -1,7 +1,8 @@
+from lxml import html
+
 from odoo import http
 from odoo.http import request
 from odoo.tools import is_html_empty
-from odoo.tools.mail import html2plaintext
 from odoo.tools.misc import format_amount
 
 
@@ -49,7 +50,8 @@ class TorrepuliaPrivacy(http.Controller):
                 # its configurator reachable and never sum quantities across them.
                 'show_stock': not multiple and info.get('is_storable') and not info['prevent_sale'],
                 'has_message': not is_html_empty(message),
-                'message_text': html2plaintext(message) if not is_html_empty(message) else '',
+                # Compact list label: copy only, without Markdown-style link footnotes.
+                'message_text': ' '.join(html.fromstring(str(message)).text_content().split()) if not is_html_empty(message) else '',
                 'ribbon': product._get_ribbon(price_vals=prices[product.id]),
             }
         values = {'products':products,'prices':prices,'currency':currency,

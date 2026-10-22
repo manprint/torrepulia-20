@@ -6,10 +6,10 @@
         <field name="arch" type="xml">
             <xpath expr="//block[@id='website_payment_block']" position="after">
                 <block title="Torrepulia — Richieste di preventivo" id="torrepulia_request_settings">
-                    <setting string="Modalità commerciale" help="Configurazione del website selezionato. La modalità richiesta comprende l’intero catalogo accessibile.">
+                    <setting string="Modalità commerciale" help="Configurazione del website selezionato. La modalità richiesta comprende l’intero catalogo accessibile; la modalità mista vende online le scorte e raccoglie come prenotazioni i soli prodotti della campagna stagionale aperta.">
                         <field name="torrepulia_commercial_mode"/>
                         <div class="alert alert-info mt-2" role="status">
-                            I carrelli e-commerce esistenti restano conservati. In modalità richiesta il checkout e i recuperi automatici sono sospesi; nessun carrello viene importato nella richiesta.
+                            I carrelli e-commerce esistenti restano conservati. In modalità richiesta il checkout e i recuperi automatici sono sospesi; nessun carrello viene importato nella richiesta. In modalità mista il checkout resta attivo, ma i prodotti della campagna aperta si possono solo prenotare.
                         </div>
                     </setting>
                     <setting string="Carrelli aperti al passaggio di modalità" groups="base.group_system,sales_team.group_sale_manager" help="Carrelli del solo website e della sua azienda, in bozza o inviati, con prodotti. Controllare anche eventuali pagamenti già in corso e messaggi di recupero già in coda.">
