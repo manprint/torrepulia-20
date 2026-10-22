@@ -41,7 +41,7 @@ class TestCinematicFormats(TransactionCase):
         tree = self.render_format(0)
         self.assertEqual(len(tree.xpath('//*[@disabled][contains(@class, "format-link")]')), 1)
         self.assertFalse(tree.xpath('//a[contains(@class, "format-link")]'))
-        self.assertIn('Ritorna presto', tree.xpath('//*[contains(@class, "format-option")]')[0].text_content())
+        self.assertIn('Temporaneamente esaurito', tree.xpath('//*[contains(@class, "format-option")]')[0].text_content())
         self.assertIn('Ritorna presto', tree.xpath('//*[contains(@class, "mc-format-stock-message")]')[0].text_content())
         self.assertEqual(tree.xpath('//*[contains(@class, "mc-format-details-link")]')[0].get('href'), self.product.website_url)
         self.assertFalse(tree.xpath('//*[@disabled][contains(@class, "format-option")]'))
@@ -69,12 +69,13 @@ class TestCinematicFormats(TransactionCase):
         self.assertFalse(tree.xpath('//*[@disabled][contains(@class, "format-link")]'))
         self.assertNotIn('Esaurito', tree.text_content())
 
-    def test_native_ribbon_in_row_and_preview(self):
+    def test_state_label_replaces_native_ribbon(self):
+        # The shop's state label speaks for the format; native ribbons stay off the home.
         ribbon = self.env['product.ribbon'].create({'name': 'QA ribbon', 'assign': 'manual'})
         self.product.website_ribbon_id = ribbon
         tree = self.render_format(4)
-        self.assertEqual(tree.xpath('//*[contains(@class, "mc-format-ribbon")]')[0].text_content(), ribbon.name)
-        self.assertEqual(tree.xpath('//*[contains(@class, "o_ribbons")]')[0].text_content(), ribbon.name)
+        self.assertNotIn(ribbon.name, tree.text_content())
+        self.assertEqual(tree.xpath('string(//*[contains(@class, "tp-shop-state")])'), 'Disponibile subito')
 
     def test_multiple_configured_badges_order_color_and_escaping(self):
         tags = self.env['product.tag'].create([
@@ -122,15 +123,16 @@ class TestCinematicFormats(TransactionCase):
         self.assertEqual(badges[1]['color'], '#294d3b')
         self.assertEqual(badges[2]['text_color'], '#000000')
 
-    def test_automatic_out_of_stock_ribbon_respects_sell_flag(self):
+    def test_sold_out_state_respects_sell_flag(self):
         ribbon = self.env['product.ribbon'].search([('assign', '=', 'out_of_stock')], limit=1)
         if not ribbon:
             ribbon = self.env['product.ribbon'].create({'name': 'QA exhausted', 'assign': 'out_of_stock'})
         ribbon.sequence = -100
         tree = self.render_format(0)
-        self.assertEqual(tree.xpath('//*[contains(@class, "mc-format-ribbon")]')[0].text_content(), ribbon.name)
+        self.assertNotIn(ribbon.name, tree.text_content())
+        self.assertEqual(tree.xpath('string(//*[contains(@class, "tp-shop-state")])'), 'Temporaneamente esaurito')
         self.product.allow_out_of_stock_order = True
-        self.assertNotIn(ribbon.name, self.render_format(0).text_content())
+        self.assertEqual(self.render_format(0).xpath('string(//*[contains(@class, "tp-shop-state")])'), 'Disponibile subito')
 
     def test_four_formats_keep_independent_purchase_states(self):
         products = self.product

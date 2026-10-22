@@ -143,6 +143,30 @@ class TestHybridMode(HttpCase):
         self.campaign.state = 'closed'
         self.assertFalse(html.fromstring(self.url_open('/shop').content).xpath('//section[@class="tp-season"]'))
 
+    def test_home_formats_share_shop_states_and_reserve_in_season(self):
+        for product in (self.seasonal, self.stock):
+            product.product_tmpl_id.torrepulia_format_name = product.name
+        response = self.url_open('/torrepulia/formats', data=json.dumps(
+            {'jsonrpc': '2.0', 'method': 'call', 'id': 1, 'params': {'ids': []}}),
+            headers={'Content-Type': 'application/json'})
+        tree = html.fromstring(response.json()['result']['html'])
+        options = {option.xpath('string(.//strong)'): option for option in tree.xpath('//button[@data-product]')}
+        self.assertIn('prenotazione', options['Hybrid new harvest'].xpath('string(.//*[contains(@class, "tp-shop-state")])'))
+        self.assertIn('Disponibile subito', options['Hybrid stock bottle'].text_content())
+        summaries = {summary.get('data-summary'): summary for summary in tree.xpath('//div[@data-summary]')}
+        seasonal = summaries[str(self.seasonal.product_tmpl_id.id)]
+        self.assertEqual(seasonal.xpath('.//a[contains(@class, "format-link")]/@href'), ['/prenotailtuoolio'])
+        stock = summaries[str(self.stock.product_tmpl_id.id)]
+        self.assertEqual(stock.xpath('.//a[contains(@class, "format-link")]/@href'), [self.stock.product_tmpl_id.website_url])
+        self.assertFalse(tree.xpath('//*[contains(@class, "mc-format-ribbon")] | //*[contains(@class, "o_ribbon")]'))
+
+    def test_checkout_speaks_the_theme_language(self):
+        self.cart_add(self.stock)
+        cart = self.url_open('/shop/cart').text
+        self.assertNotIn('quick_reorder_button', cart)
+        address = html.fromstring(self.url_open('/shop/address').content)
+        self.assertEqual(address.xpath('string(//label[@for="o_name"])').strip(), 'Nome e cognome')
+
     def test_preorder_page_groups_filtration_counters_in_one_card(self):
         attribute = self.env['product.attribute'].create({'name': 'Filtrazione prova', 'value_ids': [
             fields.Command.create({'name': 'Filtrato'}), fields.Command.create({'name': 'Non filtrato'})]})

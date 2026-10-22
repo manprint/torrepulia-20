@@ -84,6 +84,13 @@
         </section>
     </template>
 
+    <!-- Shared by the shop rows and the home formats: tp_preorder, tp_sold_out and tp_season in scope. -->
+    <template id="format_state" name="Format state label">
+        <span t-if="tp_preorder" class="tp-shop-state is-preorder" t-out="tp_season['label'] if tp_season else 'In prenotazione'"/>
+        <span t-elif="tp_sold_out" class="tp-shop-state is-sold-out" t-out="website.torrepulia_shop_sold_out_label or 'Temporaneamente esaurito'"/>
+        <span t-else="" class="tp-shop-state is-available" t-out="website.torrepulia_shop_available_label or 'Disponibile subito'"/>
+    </template>
+
     <template id="shop_rows" name="Shop formats, one per row">
         <t t-set="tp_season" t-value="website._torrepulia_preorder_season()"/>
         <ul class="tp-shop-rows" aria-label="Formati">
@@ -95,9 +102,7 @@
                     <t t-call="website_torrepulia_theme.cinematic_pack"/>
                 </a>
                 <div class="tp-shop-row-copy">
-                    <span t-if="tp_preorder" class="tp-shop-state is-preorder" t-out="tp_season['label'] if tp_season else 'In prenotazione'"/>
-                    <span t-elif="tp_sold_out" class="tp-shop-state is-sold-out" t-out="website.torrepulia_shop_sold_out_label or 'Temporaneamente esaurito'"/>
-                    <span t-else="" class="tp-shop-state is-available" t-out="website.torrepulia_shop_available_label or 'Disponibile subito'"/>
+                    <t t-call="website_torrepulia_theme.format_state"/>
                     <h2><a t-att-href="p.website_url" t-out="p.torrepulia_format_name or p.name"/></h2>
                     <p t-if="p.torrepulia_shop_audience" class="tp-shop-audience" t-out="p.torrepulia_shop_audience"/>
                     <p t-if="not tp_info.get('hide_price') and tp_info.get('base_unit_price')" class="tp-shop-unit-price">

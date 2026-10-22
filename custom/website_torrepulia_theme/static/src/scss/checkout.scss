@@ -1,0 +1,25 @@
+// Checkout in the theme's type: Caslon headings, quiet summary card, olive selection.
+.tp-site.tp-cinematic .o_website_sale_checkout_container {
+    :is(h3, h4, .h4):not(.offcanvas-title) {
+        font: 400 clamp(1.625rem, 2.4vw, 2rem)/1.15 Caslon, Georgia, serif;
+        letter-spacing: 0;
+        color: var(--tp-ink);
+    }
+    .o_wizard, .o_wizard a, .o_wizard span { font-size: .875rem; }
+    #o_cart_summary .card, .o_total_card { border-color: var(--tp-line); border-radius: 4px; box-shadow: none; }
+    .card { border-color: var(--tp-line); border-radius: 4px; }
+    // Selected delivery method and address read as the theme's olive, not Bootstrap blue.
+    .o_delivery_carrier_select:has(input:checked), .card.border-primary, .card.bg-primary-subtle {
+        border-color: var(--tp-olive) !important;
+        box-shadow: inset 0 0 0 1px var(--tp-olive);
+        background: var(--tp-white);
+    }
+    .form-check-input:checked { background-color: var(--tp-olive); border-color: var(--tp-olive); }
+    .form-control, .form-select { border-color: var(--tp-line); border-radius: var(--tp-control-radius); min-height: var(--tp-control); }
+    .form-control:focus, .form-select:focus { border-color: var(--tp-olive); box-shadow: 0 0 0 3px rgba(46, 73, 59, .15); }
+    .col-form-label { font-weight: 500; font-size: .9375rem; }
+    .text-muted, .label-optional { color: var(--tp-muted) !important; }
+    .btn-link { color: var(--tp-olive); text-underline-offset: 4px; }
+    .badge[class*="info"] { background: var(--tp-pale) !important; color: var(--tp-olive) !important; border-color: var(--tp-line) !important; }
+    #o_cart_summary :is(.h5, strong), .o_total_card :is(strong, .fw-bold) { font-variant-numeric: tabular-nums; }
+}

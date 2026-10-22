@@ -7,7 +7,11 @@
         <img t-else="" class="format-image" t-att-src="'/web/image/product.template/%s/image_1024' % p.id" t-att-alt="p.name"/>
     </template>
     <template id="cinematic_promoted">
-        <a t-if="products and not availability[products[0].id]['blocked']" t-att-href="products[0].website_url" class="button dark early-purchase">
+        <a t-if="products and availability[products[0].id]['preorder']" t-att-href="availability[products[0].id]['preorder']" class="button dark early-purchase">
+            <span><strong>Prenota <t t-out="products[0].torrepulia_format_name"/></strong><small><t t-out="season['label'] if season else 'Olio nuovo'"/> · <t t-out="format_amount(prices[products[0].id]['price_reduce'])"/></small></span>
+            <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/>
+        </a>
+        <a t-elif="products and not availability[products[0].id]['blocked']" t-att-href="products[0].website_url" class="button dark early-purchase">
             <span><strong>Acquista <t t-out="products[0].torrepulia_format_name"/></strong><small><t t-out="products[0].torrepulia_format_detail"/> · <t t-out="format_amount(prices[products[0].id]['price_reduce'])"/></small></span>
             <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/>
         </a>
@@ -31,8 +35,6 @@
             <div class="shop-stage oe_website_sale">
                 <div class="mc-pack-preview" t-foreach="products" t-as="p" t-att-data-preview="p.id" t-att-hidden="p_index != 0">
                     <t t-call="website_torrepulia_theme.cinematic_pack"/>
-                    <t t-set="ribbon" t-value="availability[p.id]['ribbon']"/>
-                    <t t-if="ribbon" t-call="website_sale.product_ribbon" product="p" text_color="ribbon.text_color" bg_color="ribbon.bg_color"/>
                     <span class="stage-caption">LA REGINA / <t t-out="p.torrepulia_format_detail"/></span>
                 </div>
             </div>
@@ -40,16 +42,18 @@
                 <div class="format-options" role="tablist" aria-label="Formati La Regina" aria-orientation="vertical">
                     <button t-foreach="products" t-as="p" type="button" class="format-option" role="tab" t-att-data-product="p.id" t-att-data-product-url="p.website_url" t-att-aria-selected="'true' if p_index == 0 else 'false'" t-att-tabindex="0 if p_index == 0 else -1">
                         <span class="format-thumb" t-att-data-count="p.torrepulia_unit_count if p.torrepulia_composite else 1" aria-hidden="true"><img t-foreach="range(p.torrepulia_unit_count if p.torrepulia_composite and p.torrepulia_unit_count in [2,6] else 1)" t-as="unit" t-att-src="'/web/image/product.template/%s/image_128' % p.id" alt=""/></span>
-                        <span class="mc-format-details"><strong t-out="p.torrepulia_format_name"/><small t-out="p.torrepulia_format_detail"/>
-                            <t t-set="ribbon" t-value="availability[p.id]['ribbon']"/>
-                            <span t-if="ribbon" class="mc-format-ribbon" t-attf-style="color: #{ribbon.text_color}; background-color: #{ribbon.bg_color};" t-out="ribbon.name"/>
+                        <span class="mc-format-details">
+                            <t t-set="tp_preorder" t-value="availability[p.id]['preorder']"/>
+                            <t t-set="tp_sold_out" t-value="not tp_preorder and availability[p.id]['sold_out']"/>
+                            <t t-set="tp_season" t-value="season"/>
+                            <t t-call="website_torrepulia_theme.format_state"/>
+                            <strong t-out="p.torrepulia_format_name"/><small t-out="p.torrepulia_shop_audience or p.torrepulia_format_detail"/>
                             <t t-set="format_badges" t-value="p._torrepulia_format_badges(website)"/>
                             <span t-if="format_badges" class="mc-format-badges">
                                 <span t-foreach="format_badges" t-as="badge" class="mc-format-badge" t-attf-style="background-color: #{badge['color']}; color: #{badge['text_color']};" t-out="badge['name']"/>
                             </span>
-                            <t t-call="website_torrepulia_theme.cinematic_format_stock"/>
                         </span>
-                        <span class="option-price"><t t-out="format_amount(prices[p.id]['price_reduce'])"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></span>
+                        <span class="option-price"><span class="mc-option-amount"><t t-out="format_amount(prices[p.id]['price_reduce'])"/><small t-if="availability[p.id].get('unit_price')" t-out="availability[p.id]['unit_price']"/></span></span>
                     </button>
                 </div>
                 <div class="format-summary" t-foreach="products" t-as="p" t-att-data-summary="p.id" t-att-hidden="p_index != 0" role="tabpanel">
@@ -57,10 +61,13 @@
                     <p class="format-description" t-out="p.description_sale"/>
                     <div t-if="stock['show_stock'] and stock['remaining'] &lt;= 0 and stock['has_message']" class="mc-format-stock-message" t-field="p.out_of_stock_message"/>
                     <t t-else="" t-call="website_torrepulia_theme.cinematic_format_stock"/>
-                    <button t-if="stock['blocked']" type="button" class="button dark format-link" disabled="disabled">Acquista <t t-out="p.torrepulia_format_name"/></button>
+                    <a t-if="stock['preorder']" class="button dark format-link" t-att-href="stock['preorder']">Prenota <t t-out="p.torrepulia_format_name"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></a>
+                    <button t-elif="stock['blocked']" type="button" class="button dark format-link" disabled="disabled">Acquista <t t-out="p.torrepulia_format_name"/></button>
                     <a t-else="" class="button dark format-link" t-att-href="p.website_url">Acquista <t t-out="p.torrepulia_format_name"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></a>
-                    <a t-if="stock['blocked']" class="text-link mc-format-details-link" t-att-href="p.website_url">Dettagli del prodotto</a>
-                    <p class="small">Spedizione calcolata alla conferma dell'ordine.</p>
+                    <a t-if="stock['blocked'] and not stock['preorder']" class="text-link mc-format-details-link" t-att-href="p.website_url">Dettagli del prodotto</a>
+                    <p t-if="stock['preorder']" class="small">Nessun anticipo: paghi alla spedizione.</p>
+                    <p t-elif="website.torrepulia_shipping_note" class="small" t-out="website.torrepulia_shipping_note"/>
+                    <p t-else="" class="small">Spedizione calcolata alla conferma dell'ordine.</p>
                 </div>
             </div>
         </div>

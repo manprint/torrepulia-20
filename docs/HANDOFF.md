@@ -52,14 +52,29 @@ Proposta di direzione approvata: https://claude.ai/artifact/LKRhjcMZMbsqV8AX7T8x
      in un'unica scheda (oggi il modulo campagna fa una card per variante);
      riepilogo fisso su mobile; lo stato vuoto non deve rimandare fuori pagina;
      card più brevi.
-2. **27/10:** home con i formati e i prezzi subito dopo "La Regina"; checkout Odoo
-   (indirizzo, pagamento, conferma) con colori e caratteri del tema.
+2. **Fatto il 23/10:** home e checkout (vedi sotto, Fase 2.2).
 3. **28/10:** microinterazioni con le skill di Emil Kowalski, poi nuovo audit Impeccable.
 4. **29-30/10:** collaudo completo (acquisto e prenotazione di prova, telefono e
    desktop), deploy. Poi SEO di base e analytics.
 
 Rimasti dall'audit (P2/P3): token di colore nei moduli richiesta/campagna (circa 130
 hex fissi), CSS/JS pesanti da verificare con compressione in produzione.
+
+## Fase 2.2 (home e checkout)
+
+- Home, sezione "La tua tavola. Il tuo formato.": stessa etichetta di stato dello shop
+  (template `format_state`), frase "per chi", prezzo al litro, "Prenota" in stagione;
+  nastri nativi e freccia nelle righe tolti (i badge "Badge nei formati" restano).
+- Checkout: titoli Caslon, "Nome e cognome", "Azienda", identificativo fiscale in italiano
+  (patch JS in `static/src/js/checkout.js`), via "Riordina velocemente", "Il tuo ordine"
+  su telefono. Migrazione 20.0.3.11.0: passi "Carrello › Consegna › Pagamento", pulsanti
+  "Procedi all'acquisto" / "Vai al pagamento", etichetta "Conferma l'ordine" per i metodi
+  da pagare dopo (il bonifico lo è sul sito Torrepulia).
+- Configurazione locale (da replicare in produzione a mano): metodo "Corriere espresso"
+  a prezzo fisso 9,90, gratuito oltre 89, prodotto servizio dedicato, "Standard delivery"
+  non pubblicato; fornitore "Wire Transfer" rinominato "Bonifico bancario" e pubblicato
+  (in produzione serve l'IBAN sui conti bancari dell'azienda). Account: default Odoo.
+- Indirizzo del nuovo sito di produzione: da chiedere all'utente (torrepulia.it è il vecchio).
 
 ## Configurazione introdotta con la Fase 2.1
 
@@ -85,7 +100,7 @@ hex fissi), CSS/JS pesanti da verificare con compressione in produzione.
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (119 al 23/10):
+- Test Odoo (123 al 23/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (45): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,
@@ -111,3 +126,6 @@ hex fissi), CSS/JS pesanti da verificare con compressione in produzione.
   Vi sono già l'attributo Filtrazione e le varianti 58-63 in campagna.
 - libsass interpreta `max()`/`min()` con `env()` come funzioni Sass e la compilazione
   fallisce ("A css error occurred"): scrivere `Max(...)` come fa già il tema.
+- Le migrazioni non devono forzare `lang='it_IT'`: il database di test non ha l'italiano.
+  Usare la lingua predefinita del sito.
+- Un template nuovo richiede `-u` del modulo: il solo riavvio con dev_mode non lo registra.

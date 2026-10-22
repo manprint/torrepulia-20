@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Checkout in the theme's voice: Italian labels Odoo 20 leaves in English, no quick reorder. -->
+    <template id="checkout_cart_summary" inherit_id="website_sale.cart" name="Torrepulia cart heading">
+        <xpath expr="//div[@id='shop_cart']//t[@t-call='website_sale.quick_reorder_button']/.." position="attributes">
+            <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+    </template>
+
+    <template id="checkout_mobile_summary" inherit_id="website_sale.checkout_layout" name="Torrepulia mobile order summary">
+        <!-- Odoo 20 translates this noun as the verb "Ordina". -->
+        <xpath expr="//div[hasclass('o_mobile_summary')]/button" position="replace">
+            <button class="btn btn-light d-flex justify-content-between align-items-center gap-2 w-100 mb-2"
+                data-bs-toggle="offcanvas" href="#o_cart_summary_offcanvas" aria-controls="o_cart_summary_offcanvas">
+                Il tuo ordine
+                <span id="amount_total_summary" class="monetary_field ms-auto" t-field="website_sale_order.amount_total"
+                    t-options='{"widget": "monetary", "display_currency": website_sale_order.currency_id}'/>
+                <span class="o_cart_item_count badge ms-1 top-0 bg-primary" t-out="str(website_sale_order.cart_quantity)"/>
+                <i class="oi ms-2" data-icon="keyboard_arrow_right" role="img"/>
+            </button>
+        </xpath>
+    </template>
+
+    <template id="checkout_address_labels" inherit_id="portal.address_form_fields" name="Torrepulia address labels">
+        <xpath expr="//label[@for='o_name']" position="replace">
+            <label class="col-form-label" for="o_name">Nome e cognome</label>
+        </xpath>
+        <xpath expr="//label[@for='o_company_name']" position="replace">
+            <label class="col-form-label fw-normal label-optional" for="o_company_name">Azienda</label>
+        </xpath>
+    </template>
+
+    <template id="checkout_identifier_label" inherit_id="account.address_form_additional_identifiers" name="Torrepulia identifier label">
+        <xpath expr="//div[hasclass('o_add_identifier_dropdown')]/button" position="replace">
+            <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="oi me-1" data-icon="add"/>Aggiungi un identificativo fiscale
+            </button>
+        </xpath>
+    </template>
+</odoo>

@@ -53,9 +53,17 @@ class TorrepuliaPrivacy(http.Controller):
                 # Compact list label: copy only, without Markdown-style link footnotes.
                 'message_text': ' '.join(html.fromstring(str(message)).text_content().split()) if not is_html_empty(message) else '',
                 'ribbon': product._get_ribbon(price_vals=prices[product.id]),
+                # Same state and price per litre as the shop rows.
+                'preorder': website._torrepulia_format_preorder(product),
+                'sold_out': sold_out,
             }
+            unit = product._get_combination_info(product_id=product.product_variant_id.id,
+                pricelist=request.pricelist, fiscal_position=request.fiscal_position)
+            if not unit.get('hide_price') and unit.get('base_unit_price') and unit.get('base_unit_name'):
+                availability[product.id]['unit_price'] = '%s / %s' % (
+                    format_amount(request.env, unit['base_unit_price'], currency), unit['base_unit_name'])
         values = {'products':products,'prices':prices,'currency':currency,
-            'availability': availability,
+            'availability': availability, 'season': website._torrepulia_preorder_season(),
             'format_amount':lambda amount:format_amount(request.env,amount,currency)}
         template = 'website_torrepulia_theme.cinematic_promoted' if promoted else 'website_torrepulia_theme.cinematic_formats'
         return {'html':str(request.env['ir.ui.view']._render_template(template,values))}

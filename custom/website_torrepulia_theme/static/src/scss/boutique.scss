@@ -153,6 +153,12 @@
     .tp-shop-row-action .btn { min-width: 10rem; }
     .tp-shop-page #products_grid > .products_pager:not(:has(.pagination li)) { display: none !important; }
 
+    // Home formats: the same state label and price per litre as the shop.
+    .format-option { padding-inline-end: 1rem; }
+    .format-option .tp-shop-state { margin-bottom: .5rem; }
+    .mc-option-amount { display: grid; justify-items: end; gap: .125rem; }
+    .mc-option-amount small { margin: 0; color: var(--tp-muted); font-size: .8125rem; font-weight: 400; }
+
     // Three formats need no wishlist; the identity card replaces the native attribute table.
     .o_add_wishlist, .o_add_wishlist_dyn, #product_full_spec { display: none !important; }
 
