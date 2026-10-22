@@ -78,3 +78,32 @@ oro/bianco su hero e footer scuro, blu-grigio nell'header su sfondo chiaro.
 Safari/iOS fisico e matrice fiscale completa non sono certificati dai test locali.
 Il catalogo locale mostra attualmente prezzi in USD: verificare la configurazione
 commerciale prima della pubblicazione.
+
+## Scheda prodotto boutique (20.0.3.9.0)
+
+Direzione approvata il 22/10/2026. Sulla scheda di ogni formato La Regina:
+
+- **Formato**: elenco dei prodotti con nome formato Torrepulia; ogni voce apre la
+  propria scheda nativa e mostra prezzo, prezzo al litro e, con l'addon campagna,
+  lo stato "In prenotazione". Sostituisce "Gli altri formati".
+- **Filtrazione**: varianti native con attributo a pillole, mostrate come
+  interruttore a due voci. Il carrello tiene righe distinte per variante.
+- **Rassicurazioni** sotto il pulsante; la nota di spedizione si modifica in
+  Website → Siti → campo "Nota spedizione sulla scheda prodotto".
+- **Carta d'identità dell'olio**: eCommerce → Prodotti → Carte d'identità dell'olio,
+  assegnata al prodotto nella scheda Torrepulia. Acidità, perossidi, K232 e K270
+  sono disegnati in scala rispetto al limite UE dell'extravergine; i valori a zero
+  non compaiono. La migrazione crea "Raccolto 2024" (Frantoio Sacco Oliveti,
+  19/11/2024) e lo assegna ai formati che non ne hanno uno.
+- Wishlist e tabella nativa "Specifiche" sono nascoste nel tema.
+
+Configurazione della filtrazione nel catalogo:
+
+1. Vendite → Configurazione → Attributi: "Filtrazione", varianti istantanee,
+   tipo pillole, valori Filtrato (primo) e Non filtrato, nessun sovrapprezzo.
+2. Aggiungere l'attributo a ogni formato. **Odoo archivia la variante esistente e
+   ne crea due nuove**: giacenze, campagne e regole riferite alla vecchia variante
+   vanno riportate sulle nuove (inventario, righe della campagna olio nuovo).
+3. Unità base e quantità (per esempio L e 5) vanno impostate **su ogni variante**:
+   con più varianti il modello non le conserva. Attivare il prezzo di riferimento
+   nelle impostazioni eCommerce per mostrare il prezzo al litro.

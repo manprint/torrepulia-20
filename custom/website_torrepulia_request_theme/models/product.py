@@ -18,3 +18,6 @@ class Website(models.Model):
         products = super()._cinematic_products(ids)
         excluded = self.env.context.get('torrepulia_exclude_template_id')
         return products.filtered(lambda product: product.id != excluded) if excluded else products
+
+    def _torrepulia_format_preorder(self, product):
+        return self._torrepulia_preorder_product_url(product)

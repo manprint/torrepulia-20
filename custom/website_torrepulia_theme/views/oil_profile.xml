@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="oil_profile_list" model="ir.ui.view">
+        <field name="name">torrepulia.oil.profile.list</field>
+        <field name="model">torrepulia.oil.profile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="harvest_year"/>
+                <field name="lab"/>
+                <field name="report_date"/>
+                <field name="acidity"/>
+                <field name="polyphenols"/>
+            </list>
+        </field>
+    </record>
+    <record id="oil_profile_form" model="ir.ui.view">
+        <field name="name">torrepulia.oil.profile.form</field>
+        <field name="model">torrepulia.oil.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" placeholder="Raccolto 2026"/></h1></div>
+                    <group>
+                        <group string="Raccolto">
+                            <field name="harvest_year"/>
+                            <field name="cultivar"/>
+                            <field name="origin"/>
+                            <field name="harvest_period"/>
+                        </group>
+                        <group string="Rapporto di prova">
+                            <field name="lab"/>
+                            <field name="report_date"/>
+                        </group>
+                    </group>
+                    <group string="Analisi">
+                        <group>
+                            <field name="acidity"/>
+                            <field name="peroxides"/>
+                            <field name="k232"/>
+                            <field name="k270"/>
+                        </group>
+                        <group>
+                            <field name="polyphenols"/>
+                            <field name="oleic_acid"/>
+                            <field name="tocopherols"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">I valori lasciati a zero non compaiono sul sito. Acidità, perossidi, K232 e K270 sono mostrati in scala rispetto al limite di legge per l'extravergine.</p>
+                    <field name="product_tmpl_ids" readonly="1">
+                        <list><field name="name"/></list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="oil_profile_action" model="ir.actions.act_window">
+        <field name="name">Carte d'identità dell'olio</field>
+        <field name="res_model">torrepulia.oil.profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="oil_profile_menu" name="Carte d'identità dell'olio" parent="website_sale.menu_catalog"
+              action="oil_profile_action" sequence="40"/>
+    <record id="oil_profile_product_field" model="ir.ui.view">
+        <field name="name">Torrepulia oil profile on product</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_torrepulia_theme.cinematic_product_metadata"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='torrepulia_format_badge_ids']" position="after">
+                <field name="torrepulia_oil_profile_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="shipping_note_website_form" model="ir.ui.view">
+        <field name="name">website.form.torrepulia.shipping</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="torrepulia_shipping_note"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

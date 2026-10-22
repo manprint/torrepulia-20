@@ -74,11 +74,6 @@
         <xpath expr="//div[@id='o_wsale_product_cta_section']" position="inside">
             <div class="mc-sticky-summary" t-if="website.torrepulia_theme_enabled and product.torrepulia_format_name"><span t-field="product.torrepulia_format_name"/><t t-call="website_sale.product_price"/></div>
         </xpath>
-        <xpath expr="//div[@id='product_details']" position="inside">
-            <div class="mc-product-formats mc-section" t-if="website.torrepulia_theme_enabled and product.torrepulia_format_name" data-snippet="s_cinematic_5" t-att-data-current-product="product.id">
-                <h2 class="h4">Gli altri formati</h2><div class="mc-catalog o_not_editable"><a href="/shop">Tutti i formati</a></div>
-            </div>
-        </xpath>
     </template>
     <template id="product_stock_notification_it" inherit_id="website_sale.cta_wrapper" name="Italian stock notification labels">
         <!-- Odoo 20 ships no Italian translation for these website_sale labels. -->

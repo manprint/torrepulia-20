@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- One product page for La Regina: the format is chosen here, each option opens its own native product. -->
+    <template id="pdp_formats" name="La Regina format choice">
+        <t t-set="tp_formats" t-value="website._cinematic_products()"/>
+        <div t-if="product in tp_formats and len(tp_formats) &gt; 1" class="o_wsale_product_details_content_section tp-formats" role="group" aria-labelledby="tp-formats-label">
+            <p id="tp-formats-label" class="tp-option-label">Formato</p>
+            <div class="tp-format-list">
+                <a t-foreach="tp_formats" t-as="fmt" t-att-href="fmt.website_url"
+                   t-attf-class="tp-format #{'is-current' if fmt == product else ''}"
+                   t-att-aria-current="'page' if fmt == product else None">
+                    <t t-set="fmt_info" t-value="fmt._get_combination_info(product_id=fmt.product_variant_id.id)"/>
+                    <span class="tp-format-dot" aria-hidden="true"/>
+                    <span class="tp-format-name">
+                        <strong t-out="fmt.torrepulia_format_name or fmt.name"/>
+                        <small t-if="fmt.torrepulia_format_detail" t-out="fmt.torrepulia_format_detail"/>
+                    </span>
+                    <span class="tp-format-price">
+                        <t t-if="not fmt_info.get('hide_price')">
+                            <span t-out="fmt_info['price']" t-options="{'widget': 'monetary', 'display_currency': fmt_info['currency']}"/>
+                            <small t-if="fmt_info.get('base_unit_price')">
+                                <span t-out="fmt_info['base_unit_price']" t-options="{'widget': 'monetary', 'display_currency': fmt_info['currency']}"/> / <t t-out="fmt_info.get('base_unit_name')"/>
+                            </small>
+                        </t>
+                        <small t-if="website._torrepulia_format_preorder(fmt)" class="tp-format-state">In prenotazione</small>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </template>
+
+    <template id="pdp_assurances" name="Product page assurances">
+        <ul class="tp-assure">
+            <li>Spedito da Torremaggiore, imballo protetto per vetro e latta</li>
+            <li t-if="website.torrepulia_shipping_note" t-out="website.torrepulia_shipping_note"/>
+            <t t-set="tp_phone" t-value="website.company_id.phone or '+39 380 637 5074'"/>
+            <li>Domande sul formato giusto? <a t-att-href="'tel:%s' % tp_phone.replace(' ', '')" t-out="tp_phone"/></li>
+        </ul>
+    </template>
+
+    <template id="pdp_oil_profile" name="Oil identity card">
+        <section class="tp-idcard" aria-labelledby="tp-idcard-title">
+            <div class="tp-idcard-intro">
+                <h2 id="tp-idcard-title">Carta d'identità dell'olio</h2>
+                <p class="tp-idcard-source" t-out="profile._torrepulia_source()"/>
+                <dl t-if="profile._torrepulia_facts()" class="tp-idcard-facts">
+                    <div t-foreach="profile._torrepulia_facts()" t-as="fact"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div>
+                </dl>
+            </div>
+            <div t-if="profile._torrepulia_lab_rows()" class="tp-lab-wrap">
+                <table class="tp-lab">
+                    <caption class="visually-hidden">Analisi di laboratorio confrontata con i limiti di legge per l'olio extravergine</caption>
+                    <thead><tr><th scope="col">Parametro</th><th scope="col">Valore</th><th scope="col">Limite extravergine</th><th scope="col" class="tp-lab-scale-head">Quota del limite</th></tr></thead>
+                    <tbody>
+                        <tr t-foreach="profile._torrepulia_lab_rows()" t-as="row">
+                            <th scope="row" t-out="row['label']"/>
+                            <td class="tp-lab-value" t-out="row['value']"/>
+                            <td class="tp-lab-limit" t-out="row['limit']"/>
+                            <td>
+                                <span t-if="row['ratio'] is not None" class="tp-lab-scale" role="img"
+                                      t-att-aria-label="'%s per cento del limite' % row['ratio']">
+                                    <span t-attf-style="width: #{row['ratio']}%"/>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </template>
+
+    <template id="base_unit_name_variant" inherit_id="website_sale.base_unit_price" name="Variant base unit name">
+        <!-- With several variants the template has no base unit: name the one of the shown combination. -->
+        <xpath expr="//span[hasclass('oe_custom_base_unit')]" position="attributes">
+            <attribute name="t-field"/>
+            <attribute name="t-out">combination_info and combination_info.get('base_unit_name') or product.base_unit_name</attribute>
+        </xpath>
+    </template>
+
+    <template id="pdp_boutique" inherit_id="website_sale.product" name="Torrepulia boutique product page">
+        <xpath expr="//t[@t-call='website_sale.container_dropzone_above_price']" position="before">
+            <t t-if="website.torrepulia_theme_enabled" t-call="website_torrepulia_theme.pdp_formats"/>
+        </xpath>
+        <xpath expr="//div[@id='o_wsale_product_cta_section']" position="after">
+            <t t-if="website.torrepulia_theme_enabled" t-call="website_torrepulia_theme.pdp_assurances"/>
+        </xpath>
+        <xpath expr="//div[@id='product_full_description']" position="before">
+            <div t-if="website.torrepulia_theme_enabled and product._torrepulia_oil_profile()" class="container tp-idcard-container">
+                <t t-call="website_torrepulia_theme.pdp_oil_profile" profile="product._torrepulia_oil_profile()"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
