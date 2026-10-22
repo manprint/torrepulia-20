@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "surface": "shop",
+      "width": 1440,
+      "exhausted_add_hidden": true,
+      "configured_message_and_link_visible": true,
+      "available_product_add_visible": true,
+      "no_overflow": true,
+      "alert_style": {
+        "background": "rgb(252, 235, 236)",
+        "classes": "tp-request-stock-message badge text-bg-danger text-start text-wrap",
+        "button_contained": true
+      }
+    },
+    {
+      "surface": "product",
+      "width": 1440,
+      "native_exhausted_add_hidden": true,
+      "message_visible": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "choose_formats",
+      "width": 1440,
+      "exhausted_add_hidden": true,
+      "message_visible": true
+    },
+    {
+      "surface": "shop",
+      "width": 390,
+      "exhausted_add_hidden": true,
+      "configured_message_and_link_visible": true,
+      "available_product_add_visible": true,
+      "no_overflow": true,
+      "alert_style": {
+        "background": "rgb(252, 235, 236)",
+        "classes": "tp-request-stock-message badge text-bg-danger text-start text-wrap",
+        "button_contained": true
+      }
+    },
+    {
+      "surface": "product",
+      "width": 390,
+      "native_exhausted_add_hidden": true,
+      "message_visible": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "choose_formats",
+      "width": 390,
+      "exhausted_add_hidden": true,
+      "message_visible": true
+    },
+    {
+      "surface": "shop",
+      "width": 360,
+      "button_contained": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "shop",
+      "width": 768,
+      "button_contained": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "seasonal_campaign",
+      "preorder_exhausted_product_allowed": true,
+      "quantity": 1
+    }
+  ],
+  "javascript_errors": [],
+  "qa_selection_cleared": true
+}

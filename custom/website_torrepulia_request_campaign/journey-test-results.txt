@@ -1,0 +1,147 @@
+Torrepulia — issue 9 — consegna 19 ottobre 2026
+Timestamp dei log riportati senza alterare quelli prodotti dall'ambiente.
+
+Ambiente Odoo 20.0-20260926; credenziali lette dalle variabili del container,
+mai riportate. Database principale di test: torrepulia_request_test.
+Provider Demo non live, SMTP intercettato, indirizzi sintetici .invalid.
+
+REGRESSIONE COMPLETA
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO \
+  --logfile=/tmp/torrepulia-journey-release.log
+
+2026-10-18 20:40:22,863 INFO torrepulia_request_test odoo.service.server: 74 post-tests in 251.67s, 32894 queries
+2026-10-18 20:40:22,865 INFO torrepulia_request_test odoo.tests.result: 0 failed, 0 error(s) of 74 tests when loading database 'torrepulia_request_test'
+Exit code: 0.
+
+Tre test nuovi:
+- TestCampaign.test_renamed_legacy_forms_preserve_surrounding_editorial_and_contact_form
+- TestRequestJourney.test_http_catalog_campaign_review_crm_quotation_and_manual_confirmation
+- TestRequestJourney.test_old_thanks_requires_server_session_and_general_contact_still_works
+
+Dopo la correzione finale dello schema menu nel bridge, ripetizione mirata
+degli addon modificati (non sono altri 12 scenari unici):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO \
+  --logfile=/tmp/torrepulia-journey-compatibility-tests.log
+
+2026-10-18 20:43:35,604 INFO torrepulia_request_test odoo.service.server: 12 post-tests in 90.46s, 6876 queries
+2026-10-18 20:43:35,605 INFO torrepulia_request_test odoo.tests.result: 0 failed, 0 error(s) of 12 tests when loading database 'torrepulia_request_test'
+Exit code: 0.
+
+Il nuovo percorso usa tre prodotti sintetici stoccabili, senza giacenza:
+lattina, Bag in Box e confezione di bottiglie. Selezione 2/1/4, impostazione
+stagionale lattina a 3, riepilogo 3/1/4 (8 confezioni), errore dati, errore CRM
+con rollback, invio e replay con stesso riferimento. Una opportunità, nessun
+contatto anonimo/ordine/transazione/movimento/fattura alla selezione o all'invio.
+Bozza preventivo con righe esatte e nessun picking; conferma manuale nativa
+produce il picking. Fotografia originale invariata; nuova selezione vuota.
+Il test non esegue clic o rendering in un browser.
+
+JAVASCRIPT
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_review.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs
+Log /tmp/torrepulia-journey-node.log
+# tests 29
+# pass 29
+# fail 0
+# skipped 0
+Exit code: 0. DOM e dipendenze simulati, non browser/Builder reali.
+
+CONCORRENZA POSTGRESQL REALE
+Odoo shell --no-http --max-cron-threads=0, solo torrepulia_request_test.
+Eseguiti in sequenza tools/concurrency_qa.py, tools/review_concurrency_qa.py,
+tools/quotation_concurrency_qa.py del modulo funzionale: run(env).
+Log /tmp/torrepulia-journey-concurrency.log
+Output /tmp/torrepulia-journey-concurrency-output.log
+Exit code: 0. Otto scenari, output effettivo:
+
+PASS concurrent duplicate increment: one application, one replay, total 2
+PASS concurrent distinct edits: one conflict, explicit reapply preserves both increments
+PASS concurrent initialization: one session, one draft, same selection identity
+PASS concurrent duplicate final submit: one immutable request, one opportunity, two notification intents, one prepared draft, one replay, no orders
+PASS concurrent notification workers: one customer email queued, no SMTP, missing team recipient isolated
+PASS concurrent quantity edit/final submit: one wins, stale operation conflicts; no lost or mutable submitted lines
+PASS concurrent independent preparation dialogs: one native draft quotation, identical result, immutable request
+PASS concurrent revision dialogs from the same base: one traced revision, no confirmation, stock moves or invoices
+
+Le fixture sintetiche inviate rimangono nel solo DB di test dedicato.
+
+COPIA DEL DATABASE STORICO
+Lettura iniziale di odoo_dev: tema installato 20.0.3.1.2, addon richiesta assenti,
+pagina stagionale pubblicata con un vecchio form; ringraziamento non indicizzabile.
+Dump PostgreSQL ripristinato nel solo torrepulia_migration_test. Nessun filestore
+originale copiato. Cron/mail disabilitati nella copia, coda pregressa cancellata
+solo nella copia e provider resi non live. Nessun invio finale eseguito sulla copia.
+
+Baseline: tools/migration_qa.py, save_baseline(cr), sul solo clone.
+Poi installazione di website_torrepulia_request_campaign con dipendenze:
+odoo -d torrepulia_migration_test -i website_torrepulia_request_campaign \
+  --stop-after-init --no-http --max-cron-threads=0 --without-demo=all
+Log /tmp/torrepulia-migration-install.log, exit code 0.
+
+Odoo shell: tools/migration_qa.py, run(env).
+Log /tmp/torrepulia-migration-verify.log
+Output /tmp/torrepulia-migration-verify-output.log
+Exit code 0, output effettivo:
+
+PASS historical CRM, orders/lines, prices, stock, payments and invoices: counts and business-field fingerprints unchanged
+PASS restored original pages: one seasonal selector, no legacy form, original-language backup, URLs/publication/indexing unchanged
+PASS second migration: byte-identical translated content/backup; standard mode preserved; closed empty campaign; no requests auto-created
+Original theme recorded version unchanged: 20.0.3.1.2
+
+La prova HTTP ha inizialmente rilevato una vera incompatibilità con lo schema
+storico: website_menu.torrepulia_navigation_hidden assente (500 dello shop).
+Corretta nel bridge con eredità del modello menu per il setup ORM, senza
+ridefinire campi o aggiornare pagine/dati del tema originale.
+Aggiornamento del bridge e della campagna sul clone:
+Log /tmp/torrepulia-migration-compatibility.log, exit code 0.
+
+python3 /mnt/torrepulia/custom/website_torrepulia_request_campaign/tools/migration_http_qa.py
+Server locale temporaneo 127.0.0.1:8080, db-filter esatto del clone, nessun cron;
+redirect linguistici locali nativi seguiti, redirect esterni rifiutati.
+Log /tmp/torrepulia-migration-http.log
+Output /tmp/torrepulia-migration-http-output.log
+Exit code 0, output effettivo:
+
+PASS restored database HTTP: catalog, real product page, migrated seasonal page, summary and neutral legacy receipt return 200
+PASS restored database HTTP: two existing catalog products selected, three packages in preview, hidden prices, old seasonal POST rejected
+PASS HTTP smoke leaves historical CRM/orders/prices/stock/payment/invoice fingerprints unchanged; no final send
+
+I due prodotti esistenti sono selezionati dinamicamente, senza ID codificati.
+La prova prepara team/campagna/modalità soltanto nella copia temporanea.
+Non è un collaudo delle immagini, degli asset scaricati o del runtime JavaScript.
+
+Controllo finale: fingerprint di odoo_dev e del clone identici alla baseline
+per i dati commerciali, zero nuovi messaggi in stato sent dalla creazione copia;
+addon richiesta ancora non installati in odoo_dev. Clone e dump temporaneo
+eliminati dopo la verifica; database originale e DB sintetico principale mantenuti.
+
+CONTROLLI STATICI E LIMITI
+Python ast.parse e XML ElementTree sui tre addon: 66 file, nessun errore.
+Vista di ringraziamento, detector impeccable: [] (non è una certificazione WCAG).
+Viste e registrazione ORM validate dagli aggiornamenti Odoo.
+Importazioni dei test rimosse dal bootstrap applicativo; discovery nativa Odoo
+verificata dai 74 test e dalla ripetizione finale.
+Prima prova del riscontro contatti: un fallimento perché @route Odoo 20 restituisce
+Response invece di testo; parser corretto e prove complete/ripetizioni verdi.
+Preparazione iniziale del tool HTTP: import fields corretto; redirect nativo
+/en/shop riconosciuto nel tool. Non sono difetti residui del prodotto.
+
+Browser inventory: apps: [], browsers: []. Chromium/Firefox/Chrome e Playwright
+non presenti nel container. Non eseguiti: viewport 360/390/tablet/desktop,
+screenshot, tastiera/lettore schermo, contrasto misurato, zoom, UI Builder reale
+con picker, riordino, duplicazione, salvataggio e ricarica.
+Non dichiarati superati e non sostituiti da mockup.
+
+Restano avvisi nativi QWeb technical_usage/track; nessun test fallito finale.
+Nessuna email o pagamento reale e nessun deploy in produzione/staging.

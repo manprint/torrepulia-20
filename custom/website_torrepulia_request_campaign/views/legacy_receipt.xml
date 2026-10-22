@@ -1,0 +1,19 @@
+<odoo>
+    <template id="legacy_receipt" name="Accesso alla precedente pagina di ringraziamento">
+        <t t-set="head"><meta t-if="legacy_no_index" name="robots" content="noindex"/></t>
+        <t t-call="website.layout">
+            <div id="wrap" class="tp-request-review container py-5 o_not_editable">
+                <t t-if="recent_contact">
+                    <h1>Abbiamo ricevuto il tuo messaggio</h1>
+                    <p>Il messaggio inviato dal modulo contatti è stato ricevuto. Questo non conferma un ordine o una prenotazione di prodotti.</p>
+                </t>
+                <t t-else="">
+                    <h1>Verifica la tua richiesta</h1>
+                    <p>Aprire questa pagina non conferma l'invio di una richiesta. Puoi rivedere i prodotti e inviare la richiesta dalla pagina dedicata.</p>
+                    <a t-att-href="summary_url" class="btn btn-primary">Rivedi la richiesta</a>
+                </t>
+                <p><a href="/shop" class="btn btn-link">Scopri i nostri prodotti</a></p>
+            </div>
+        </t>
+    </template>
+</odoo>

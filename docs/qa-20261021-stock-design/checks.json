@@ -1,0 +1,304 @@
+{
+  "checks": [
+    {
+      "surface": "shop",
+      "width": 1440,
+      "cards": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 809.609375,
+          "action_top": 1011.875,
+          "action_bottom": 1063.875,
+          "action_width": 419.328125,
+          "card_width": 419.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 809.609375,
+          "action_top": 1011.875,
+          "action_bottom": 1063.875,
+          "action_width": 419.328125,
+          "card_width": 419.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "no_overflow": true
+    },
+    {
+      "surface": "shop",
+      "width": 768,
+      "cards": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 656.203125,
+          "action_top": 858.34375,
+          "action_bottom": 910.34375,
+          "action_width": 337,
+          "card_width": 337,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 656.203125,
+          "action_top": 858.34375,
+          "action_bottom": 910.34375,
+          "action_width": 337,
+          "card_width": 337,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "no_overflow": true
+    },
+    {
+      "surface": "shop",
+      "width": 390,
+      "cards": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 573.171875,
+          "action_top": 785.921875,
+          "action_bottom": 847.921875,
+          "action_width": 163,
+          "card_width": 163,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 573.171875,
+          "action_top": 785.921875,
+          "action_bottom": 847.921875,
+          "action_width": 163,
+          "card_width": 163,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "no_overflow": true
+    },
+    {
+      "surface": "shop",
+      "width": 360,
+      "cards": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 573.171875,
+          "action_top": 806.140625,
+          "action_bottom": 886.140625,
+          "action_width": 148,
+          "card_width": 148,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 573.171875,
+          "action_top": 806.140625,
+          "action_bottom": 886.140625,
+          "action_width": 148,
+          "card_width": 148,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "no_overflow": true
+    },
+    {
+      "surface": "product",
+      "width": 1440,
+      "shared_notice": true,
+      "native_add_hidden": true
+    },
+    {
+      "surface": "product",
+      "width": 390,
+      "shared_notice": true,
+      "native_add_hidden": true
+    },
+    {
+      "surface": "formats",
+      "width": 1440,
+      "neutral_notice": true,
+      "preorder_link": true
+    },
+    {
+      "surface": "formats",
+      "width": 390,
+      "neutral_notice": true,
+      "preorder_link": true
+    },
+    {
+      "surface": "builder_shop",
+      "before": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 752.25,
+          "action_top": 980.484375,
+          "action_bottom": 1032.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 752.25,
+          "action_top": 980.484375,
+          "action_bottom": 1032.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Donazione",
+          "image_bottom": 752.25,
+          "action_top": 980.484375,
+          "action_bottom": 1032.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": null
+        }
+      ],
+      "hovered": [
+        {
+          "name": "Latta 5 LT",
+          "image_bottom": 712.25,
+          "action_top": 940.484375,
+          "action_bottom": 992.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Bag in box 5 LT",
+          "image_bottom": 712.25,
+          "action_top": 940.484375,
+          "action_bottom": 992.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": {
+            "border": "0px",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "name": "Donazione",
+          "image_bottom": 712.25,
+          "action_top": 940.484375,
+          "action_bottom": 992.484375,
+          "action_width": 299.328125,
+          "card_width": 299.328125,
+          "contained": true,
+          "position": "static",
+          "transform": "none",
+          "radius": "3px",
+          "font": "Manrope, sans-serif",
+          "notice": null
+        }
+      ],
+      "no_overlap": true
+    },
+    {
+      "surface": "builder_formats",
+      "saved_and_reloaded": true,
+      "runtime_content_not_saved": true
+    }
+  ],
+  "javascript_errors": [],
+  "rpc_errors": [],
+  "selection_updates_in_builder": []
+}

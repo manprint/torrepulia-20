@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "seasonal: cards, six approved assurances, no obsolete section, empty shared form",
+    "catalog: quantity two added with a single click",
+    "catalog two -> seasonal plus -> total three; second product preserved in shared form",
+    "seasonal: no horizontal overflow at 360, 390 and 820px",
+    "review: compact product stepper, shared total four, 60/40 desktop and responsive form",
+    "mock acknowledgement with slow confirmation navigation: no empty-request flash; no CRM or emails created",
+    "Builder: editable campaign, isolated disabled quantities, no personal contact form loaded",
+    "Builder: save and exit on temporary page without lifecycle exception"
+  ],
+  "errors": []
+}

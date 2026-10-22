@@ -1,0 +1,170 @@
+.tp-request-header {
+    display: inline-flex !important;
+    align-items: center;
+    gap: .5rem;
+    width: auto !important;
+    min-height: 44px;
+    padding-inline: .5rem;
+    font-size: 13px;
+    white-space: nowrap;
+    [data-tp-request-header-count] { font-variant-numeric: tabular-nums; }
+}
+// The native hover layout assumes a short icon. The request action is a
+// visible text button and must remain in the information area of the card.
+#wrapwrap :is(.oe_product_cart, .format-summary):has(.tp-request-action-row) {
+    .o_wsale_product_btn:has(.tp-request-action-row) {
+        position: relative !important;
+        inset: auto !important;
+        width: 100%;
+        height: auto;
+        aspect-ratio: auto;
+        overflow: visible;
+        margin-block: 12px 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none !important;
+        translate: none !important;
+        pointer-events: auto;
+    }
+    .tp-request-action-row { display: flex; flex-direction: column; gap: 16px !important; align-items: stretch; width: 100%; padding: 0; pointer-events: auto; transform: none !important; }
+    .tp-catalog-quantity { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin: 0; }
+    .tp-catalog-stepper { display: inline-flex; align-items: center; gap: 8px; align-self: start; }
+    .tp-catalog-stepper button { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #2e493b; color: #fff; font: 24px/1 Manrope, sans-serif; }
+    .tp-catalog-quantity-input { width: 56px; min-height: 48px; padding: 6px; text-align: center; border: 0; background: #fff; color: #18231f; font-family: Manrope, sans-serif; appearance: textfield; }
+    .tp-catalog-quantity-input::-webkit-inner-spin-button { appearance: none; }
+    .tp-catalog-variants { display: flex; gap: 8px; flex-wrap: wrap; border: 0; padding: 0; margin: 0; }
+    .tp-catalog-variants legend { font: 13px/1.5 Manrope, sans-serif; margin: 0 0 8px; }
+    .tp-catalog-variant { display: inline-flex; gap: 8px; align-items: center; border: 1px solid #ccd4ce; padding: 10px; min-height: 44px; font: 13px/1.5 Manrope, sans-serif; cursor: pointer; }
+    .tp-catalog-variant:has(input:checked) { border-color: #2e493b; background: #f0f4ed; }
+    .tp-catalog-variant input { accent-color: #2e493b; }
+    .tp-request-tile-add, .tp-request-preorder-link {
+        position: static !important;
+        display: inline-flex;
+        aspect-ratio: auto !important;
+        border-radius: 3px;
+        width: 100%;
+        flex: none;
+        justify-content: center;
+        min-height: 52px;
+        white-space: normal;
+        font: 600 12px/1.5 Manrope, sans-serif;
+        letter-spacing: .04em;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+    }
+}
+// The shop's native primary action is hidden/transformed until pointer hover.
+// Quantity selection and its action must be visible on every card, also on touch.
+body[data-tp-request-mode="1"] #wrapwrap .tp-request-action-row .tp-request-tile-add {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+#wrapwrap .tp-request-confirmation {
+    position: fixed;
+    z-index: 1050;
+    inset: auto 24px 24px auto;
+    width: 460px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 24px;
+    background: #fffaf5;
+    color: #203b2f;
+    box-shadow: 0 8px 32px rgba(32, 59, 47, .18);
+    border-radius: 12px;
+    h2 { font-family: Caslon, Georgia, serif; font-size: 24px; font-weight: 700; margin: 0 0 16px; line-height: 1.2; }
+    p { font-family: Manrope, sans-serif; font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
+    .tp-confirmation-subtotal { font-weight: 700; }
+    .tp-confirmation-note { font-size: 12px; color: #6b654f; }
+    a, button { font-family: Manrope, sans-serif; min-height: 44px; white-space: normal; }
+    &-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+}
+.tp-request-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding-block: 24px;
+    border-bottom: 1px solid #d8ded9;
+    h2 { flex: 1 1 240px; font-size: 21px; margin: 0; }
+    label { display: flex; align-items: center; gap: 12px; }
+    input { width: 90px; padding: 8px; }
+}
+@media (max-width: 760px) {
+    body[data-tp-request-mode="1"] .oe_product_cart {
+        .tp-catalog-stepper { gap: 4px; }
+        .tp-catalog-stepper button { width: 44px; height: 44px; }
+        .tp-catalog-quantity-input { width: 40px; }
+    }
+    .tp-request-header { font-size: 11px; gap: 4px; padding-inline: 0; }
+    #wrapwrap .tp-request-confirmation { inset: auto 16px 16px; }
+    body[data-tp-request-mode="1"] .header-tools { gap: 8px; }
+}
+body[data-tp-request-mode="1"][data-tp-request-prices="0"] {
+    .format-option { grid-template-columns: auto minmax(0, 1fr); }
+    .o_wsale_product_sub { justify-content: flex-start !important; }
+}
+
+// These structural selectors also apply inside the Website Builder iframe,
+// where the public response body attributes and interactions are absent.
+#wrapwrap {
+    .tp-request-action-row [hidden] { display: none !important; }
+    .tp-request-stock-message {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+        min-width: 0;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        border-radius: 0;
+        text-align: left;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        font-family: Manrope, sans-serif;
+    }
+    .tp-stock-status { color: #925b48; font-size: 13px; font-weight: 500; line-height: 1.5; }
+    .tp-stock-copy { margin: 0; color: #46584c; font-size: 14px; line-height: 1.5; white-space: pre-line; }
+    .tp-request-stock-message .tp-request-preorder-link {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 52px;
+        max-width: 100%;
+        aspect-ratio: auto !important;
+        margin-top: 8px;
+        padding: 12px 16px;
+        border-radius: 3px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #2e493b;
+        color: #fff;
+        font: 600 12px/1.5 Manrope, sans-serif;
+        letter-spacing: .04em;
+        text-decoration: none;
+        white-space: normal;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        translate: none !important;
+        pointer-events: auto;
+    }
+}
+
+// Leave the native wishlist control its own row above the full-width alert.
+#wrapwrap .oe_product_cart:has(.tp-request-action-row)
+    .tp-request-action-row:has(> .tp-request-stock-message:not([hidden])) {
+    padding-top: 32px;
+}
+
+#wrapwrap .oe_product_cart:has(.tp-request-action-row) {
+    .o_wsale_product_information { display: flex; flex-direction: column; }
+    .o_wsale_product_sub { display: flex; flex: 1; flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+    .o_wsale_product_btn:has(.tp-request-action-row) { margin-top: auto !important; padding-top: 16px; }
+}

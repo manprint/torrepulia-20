@@ -1,0 +1,79 @@
+<odoo>
+    <record id="request_list" model="ir.ui.view">
+        <field name="name">torrepulia.request.list</field>
+        <field name="model">torrepulia.request</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0">
+                <field name="name"/><field name="website_id"/><field name="contact_name"/>
+                <field name="state"/><field name="team_id"/><field name="user_id"/>
+                <field name="submitted_at"/><field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="request_form" model="ir.ui.view">
+        <field name="name">torrepulia.request.form</field>
+        <field name="model">torrepulia.request</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <header>
+                    <button name="action_prepare_quotation" type="object" string="Prepara preventivo" class="btn-primary" invisible="state != 'submitted'" groups="sales_team.group_sale_salesman"/>
+                    <button name="action_new_quotation_revision" type="object" string="Nuovo preventivo / revisione" invisible="state != 'submitted' or not quotation_ids" groups="sales_team.group_sale_salesman"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group><field name="website_id"/><field name="company_id"/><field name="lang"/>
+                            <field name="partner_id"/><field name="submitted_at"/><field name="last_activity"/>
+                        </group>
+                        <group><field name="team_id"/><field name="user_id"/>
+                            <field name="opportunity_id"/><field name="origin"/>
+                            <field name="source_id"/><field name="campaign_id"/><field name="medium_id"/>
+                        </group>
+                    </group>
+                    <group string="Dati forniti dal cliente"><field name="contact_name"/><field name="email"/>
+                        <field name="phone"/><field name="address"/><field name="notes"/>
+                    </group>
+                    <notebook>
+                        <page string="Prodotti richiesti">
+                            <field name="line_ids"><list create="0" edit="0" delete="0">
+                                <field name="received_name"/><field name="quantity"/><field name="received_uom"/>
+                                <field name="received_configuration"/>
+                                <field name="product_id" optional="show"/><field name="uom_id" optional="hide"/>
+                                <field name="no_variant_value_ids" widget="many2many_tags"/>
+                                <field name="custom_values"/><field name="snapshot" optional="hide"/>
+                            </list></field>
+                        </page>
+                        <page string="Preventivi"><field name="quotation_ids" readonly="1"/></page>
+                        <page string="Notifiche"><field name="notification_ids"><list create="0" edit="0" delete="0">
+                            <field name="kind"/><field name="state"/><field name="mail_state"/>
+                            <field name="attempts"/><field name="retry_at"/><field name="error"/>
+                        </list></field></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_requests" model="ir.actions.act_window">
+        <field name="name">Richieste website</field>
+        <field name="res_model">torrepulia.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_requests" name="Richieste website" parent="crm.crm_menu_root"
+              action="action_requests" groups="sales_team.group_sale_salesman" sequence="25"/>
+    <record id="crm_lead_request_form" model="ir.ui.view">
+        <field name="name">crm.lead.torrepulia.requests</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Richieste website"><group><field name="torrepulia_website_id"/><field name="torrepulia_request_origin"/></group>
+                    <field name="torrepulia_request_ids" readonly="1"><list create="0" edit="0" delete="0">
+                        <field name="name"/><field name="website_id"/><field name="origin"/><field name="state"/>
+                        <button name="action_prepare_quotation" type="object" string="Prepara preventivo" invisible="state != 'submitted'" groups="sales_team.group_sale_salesman"/>
+                    </list></field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "header opens empty sidebar without navigation; Escape closes and restores focus",
+    "sidebar contains both selected products, authoritative quantities and EUR totals; keyboard focus stays inside",
+    "optional area field, 11px help, AJAX payload and preservation after simulated submission failure",
+    "a different anonymous browser context cannot see the selected products",
+    "same optional field is present in the seasonal shared form"
+  ],
+  "javascript_errors": []
+}

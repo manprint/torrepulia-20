@@ -1,0 +1,41 @@
+<odoo>
+    <record id="product_editorial_fields" model="ir.ui.view">
+        <field name="name">Torrepulia product editorial fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_torrepulia_theme.cinematic_product_metadata"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[group/field[@name='torrepulia_format_name']]/group" position="after">
+                <group string="Scheda prodotto sul sito">
+                    <field name="torrepulia_web_title"/>
+                    <field name="torrepulia_sensory_profile" widget="html" placeholder="Note di carciofo, mandorla e pomodoro (Fruttato Medio)."/>
+                    <field name="torrepulia_food_pairings" widget="html" placeholder="Ideale a crudo su zuppe, carni rosse e bruschette."/>
+                    <field name="torrepulia_shipping_storage" widget="html" placeholder="Inserisci tempi di imballaggio e modalità di protezione verificati per questo formato."/>
+                </group>
+                <p>Le sezioni senza contenuto non vengono mostrate sul sito. Inserire solo informazioni verificate per questo prodotto.</p>
+            </xpath>
+        </field>
+    </record>
+    <template id="product_editorial_title" inherit_id="website_torrepulia_theme.cinematic_product_title" priority="100">
+        <xpath expr="//h1[not(@t-else)]" position="replace">
+            <h1 t-out="product.torrepulia_web_title or product.name"/>
+        </xpath>
+    </template>
+    <template id="product_editorial_accordions" inherit_id="website_sale.product" priority="100">
+        <xpath expr="(//div[@id='product_details']//t[@t-call='website_sale.product_price'])[1]" position="after">
+            <div t-if="website.torrepulia_theme_enabled" class="tp-product-editorial">
+                <details t-if="not is_html_empty(product.torrepulia_sensory_profile)">
+                    <summary>Il Profilo Sensoriale</summary>
+                    <div t-field="product.torrepulia_sensory_profile"/>
+                </details>
+                <details t-if="not is_html_empty(product.torrepulia_food_pairings)">
+                    <summary>Abbinamenti in Cucina</summary>
+                    <div t-field="product.torrepulia_food_pairings"/>
+                </details>
+                <details t-if="not is_html_empty(product.torrepulia_shipping_storage)">
+                    <summary>Spedizione e Conservazione</summary>
+                    <div t-field="product.torrepulia_shipping_storage"/>
+                </details>
+            </div>
+        </xpath>
+    </template>
+</odoo>

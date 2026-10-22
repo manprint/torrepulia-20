@@ -1,0 +1,85 @@
+Torrepulia — issue 8 — risultati effettivi, 18 ottobre 2026
+
+Ambiente: Docker locale, Odoo 20.0-20260926.
+Database unico di prova: torrepulia_request_test.
+Nessun aggiornamento a odoo_dev o produzione.
+
+Regressione completa dopo l'ultima modifica Python:
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO \
+  --logfile=/tmp/torrepulia-checkout-final.log
+
+Credenziali database lette dall'ambiente del container, non riportate.
+Output effettivo:
+2026-10-18 20:08:14,192 INFO torrepulia_request_test odoo.service.server: 71 post-tests in 225.69s, 30333 queries
+2026-10-18 20:08:14,193 INFO torrepulia_request_test odoo.tests.result: 0 failed, 0 error(s) of 71 tests when loading database 'torrepulia_request_test'
+
+Sei test aggiunti in tests/test_checkout_policy.py, tutti eseguiti:
+- TestCheckoutSuspension.test_all_direct_checkout_pages_and_mutations_are_controlled
+- TestCheckoutSuspension.test_existing_cart_tokens_cannot_use_checkout_or_portal_payment
+- TestCheckoutSuspension.test_free_cart_get_and_recovery_link_cannot_confirm_merge_or_cancel
+- TestCheckoutSuspension.test_restore_same_session_and_second_standard_website
+- TestCheckoutRecoveryAndAudit.test_mode_transition_preserves_submitted_requests_and_reports_only_own_carts
+- TestCheckoutRecoveryAndAudit.test_recovery_cron_excludes_suspended_sites_before_marking_or_mailing
+
+Risultati verificati:
+- GET delle vecchie pagine carrello/checkout/pagamento/stampa: 303 al percorso
+  riepilogo configurato centralmente; header HTTP no-store.
+- JSON-RPC cart/add, cart/update, express checkout, indirizzi, consegna e riordino:
+  errore controllato prima degli effetti commerciali.
+- POST HTTP indirizzo e website form sale.order: 409 JSON controllato.
+- Numero di ordini, transazioni, contatti, movimenti stock e documenti contabili
+  invariato dopo i tentativi bloccati; righe, totale e stato carrello invariati.
+- Carrello gratuito e link recupero con token valido: nessuna conferma, fusione
+  di righe o cancellazione del secondo carrello tramite GET.
+- Vecchio token carrello: nessuna firma memorizzata, nessuna transazione creata
+  da checkout o route pagamento del portale; nessuna elaborazione provider.
+  Il predicato nativo di firma resta vero quando la firma è richiesta.
+- Flag client di contesto non concedono l'accesso al pagamento del carrello.
+- Secondo website standard: aggiunta nativa funzionante mentre il primo è sospeso.
+- Ripristino shop nella stessa sessione: stesso ordine, quantità da 2 a 3,
+  nessun ordine duplicato e nessuna importazione nella richiesta.
+- Richiesta inviata e fotografia delle righe invariate nei cambi di modalità;
+  consultazione interna consentita, flusso pubblico disattivato in modalità shop.
+- Azione backend carrelli limitata al website/azienda, pubblico rifiutato.
+- Ordine e-commerce già confermato escluso dal blocco dei carrelli.
+- Cron recupero: esclusione del sito sospeso prima di flag e mail; altro sito
+  standard incluso. Recupero manuale rifiutato; helper diretto non invia mail.
+
+Regressioni positive portale/Vendite comprese nei 71 test:
+- Firma HTTP nativa di un preventivo commerciale, conferma senza seconda
+  approvazione, anche con modalità richiesta e prezzi pubblici nascosti.
+- Route pagamento del preventivo autorizzato raggiungibile con provider Demo.
+- Post-processing Demo reale: transazione done, ordine sale, pagamento contabile
+  e picking nativi; nessun circuito di pagamento reale contattato.
+- Conferma manuale e fatturazione native continuano a funzionare.
+SMTP intercettato e destinatari sintetici .invalid. Il PDF nella prova firma
+è sostituito da un allegato sintetico, non verificato graficamente.
+
+JavaScript, regressioni delle superfici condivise:
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_review.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs
+Log: /tmp/torrepulia-checkout-node.log
+# tests 29
+# pass 29
+# fail 0
+# skipped 0
+Exit code: 0.
+
+Parsing statico: ast.parse Python ed ElementTree XML sui tre addon, 60 file,
+nessun errore. Aggiornamento ORM e validazione viste Odoo riusciti.
+Avvisi preesistenti: docutils sul README campagna interpretato come RST e
+attributi QWeb technical_usage/track nei template nativi; nessun test fallito.
+
+Una prima esecuzione mirata aveva rilevato un errore nella fixture recupero:
+data ordine troppo recente rispetto alla soglia nativa minima di un'ora.
+Fixture corretta a due ore, poi due esecuzioni complete verdi, ultima sopra.
+
+Browser verificato: apps: [], browsers: []. Screenshot non eseguibili.
+Nessuna modifica al core/tema originale e nessun deploy in produzione.

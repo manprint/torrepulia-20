@@ -1,0 +1,70 @@
+<odoo>
+    <template id="s_torrepulia_request_campaign" name="Torrepulia: richiesta del nuovo raccolto">
+        <section class="tp-campaign o_colored_level" data-snippet="s_torrepulia_request_campaign" data-name="Richiesta del nuovo raccolto" data-columns="2" data-editorial-layout="2" data-visual-bullets="1">
+            <div class="tp-campaign-hero">
+                <div><h1>Prenota il tuo olio del nuovo raccolto</h1>
+                    <p class="tp-campaign-intro">Prenota oggi senza alcun anticipo la tua quota di La Regina: lo moliamo e lo spediamo entro 48 ore.</p>
+                </div>
+                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/campaign/land-1280.webp" alt="Gli uliveti Torrepulia a Torremaggiore" loading="eager"/>
+            </div>
+            <div class="tp-campaign-content o_not_editable"><p>Caricamento della campagna…</p></div>
+            <div class="tp-campaign-review tp-request-review o_not_editable" data-tp-review="" data-review-lazy=""><p>Il modulo e il riepilogo della richiesta vengono caricati durante la visita. Nessun dato personale viene salvato nella pagina.</p></div>
+        </section>
+    </template>
+    <template id="campaign_content" name="Prodotti della campagna">
+        <t t-if="campaign and (opened or editing)">
+            <h2 class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
+            <p class="tp-campaign-formats-description" t-if="campaign.introduction" t-out="campaign.introduction"/>
+            <div class="tp-campaign-benefits-banner">
+            <ul class="tp-campaign-benefits" aria-label="La prenotazione in breve">
+                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4 M12 14v3"/></svg><div><strong>PREZZO BLOCCATO</strong><span>Garantito per tutta la stagione.</span></div></li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 21 19 3 M8 17C3 17 2 12 3 9c5 0 8 3 5 8Z M12 12c-1-5 2-9 7-9 1 5-1 9-7 9Z M12 13c5-3 9-1 9 3-5 3-8 2-9-3Z"/></svg><div><strong>FILIERA PROTETTA</strong><span>100% olive di Torremaggiore.</span></div></li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.5 12 3 3 6-6"/></svg><div><strong>ZERO ANTICIPO</strong><span>Paghi solo alla spedizione.</span></div></li>
+            </ul>
+            </div>
+            <p t-if="editing" class="tp-campaign-demo">Anteprima dimostrativa: nessuna modifica alla richiesta del visitatore.</p>
+            <div class="tp-campaign-grid">
+                <article t-foreach="cards" t-as="card" class="tp-campaign-card" t-att-data-campaign-config="card['config']" t-att-data-campaign-editable="'1' if card['can_set'] else '0'">
+                    <a t-att-href="card['product'].website_url" class="tp-campaign-image-link" tabindex="-1" aria-hidden="true">
+                        <img t-att-src="'/web/image/product.product/%s/image_512' % card['product'].id" t-att-alt="card['name']" loading="lazy" class="tp-campaign-product-image"/>
+                    </a>
+                    <div class="tp-campaign-card-copy">
+                    <h3><a t-att-href="card['product'].website_url" t-out="card['name']"/></h3>
+                    <p t-if="card['content']" class="tp-campaign-pack" t-out="card['content']"/>
+                    <p t-if="card['description']" t-out="card['description']"/>
+                    <div t-if="card['price']" class="product_price tp-campaign-price"><span t-out="card['price']"/>
+                        <small t-if="card['reference_price']"><span t-out="card['reference_price']"/> / <span t-out="card['reference_unit']"/></small>
+                    </div>
+                    <div t-if="card['can_set']" class="tp-campaign-quantity-label">
+                        <span>Confezioni</span>
+                        <div class="tp-quantity-stepper">
+                            <button type="button" data-campaign-step="-1" t-att-aria-label="'Riduci quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None">−</button>
+                            <input type="number" value="0" min="0" step="1" class="tp-campaign-quantity" inputmode="numeric" t-att-aria-label="'Quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None"/>
+                            <button type="button" data-campaign-step="1" t-att-aria-label="'Aumenta quantità di %s' % card['name']" t-att-disabled="'disabled' if editing else None">+</button>
+                        </div>
+                    </div>
+                    <a t-else="" t-att-href="card['product'].website_url" class="btn btn-outline-primary">Scegli la configurazione del prodotto</a>
+
+                    </div>
+                </article>
+            </div>
+            <p t-if="not cards">Il gestore sta preparando i formati di questa campagna. Puoi scegliere dal <a href="/shop">catalogo</a>.</p>
+        </t>
+        <t t-else="">
+            <h2>Campagna non aperta</h2>
+            <p t-out="campaign.closed_message if campaign else 'La campagna è in preparazione. Puoi continuare a scegliere dal catalogo.'"/>
+            <a href="/shop" class="btn btn-outline-primary">Scopri il catalogo</a>
+        </t>
+        <div class="tp-campaign-summary">
+            <p data-campaign-counts="" class="visually-hidden" aria-live="polite">Caricamento della selezione…</p>
+            <p data-campaign-other="" hidden="hidden"/>
+            <p data-campaign-message="" role="status"/>
+            <button type="button" data-campaign-retry="" hidden="hidden" class="btn btn-outline-primary">Riprova aggiornamento</button>
+        </div>
+    </template>
+    <template id="campaign_snippet_palette" inherit_id="website.snippets" priority="110">
+        <xpath expr="//t[@t-snippet='website_torrepulia_theme.s_torrepulia_reservation_form']" position="replace">
+            <t t-snippet="website_torrepulia_request_campaign.s_torrepulia_request_campaign" string="Richiesta del nuovo raccolto" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-latta-5l.jpeg"/>
+        </xpath>
+    </template>
+</odoo>

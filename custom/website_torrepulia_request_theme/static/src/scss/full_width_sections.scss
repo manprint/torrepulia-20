@@ -1,0 +1,8 @@
+// Keep the original 1920px content alignment, extending section backgrounds
+// to the viewport edges on larger screens. No Builder markup is rewritten.
+@media (min-width: 1920px) {
+    .tp-site.tp-cinematic #wrap.mc-page > section.section-pad {
+        max-width: none;
+        padding-inline: calc((100% - 1920px) / 2 + var(--gutter));
+    }
+}

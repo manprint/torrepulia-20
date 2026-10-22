@@ -1,0 +1,32 @@
+<odoo noupdate="1">
+    <record id="source_website_request" model="utm.source">
+        <field name="name">Richiesta sito web</field>
+    </record>
+    <record id="mail_request_customer" model="mail.template">
+        <field name="name">Torrepulia: ricevuta richiesta cliente</field>
+        <field name="model_id" ref="model_torrepulia_request_notification"/>
+        <field name="subject">Richiesta ricevuta {{ object.request_id.name }}</field>
+        <field name="email_from">{{ object.company_id.partner_id.email_formatted or user.email_formatted }}</field>
+        <field name="use_default_to" eval="False"/>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html"><div><t t-out="object._body_html()"/></div></field>
+    </record>
+    <record id="mail_request_internal" model="mail.template">
+        <field name="name">Torrepulia: nuova richiesta al team</field>
+        <field name="model_id" ref="model_torrepulia_request_notification"/>
+        <field name="subject">Richiesta sito web {{ object.request_id.name }}</field>
+        <field name="email_from">{{ object.company_id.partner_id.email_formatted or user.email_formatted }}</field>
+        <field name="use_default_to" eval="False"/>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html"><div><t t-out="object._body_html()"/></div></field>
+    </record>
+    <record id="cron_prepare_request_notifications" model="ir.cron">
+        <field name="name">Torrepulia: prepara notifiche richieste</field>
+        <field name="model_id" ref="model_torrepulia_request_notification"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_prepare()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+{
+  "js": [
+    "Cannot set properties of undefined (setting 'showUi')"
+  ],
+  "rpc": [],
+  "console": [
+    {
+      "type": "error",
+      "text": "The following modules are needed by other modules but have not been defined, they may not be present in the correct asset bundle: [@website_torrepulia_request_campaign/js/campaign]"
+    },
+    {
+      "type": "error",
+      "text": "The following modules could not be loaded because they have unmet dependencies, this is a secondary error which is likely caused by one of the above problems: [@website_torrepulia_request_campaign/js/campaign_options]"
+    },
+    {
+      "type": "error",
+      "text": "Error: Missing 'template' in the option XML definition: torrepulia_campaign_option\n    at BuilderOptionsPlugin.validateOptionDeclaration (http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:170:55)\n    at BuilderOptionsPlugin.createOptionClassFromXML (http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:166:215)\n    at http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:164:478\n    at Array.from (<anonymous>)\n    at BuilderOptionsPlugin.computeBuilderOptionsFromTemplate (http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:164:442)\n    at BuilderOptionsPlugin.setup (http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:112:689)\n    at http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13840:77\n    at ComponentNode.run (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:550:45)\n    at Editor.startPlugins (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13840:27)\n    at Editor.attachTo (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13833:6)"
+    },
+    {
+      "type": "error",
+      "text": "TypeError: Cannot set properties of undefined (setting 'showUi')\n    at OverlayButtonsPlugin.showOverlayButtonsUi (http://127.0.0.1:8069/web/assets/1/2f7409b/website.website_builder_assets.min.js:1089:41)\n    at http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13853:52\n    at Array.map (<anonymous>)\n    at Editor.trigger (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13853:37)\n    at SelectionPlugin.unFocusEditable (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:14864:39)\n    at HTMLDocument.handler (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:13875:142)\n    at HTMLElement.mockFocus [as focus] (http://127.0.0.1:8069/web/assets/58f085f/web_tour.interactive.min.js:232:15)\n    at http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:4763:193\n    at Dialog.<anonymous> (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:1522:496)\n    at RootFiber.complete (http://127.0.0.1:8069/web/assets/1/f91d8bc/web.assets_web.min.js:1028:174)"
+    },
+    {
+      "type": "error",
+      "text": "The following modules are needed by other modules but have not been defined, they may not be present in the correct asset bundle: [@website_torrepulia_request_campaign/js/campaign]"
+    },
+    {
+      "type": "error",
+      "text": "The following modules could not be loaded because they have unmet dependencies, this is a secondary error which is likely caused by one of the above problems: [@website_torrepulia_request_campaign/js/campaign_options]"
+    }
+  ],
+  "failed": []
+}

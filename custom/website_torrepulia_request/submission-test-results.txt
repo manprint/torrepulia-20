@@ -1,0 +1,75 @@
+Issue 6 — risultati effettivi del 2026-10-18
+
+Ambiente: Odoo 20.0-20260926, PostgreSQL 17, container locale
+torrepulia-20-local-dev-odoo-1, database isolato torrepulia_request_test.
+phonenumbers 8.12.57 presente. Nessun aggiornamento di odoo_dev o produzione.
+
+Suite finale Odoo (credenziali connessione lette dall'ambiente, non riportate):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO
+
+Log: /tmp/torrepulia-submission-complete.log
+2026-10-18 19:18:40,574 odoo.service.server: 55 post-tests in 171.43s, 19519 queries
+2026-10-18 19:18:40,574 odoo.tests.result:
+0 failed, 0 error(s) of 55 tests when loading database 'torrepulia_request_test'
+Exit code: 0.
+
+Otto test nuovi + 47 regressioni delle issue 1–5:
+- Invio finale: CRM, website, team/assegnatario, origine, note con escaping,
+  campagna/sorgente native, fotografie, nuova bozza già preparata.
+- Nessun ordine, fattura, pagamento, movimento stock, contatto anonimo o mail
+  creato durante l'invio HTTP; le intenzioni di notifica sono persistenti.
+- Replay identico, selezione successiva preservata, nuovo invio intenzionale,
+  deduplicazione anche dopo 24 ore.
+- Guasto dopo creazione CRM: rollback anche di stato, fotografie e ricevuta;
+  righe e token sessione conservati.
+- Guasto template: richiesta già ricevuta preservata, ritentativo della coda;
+  nessuna ricerca/associazione di contatti per email, nessun duplicato mail.
+- Guasto SMTP intercettato su ir.mail_server._connect__: mail in exception,
+  richiesta e opportunità preservate, nessuna connessione di rete reale.
+- Telefono facoltativo, validazione/normalizzazione nativa, input non valido.
+- Raccolta cookie tramite utm.mixin e conservazione dell'attribuzione nel CRM.
+- ACL notifiche pubblico/portale/commerciale; fase vinta o di altro team rifiutata.
+- Prezzi visibili solo se consentiti all'invio e alla preparazione della ricevuta.
+
+Le regressioni HTTP coprono anche CSRF, CAPTCHA intercettato, quantità,
+varianti/configurazioni, conferma protetta, dati manipolati, prezzi nascosti,
+isolamento website/sessione/azienda e modalità standard.
+
+Il caricamento segnala avvisi docutils già presenti sul README Markdown
+dell'addon campagna, non errori di test o compilazione degli asset.
+
+Suite JavaScript (Node v18.19.1):
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_review.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs
+# tests 29
+# pass 29
+# fail 0
+Exit code: 0.
+
+Concorrenza PostgreSQL reale:
+Odoo shell sul solo torrepulia_request_test, --no-http --max-cron-threads=0,
+esecuzione tools/review_concurrency_qa.py: run(env).
+Log server: /tmp/torrepulia-submission-concurrency.log
+Due cursori separati con snapshot RR, barriera e retry transazionale nativo.
+Output effettivo, exit code 0:
+
+PASS concurrent duplicate final submit: one immutable request, one opportunity, two notification intents, one prepared draft, one replay, no orders
+PASS concurrent notification workers: one customer email queued, no SMTP, missing team recipient isolated
+PASS concurrent quantity edit/final submit: one wins, stale operation conflicts; no lost or mutable submitted lines
+Synthetic submitted fixtures retained only in the disposable test database.
+
+La prova coda prepara soltanto mail.mail; nessun invio SMTP. I destinatari
+sintetici sono .invalid. Le richieste inviate sintetiche non sono eliminate
+aggirando le protezioni di immutabilità.
+
+Ulteriori controlli: sintassi Python e parsing XML dei file issue 6 superati;
+validazione delle viste native durante l'aggiornamento Odoo superata.
+Browser: apps: [], browsers: []. Screenshot e verifica visiva non eseguibili.
+Nessuna email reale, pagamento o deploy in produzione.

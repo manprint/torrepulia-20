@@ -1,0 +1,68 @@
+Issue 4 — risultati effettivi del 2026-10-18
+
+Ambiente: Odoo 20.0-20260926, PostgreSQL 17, container locale
+torrepulia-20-local-dev-odoo-1, database isolato torrepulia_request_test.
+Installazione iniziale addon e aggiornamenti completati sul solo database di test.
+odoo_dev: interrogazioni SQL read-only per inventario moduli e catalogo.
+Nessun deploy in produzione; nessuna email reale o pagamento.
+
+Comando finale Odoo (connessione fornita dall'ambiente, omessa):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO
+
+Log finale: /tmp/torrepulia-campaign-delivery.log
+2026-10-18 16:09:48,357 odoo.tests.result:
+0 failed, 0 error(s) of 41 tests when loading database 'torrepulia_request_test'
+Exit code: 0.
+8 test campagna + 33 regressioni delle issue precedenti.
+Nessun errore di compilazione asset nel log finale.
+
+Copertura specifica Odoo:
+- ACL pubblico/portale negati; commerciale consentito nella propria azienda.
+- Altra azienda e altro website isolati; campagne predefinite non trasferibili.
+- Apertura, chiusura e intervallo; selezione/catalogo restano disponibili.
+- Varianti reali distinte, riordino; nessuna nuova variante creata.
+- Migrazione idempotente, backup per lingua, fotografia del gestore conservata,
+  altre sezioni e SEO/indicizzazione invariati.
+- HTTP: griglia e controlli indipendenti, prezzi nativi e prezzo/L configurato,
+  importi assenti quando nascosti; prodotto archiviato segnalato nella richiesta.
+- Add 2 dal catalogo, set 3 dalla campagna, altre 4 confezioni preservate.
+- Nessun CRM, ordine o contatto creato dalla selezione.
+- Vecchio form CRM respinto e assente dalla pagina aggiornata.
+- Anteprima solo editor autenticato, input dimostrativi, nessuna quantità personale
+  o modifica della selezione reale.
+
+Node v18.19.1:
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs
+# tests 22
+# pass 22
+# fail 0
+# skipped 0
+Exit code: 0.
+6 test campagna + 16 regressioni JavaScript.
+DOM/dipendenze simulate: non sostituiscono il collaudo nel browser.
+
+Validazione statica addon campagna:
+- AST: 10 file Python, OK.
+- XML: 4 file, OK.
+- SCSS compilato con libsass installato: 3313 byte, OK.
+- Controllo whitespace sulle sorgenti dell'addon: OK.
+- git diff --check: OK; addon attualmente non tracciati.
+- Detector impeccable su JS, SCSS, XML delle superfici modificate: [].
+
+Controlli non eseguiti:
+- CUA getState: apps=[], browsers=[]. Nessun browser disponibile.
+- Nessuno screenshot desktop/mobile (zero/uno/più prodotti).
+- Collaudo visivo, dialoghi Builder e runtime browser non verificati.
+
+Allestimento editoriale richiesto dopo l'installazione:
+selezionare prodotti/varianti reali, riordinarli e aprire la campagna.
+Il catalogo locale ha quattro formati La Regina e nessun attributo nativo
+di filtrazione: non sono state inventate varianti filtrato/non filtrato.
+La campagna iniziale è chiusa e priva di prodotti, configurabile da interfaccia.

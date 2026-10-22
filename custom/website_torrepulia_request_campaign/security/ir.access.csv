@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+campaign_company,Campaign company,torrepulia.request.campaign,,crud,"[('company_id', 'in', company_ids)]"
+campaign_sales,Campaign sales,torrepulia.request.campaign,sales_team.group_sale_salesman,crud,
+campaign_editor,Campaign editor,torrepulia.request.campaign,website.group_website_restricted_editor,crud,
+campaign_line_company,Campaign line company,torrepulia.request.campaign.line,,crud,"[('company_id', 'in', company_ids)]"
+campaign_line_sales,Campaign line sales,torrepulia.request.campaign.line,sales_team.group_sale_salesman,crud,
+campaign_line_editor,Campaign line editor,torrepulia.request.campaign.line,website.group_website_restricted_editor,crud,

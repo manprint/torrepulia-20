@@ -1,0 +1,33 @@
+{
+  "database": "torrepulia_cinematic_install",
+  "business_fingerprints_unchanged": true,
+  "original_page_all_translations_unchanged": true,
+  "shared_theme_and_historical_menus_match_backup": true,
+  "website_settings_unchanged": true,
+  "qa_page_and_campaigns_deleted": true,
+  "qa_user_deactivated_password_rotated": true,
+  "modules": [
+    {
+      "name": "website_torrepulia_request",
+      "state": "installed",
+      "version": "20.0.1.6.1"
+    },
+    {
+      "name": "website_torrepulia_request_campaign",
+      "state": "installed",
+      "version": "20.0.1.2.1"
+    },
+    {
+      "name": "website_torrepulia_request_theme",
+      "state": "installed",
+      "version": "20.0.1.1.0"
+    }
+  ],
+  "original_campaign": {
+    "name": "Nuovo raccolto",
+    "state": "closed",
+    "products": 0
+  },
+  "theme_previous_architectures_restored": 1,
+  "domains_robots_page_urls_publication_and_base_url_unchanged": true
+}

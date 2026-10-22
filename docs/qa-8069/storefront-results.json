@@ -1,0 +1,10 @@
+{
+  "steps": [
+    "anonymous catalog: two products added by actual buttons, success feedback, no forced navigation, header count 2",
+    "review: quantity change updates server-driven header to 4; accessible product labels; invalid empty form focuses contact name without submission",
+    "review rendered at 360, 390, 768 and 1440 px with no horizontal document overflow",
+    "real remove controls empty the selection; header returns to zero and no active contact form remains"
+  ],
+  "js": [],
+  "console": []
+}

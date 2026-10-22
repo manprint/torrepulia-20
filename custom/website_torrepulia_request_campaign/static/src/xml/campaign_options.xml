@@ -1,0 +1,27 @@
+<templates xml:space="preserve">
+    <t t-name="website_torrepulia_request_campaign.CampaignOption">
+        <BuilderRow label.translate="Campagna" preview="false">
+            <BuilderMany2One model="'torrepulia.request.campaign'" dataAttributeAction="'campaign'" domain="[['website_id', '=', this.websiteId]]" fields="['id', 'name']"/>
+        </BuilderRow>
+        <div class="px-3 pb-2" data-prevent-closing-overlay="true"><button type="button" class="btn btn-secondary" t-on-click="() => this.manage()">Gestisci campagna e prodotti</button></div>
+        <p class="small px-3">La gestione si apre in una nuova scheda. Dopo il salvataggio, torna qui e aggiorna l'anteprima.</p>
+        <div class="px-3 pb-2" data-prevent-closing-overlay="true"><button type="button" class="btn btn-link" t-on-click="() => this.refresh()">Aggiorna anteprima</button></div>
+        <BuilderRow label.translate="Colonne desktop" preview="false">
+            <BuilderSelect dataAttributeAction="'columns'">
+                <BuilderSelectItem dataAttributeActionValue="'2'">Due colonne</BuilderSelectItem>
+                <BuilderSelectItem dataAttributeActionValue="'3'">Tre colonne</BuilderSelectItem>
+            </BuilderSelect>
+        </BuilderRow>
+        <BuilderRow label.translate="Anteprima isolata" preview="false">
+            <BuilderSelect dataAttributeAction="'demoState'">
+                <BuilderSelectItem dataAttributeActionValue="'zero'">Nessun prodotto</BuilderSelectItem>
+                <BuilderSelectItem dataAttributeActionValue="'one'">Un prodotto</BuilderSelectItem>
+                <BuilderSelectItem dataAttributeActionValue="'multiple'">Più prodotti</BuilderSelectItem>
+            </BuilderSelect>
+        </BuilderRow>
+        <p class="small px-3">Titolo, introduzione e fotografia si modificano direttamente nella pagina. Senza selezione viene usata la campagna predefinita del website. L'anteprima non legge né modifica la richiesta reale.</p>
+    </t>
+    <t t-inherit="website.BuilderOptions" t-inherit-mode="extension">
+        <xpath expr="//t[@id='image_options']" position="before"><torrepulia_campaign_option selector=".tp-campaign"/></xpath>
+    </t>
+</templates>

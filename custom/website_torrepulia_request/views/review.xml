@@ -1,0 +1,85 @@
+<odoo>
+    <record id="product_template_request_liters" model="ir.ui.view">
+        <field name="name">product.template.request.liters</field><field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='uom_id']" position="after">
+            <field name="torrepulia_request_liters" invisible="product_variant_count &gt; 1"/>
+        </xpath></field>
+    </record>
+    <record id="product_variant_request_liters" model="ir.ui.view">
+        <field name="name">product.product.request.liters</field><field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='torrepulia_request_liters']" position="attributes">
+            <attribute name="invisible">False</attribute>
+        </xpath></field>
+    </record>
+    <template id="review_component" name="Componi e invia la richiesta"><p data-review-status="" role="status">Caricamento della richiesta…</p>
+                <div data-review-error="" role="alert" tabindex="-1" hidden="hidden"/>
+                <div data-review-empty="" hidden="hidden"><h2>La tua richiesta è ancora vuota</h2>
+                    <a href="/shop" class="btn btn-primary">Scopri i nostri prodotti</a>
+                </div>
+                <form data-tp-review-form="" data-captcha="website_form" t-att-action="'/torrepulia/campaign/submit' if campaign_review else '/torrepulia/request/submit'" method="post" hidden="hidden" t-att-class="'tp-review-layout tp-review-layout-compact' if campaign_review else 'tp-review-layout'" t-att-data-review-compact="'1' if campaign_review else None">
+                    <div class="tp-review-contact" data-review-content="" hidden="hidden"><div t-if="not campaign_review" data-review-lines=""/>
+                    <a t-if="not campaign_review" href="/shop" class="btn btn-link">Aggiungi altri prodotti</a>
+                    <button type="button" data-review-retry="" class="btn btn-outline-primary" hidden="hidden">Riprova aggiornamento</button>
+                <fieldset disabled="disabled" data-review-fields="">
+                        <legend>I tuoi recapiti</legend>
+                        <div class="tp-review-contact-grid">
+                            <label>Nome e cognome *<input type="text" name="contact_name" autocomplete="name" required="required" maxlength="256" t-att-value="prefill.get('contact_name', '')"/></label>
+                            <label>Email *<input type="email" name="email" autocomplete="email" required="required" maxlength="256" t-att-value="prefill.get('email', '')"/></label>
+                            <label>Telefono<t t-if="campaign_review"> *</t><input t-att-required="campaign_review or None" type="tel" name="phone" autocomplete="tel" maxlength="256" t-att-value="prefill.get('phone', '')"/></label>
+                            <label>CAP o Città<t t-if="campaign_review"> *</t><input t-att-required="campaign_review or None" type="text" name="delivery_area" maxlength="256" class="tp-review-delivery-area"/>
+                                <small class="tp-review-field-help">Necessario esclusivamente per una stima indicativa delle spese di spedizione.</small>
+                            </label>
+                        </div>
+                        <label class="tp-review-notes">Note<textarea name="notes" rows="2" maxlength="5000"/></label>
+                        </fieldset>
+                    </div><div class="tp-review-order-summary">
+                    <h2 t-out="'Riepilogo Prenotazione' if campaign_review else 'Riepilogo'"/><div t-if="campaign_review" data-review-compact-lines="" aria-live="polite"/>
+                    <p data-review-liters="" hidden="hidden"/>
+                    <p data-review-sum="" hidden="hidden"/>
+                    <p t-if="campaign_review" data-review-delivery-note="">Spese di spedizione calcolate in base al CAP e comunicate prima della partenza.</p>
+                    <p class="tp-review-pay-today" data-review-pay-today="">Totale da pagare oggi: 0,00 €</p>
+                    <p t-if="not campaign_review" data-review-delivery-note="">Spese di spedizione calcolate in base al CAP e comunicate prima della partenza. Nessun addebito ora.</p>
+                    <label class="tp-review-privacy"><input type="checkbox" name="privacy_accepted" required="required"/>
+                            <span>Ho letto l'<a href="/privacy-policy" target="_blank" rel="noopener">informativa sulla privacy</a> e acconsento al trattamento dei dati per rispondere alla richiesta.</span>
+                        </label>
+                    <p>L’invio non conferma un ordine e non richiede un pagamento.</p>
+                    <div class="tp-review-send"><button type="submit" class="btn btn-primary" disabled="disabled">CONFERMA LA MIA PRENOTAZIONE</button>
+                        <span data-review-sending="" role="status" hidden="hidden">Invio in corso. Attendi la conferma…</span>
+                    </div>
+                </div>
+                </form>
+            </template><template id="review_page" name="La tua richiesta di olio">
+        <t t-call="website.layout">
+            <div id="wrap" class="tp-request-review container py-5 o_not_editable" data-tp-review="">
+                <h1>La tua richiesta di olio</h1>
+                <p class="tp-review-intro">Controlla i prodotti e le quantità, poi lasciaci i tuoi recapiti. Ti contatteremo per definire disponibilità, consegna e condizioni.</p>
+                <t t-call="website_torrepulia_request.review_component"/></div>
+        </t>
+    </template>
+    <template id="review_confirmation" name="Richiesta ricevuta">
+        <t t-call="website.layout">
+            <div id="wrap" class="tp-request-review container py-5 o_not_editable">
+                <h1>Abbiamo ricevuto la tua richiesta</h1>
+                <p>Riferimento: <strong t-out="receipt['reference']"/></p>
+                <p>Il commerciale esaminerà la tua richiesta e ti contatterà per definire disponibilità, consegna e condizioni. L’invio non conferma un ordine e non richiede un pagamento.</p>
+                <div t-foreach="receipt['lines']" t-as="line" class="tp-review-line">
+                    <img t-if="line.get('thumbnail')" t-att-src="line['thumbnail']" alt="" width="96" height="96"/>
+                    <div><h2 t-out="line['name']"/><p t-if="line.get('format')" t-out="line['format']"/>
+                        <p t-foreach="line.get('attributes', [])" t-as="attribute" t-out="attribute"/>
+                        <p t-foreach="line.get('custom_text', [])" t-as="custom" t-out="custom"/>
+                        <p>Quantità: <span t-out="'%g' % line['quantity']"/> <span t-out="line['uom_name']"/></p>
+                        <p t-if="line.get('liters_display')">Contenuto complessivo: <span t-out="line['liters_display']"/></p>
+                        <p t-if="show_prices and line.get('subtotal_display')" class="product_price">Subtotale: <span t-out="line['subtotal_display']"/></p>
+                    </div>
+                </div>
+                <p t-if="receipt.get('liters_display')">Contenuto complessivo della richiesta: <strong t-out="receipt['liters_display']"/></p>
+                <p t-if="show_prices and receipt.get('products_total_display')" class="product_price">Totale prodotti: <strong t-out="receipt['products_total_display']"/>. Spese di consegna ancora da definire.</p>
+                <a href="/shop" class="btn btn-outline-primary">Aggiungi altri prodotti</a>
+            </div>
+        </t>
+    </template>
+</odoo>

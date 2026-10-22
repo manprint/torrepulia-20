@@ -1,0 +1,13 @@
+.tp-site.tp-cinematic {
+    .format-summary > .tp-format-details-link { display: inline-flex; margin-top: 20px; }
+    .tp-product-editorial {
+        margin-top: 24px;
+        details { border-top: 1px solid #cbd4ce; }
+        details:last-child { border-bottom: 1px solid #cbd4ce; }
+        summary { cursor: pointer; padding: 16px 4px; font: 600 15px/1.5 Manrope, sans-serif; }
+        summary:focus-visible { outline: 2px solid #294d3b; outline-offset: 2px; }
+        details > div { padding: 0 4px 16px; font: 15px/1.65 Manrope, sans-serif; }
+        p:last-child { margin-bottom: 0; }
+    }
+    .tp-product-editorial:not(:has(details)) { display: none; }
+}

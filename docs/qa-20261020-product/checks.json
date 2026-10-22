@@ -1,0 +1,127 @@
+{
+  "checks": [
+    {
+      "surface": "shop",
+      "width": 1440,
+      "cards": [
+        {
+          "title": "Latta 5 LT",
+          "gap": null,
+          "left": 75,
+          "card_left": 75,
+          "right": 384,
+          "card_right": 494.328125,
+          "bottom": 1106.8125,
+          "alert": {
+            "width": 309,
+            "parent": 419.328125,
+            "radius": "800px"
+          }
+        },
+        {
+          "title": "Bag in box 5 LT",
+          "gap": 16,
+          "left": 510.328125,
+          "card_left": 510.328125,
+          "right": 929.65625,
+          "card_right": 929.65625,
+          "bottom": 1106.8125,
+          "alert": null
+        }
+      ],
+      "aligned_bottom": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "product",
+      "width": 1440,
+      "current_excluded": true,
+      "native_radius": "800px",
+      "title": "La Regina"
+    },
+    {
+      "surface": "choose_formats",
+      "width": 1440,
+      "ribbons_visible": true,
+      "panels": [
+        {
+          "details_gap": 20,
+          "quantity_gap": null,
+          "alert": {
+            "width": 309,
+            "parent": 611,
+            "radius": "800px"
+          }
+        },
+        {
+          "details_gap": 20,
+          "quantity_gap": 16,
+          "alert": null
+        }
+      ],
+      "no_overflow": true
+    },
+    {
+      "surface": "shop",
+      "width": 390,
+      "cards": [
+        {
+          "title": "Latta 5 LT",
+          "gap": null,
+          "left": 24,
+          "card_left": 24,
+          "right": 187,
+          "card_right": 187,
+          "bottom": 956.921875,
+          "alert": {
+            "width": 163,
+            "parent": 163,
+            "radius": "800px"
+          }
+        },
+        {
+          "title": "Bag in box 5 LT",
+          "gap": 16,
+          "left": 203,
+          "card_left": 203,
+          "right": 366,
+          "card_right": 366,
+          "bottom": 956.921875,
+          "alert": null
+        }
+      ],
+      "aligned_bottom": true,
+      "no_overflow": true
+    },
+    {
+      "surface": "product",
+      "width": 390,
+      "current_excluded": true,
+      "native_radius": "800px",
+      "title": "La Regina"
+    },
+    {
+      "surface": "choose_formats",
+      "width": 390,
+      "ribbons_visible": true,
+      "panels": [
+        {
+          "details_gap": 20,
+          "quantity_gap": null,
+          "alert": {
+            "width": 309,
+            "parent": 346,
+            "radius": "800px"
+          }
+        },
+        {
+          "details_gap": 20,
+          "quantity_gap": 16,
+          "alert": null
+        }
+      ],
+      "no_overflow": true
+    }
+  ],
+  "javascript_errors": []
+}

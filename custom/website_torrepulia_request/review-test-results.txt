@@ -1,0 +1,74 @@
+Issue 5 — risultati effettivi del 2026-10-18
+
+Ambiente: Odoo 20.0-20260926, PostgreSQL 17, container locale
+torrepulia-20-local-dev-odoo-1; database isolato torrepulia_request_test.
+Nessun aggiornamento di odoo_dev o produzione. Nessuna email reale o pagamento.
+
+Comando finale Odoo (parametri connessione dall'ambiente, omessi):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO
+
+Log finale: /tmp/torrepulia-review-delivery.log
+2026-10-18 18:54:57,111 odoo.service.server: 47 post-tests in 140.13s, 17196 queries
+2026-10-18 18:54:57,112 odoo.tests.result:
+0 failed, 0 error(s) of 47 tests when loading database 'torrepulia_request_test'
+Exit code: 0. Nessun errore di compilazione asset nel log finale.
+6 test HTTP nuovi + 41 regressioni delle issue 1–4.
+L'output include avvisi docutils sulla formattazione del README Markdown dell'addon
+campagna preesistente; non sono fallimenti dei test o errori degli asset frontend.
+
+Copertura nuova:
+- Invio anonimo, CSRF, privacy, email/nome e campi manipolati.
+- Creazione di una sola opportunità; nessun ordine, contatto anonimo o mail.
+- Conferma privata con riferimento e righe; recapiti assenti da URL/risposte.
+- Ritentativo identico anche dopo rotazione della selezione: stesso riferimento.
+- Payload modificato dopo invio e vecchie chiamate di modifica rifiutati.
+- Altra sessione e altro website non consultano la conferma; scadenza 24 ore.
+- Recapiti autenticati precompilati; telefono facoltativo, nessuna fatturazione.
+- Errori CAPTCHA e CRM: rollback completo, selezione conservata.
+- Miniature, prezzi/subtotali nativi e assenza di importi quando nascosti.
+- Contenuti in litri espliciti; nessuna deduzione dal nome, nessun totale parziale.
+- Varianti e testi custom, conversione nativa di una confezione da sei unità.
+- Revisione superata prima dell'invio: richiede nuova verifica, nessuna perdita.
+
+Node v18.19.1:
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_review.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs
+# tests 29
+# pass 29
+# fail 0
+# skipped 0
+Exit code: 0.
+7 nuove verifiche sul client + 22 regressioni.
+DOM/dipendenze simulate: non sostituiscono il browser.
+
+Concorrenza reale, tramite Odoo shell sul solo database di test:
+runpy.run_path('/mnt/torrepulia/custom/website_torrepulia_request/tools/review_concurrency_qa.py')['run'](env)
+PASS concurrent duplicate final submit: one immutable request, one opportunity, one replay, no orders
+PASS concurrent quantity edit/final submit: one wins, stale operation conflicts; no lost or mutable submitted lines
+Exit code: 0. Due transazioni con snapshot PostgreSQL separati e retry nativo Odoo.
+Le fixture inviate sintetiche restano nel database isolato: nessuna cancellazione
+eseguita aggirando le protezioni dei record inviati. Tutte le email sono .invalid.
+
+Validazione statica modulo funzionale:
+- Parsing AST: 22 file Python, OK.
+- Parsing XML: 5 file, OK.
+- review.scss compilato con libsass installato: 3494 byte, OK.
+- Whitespace sorgenti della nuova issue: OK.
+- git diff --check: OK; gli addon risultano tuttora non tracciati nel workspace.
+- Detector impeccable su viste/JS/SCSS nuovi: [].
+
+Limiti effettivi:
+- Inventario CUA: apps=[], browsers=[]. Nessun browser disponibile.
+- Nessuno screenshot o collaudo visivo desktop/mobile.
+- Focus reale e CAPTCHA con credenziali/servizi esterni non verificati.
+- Per mostrare litri, il gestore deve configurare il contenuto commerciale
+  per prodotto/variante. Default zero, nessun valore inferito automaticamente.
+- I dati dei form restano nel DOM/memoria in caso di errore, non vengono salvati
+  nel browser: un ricaricamento manuale del documento può perdere il testo non inviato.

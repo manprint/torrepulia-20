@@ -1,0 +1,53 @@
+Issue 3 — risultati effettivi, 2026-10-18
+
+Ambiente: container torrepulia-20-local-dev-odoo-1,
+Odoo 20.0-20260926, PostgreSQL 17, database torrepulia_request_test.
+Installato il bridge con il tema solo sul database isolato di test.
+Nessun aggiornamento applicato a odoo_dev o produzione.
+
+Comando Odoo (parametri connessione forniti dall'ambiente, omessi):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme \
+  --log-level=test --log-handler=odoo:INFO
+
+Estratto del log finale /tmp/torrepulia-commerce-delivery.log:
+2026-10-18 15:49:05,630 odoo.service.server: 33 post-tests in 80.61s, 9860 queries
+2026-10-18 15:49:05,631 odoo.tests.result: 0 failed, 0 error(s) of 33 tests when loading database 'torrepulia_request_test'
+Exit code: 0.
+Nessun errore di compilazione asset nel log finale.
+
+Node v18.19.1:
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs
+# tests 16
+# pass 16
+# fail 0
+# skipped 0
+Exit code: 0.
+
+Sette test integrazione JS: fallback nativo e riferimento dipendenze;
+acquisto immediato verso richiesta senza redirect; configurazione esplicita;
+variante/UoM/custom; variante dinamica; quantità senza giacenza mantenendo
+stock reale; conferma prodotto/quantità e azioni continua/rivedi.
+Nove regressioni servizio: stato condiviso, serializzazione locale, bootstrap,
+ritentativi idempotenti e recupero dopo navigazione, conflitti fra schede,
+risposte fuori ordine, rilettura al ritorno, pulizia placeholder Builder.
+
+Validazione statica: parsing AST di 24 file Python, parsing di 5 XML,
+SCSS compilato con libsass installato nel container: OK.
+git diff --check: OK (i due addon sono attualmente file non tracciati).
+Skill impeccable detector su JS/SCSS/XML delle superfici modificate: [].
+
+I test HTTP includono shop, prodotto, configurazioni, JSONRPC nativo,
+prezzi nascosti e prezzo riepilogo confrontato con prezzo nativo, guardia
+carrello e ripristino acquisto standard, header, Builder senza scritture,
+formati tema e pulsante formato in evidenza. Regressioni ACL/CRM incluse.
+Eventuali warning preesistenti Odoo (traduzioni, direttive QWeb e moduli dummy)
+non sono errori di questa suite; nessun invio email o pagamento eseguito.
+
+Browser disponibili: nessuno. Screenshot e verifica visiva desktop/mobile
+non eseguiti. I test Node simulano dipendenze/DOM: non costituiscono una
+verifica dell'esecuzione completa delle interazioni nel browser Odoo.

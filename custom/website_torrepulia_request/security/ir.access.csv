@@ -1,0 +1,15 @@
+id,name,model_id,group_id/id,operation,domain
+request_company_rule,Requests allowed companies,torrepulia.request,,crud,"[('company_id', 'in', company_ids)]"
+request_sales_rule,Requests salesperson or team,torrepulia.request,sales_team.group_sale_salesman,ru,"['|', '|', ('user_id', '=', user.id), ('team_id.user_id', '=', user.id), ('team_id.member_ids', 'in', [user.id])]"
+request_manager_rule,Requests sales managers,torrepulia.request,sales_team.group_sale_manager,crud,
+request_line_company_rule,Request lines allowed companies,torrepulia.request.line,,crud,"[('company_id', 'in', company_ids)]"
+request_line_sales_rule,Request lines salesperson or team,torrepulia.request.line,sales_team.group_sale_salesman,crud,"['|', '|', ('request_id.user_id', '=', user.id), ('request_id.team_id.user_id', '=', user.id), ('request_id.team_id.member_ids', 'in', [user.id])]"
+request_line_manager_rule,Request lines sales managers,torrepulia.request.line,sales_team.group_sale_manager,crud,
+operation_company_rule,Request operation allowed companies,torrepulia.request.operation,,crud,"[('company_id', 'in', company_ids)]"
+operation_system,Request operation system,torrepulia.request.operation,base.group_system,crud,
+notification_company_rule,Notification allowed companies,torrepulia.request.notification,,crud,"[('company_id', 'in', company_ids)]"
+notification_sales_rule,Notifications salesperson or team,torrepulia.request.notification,sales_team.group_sale_salesman,r,"['|', '|', ('request_id.user_id', '=', user.id), ('request_id.team_id.user_id', '=', user.id), ('request_id.team_id.member_ids', 'in', [user.id])]"
+notification_manager_rule,Notifications sales manager,torrepulia.request.notification,sales_team.group_sale_manager,r,
+notification_system,Notifications system,torrepulia.request.notification,base.group_system,crud,
+quotation_wizard_company,Quotation wizard allowed companies,torrepulia.request.quotation.wizard,,crud,"[('company_id', 'in', company_ids)]"
+quotation_wizard_sales,Quotation wizard sales,torrepulia.request.quotation.wizard,sales_team.group_sale_salesman,crud,

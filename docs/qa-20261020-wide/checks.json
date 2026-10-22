@@ -1,0 +1,38 @@
+{
+  "measurements": [
+    {
+      "viewport": 2074,
+      "x": 0,
+      "width": 2074,
+      "contentX": 141,
+      "gutter": 64,
+      "scrollWidth": 2074
+    },
+    {
+      "viewport": 2560,
+      "x": 0,
+      "width": 2560,
+      "contentX": 384,
+      "gutter": 64,
+      "scrollWidth": 2560
+    },
+    {
+      "viewport": 1440,
+      "x": 0,
+      "width": 1440,
+      "contentX": 64,
+      "gutter": 64,
+      "scrollWidth": 1440
+    },
+    {
+      "viewport": 390,
+      "x": 0,
+      "width": 390,
+      "contentX": 22,
+      "gutter": 22,
+      "scrollWidth": 390
+    }
+  ],
+  "drawer_close_no_offset": true,
+  "javascript_errors": []
+}

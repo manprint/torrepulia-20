@@ -1,0 +1,139 @@
+{
+  "checks": [
+    {
+      "case": "empty",
+      "form_count": 1,
+      "left_product_list_absent": true,
+      "intermediate_button_absent": true
+    },
+    {
+      "case": "responsive",
+      "width": 1440,
+      "layout": {
+        "left": {
+          "x": 64,
+          "y": 816.703125,
+          "width": 768,
+          "height": 367.84375,
+          "top": 816.703125,
+          "right": 832,
+          "bottom": 1184.546875,
+          "left": 64
+        },
+        "right": {
+          "x": 864,
+          "y": 816.703125,
+          "width": 512,
+          "height": 477.234375,
+          "top": 816.703125,
+          "right": 1376,
+          "bottom": 1293.9375,
+          "left": 864
+        },
+        "ratio": 0.6
+      },
+      "no_overflow": true
+    },
+    {
+      "case": "responsive",
+      "width": 768,
+      "layout": {
+        "left": {
+          "x": 34.171875,
+          "y": 2802.875,
+          "width": 400.59375,
+          "height": 384.34375,
+          "top": 2802.875,
+          "right": 434.765625,
+          "bottom": 3187.21875,
+          "left": 34.171875
+        },
+        "right": {
+          "x": 466.765625,
+          "y": 2802.875,
+          "width": 267.0625,
+          "height": 653.671875,
+          "top": 2802.875,
+          "right": 733.828125,
+          "bottom": 3456.546875,
+          "left": 466.765625
+        },
+        "ratio": 0.6
+      },
+      "no_overflow": true
+    },
+    {
+      "case": "responsive",
+      "width": 390,
+      "layout": {
+        "left": {
+          "x": 24,
+          "y": 3947.390625,
+          "width": 342,
+          "height": 548.21875,
+          "top": 3947.390625,
+          "right": 366,
+          "bottom": 4495.609375,
+          "left": 24
+        },
+        "right": {
+          "x": 24,
+          "y": 4519.609375,
+          "width": 342,
+          "height": 526.625,
+          "top": 4519.609375,
+          "right": 366,
+          "bottom": 5046.234375,
+          "left": 24
+        },
+        "ratio": 0.5
+      },
+      "no_overflow": true
+    },
+    {
+      "case": "responsive",
+      "width": 360,
+      "layout": {
+        "left": {
+          "x": 24,
+          "y": 4121.53125,
+          "width": 312,
+          "height": 548.21875,
+          "top": 4121.53125,
+          "right": 336,
+          "bottom": 4669.75,
+          "left": 24
+        },
+        "right": {
+          "x": 24,
+          "y": 4693.75,
+          "width": 312,
+          "height": 526.625,
+          "top": 4693.75,
+          "right": 336,
+          "bottom": 5220.375,
+          "left": 24
+        },
+        "ratio": 0.5
+      },
+      "no_overflow": true
+    },
+    {
+      "case": "synchronization",
+      "quantity": 3,
+      "rows": 2,
+      "page_reload": false,
+      "contact_preserved": true
+    },
+    {
+      "case": "validation_and_error",
+      "phone_required_focus": true,
+      "email_error_focus": true,
+      "selection_and_contact_retained": true,
+      "submission_intercepted": true
+    }
+  ],
+  "javascript_errors": [],
+  "real_submissions": 0,
+  "qa_selection_cleared": true
+}

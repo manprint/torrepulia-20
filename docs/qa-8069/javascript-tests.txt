@@ -1,0 +1,165 @@
+TAP version 13
+# Subtest: native mode delegates original add and retains dependency array reference
+ok 1 - native mode delegates original add and retains dependency array reference
+  ---
+  duration_ms: 7.042527
+  ...
+# Subtest: simple buy-now increments request quantity without redirect or cart analytics
+ok 2 - simple buy-now increments request quantity without redirect or cart analytics
+  ---
+  duration_ms: 4.321219
+  ...
+# Subtest: configurable tile requires explicit product page without arbitrary addition
+ok 3 - configurable tile requires explicit product page without arbitrary addition
+  ---
+  duration_ms: 5.541519
+  ...
+# Subtest: configured product preserves actual variant, UoM, no-variant values and custom text
+ok 4 - configured product preserves actual variant, UoM, no-variant values and custom text
+  ---
+  duration_ms: 4.080085
+  ...
+# Subtest: explicit dynamic combination resolves native variant before adding
+ok 5 - explicit dynamic combination resolves native variant before adding
+  ---
+  duration_ms: 4.155733
+  ...
+# Subtest: stock-zero combination retains requested quantity and actual stock metadata
+ok 6 - stock-zero combination retains requested quantity and actual stock metadata
+  ---
+  duration_ms: 2.803814
+  ...
+# Subtest: confirmation gives product and added quantity, continue closes and review uses central URL
+ok 7 - confirmation gives product and added quantity, continue closes and review uses central URL
+  ---
+  duration_ms: 3.897494
+  ...
+# Subtest: catalog increments, seasonal sets, every subscribed surface gets server totals
+ok 8 - catalog increments, seasonal sets, every subscribed surface gets server totals
+  ---
+  duration_ms: 11.173951
+  ...
+# Subtest: simultaneous local edits serialize using the latest server revision
+ok 9 - simultaneous local edits serialize using the latest server revision
+  ---
+  duration_ms: 1.318122
+  ...
+# Subtest: many widgets starting on the same catalog share one bootstrap read
+ok 10 - many widgets starting on the same catalog share one bootstrap read
+  ---
+  duration_ms: 1.431204
+  ...
+# Subtest: lost response retries exactly the same increment identifier
+ok 11 - lost response retries exactly the same increment identifier
+  ---
+  duration_ms: 2.169085
+  ...
+# Subtest: ambiguous operation survives navigation and blocks accidental new increments
+ok 12 - ambiguous operation survives navigation and blocks accidental new increments
+  ---
+  duration_ms: 3.573977
+  ...
+# Subtest: cross-tab conflict refreshes authoritative state without overwriting it
+ok 13 - cross-tab conflict refreshes authoritative state without overwriting it
+  ---
+  duration_ms: 1.663438
+  ...
+# Subtest: delayed responses cannot roll back revision or selection epoch
+ok 14 - delayed responses cannot roll back revision or selection epoch
+  ---
+  duration_ms: 1.289446
+  ...
+# Subtest: returning to a page rereads the server and one broken subscriber is isolated
+ok 15 - returning to a page rereads the server and one broken subscriber is isolated
+  ---
+  duration_ms: 0.955052
+  ...
+# Subtest: binding hydrates only runtime properties and restores Builder placeholders
+ok 16 - binding hydrates only runtime properties and restores Builder placeholders
+  ---
+  duration_ms: 24.001718
+  ...
+# Subtest: uncertain response retries the same submission even after shared selection rotates
+ok 17 - uncertain response retries the same submission even after shared selection rotates
+  ---
+  duration_ms: 10.238309
+  ...
+# Subtest: in-flight second submit cannot send a second network request
+ok 18 - in-flight second submit cannot send a second network request
+  ---
+  duration_ms: 3.017707
+  ...
+# Subtest: known validation failure allows correction without retaining stale contact payload
+ok 19 - known validation failure allows correction without retaining stale contact payload
+  ---
+  duration_ms: 3.155184
+  ...
+# Subtest: AJAX review form bypasses only the native synchronous recaptcha submission
+ok 20 - AJAX review form bypasses only the native synchronous recaptcha submission
+  ---
+  duration_ms: 2.613751
+  ...
+# Subtest: failed submit retains every contact value and never navigates to success
+ok 21 - failed submit retains every contact value and never navigates to success
+  ---
+  duration_ms: 4.573705
+  ...
+# Subtest: only server-confirmed success updates shared selection and opens protected confirmation
+ok 22 - only server-confirmed success updates shared selection and opens protected confirmation
+  ---
+  duration_ms: 4.169386
+  ...
+# Subtest: submission refresh publishes authoritative fresh quantity to header and other tabs
+ok 23 - submission refresh publishes authoritative fresh quantity to header and other tabs
+  ---
+  duration_ms: 1.894978
+  ...
+# Subtest: zero, one, multiple and outside products have distinct campaign/request counts
+ok 24 - zero, one, multiple and outside products have distinct campaign/request counts
+  ---
+  duration_ms: 7.920478
+  ...
+# Subtest: variant, UoM and custom configurations never silently share a quantity control
+ok 25 - variant, UoM and custom configurations never silently share a quantity control
+  ---
+  duration_ms: 2.976523
+  ...
+# Subtest: catalog add two then seasonal set three preserves four outside campaign
+ok 26 - catalog add two then seasonal set three preserves four outside campaign
+  ---
+  duration_ms: 8.304124
+  ...
+# Subtest: out-of-order campaign fetch cannot overwrite newer selected campaign
+ok 27 - out-of-order campaign fetch cannot overwrite newer selected campaign
+  ---
+  duration_ms: 4.285651
+  ...
+# Subtest: Builder demo hydration never accesses real request service and generates no IDs
+ok 28 - Builder demo hydration never accesses real request service and generates no IDs
+  ---
+  duration_ms: 3.934564
+  ...
+# Subtest: campaign management opens effective default form and ignores close after snippet removal
+ok 29 - campaign management opens effective default form and ignores close after snippet removal
+  ---
+  duration_ms: 3.021532
+  ...
+# Subtest: iframe edit registration enables isolated preview before frontend interaction starts
+ok 30 - iframe edit registration enables isolated preview before frontend interaction starts
+  ---
+  duration_ms: 1.555203
+  ...
+# Subtest: save cleaner removes runtime products/prices/counts for moved or duplicated snippets
+ok 31 - save cleaner removes runtime products/prices/counts for moved or duplicated snippets
+  ---
+  duration_ms: 2.181536
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 366.356727

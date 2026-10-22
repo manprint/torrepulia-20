@@ -1,0 +1,49 @@
+<odoo>
+    <record id="res_config_settings_request" model="ir.ui.view">
+        <field name="name">res.config.settings.torrepulia.request</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='website_payment_block']" position="after">
+                <block title="Torrepulia — Richieste di preventivo" id="torrepulia_request_settings">
+                    <setting string="Modalità commerciale" help="Configurazione del website selezionato. La modalità richiesta comprende l’intero catalogo accessibile.">
+                        <field name="torrepulia_commercial_mode"/>
+                        <div class="alert alert-info mt-2" role="status">
+                            I carrelli e-commerce esistenti restano conservati. In modalità richiesta il checkout e i recuperi automatici sono sospesi; nessun carrello viene importato nella richiesta.
+                        </div>
+                    </setting>
+                    <setting string="Carrelli aperti al passaggio di modalità" groups="base.group_system,sales_team.group_sale_manager" help="Carrelli del solo website e della sua azienda, in bozza o inviati, con prodotti. Controllare anche eventuali pagamenti già in corso e messaggi di recupero già in coda.">
+                        <field name="torrepulia_open_cart_count"/>
+                        <button name="action_torrepulia_open_carts" type="object" string="Esamina carrelli" class="btn-link" groups="sales_team.group_sale_manager"/>
+                    </setting>
+                    <setting string="Mostra prezzi nelle richieste" help="Le superfici del flusso usano il contesto commerciale nativo quando i prezzi sono visibili.">
+                        <field name="torrepulia_request_show_prices"/>
+                    </setting>
+                    <setting string="Team commerciale destinatario">
+                        <field name="torrepulia_request_team_id" domain="['|', ('company_id', '=', False), ('company_id', '=', website_company_id)]" options="{'no_create': True}"/>
+                    </setting>
+                    <setting string="Assegnatario predefinito" help="Facoltativo. Deve essere membro o responsabile del team e abilitato all’azienda del website.">
+                        <field name="torrepulia_request_allowed_user_ids" invisible="1"/>
+                        <field name="torrepulia_request_user_id" domain="[('id', 'in', torrepulia_request_allowed_user_ids)]" options="{'no_create': True}"/>
+                    </setting>
+                    <setting string="Fase iniziale CRM" help="Se vuota, al primo invio viene creata Richiesta web ricevuta, limitata al team destinatario. Le fasi esistenti non vengono modificate.">
+                        <field name="torrepulia_request_stage_id" domain="[('is_won', '=', False), '|', ('team_ids', '=', False), ('team_ids', 'in', [torrepulia_request_team_id])]" options="{'no_create': True}"/>
+                    </setting>
+                    <setting string="Pagina di riepilogo" help="Percorso locale condiviso da tutti i componenti del flusso.">
+                        <field name="torrepulia_request_summary_url"/>
+                    </setting>
+                    <setting string="Conservazione bozze" help="Giorni dall’ultima attività: da 1 a 365. La pulizia giornaliera conserva tutte le richieste inviate.">
+                        <field name="torrepulia_request_draft_days"/> giorni
+                    </setting>
+                    <setting string="Quantità per configurazione" help="Limiti e passo nella UoM scelta. Zero rimuove la riga. Resta valida la precisione nativa delle unità Odoo.">
+                        <div class="content-group">
+                            <label for="torrepulia_request_min_qty"/><field name="torrepulia_request_min_qty"/>
+                            <label for="torrepulia_request_max_qty"/><field name="torrepulia_request_max_qty"/>
+                            <label for="torrepulia_request_qty_step"/><field name="torrepulia_request_qty_step"/>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

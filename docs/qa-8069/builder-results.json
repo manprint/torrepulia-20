@@ -1,0 +1,16 @@
+{
+  "steps": [
+    "actual seasonal page: Builder opens, native campaign form opens in separate tab and editor discards without lifecycle errors",
+    "campaign form: existing product chosen from native picker and editorial text saved",
+    "native drag handle reorders products and authoritative preview follows saved order",
+    "snippet duplicated through native overlay and editable heading changed",
+    "Builder saved and destroyed cleanly without writing visitor selection",
+    "stored view contains duplicated configuration/editorial only, no runtime product cards or visitor/demo quantities",
+    "saved page reloads with changed heading and duplicate snippets",
+    "editor reopens and exits again after save without invalidation/overlay errors"
+  ],
+  "js": [],
+  "rpc": [],
+  "console": [],
+  "selection_writes": []
+}

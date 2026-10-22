@@ -1,0 +1,73 @@
+<odoo>
+    <template id="request_stock_notice" name="Disponibilità e prenotazione">
+        <t t-set="notice" t-value="stock_product._request_stock_notice(website)"/>
+        <span class="tp-stock-status">Temporaneamente esaurito</span>
+        <p t-if="notice['message']" class="tp-stock-copy" t-out="notice['message']"/>
+        <a t-foreach="notice['links']" t-as="link" class="tp-stock-information-link" t-att-href="link['url']" t-out="link['label']"/>
+        <a t-if="notice['preorder_url']" class="btn btn-primary tp-request-preorder-link" t-att-href="notice['preorder_url']">PRENOTA IL NUOVO RACCOLTO</a>
+    </template>
+    <template id="request_card_controls" name="Quantita e variante della richiesta"><t t-set="request_sold_out" t-value="product._is_sold_out()"/>
+        <div class="o_wsale_product_action_row tp-request-action-row">
+                <div t-if="request_sold_out" class="tp-request-stock-message">
+                    <t t-set="stock_product" t-value="product"/>
+                    <t t-call="website_torrepulia_request.request_stock_notice"/>
+                </div>
+                <t t-foreach="product._request_inline_variants()" t-as="stock_variant">
+                    <div t-if="not request_sold_out and stock_variant._is_sold_out()" hidden="hidden" class="tp-request-stock-message" t-att-data-stock-variant="stock_variant.id">
+                        <t t-set="stock_product" t-value="stock_variant.product_tmpl_id"/>
+                        <t t-call="website_torrepulia_request.request_stock_notice"/>
+                    </div>
+                </t>
+                <fieldset t-if="not request_sold_out and product._request_inline_variants()" class="tp-catalog-variants">
+                    <legend>Scegli la variante</legend>
+                    <label t-foreach="product._request_inline_variants()" t-as="variant" class="tp-catalog-variant">
+                        <input type="radio" class="tp-catalog-variant-input" required="required" t-att-value="variant.id" t-att-data-sold-out="'1' if variant._is_sold_out() else '0'"/>
+                        <span t-out="' / '.join(variant.product_template_attribute_value_ids.mapped('name'))"/>
+                    </label>
+                </fieldset>
+                <label t-if="not request_sold_out" class="tp-catalog-quantity">Quantità
+                    <span class="tp-catalog-stepper">
+                    <button type="button" data-catalog-step="-1" t-att-aria-label="'Riduci quantità di %s' % product.name">−</button>
+                    <input type="number" min="1" value="1" step="1" inputmode="numeric" class="tp-catalog-quantity-input" t-att-aria-label="'Quantità da aggiungere di %s' % product.name"/>
+                    <button type="button" data-catalog-step="1" t-att-aria-label="'Aumenta quantità di %s' % product.name">+</button>
+                    </span>
+                </label>
+                <button t-if="not request_sold_out" type="button" class="btn btn-primary o_wsale_product_btn_primary tp-request-tile-add" t-att-data-tp-request-add-template="product.id">
+                    AGGIUNGI ALLA RICHIESTA
+                </button>
+            </div>
+        </template><template id="request_tile" inherit_id="website_sale.shop_product_buttons" priority="100">
+        <xpath expr="//div[hasclass('o_wsale_product_action_row')]" position="before">
+            <t t-if="website._torrepulia_request_enabled()" t-call="website_torrepulia_request.request_card_controls"/></xpath>
+        <xpath expr="//div[hasclass('o_wsale_product_action_row')][not(@t-if)]" position="attributes">
+            <attribute name="t-if">not website._torrepulia_request_enabled()</attribute>
+        </xpath>
+    </template>
+    <template id="request_dynamic_button" inherit_id="website_sale.dynamic_filter_template_product_product_products_item" priority="100">
+        <xpath expr="//button[@name='add_to_cart']/parent::t" position="attributes">
+            <attribute name="t-if">(website._torrepulia_request_enabled() and not (product_variant if not data.get('hide_variants') else product)._is_sold_out()) or (not website._torrepulia_request_enabled() and (product_variant if not data.get('hide_variants') else product)._website_show_quick_add())</attribute>
+        </xpath>
+        <xpath expr="//button[@name='add_to_cart']/parent::t" position="after">
+            <div t-if="website._torrepulia_request_enabled() and (product_variant if not data.get('hide_variants') else product)._is_sold_out()" class="tp-request-stock-message">
+                <t t-set="stock_product" t-value="product if product._name == 'product.template' else product.product_tmpl_id"/>
+                <t t-call="website_torrepulia_request.request_stock_notice"/>
+            </div>
+        </xpath>
+    </template>
+    <template id="selection_summary" name="La tua richiesta">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure tp-request-summary container py-5">
+                <h1>La tua richiesta</h1>
+                <p>Rivedi i prodotti e aggiorna le quantità.</p>
+                <div data-tp-request-summary="" class="o_not_editable">
+                    <p role="status" data-request-status="">Caricamento della selezione…</p>
+                    <div data-request-lines=""/>
+                    <p data-request-total="" hidden="hidden"/>
+                    <p data-request-price-note="" hidden="hidden">Importo dei soli prodotti. Trasporto escluso: l’importo finale sarà indicato nel preventivo.</p>
+                    <button type="button" class="btn btn-outline-secondary" data-request-clear="">Svuota la selezione</button>
+                </div>
+                <a class="btn btn-link mt-3" href="/shop">Continua a scegliere</a>
+            </div>
+        </t>
+    </template>
+</odoo>

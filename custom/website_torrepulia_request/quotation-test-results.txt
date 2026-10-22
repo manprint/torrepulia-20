@@ -1,0 +1,92 @@
+Issue 7 — risultati effettivi del 2026-10-18
+
+Ambiente: Odoo 20.0-20260926, PostgreSQL 17, container locale
+torrepulia-20-local-dev-odoo-1; solo database torrepulia_request_test.
+Nessun aggiornamento di odoo_dev o produzione.
+
+Preparazione delle prove:
+- Verificati account, payment, sale_stock e moduli delle issue precedenti.
+- Installato payment_demo solo nel database isolato, per pagamenti fittizi.
+- Provider Demo con is_live=False; contatti sintetici .invalid.
+- Nessuna connessione SMTP reale: invio intercettato nei percorsi di conferma.
+
+Suite completa (credenziali connessione lette dall'ambiente, omesse):
+odoo -d torrepulia_request_test \
+  -u website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign \
+  --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable \
+  --test-tags=/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign \
+  --log-level=test --log-handler=odoo:INFO
+
+Log /tmp/torrepulia-quotation-full.log
+2026-10-18 19:39:29,916 odoo.service.server: 65 post-tests in 199.05s, 27809 queries
+2026-10-18 19:39:29,917 odoo.tests.result:
+0 failed, 0 error(s) of 65 tests when loading database 'torrepulia_request_test'
+Exit code: 0. Dieci nuovi test + 55 regressioni delle issue 1–6.
+
+Controllo finale dei dieci nuovi test dopo la visualizzazione dei dati originali
+e il filtraggio dei default RPC, stessa configurazione e aggiornamento modulo:
+--test-tags=/website_torrepulia_request:TestRequestQuotation,/website_torrepulia_request:TestRequestQuotationPortal,/website_torrepulia_request:TestRequestQuotationAccounting
+
+Log /tmp/torrepulia-quotation-delivery.log
+2026-10-18 19:43:31,886 odoo.service.server: 10 post-tests in 73.61s, 8968 queries
+2026-10-18 19:43:31,886 odoo.tests.result:
+0 failed, 0 error(s) of 10 tests when loading database 'torrepulia_request_test'
+Exit code: 0. Questi dieci sono ripetizioni mirate, non ulteriori test distinti.
+
+Copertura nuova:
+- Cliente obbligatorio scelto esplicitamente, nessuna associazione per email.
+- Azienda, listino cliente, posizione fiscale e termine pagamento nativi.
+- Prezzo corrente nativo 19.25 nella fixture, senza usare la ricevuta pubblica
+  o default RPC arbitrari (es. default_price_unit=0.01).
+- Prodotto, due varianti, quantità indipendenti, confezione UoM da sei unità,
+  attributi senza variante e testi personalizzati esatti.
+- Nessuna consegna, fattura o transazione alla creazione della bozza.
+- Fonte originale immutata dopo modifica quantità/prezzo del preventivo;
+  nome ricevuto conservato dopo rinomina del prodotto.
+- Riapertura del documento esistente, replay dello stesso wizard, revisione
+  motivata e tracciata; due finestre dalla stessa base convergono.
+- Prodotti archiviati ed errori di creazione non cancellano la richiesta.
+- Pubblico, portale, commerciale estraneo e cliente di altra azienda rifiutati.
+- Conferma manuale dopo nota email: ordine sale, picking nativo, quantità esatte,
+  stato da fatturare e creazione di fattura cliente nativa con le righe attese.
+- Portale HTTP: preventivo autorizzato leggibile con prezzi anche se nascosti
+  nel catalogo, firma sintetica sul controller nativo e conferma diretta sale.
+  Il PDF allegato è sostituito nel test: non è una verifica della resa del report.
+- Route HTTP /my/orders/<id>/transaction realmente eseguita con provider Demo:
+  transazione in bozza, valori economici autorizzati presenti, nessun circuito reale.
+- Post-processing Demo reale: transazione done, ordine sale, pagamento contabile
+  e picking nativi; nessuna ulteriore approvazione Torrepulia.
+
+Concorrenza PostgreSQL reale:
+Odoo shell --no-http --max-cron-threads=0 sul solo torrepulia_request_test;
+esecuzione tools/quotation_concurrency_qa.py: run(env).
+Log /tmp/torrepulia-quotation-concurrency.log
+Due cursori separati, snapshot REPEATABLE READ, barriera e retry nativo.
+Output effettivo, exit code 0:
+
+PASS concurrent independent preparation dialogs: one native draft quotation, identical result, immutable request
+PASS concurrent revision dialogs from the same base: one traced revision, no confirmation, stock moves or invoices
+Synthetic submitted fixtures retained only in the disposable test database; no SMTP or payments.
+
+Le fixture inviate sintetiche restano nel DB di test, senza aggirare i vincoli
+di immutabilità per eliminarle. Il tool rifiuta qualsiasi altro database.
+
+JavaScript (regressioni delle superfici condivise):
+node --test \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_request_store.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_commerce.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request/tests/test_review.mjs \
+  /mnt/torrepulia/custom/website_torrepulia_request_campaign/tests/test_campaign.mjs
+Log /tmp/torrepulia-quotation-node.log
+# tests 29
+# pass 29
+# fail 0
+# skipped 0
+Exit code: 0.
+
+Controlli aggiuntivi: sintassi Python, parsing XML e validazione viste Odoo superati.
+Avvisi presenti: docutils sul README campagna già esistente; attributi QWeb
+track/technical_usage nei template nativi. Nessun fallimento dei test o degli asset.
+
+Browser: apps: [], browsers: []. Screenshot e verifica visiva non eseguibili.
+Nessuna email reale, pagamento reale o deploy in produzione.

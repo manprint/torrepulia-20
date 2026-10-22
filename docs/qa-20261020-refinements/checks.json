@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "catalog: default one -> three, one mutation, EUR server subtotal and correct confirmation",
+    "catalog and popup responsive at 360 and 390px without overflow",
+    "repeated product: total five; popup shows only newly added two and their subtotal",
+    "summary: five units, compact format name, no marketing description or redundant UoM, EUR",
+    "seasonal: hero button removed, CTA margin 20px above/below, shared summary retained",
+    "explicit product configuration: desired quantity preserved in native product page"
+  ],
+  "javascript_errors": []
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="torrepulia.request.product_availability" t-inherit="website_sale.product_availability" t-inherit-mode="extension">
+        <xpath expr="//div[@id='out_of_stock_message']" position="attributes">
+            <attribute name="t-if">!this.tp_request_stock_notice || this.allow_out_of_stock_order</attribute>
+        </xpath>
+        <xpath expr="//div[@id='out_of_stock_message']" position="before">
+            <div t-if="this.tp_request_stock_notice &amp;&amp; !this.allow_out_of_stock_order" class="tp-request-stock-message" id="tp_request_stock_notice">
+                <span class="tp-stock-status">Temporaneamente esaurito</span>
+                <p t-if="this.tp_request_stock_notice.message" class="tp-stock-copy" t-out="this.tp_request_stock_notice.message"/>
+                <a t-foreach="this.tp_request_stock_notice.links" t-as="link" t-key="link_index" class="tp-stock-information-link" t-att-href="link.url" t-out="link.label"/>
+                <a t-if="this.tp_request_stock_notice.preorder_url" class="btn btn-primary tp-request-preorder-link" t-att-href="this.tp_request_stock_notice.preorder_url">PRENOTA IL NUOVO RACCOLTO</a>
+            </div>
+        </xpath>
+    </t>
+</templates>

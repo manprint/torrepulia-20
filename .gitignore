@@ -13,3 +13,10 @@ custom/website_torrepulia_theme/docs/**/axe-*.min.js
 design/**/screenshots/
 key-github
 .serena
+
+# QA di sessione: report e script versionati, catture e log locali
+docs/**/*.png
+docs/**/*.jpg
+docs/**/*.webm
+docs/**/*.mp4
+docs/**/*.log

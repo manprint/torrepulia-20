@@ -1,0 +1,47 @@
+<odoo>
+    <template id="request_promoted" name="Formato in evidenza per la richiesta">
+        <button t-if="products and not products[0]._is_sold_out()" type="button" class="button dark early-purchase" t-att-data-tp-request-add-template="products[0].id">
+            <span><strong>Aggiungi alla richiesta</strong><small><t t-out="products[0].torrepulia_format_name"/> · <t t-out="products[0].torrepulia_format_detail"/>
+                <t t-if="website._torrepulia_request_prices_visible()"> · <t t-out="format_amount(prices[products[0].id]['price_reduce'])"/></t>
+            </small></span>
+            <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/>
+        </button>
+        <div t-elif="products" class="tp-request-stock-message">
+            <t t-set="stock_product" t-value="products[0]"/>
+            <t t-call="website_torrepulia_request.request_stock_notice"/>
+        </div>
+        <a t-else="" href="/shop" class="button dark">Scopri i formati disponibili</a>
+    </template>
+    <template id="request_formats" name="Formati per la richiesta Torrepulia">
+        <div class="shop-layout" t-if="products">
+            <div class="shop-stage oe_website_sale">
+                <div class="mc-pack-preview" t-foreach="products" t-as="p" t-att-data-preview="p.id" t-att-hidden="p_index != 0">
+                    <t t-call="website_torrepulia_theme.cinematic_pack"/>
+                    <t t-set="ribbon" t-value="ribbons[p.id]"/>
+                    <t t-if="ribbon" t-call="website_sale.product_ribbon" product="p" text_color="ribbon.text_color" bg_color="ribbon.bg_color"/>
+                    <span class="stage-caption">LA REGINA / <t t-out="p.torrepulia_format_detail"/></span>
+                </div>
+            </div>
+            <div class="shop-choice">
+                <div class="format-options" role="tablist" aria-label="Formati La Regina" aria-orientation="vertical">
+                    <button t-foreach="products" t-as="p" type="button" class="format-option" role="tab" t-att-data-product="p.id" t-att-data-product-url="p.website_url" t-att-aria-selected="'true' if p_index == 0 else 'false'" t-att-tabindex="0 if p_index == 0 else -1">
+                        <span class="format-thumb" t-att-data-count="p.torrepulia_unit_count if p.torrepulia_composite else 1" aria-hidden="true"><img t-foreach="range(p.torrepulia_unit_count if p.torrepulia_composite and p.torrepulia_unit_count in [2,6] else 1)" t-as="unit" t-att-src="'/web/image/product.template/%s/image_128' % p.id" alt=""/></span>
+                        <span class="mc-format-details"><strong t-out="p.torrepulia_format_name or p.name"/><small t-out="p.torrepulia_format_detail"/>
+                            <t t-set="ribbon" t-value="ribbons[p.id]"/>
+                            <span t-if="ribbon" class="mc-format-ribbon" t-attf-style="color: #{ribbon.text_color}; background-color: #{ribbon.bg_color};" t-out="ribbon.name"/>
+                            <span class="mc-format-badges"><span t-foreach="p._torrepulia_format_badges(website)" t-as="badge" class="mc-format-badge" t-attf-style="background-color: #{badge['color']}; color: #{badge['text_color']};" t-out="badge['name']"/></span>
+                        </span>
+                        <span t-if="website._torrepulia_request_prices_visible()" class="option-price" t-out="format_amount(prices[p.id]['price_reduce'])"/>
+                    </button>
+                </div>
+                <div t-foreach="products" t-as="p" class="format-summary" t-att-data-summary="p.id" t-att-hidden="p_index != 0" role="tabpanel">
+                    <p class="format-description" t-out="p.description_sale"/>
+                    <t t-set="product" t-value="p"/>
+                    <t t-call="website_torrepulia_request.request_card_controls"/>
+                    <a class="text-link tp-format-details-link" t-att-href="p.website_url">Scegli le opzioni e scopri il prodotto</a>
+                </div>
+            </div>
+        </div>
+        <p t-else="">Nessun formato disponibile. <a href="/shop">Scopri il catalogo</a></p>
+    </template>
+</odoo>
