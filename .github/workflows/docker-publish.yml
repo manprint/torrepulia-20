@@ -186,10 +186,22 @@ jobs:
             -o StrictHostKeyChecking=yes "$VM_USER@$VM_HOST" 'bash -s' <<'REMOTE'
           set -euo pipefail
           dc() { docker exec -u alpine -w /home/alpine/docker dind-to20 docker compose "$@"; }
+          dk() { docker exec -u alpine dind-to20 docker "$@"; }
+          # Immagine in esecuzione vs immagine appena scaricata per il servizio odoo
+          odoo_image() { dk inspect "$(dc ps -q odoo)" --format '{{.Image}} avviato {{.State.StartedAt}}'; }
           START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
           echo "::group::docker compose up -d (pull always)"
+          echo "Odoo prima: $(odoo_image 2>/dev/null || echo n/d)"
           dc up -d
+          tag=$(dk inspect "$(dc ps -q odoo)" --format '{{.Config.Image}}')
+          want=$(dk image inspect "$tag" --format '{{.Id}}')
+          if [ "$(odoo_image | cut -d' ' -f1)" != "$want" ]; then
+            echo "::warning::odoo non ricreato sulla nuova immagine $tag: force-recreate"
+            START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            dc up -d --force-recreate odoo
+          fi
+          echo "Odoo dopo:  $(odoo_image) ($tag)"
           echo "::endgroup::"
 
           echo "::group::Attesa stack e Odoo interno (max 3 min)"
@@ -221,7 +233,7 @@ jobs:
           logs=$(dc logs --no-color --since "$START" 2>&1 || true)
           if grep -qE 'CRITICAL|Traceback' <<<"$logs"; then
             echo "::error::errori critici nei log dal deploy"
-            grep -E 'CRITICAL|Traceback' <<<"$logs" | head -n 20
+            grep -E -B2 -A40 'CRITICAL|Traceback' <<<"$logs" | head -n 150
             exit 1
           fi
           echo "ERROR nei log: $(grep -c ' ERROR ' <<<"$logs" || true)"
