@@ -58,7 +58,7 @@
         font-size: 14px;
         font-weight: 600;
         white-space: normal;
-        transition: transform 160ms var(--tp-ease-out);
+        transition: transform 160ms var(--tp-ease-out), background-color 160ms ease, border-color 160ms ease, color 160ms ease;
     }
     .btn:active { transform: scale(.97); }
     .btn-primary {

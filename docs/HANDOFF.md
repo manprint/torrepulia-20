@@ -53,12 +53,32 @@ Proposta di direzione approvata: https://claude.ai/artifact/LKRhjcMZMbsqV8AX7T8x
      riepilogo fisso su mobile; lo stato vuoto non deve rimandare fuori pagina;
      card più brevi.
 2. **Fatto il 23/10:** home e checkout (vedi sotto, Fase 2.2).
-3. **28/10:** microinterazioni con le skill di Emil Kowalski, poi nuovo audit Impeccable.
-4. **29-30/10:** collaudo completo (acquisto e prenotazione di prova, telefono e
-   desktop), deploy. Poi SEO di base e analytics.
+3. **Fatto il 23/10:** microinterazioni, token di colore, audit (vedi Fase 3).
+4. **Fatto il 23/10 in locale:** collaudo end-to-end (vedi Fase 3). Restano: correzione
+   Google Fonts, verifica in produzione (serve l'URL della VM), poi SEO di base e analytics.
+5. **Dopo i materiali dell'utente:** La Peranzana e La famiglia (critica del 23/10: analisi
+   2024 in pagina, Bag in Box nella sua scheda, affermazioni non documentate da togliere,
+   errori "vendemmie" / "secolare" / nome del nonno, sentence case, chiusure con
+   "Prenota l'olio nuovo"). Materiali chiesti: PDF analisi, ettari o piante e contrada,
+   foto del trattore (chi, anno), documento per "certificata", chi fa cosa, una frase vera.
 
-Rimasti dall'audit (P2/P3): token di colore nei moduli richiesta/campagna (circa 130
-hex fissi), CSS/JS pesanti da verificare con compressione in produzione.
+Residui dell'audit: token completati il 23/10. In locale CSS 1,3 MB e JS lazy 2,7 MB non
+compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produzione.
+
+## Fase 3 e collaudo (23/10)
+
+- Microinterazioni: battito del contatore carrello (`static/src/js/cart_feedback.js`),
+  accordion della scheda con `::details-content` + `interpolate-size`, riquadro carrello
+  e pulsanti nel tema, zoom delle righe shop solo con puntatore. Nessuna animazione su
+  contatori e prezzi (dati letti).
+- Token nuovi in `design_system.scss` (`--tp-photo`, `--tp-paper`, `--tp-field`,
+  `--tp-alert`, `--tp-scrim`, `--tp-shadow`, `--tp-on-dark*`, `--tp-gold-line`,
+  `--tp-focus-on-dark`); i moduli richiesta/campagna usano `var(--tp-x, fallback)`.
+- Scheda prodotto: via confronto, accordion in sentence case, avviso di esaurimento
+  ripulito anche con vendita da esaurito consentita (`commerce.py`, `availability.xml`).
+- Collaudo locale (script `collaudo.py purchase|preorder|closed` nella scratchpad della
+  sessione): 33/33. Ordini di prova S00019, S00020; opportunità 106 e 108.
+- Da fare: Google Fonts (Inter, Inter Tight) collegati da Odoo, problema di privacy.
 
 ## Fase 2.2 (home e checkout)
 
@@ -100,7 +120,7 @@ hex fissi), CSS/JS pesanti da verificare con compressione in produzione.
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (123 al 23/10):
+- Test Odoo (121 al 23/10, dopo il riordino dei test della home):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (45): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,

@@ -95,15 +95,15 @@
         border-radius: 4px;
         background: var(--tp-ink);
         color: var(--tp-white);
-        --tp-focus: #e3d39d;
+        --tp-focus: var(--tp-focus-on-dark);
     }
     .tp-season-photo { display: block; width: 100%; height: 100%; min-height: 9rem; object-fit: cover; }
     .tp-season-copy { padding-block: 1.25rem; }
     .tp-season h2 { margin: 0 0 .375rem; color: inherit; font: 400 clamp(1.625rem, 2.4vw, 2rem)/1.15 Caslon, Georgia, serif; }
-    .tp-season p { margin: 0; max-width: 46ch; color: #c9d3cb; font-size: var(--tp-small); line-height: 1.6; }
+    .tp-season p { margin: 0; max-width: 46ch; color: var(--tp-on-dark-muted); font-size: var(--tp-small); line-height: 1.6; }
     .tp-season-action {
         margin-right: clamp(1.25rem, 3vw, 2.5rem);
-        background: #f1f3ef; color: var(--tp-ink); border: 0;
+        background: var(--tp-on-dark); color: var(--tp-ink); border: 0;
         transition: background-color .16s ease-out;
         &:hover, &:active { background: var(--tp-white); color: var(--tp-ink); }
     }
@@ -124,12 +124,14 @@
         aspect-ratio: 5 / 4;
         overflow: hidden;
         border-radius: 4px;
-        background: #f6f6f4;
+        background: var(--tp-photo);
         // Product photos are shot on white: multiply lets them sit on the photo ground.
-        .format-image { position: absolute; inset: 6%; width: 88%; height: 88%; max-width: none; object-fit: contain; mix-blend-mode: multiply; transition: transform .4s var(--tp-ease-out, ease-out); }
+        .format-image { position: absolute; inset: 6%; width: 88%; height: 88%; max-width: none; object-fit: contain; mix-blend-mode: multiply; transition: transform 300ms var(--tp-ease-out, ease-out); }
         .pack-composition { width: 88%; height: 88%; }
     }
-    .tp-shop-row:hover .tp-shop-row-photo .format-image { transform: scale(1.03); }
+    @media (hover: hover) and (pointer: fine) {
+        .tp-shop-row:hover .tp-shop-row-photo .format-image { transform: scale(1.03); }
+    }
     .tp-shop-state {
         display: inline-block;
         margin-bottom: .75rem;
@@ -140,7 +142,7 @@
         font: 600 .6875rem/1 Manrope, sans-serif;
         letter-spacing: .08em;
         text-transform: uppercase;
-        &.is-preorder { border-color: #dccf9f; color: var(--tp-gold-text); }
+        &.is-preorder { border-color: var(--tp-gold-line); color: var(--tp-gold-text); }
         &.is-sold-out { color: var(--tp-muted); }
     }
     .tp-shop-row h2 { margin: 0 0 .5rem; font: 400 clamp(1.625rem, 2.4vw, 2.125rem)/1.1 Caslon, Georgia, serif; }
@@ -159,8 +161,36 @@
     .mc-option-amount { display: grid; justify-items: end; gap: .125rem; }
     .mc-option-amount small { margin: 0; color: var(--tp-muted); font-size: .8125rem; font-weight: 400; }
 
-    // Three formats need no wishlist; the identity card replaces the native attribute table.
-    .o_add_wishlist, .o_add_wishlist_dyn, #product_full_spec { display: none !important; }
+    // Three formats need no wishlist or comparison; the identity card replaces the native attribute table.
+    .o_add_wishlist, .o_add_wishlist_dyn, .o_add_compare, .o_add_compare_dyn, #product_full_spec { display: none !important; }
+
+    // Product page accordions open softly where the browser can animate to auto height.
+    .tp-product-editorial details { interpolate-size: allow-keywords; }
+    .tp-product-editorial details::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition: block-size 200ms var(--tp-ease-out, ease-out), content-visibility 200ms allow-discrete;
+    }
+    .tp-product-editorial details[open]::details-content { block-size: auto; }
+    .tp-product-editorial summary {
+        display: flex; justify-content: space-between; align-items: center; gap: 1rem; list-style: none;
+        &::-webkit-details-marker { display: none; }
+        &::after {
+            content: ''; flex: none; width: .5rem; height: .5rem; margin-right: .25rem;
+            border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+            transform: translateY(-2px) rotate(45deg);
+            transition: transform 200ms var(--tp-ease-out, ease-out);
+        }
+    }
+    .tp-product-editorial details[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+
+    // Odoo's "added to cart" card, in the theme's surface.
+    .o_notification_manager .toast {
+        border: 1px solid var(--tp-line);
+        border-radius: 4px;
+        box-shadow: 0 16px 40px -20px var(--tp-shadow);
+    }
+    .cart-count { display: inline-block; font-variant-numeric: tabular-nums; }
 
     @media (max-width: 760px) {
         // Formats become a horizontal row of choices on phones.
@@ -185,5 +215,6 @@
     }
     @media (prefers-reduced-motion: reduce) {
         .tp-format, .o_variant_pills.btn, .tp-shop-row-photo .format-image { transition: none; }
+        .tp-product-editorial details::details-content, .tp-product-editorial summary::after { transition: none; }
     }
 }

@@ -25,15 +25,15 @@
         <xpath expr="//t[@t-call='website_torrepulia_theme.pdp_assurances']" position="after">
             <div t-if="website.torrepulia_theme_enabled" class="tp-product-editorial">
                 <details t-if="not is_html_empty(product.torrepulia_sensory_profile)">
-                    <summary>Il Profilo Sensoriale</summary>
+                    <summary>Profilo sensoriale</summary>
                     <div t-field="product.torrepulia_sensory_profile"/>
                 </details>
                 <details t-if="not is_html_empty(product.torrepulia_food_pairings)">
-                    <summary>Abbinamenti in Cucina</summary>
+                    <summary>Abbinamenti in cucina</summary>
                     <div t-field="product.torrepulia_food_pairings"/>
                 </details>
                 <details t-if="not is_html_empty(product.torrepulia_shipping_storage)">
-                    <summary>Spedizione e Conservazione</summary>
+                    <summary>Spedizione e conservazione</summary>
                     <div t-field="product.torrepulia_shipping_storage"/>
                 </details>
             </div>

@@ -7,19 +7,19 @@
     p { max-width: 68ch; line-height: 1.65; }
     a { text-underline-offset: 4px; }
     :focus-visible { outline: 3px solid var(--tp-gold-text, #746014); outline-offset: 4px; }
-    ::selection { background: #2e493b; color: #fff; }
+    ::selection { background: var(--tp-olive, #2e493b); color: var(--tp-white, #fff); }
     .tp-campaign-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; margin-bottom: 64px; }
     .tp-campaign-hero h1 { margin-bottom: 24px !important; line-height: 1.2 !important; }
     .tp-campaign-intro { margin-top: 0; }
     .tp-campaign-formats-title { margin-bottom: 20px !important; }
     .tp-campaign-formats-description { margin-bottom: 32px !important; }
-    .tp-campaign-benefits-banner { width: calc(100% - 32px); max-width: 900px; box-sizing: border-box; margin: 30px auto 40px; padding: 20px 40px; border-radius: 8px; background: #f4f2ee; }
+    .tp-campaign-benefits-banner { width: calc(100% - 32px); max-width: 900px; box-sizing: border-box; margin: 30px auto 40px; padding: 20px 40px; border-radius: 8px; background: var(--tp-pale, #eef2ed); }
     .tp-campaign-photo { width: 100%; height: 340px; object-fit: cover; }
     .tp-campaign-content, .tp-campaign-review, #tp-campaign-formats { scroll-margin-top: 100px; }
     .tp-campaign-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
     // Short cards: photo, format, price, then one counter per filtration.
     .tp-campaign-card { min-width: 0; display: grid; grid-template-rows: 200px auto; border: 1px solid var(--tp-line, #d2dcd4); border-radius: 4px; background: var(--tp-white, #fff); overflow: hidden; }
-    .tp-campaign-image-link { display: flex; width: 100%; min-height: 0; background: #f6f6f4; align-items: center; justify-content: center; }
+    .tp-campaign-image-link { display: flex; width: 100%; min-height: 0; background: var(--tp-photo, #f6f6f4); align-items: center; justify-content: center; }
     // Product photos are shot on white: multiply lets them sit on the pale photo ground.
     .tp-campaign-product-image { width: 100%; height: 100%; padding: 16px; object-fit: contain; mix-blend-mode: multiply; }
     .tp-campaign-card-copy { display: flex; flex-direction: column; min-width: 0; padding: 20px 24px 24px; }
@@ -48,9 +48,9 @@
     .tp-review-empty p { margin: 0; }
     .tp-campaign-benefits { display: flex; gap: 24px; margin: 0; padding: 0; list-style: none; }
     .tp-campaign-benefits li { flex: 1; min-width: 0; display: flex; gap: 12px; align-items: center; font-family: Manrope, sans-serif; }
-    .tp-campaign-benefits svg { width: 32px; height: 32px; flex: 0 0 32px; fill: none; stroke: #3d4a3e; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-    .tp-campaign-benefits strong { display: block; color: #1c221d; font-size: 13px; font-weight: 700; line-height: 1.5; }
-    .tp-campaign-benefits span { display: block; color: #666; font-size: 12px; line-height: 1.5; margin-top: 4px; }
+    .tp-campaign-benefits svg { width: 32px; height: 32px; flex: 0 0 32px; fill: none; stroke: var(--tp-muted, #526056); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+    .tp-campaign-benefits strong { display: block; color: var(--tp-ink, #18231f); font-size: 13px; font-weight: 700; line-height: 1.5; }
+    .tp-campaign-benefits span { display: block; color: var(--tp-muted, #526056); font-size: 12px; line-height: 1.5; margin-top: 4px; }
     .tp-campaign-summary { margin-block: 0; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
     .tp-campaign-summary p:empty { display: none; }
     .tp-campaign-next { max-width: 70ch; }
@@ -98,7 +98,7 @@
             display: flex; align-items: center; justify-content: space-between; gap: 16px;
             padding: 12px 16px Max(12px, env(safe-area-inset-bottom));
             border-top: 1px solid var(--tp-line, #d2dcd4); background: var(--tp-white, #fff);
-            box-shadow: 0 -8px 24px -18px rgba(24, 35, 31, .45);
+            box-shadow: 0 -8px 24px -16px var(--tp-shadow, rgba(24, 35, 31, .16));
             animation: tp-campaign-dock-in .24s cubic-bezier(.23, 1, .32, 1);
         }
         .tp-campaign-dock p { margin: 0; display: grid; font-size: .875rem; line-height: 1.35; font-variant-numeric: tabular-nums; }

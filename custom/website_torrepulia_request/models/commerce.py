@@ -89,8 +89,10 @@ class ProductTemplate(models.Model):
         info = super()._get_combination_info(*args, **kwargs)
         website = public_storefront() and self.env.website
         # Seasonal products carry their own preorder action instead of a stock notice.
+        # With out-of-stock sales allowed the notice still replaces the raw configured
+        # HTML, so a "reserve" button never shows while the campaign is closed.
         if (website and website._torrepulia_selection_enabled()
-                and info.get('is_storable') and not info.get('allow_out_of_stock_order')
+                and info.get('is_storable')
                 and not website._torrepulia_preorder_product_url(self)):
             info['tp_request_stock_notice'] = self._request_stock_notice(self.env.website)
         return info

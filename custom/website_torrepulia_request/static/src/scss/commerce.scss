@@ -29,14 +29,14 @@
     .tp-request-action-row { display: flex; flex-direction: column; gap: 16px !important; align-items: stretch; width: 100%; padding: 0; pointer-events: auto; transform: none !important; }
     .tp-catalog-quantity { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin: 0; }
     .tp-catalog-stepper { display: inline-flex; align-items: center; gap: 8px; align-self: start; }
-    .tp-catalog-stepper button { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #2e493b; color: #fff; font: 24px/1 Manrope, sans-serif; }
-    .tp-catalog-quantity-input { width: 56px; min-height: 48px; padding: 6px; text-align: center; border: 0; background: #fff; color: #18231f; font-family: Manrope, sans-serif; appearance: textfield; }
+    .tp-catalog-stepper button { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--tp-olive, #2e493b); color: var(--tp-white, #fff); font: 24px/1 Manrope, sans-serif; }
+    .tp-catalog-quantity-input { width: 56px; min-height: 48px; padding: 6px; text-align: center; border: 0; background: var(--tp-white, #fff); color: var(--tp-ink, #18231f); font-family: Manrope, sans-serif; appearance: textfield; }
     .tp-catalog-quantity-input::-webkit-inner-spin-button { appearance: none; }
     .tp-catalog-variants { display: flex; gap: 8px; flex-wrap: wrap; border: 0; padding: 0; margin: 0; }
     .tp-catalog-variants legend { font: 13px/1.5 Manrope, sans-serif; margin: 0 0 8px; }
-    .tp-catalog-variant { display: inline-flex; gap: 8px; align-items: center; border: 1px solid #ccd4ce; padding: 10px; min-height: 44px; font: 13px/1.5 Manrope, sans-serif; cursor: pointer; }
-    .tp-catalog-variant:has(input:checked) { border-color: #2e493b; background: #f0f4ed; }
-    .tp-catalog-variant input { accent-color: #2e493b; }
+    .tp-catalog-variant { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--tp-field, #829088); padding: 10px; min-height: 44px; font: 13px/1.5 Manrope, sans-serif; cursor: pointer; }
+    .tp-catalog-variant:has(input:checked) { border-color: var(--tp-olive, #2e493b); background: var(--tp-pale, #eef2ed); }
+    .tp-catalog-variant input { accent-color: var(--tp-olive, #2e493b); }
     .tp-request-tile-add, .tp-request-preorder-link {
         position: static !important;
         display: inline-flex;
@@ -70,14 +70,14 @@ body[data-tp-request-mode="1"] #wrapwrap .tp-request-action-row .tp-request-tile
     max-height: calc(100dvh - 32px);
     overflow-y: auto;
     padding: 24px;
-    background: #fffaf5;
-    color: #203b2f;
-    box-shadow: 0 8px 32px rgba(32, 59, 47, .18);
+    background: var(--tp-paper, #fcfbf9);
+    color: var(--tp-olive, #2e493b);
+    box-shadow: 0 8px 32px var(--tp-shadow, rgba(24, 35, 31, .16));
     border-radius: 12px;
     h2 { font-family: Caslon, Georgia, serif; font-size: 24px; font-weight: 700; margin: 0 0 16px; line-height: 1.2; }
     p { font-family: Manrope, sans-serif; font-size: 14px; line-height: 1.6; margin: 0 0 16px; }
     .tp-confirmation-subtotal { font-weight: 700; }
-    .tp-confirmation-note { font-size: 12px; color: #6b654f; }
+    .tp-confirmation-note { font-size: 12px; color: var(--tp-muted, #526056); }
     a, button { font-family: Manrope, sans-serif; min-height: 44px; white-space: normal; }
     &-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 }
@@ -87,7 +87,7 @@ body[data-tp-request-mode="1"] #wrapwrap .tp-request-action-row .tp-request-tile
     align-items: center;
     gap: 16px;
     padding-block: 24px;
-    border-bottom: 1px solid #d8ded9;
+    border-bottom: 1px solid var(--tp-line, #d2dcd4);
     h2 { flex: 1 1 240px; font-size: 21px; margin: 0; }
     label { display: flex; align-items: center; gap: 12px; }
     input { width: 90px; padding: 8px; }
@@ -127,8 +127,8 @@ body[data-tp-request-mode="1"][data-tp-request-prices="0"] {
         overflow-wrap: anywhere;
         font-family: Manrope, sans-serif;
     }
-    .tp-stock-status { color: #925b48; font-size: 13px; font-weight: 500; line-height: 1.5; }
-    .tp-stock-copy { margin: 0; color: #46584c; font-size: 14px; line-height: 1.5; white-space: pre-line; }
+    .tp-stock-status { color: var(--tp-muted, #526056); font-size: 13px; font-weight: 500; line-height: 1.5; }
+    .tp-stock-copy { margin: 0; color: var(--tp-muted, #526056); font-size: 14px; line-height: 1.5; white-space: pre-line; }
     .tp-request-stock-message .tp-request-preorder-link {
         position: static !important;
         width: 100% !important;
@@ -142,8 +142,8 @@ body[data-tp-request-mode="1"][data-tp-request-prices="0"] {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #2e493b;
-        color: #fff;
+        background: var(--tp-olive, #2e493b);
+        color: var(--tp-white, #fff);
         font: 600 15px/1.4 Manrope, sans-serif;
         text-decoration: none;
         white-space: normal;
@@ -159,8 +159,8 @@ body[data-tp-request-mode="1"][data-tp-request-prices="0"] {
 #wrapwrap #o_wsale_product_cta_section:has(.tp-preorder-cta) {
     .availability_messages, #o_wsale_cta_wrapper { display: none !important; }
     .tp-preorder-cta { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-    .tp-preorder-note { margin: 0; padding: 14px 16px; border-radius: 4px; background: #eef2ed; color: #46584c; font: 400 14px/1.5 Manrope, sans-serif; }
-    .tp-preorder-note strong { display: block; margin-bottom: 4px; color: #18231f; font-size: 15px; font-weight: 600; }
+    .tp-preorder-note { margin: 0; padding: 14px 16px; border-radius: 4px; background: var(--tp-pale, #eef2ed); color: var(--tp-muted, #526056); font: 400 14px/1.5 Manrope, sans-serif; }
+    .tp-preorder-note strong { display: block; margin-bottom: 4px; color: var(--tp-ink, #18231f); font-size: 15px; font-weight: 600; }
     // The theme turns this section into a fixed bottom bar on phones: action only.
     @media (max-width: 760px) {
         .tp-preorder-cta { flex: 1; margin: 0; }

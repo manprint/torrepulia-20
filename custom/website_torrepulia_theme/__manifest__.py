@@ -74,6 +74,7 @@ and local brand imagery sourced from the current Torrepulia website.
             "website_torrepulia_theme/static/src/scss/boutique.scss",
             "website_torrepulia_theme/static/src/scss/checkout.scss",
             "website_torrepulia_theme/static/src/js/checkout.js",
+            "website_torrepulia_theme/static/src/js/cart_feedback.js",
             "website_torrepulia_theme/static/src/js/navigation.js",
             "website_torrepulia_theme/static/src/scss/reservation_campaign.scss",
             "website_torrepulia_theme/static/src/js/reservation_campaign.js",

@@ -10,6 +10,17 @@
     --tp-gold-text: #746014;
     --tp-action-hover: #20362a;
     --tp-focus: #746014;
+    // Surfaces and states shared by the theme and the request modules.
+    --tp-photo: #f6f6f4;
+    --tp-paper: #fcfbf9;
+    --tp-field: #829088;
+    --tp-alert: #8b1e1e;
+    --tp-scrim: rgba(24, 35, 31, .4);
+    --tp-shadow: rgba(24, 35, 31, .16);
+    --tp-on-dark: #f1f3ef;
+    --tp-on-dark-muted: #c9d3cb;
+    --tp-gold-line: #dccf9f;
+    --tp-focus-on-dark: #e3d39d;
     --tp-content: 90rem;
     --tp-reading: 68ch;
     --tp-section-space: clamp(3rem, 6vw, 5.5rem);
@@ -28,8 +39,10 @@
     font-size: var(--tp-body);
 
     :focus-visible { outline: 3px solid var(--tp-focus); outline-offset: 4px; }
+    // Placeholders keep 4.5:1 on white and on the pale header search.
+    ::placeholder { color: var(--tp-muted); opacity: 1; }
     .on-photo, #mc-footer, .mc-family-editorial, .peranzana {
-        --tp-focus: #e3d39d;
+        --tp-focus: var(--tp-focus-on-dark);
     }
     // Keep each original section's width and spacing. A shared shorthand here
     // would override Regina's compact opening and constrain colored surfaces.

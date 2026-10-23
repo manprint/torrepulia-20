@@ -66,13 +66,13 @@ class TestThemeRequestCommerce(HttpCase):
         page = self.url_open(product.website_url)
         self.assertEqual(page.status_code, 200)
         self.assertIn('Titolo configurato QA', page.text)
-        self.assertIn('<summary>Il Profilo Sensoriale</summary>', page.text)
-        self.assertIn('<summary>Abbinamenti in Cucina</summary>', page.text)
-        self.assertIn('<summary>Spedizione e Conservazione</summary>', page.text)
+        self.assertIn('<summary>Profilo sensoriale</summary>', page.text)
+        self.assertIn('<summary>Abbinamenti in cucina</summary>', page.text)
+        self.assertIn('<summary>Spedizione e conservazione</summary>', page.text)
         self.assertIn('Note sensoriali approvate QA', page.text)
         product.write({'torrepulia_web_title': False, 'torrepulia_sensory_profile': '<p><br></p>'})
         page = self.url_open(product.website_url)
-        self.assertNotIn('<summary>Il Profilo Sensoriale</summary>', page.text)
+        self.assertNotIn('<summary>Profilo sensoriale</summary>', page.text)
         self.assertIn('Editorial QA oil', page.text)
         for mode in ['request', 'shop']:
             if mode == 'request':
