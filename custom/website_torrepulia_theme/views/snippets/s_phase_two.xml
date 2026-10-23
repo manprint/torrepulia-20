@@ -36,7 +36,7 @@
                     <article>
                         <p class="tp-about-year">1945</p>
                         <h3>Si riparte dalla terra.</h3>
-                        <p>Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, alcuni gi&#224; secolari, e insegna il mestiere a suo figlio Michele.</p>
+                        <p>Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, gli stessi che oggi sono i nostri ulivi secolari, e insegna il mestiere a suo figlio Michele.</p>
                     </article>
                     <article>
                         <p class="tp-about-year">1980</p>
@@ -54,7 +54,7 @@
     </template>
     <template id="s_torrepulia_sensory" name="Torrepulia Profilo Sensoriale">
         <section id="profilo" class="s_torrepulia_snippet tp-section tp-sensory" data-snippet="s_torrepulia_sensory" data-name="Profilo sensoriale">
-            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Un equilibrio<br/>da assaporare.</h2><p class="lead">Fruttato medio. Amaro e piccante, in equilibrio.</p></div><div class="col-lg-6 offset-lg-1"><dl class="tp-sensory-list"><dt>Alla vista</dt><dd>Verde brillante con riflessi dorati.</dd><dt>Al profumo</dt><dd>Oliva, erbe, <strong>pomodoro verde</strong> e <strong>carciofo</strong>, con note di mela e lattuga.</dd><dt>Al gusto</dt><dd>Sentori vegetali e un finale di pomodoro, carciofo e <strong>mandorla fresca</strong>.</dd></dl></div></div></div>
+            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Un equilibrio<br/>da assaporare.</h2><p class="lead">Un fruttato medio che sa di oliva appena colta.</p></div><div class="col-lg-6 offset-lg-1"><dl class="tp-sensory-list"><dt>Alla vista</dt><dd>Verde brillante con riflessi dorati.</dd><dt>Al profumo</dt><dd>Prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, poi la <strong>mandorla fresca</strong>, l&#8217;erba e il grano appena tagliati.</dd><dt>Al gusto</dt><dd>Amaro e piccante ci sono, ma con garbo: si bilanciano e non coprono mai il resto.</dd><dt>Al palato</dt><dd>Scorre fluido e lascia la bocca pulita. Un olio armonico, con un&#8217;acidit&#224; bassa.</dd></dl></div></div></div>
         </section>
     </template>
     <template id="s_torrepulia_landscape" name="Torrepulia Paesaggio">

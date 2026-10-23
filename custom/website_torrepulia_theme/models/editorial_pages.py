@@ -14,6 +14,7 @@ from datetime import datetime
 
 from lxml import etree
 
+from .home_copy import refine_section
 from .website import MODULE, inline_puglia_map
 
 HOME_KEY = MODULE + '.page_home_view'
@@ -35,6 +36,15 @@ HOME_REPLACEMENTS = (
      "secolari; papà Michele li ha fatti crescere fino a oltre 1000 piante. Noi, Franco e Salvatore, siamo "
      "cresciuti tra quegli ulivi e il profumo delle olive appena frante. Nel 2020 abbiamo fondato Torrepulia "
      "per portare il nostro olio direttamente sulla tua tavola.</p>"),
+    # 20.0.3.14.0: the old trees said better.
+    ("<p>Nonno Santino Vincenzo, tornato dalla guerra, ha ripreso a curare gli ulivi di famiglia, alcuni già "
+     "secolari; papà Michele li ha fatti crescere fino a oltre 1000 piante. Noi, Franco e Salvatore, siamo "
+     "cresciuti tra quegli ulivi e il profumo delle olive appena frante. Nel 2020 abbiamo fondato Torrepulia "
+     "per portare il nostro olio direttamente sulla tua tavola.</p>",
+     "<p>Nonno Santino Vincenzo, tornato dalla guerra, ha ripreso a curare i pochi ulivi di famiglia, gli stessi "
+     "che oggi sono secolari; papà Michele ha fatto crescere l'uliveto fino a oltre 1000 piante. Noi, Franco e "
+     "Salvatore, siamo cresciuti tra quegli alberi e il profumo delle olive appena frante. Nel 2020 abbiamo "
+     "fondato Torrepulia per portare il nostro olio direttamente sulla tua tavola.</p>"),
 )
 REPORT_2024 ='/%s/static/src/docs/rapporto-di-prova-raccolto-2024.pdf' % MODULE
 OIL_DESCRIPTION = ('La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, '
@@ -49,6 +59,7 @@ PAGES = {
             's_torrepulia_cultivar_history': 's_torrepulia_cultivar_history',
             's_torrepulia_production_process': 's_torrepulia_production_process',
             's_torrepulia_pairings': 's_torrepulia_pairings',
+            's_torrepulia_sensory': 's_torrepulia_sensory',
             's_torrepulia_packaging': None,
             's_torrepulia_roots_cta': 's_torrepulia_choice_oil',
             's_torrepulia_choice_oil': 's_torrepulia_choice_oil',
@@ -125,10 +136,17 @@ def rebuild_arch(env, arch, plan):
     return etree.tostring(root, encoding='unicode')
 
 
-def refresh_editorial_pages(env):
+# 20.0.3.14.0: the La Peranzana sensory profile follows the owner's tasting sheet; La famiglia's 1945 chapter is reworded.
+SENSORY_ONLY = {
+    MODULE + '.page_oil_view': {'replace': {'s_torrepulia_sensory': 's_torrepulia_sensory'}, 'after': {}},
+    MODULE + '.page_story_view': {'replace': {'s_torrepulia_story_chapters': 's_torrepulia_story_chapters'}, 'after': {}},
+}
+
+
+def refresh_editorial_pages(env, pages=PAGES):
     Views = env['ir.ui.view'].sudo().with_context(active_test=False)
     stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    for key, plan in PAGES.items():
+    for key, plan in pages.items():
         for view in Views.search([('key', '=', key)]):
             # Raw jsonb keeps every stored language, including pending Builder ones.
             env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
@@ -155,12 +173,40 @@ def retext_home(arch):
     return arch
 
 
+def refine_home(env, arch, bib_url):
+    """Three facts after the hero, one line for the Bag in Box, copy aligned section by section."""
+    root = etree.fromstring(retext_home(arch))
+    wrap = root.find('.//div[@id="wrap"]')
+    if wrap is None:
+        return arch
+    for section in list(wrap.findall('section')):
+        name = section.get('data-snippet')
+        if name in ('s_torrepulia_value_proofs', 's_torrepulia_home_facts'):
+            wrap.replace(section, snippet_section(env, 's_torrepulia_home_facts'))
+        elif name in ('s_torrepulia_packaging', 's_torrepulia_bib_line'):
+            line = snippet_section(env, 's_torrepulia_bib_line')
+            for link in line.xpath(".//a[@class='tp-bib-line-link']"):
+                link.set('href', bib_url)
+            wrap.replace(section, line)
+        else:
+            refine_section(section)
+    return etree.tostring(root, encoding='unicode')
+
+
+def bag_in_box_url(env):
+    product = env['product.template'].with_context(active_test=False).search([
+        '|', ('torrepulia_format_name', 'ilike', 'bag in box'), ('name', 'ilike', 'bag in box'),
+        ('is_published', '=', True)], limit=1)
+    return product.website_url if product else '/shop'
+
+
 def align_home_family(env):
     Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    bib_url = bag_in_box_url(env)
     for view in Views.search([('key', '=', HOME_KEY)]):
         env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
         stored = env.cr.fetchone()[0] or {}
-        cleaned = {lang: retext_home(arch) for lang, arch in stored.items()}
+        cleaned = {lang: refine_home(env, arch, bib_url) for lang, arch in stored.items()}
         if cleaned == stored:
             continue
         view.copy({'name': 'Before the family alignment', 'active': False, 'arch_fs': False,

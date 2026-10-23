@@ -41,6 +41,29 @@ In locale è già applicata (`refresh_editorial_pages`, `align_home_family` da `
   o_snippet_mobile_invisible d-none`. L'utente li sostituisce nel Builder ("Elementi
   invisibili") e li rende visibili.
 
+### Home e profilo sensoriale (migrazione `20.0.3.14.0`)
+
+`0744143` ha portato in produzione la `20.0.3.13.0`; la `20.0.3.14.0` tocca solo la home
+(`align_home_family` → `refine_home`, logica pura in `models/home_copy.py`, per elementi e non
+per frasi: la versione `it_IT` della home salvata è diversa da `en_US`) e ricostruisce la
+sezione sensoriale di /l-olio e i capitoli di /aboutus (`SENSORY_ONLY`).
+
+- Hero invariata ("La nostra terra. Il tuo olio." resta per scelta dell'utente).
+- Tre valori → `s_torrepulia_home_facts`, fascia centrata di tre fatti con link (oltre 1000
+  ulivi → /territorio; entro 8 ore → /l-olio#processo; 0,17 % raccolto 2024 → #analisi).
+- Bag in Box → `s_torrepulia_bib_line`, scheda "Il formato che consigliamo" sotto i formati,
+  link alla scheda prodotto calcolato dal catalogo.
+- Tolti: fascia "Da Torremaggiore alla tua tavola", note vuote de La Regina, sottotitolo
+  dei formati. Testo de La Regina centrato accanto alla bottiglia.
+- Profilo sensoriale dalla scheda di assaggio dell'utente, **riscritto con la voce della
+  famiglia** (non copiare la scheda): fruttato medio, oliva appena colta, pomodoro verde,
+  carciofo, mandorla fresca, erba e grano appena tagliati; amaro e piccante delicati in
+  equilibrio; fluido, pulito, acidità bassa. Mai mela, lattuga, foglia di pomodoro,
+  "medio-intenso".
+- Ulivi secolari: "gli stessi che oggi sono secolari", "dai secolari del nonno a quelli
+  piantati da poco"; mai "alcuni secolari".
+- Chiusura della home: link a /territorio (non più email).
+
 Regole sui testi decise con l'utente: mai nominare il frantoio (scrivere "frantoio
 partner"); niente superlativi non dimostrabili, "biologico", "certificata", frasi
 salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non si citano.

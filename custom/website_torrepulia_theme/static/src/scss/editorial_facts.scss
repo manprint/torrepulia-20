@@ -154,6 +154,87 @@
         figcaption { padding-top: 12px; padding-bottom: 12px; color: var(--tp-muted); font-size: var(--tp-small); }
     }
 
+    // Home: three facts after the hero. Numbers carry the weight, each fact opens the page that proves it.
+    .tp-home-facts {
+        padding: 40px 0;
+        background: var(--tp-paper);
+        border-bottom: 1px solid var(--tp-line);
+    }
+    // Both home bands sit on the home's own page gutter, like the cinematic sections around them.
+    .tp-home-facts, .tp-bib-line {
+        > .container { max-width: none; padding-inline: var(--gutter, 64px); }
+    }
+    .tp-home-facts-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        li + li { border-left: 1px solid var(--tp-line); }
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            padding: 4px 32px;
+            color: var(--tp-ink);
+            text-align: center;
+            text-decoration: none;
+        }
+        strong {
+            font: 400 clamp(2rem, 3.2vw, 2.75rem)/1 "Libre Caslon Display", Georgia, serif;
+            color: var(--tp-olive);
+            font-variant-numeric: lining-nums;
+        }
+        span {
+            color: var(--tp-muted);
+            font-size: var(--tp-small);
+            text-decoration: underline;
+            text-decoration-color: transparent;
+            text-underline-offset: 4px;
+            transition: text-decoration-color 160ms var(--tp-ease-out), color 160ms var(--tp-ease-out);
+        }
+        a:hover span, a:focus-visible span { color: var(--tp-ink); text-decoration-color: currentColor; }
+    }
+    // Home: the recommended Bag in Box, a small card on the formats band it belongs to.
+    .tp-bib-line {
+        padding: 0 0 72px;
+        background: var(--rose, var(--tp-pale));
+        color: var(--tp-ink);
+    }
+    .tp-bib-line-card {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: center;
+        padding: 16px 28px 16px 20px;
+        border-radius: 8px;
+        background: var(--tp-white);
+        box-shadow: 0 6px 20px var(--tp-shadow);
+        > img { display: block; width: 72px !important; height: 80px !important; object-fit: contain; }
+        p { max-width: 64ch; margin: 0; font-size: var(--tp-small); line-height: 1.6; color: var(--tp-muted); }
+        .tp-bib-line-label { margin-bottom: 4px; font-weight: 700; color: var(--tp-gold-text); }
+    }
+    .tp-bib-line-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        color: var(--tp-olive);
+        font-weight: 600;
+        white-space: nowrap;
+        text-decoration: none;
+        .icon { width: 18px; height: 18px; transition: transform 160ms var(--tp-ease-out); }
+        &:hover { color: var(--tp-ink); }
+        &:hover .icon { transform: translate(2px, -2px); }
+    }
+    // La Regina: the copy sits beside the bottle, as before the notes underneath were removed.
+    @media (min-width: 1101px) {
+        .regina .regina-copy { align-self: center; padding-bottom: 0; }
+    }
+    .peranzana .process-intro .text-link { display: inline-flex; min-height: 44px; margin-top: 8px; }
+
     // The sensory subtitle needs air under the title, above all on phones.
     .tp-sensory h2 + .lead { margin-top: 20px; color: var(--tp-on-dark-muted); }
 
@@ -176,6 +257,21 @@
         .tp-analysis h2, .tp-choice h2, .tp-method h2, .tp-trees h2, .tp-land-where h2, .tp-land-history h2 { font-size: 36px; }
         .tp-land-where .lead { font-size: 18px; }
         .tp-land-grove img { aspect-ratio: 4 / 3; }
+        .tp-home-facts { padding: 8px 0; }
+        .tp-home-facts-list {
+            grid-template-columns: minmax(0, 1fr);
+            li + li { border-left: 0; border-top: 1px solid var(--tp-line); }
+            a { padding: 16px 0; }
+            strong { font-size: 1.75rem; }
+        }
+        .tp-bib-line { padding-bottom: 54px; }
+        .tp-bib-line-card {
+            grid-template-columns: 56px minmax(0, 1fr);
+            gap: 8px 16px;
+            padding: 16px;
+            > img { width: 56px !important; height: 64px !important; }
+            .tp-bib-line-link { grid-column: 1 / -1; justify-content: center; border-top: 1px solid var(--tp-line); }
+        }
         .tp-trees .tp-trees-second { display: none; }
         .tp-choice .tp-choice-photo { aspect-ratio: 3 / 2; margin-bottom: 40px; }
         .tp-analysis {
@@ -193,6 +289,8 @@
         .tp-sensory h2 + .lead { margin-top: 16px; margin-bottom: 8px; }
     }
     @media (prefers-reduced-motion: reduce) {
+        .tp-home-facts-list span, .tp-bib-line-link .icon { transition: none; }
+        .tp-bib-line-link:hover .icon { transform: none; }
         .tp-choice-option .btn { transition: none; }
         .tp-choice-option .btn:active { transform: none; }
     }

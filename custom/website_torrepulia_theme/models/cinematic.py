@@ -111,10 +111,10 @@ class Website(models.Model):
                             section.set('data-product-ids',json.dumps([{'id':p.id,'display_name':p.name} for p in duetto]))
                         wrap.append(section)
                         if i == 0:
-                            proofs = etree.fromstring(self.env.ref(module + '.s_torrepulia_value_proofs').arch_db.encode())
+                            proofs = etree.fromstring(self.env.ref(module + '.s_torrepulia_home_facts').arch_db.encode())
                             wrap.append(copy.deepcopy(proofs[0]))
                         if i == 5:
-                            packaging = etree.fromstring(self.env.ref(module + '.s_torrepulia_packaging').arch_db.encode())
+                            packaging = etree.fromstring(self.env.ref(module + '.s_torrepulia_bib_line').arch_db.encode())
                             wrap.append(copy.deepcopy(packaging[0]))
                 else:
                     root = etree.fromstring(page.with_context(lang='en_US').arch_db.encode())

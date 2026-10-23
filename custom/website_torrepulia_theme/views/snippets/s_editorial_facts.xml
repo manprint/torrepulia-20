@@ -151,4 +151,32 @@
             </div>
         </section>
     </template>
+
+    <!-- Three verifiable facts after the home hero, each linking to the page that proves it. -->
+    <template id="s_torrepulia_home_facts" name="Torrepulia Tre fatti">
+        <section class="s_torrepulia_snippet tp-home-facts o_colored_level" data-snippet="s_torrepulia_home_facts" data-name="Tre fatti">
+            <div class="container">
+                <ul class="tp-home-facts-list">
+                    <li><a href="/territorio"><strong>Oltre 1000</strong><span>ulivi nell&#8217;agro di Torremaggiore</span></a></li>
+                    <li><a href="/l-olio#processo"><strong>Entro 8 ore</strong><span>dalla raccolta alla molitura</span></a></li>
+                    <li><a href="/l-olio#analisi"><strong>0,17 %</strong><span>di acidit&#224;, raccolto 2024</span></a></li>
+                </ul>
+            </div>
+        </section>
+    </template>
+    <!-- The full Bag in Box explainer lives on its product page; the migration sets the real product link. -->
+    <template id="s_torrepulia_bib_line" name="Torrepulia Bag in Box in breve">
+        <section class="s_torrepulia_snippet tp-bib-line o_colored_level" data-snippet="s_torrepulia_bib_line" data-name="Bag in Box in breve">
+            <div class="container">
+                <div class="tp-bib-line-card">
+                    <img src="/website_torrepulia_theme/static/src/cinematic/images/bag-box-transparent-240.webp" alt="Bag in Box La Regina da 5 litri" width="219" height="240" loading="lazy"/>
+                    <div class="tp-bib-line-copy">
+                        <p class="tp-bib-line-label">Il formato che consigliamo</p>
+                        <p>Bag in Box da 5 litri: la sacca si contrae mentre versi, l&#8217;aria non entra e l&#8217;olio resta protetto fino all&#8217;ultima goccia.</p>
+                    </div>
+                    <a class="tp-bib-line-link" href="/shop?search=Bag">Come funziona <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt="" width="20" height="20"/></a>
+                </div>
+            </div>
+        </section>
+    </template>
 </odoo>

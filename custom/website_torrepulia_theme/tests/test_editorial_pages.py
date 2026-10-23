@@ -7,7 +7,8 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
-    HOME_REPLACEMENTS, PAGES, REPORT_2024, move_bag_in_box, rebuild_arch, refresh_editorial_pages, retext_home)
+    HOME_REPLACEMENTS, PAGES, REPORT_2024, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
+    retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
 OIL_SAVED = ('<t t-name="oil"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
@@ -34,6 +35,25 @@ LAND_SAVED = ('<t t-name="land"><t t-call="website.layout"><div id="wrap" class=
               '<section data-snippet="s_torrepulia_brand_story"><p>la più antica tradizione familiare</p></section>'
               '<section data-snippet="s_torrepulia_cta"><p>Acquista il nostro olio</p></section>'
               '</div></t></t>')
+HOME_SAVED = (
+    '<t t-name="home"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
+    '<section data-snippet="s_cinematic_0"><div class="hero-copy"><p><strong>LA NOSTRA TERRA. IL TUO OLIO.</strong></p>'
+    '<h1 id="hero-title">Olio extravergine Peranzana</h1><p class="hero-description">Descrizione</p></div></section>'
+    '<section data-snippet="s_torrepulia_value_proofs"><h2>100% Olive Aziendali</h2></section>'
+    '<section data-snippet="s_cinematic_1"><div class="section-line">Da Torremaggiore alla tua tavola</div>'
+    '<div class="regina-copy"><p><strong>Un solo olio.</strong></p><p>Sentori intensi di oliva, erba falciata.</p>'
+    '<div class="product-note"><p/></div></div></section>'
+    '<section data-snippet="s_cinematic_5"><p class="mc-oil-finale"><span>Dalla nostra terra, alla tua tavola.</span></p></section>'
+    '<section data-snippet="s_torrepulia_packaging"><p>Bag in Box</p></section>'
+    '<section data-snippet="s_cinematic_3"><div class="mc-peranzana-origin"><p>habitat ideale</p></div>'
+    '<div class="mc-sensory-panel"><p class="sensory-title">Foglia di pomodoro.</p><p class="sensory-text">mela verde</p></div>'
+    '<div class="mc-sensory-panel"><p class="sensory-title">Armonico.</p><p class="sensory-text">medio-intenso</p></div>'
+    '<div class="process section-pad"><div class="process-intro"><p>Filiera corta.</p></div>'
+    '<article><span>Ottobre/Novembre</span><h4>Raccolta Precoce</h4><p>polifenoli e antiossidanti</p></article>'
+    '<article><span>Entro 6 Ore</span><h4>Molitura a Freddo</h4><p>acidità bassissima</p></article></div></section>'
+    '<section data-snippet="s_cinematic_6"><div class="territory-copy"><p>ulivi secolari</p>'
+    '<a class="text-link" href="mailto:info@torrepulia.it">Vieni a conoscerci<img class="icon"/></a></div></section>'
+    '</div></t></t>')
 # Claims the owner cannot document, and the errors found in the 23/10 critique.
 # Centuries-old trees are real; a centuries-old family story is not (it starts in 1945).
 UNDOCUMENTED = re.compile(r'(?i)certificat|testimone secolare|benefic|salute|sostenibil|vendemmi|nonno Vincenzo|Sacco')
@@ -51,7 +71,9 @@ class TestEditorialPages(TransactionCase):
             's_torrepulia_cultivar_opening', 's_torrepulia_cultivar_history', 's_torrepulia_production_process',
             's_torrepulia_oil_analysis', 's_torrepulia_sensory', 's_text_block', 's_torrepulia_pairings',
             's_torrepulia_choice_oil'])
-        self.assertIn('Profilo del gestore', rebuilt)
+        # The sensory profile follows the owner's tasting sheet.
+        self.assertIn('grano appena tagliati', rebuilt)
+        self.assertNotIn('lattuga', rebuilt)
         self.assertIn('Sezione aggiunta dal gestore', rebuilt)
         self.assertIn(REPORT_2024, rebuilt)
         self.assertIn('Rapporto di prova del frantoio', rebuilt)
@@ -72,7 +94,7 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('Franco e Salvatore Leone', rebuilt)
         self.assertEqual(sections(rebuilt)[-1], 's_torrepulia_choice_family')
         self.assertEqual(sections(rebuilt)[2], 's_torrepulia_roots_trees')
-        self.assertIn('alcuni già secolari', rebuilt)
+        self.assertIn('gli stessi che oggi sono i nostri ulivi secolari', rebuilt)
         self.assertIn('<dt>Curiamo</dt>', rebuilt)
         self.assertIsNone(UNDOCUMENTED.search(rebuilt))
         self.assertEqual(rebuild_arch(self.env, rebuilt, PAGES[STORY_KEY]), rebuilt)
@@ -121,8 +143,10 @@ class TestEditorialPages(TransactionCase):
     def test_home_family_matches_la_famiglia(self):
         saved = ''.join(old for old, _new in HOME_REPLACEMENTS)
         aligned = retext_home(saved)
-        for _old, new in HOME_REPLACEMENTS:
+        # The last pair rewrites the 20.0.3.13.0 family sentence: every chain ends on the newest text.
+        for _old, new in HOME_REPLACEMENTS[:-2] + HOME_REPLACEMENTS[-1:]:
             self.assertIn(new, aligned)
+        self.assertNotIn('alcuni già', aligned)
         self.assertNotIn('Santino e Michele.', aligned)
         self.assertNotIn('tecnologie di conservazione', aligned)
         self.assertIn('nonno Santino Vincenzo', aligned)
@@ -141,3 +165,18 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('Ordina dalle scorte', rebuilt)
         self.assertIsNone(UNDOCUMENTED.search(rebuilt))
         self.assertEqual(rebuild_arch(self.env, rebuilt, PAGES[LAND_KEY]), rebuilt)
+
+    def test_home_facts_bag_in_box_line_and_tasting_sheet(self):
+        refined = refine_home(self.env, HOME_SAVED, '/shop/bag-in-box-5-l')
+        self.assertEqual(sections(refined), [
+            's_cinematic_0', 's_torrepulia_home_facts', 's_cinematic_1', 's_cinematic_5', 's_torrepulia_bib_line',
+            's_cinematic_3', 's_cinematic_6'])
+        for gone in ('Da Torremaggiore alla tua tavola', 'Dalla nostra terra', 'product-note',
+                     'Foglia di pomodoro', 'mela', 'medio-intenso', 'Entro 6', 'antiossidanti', 'habitat ideale',
+                     'mailto:', '100% Olive'):
+            self.assertNotIn(gone, refined)
+        for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 8 ore', 'grano appena tagliati', 'frantoio partner',
+                     'href="/shop/bag-in-box-5-l"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', '/l-olio#analisi'):
+            self.assertIn(kept, refined)
+        self.assertIsNone(UNDOCUMENTED.search(refined))
+        self.assertEqual(refine_home(self.env, refined, '/shop/bag-in-box-5-l'), refined)

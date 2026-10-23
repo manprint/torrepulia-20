@@ -19,6 +19,8 @@
             <t t-snippet="website_torrepulia_theme.s_torrepulia_land_history" string="Il castello e la Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/alto-tavoliere.jpg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_land_grove" string="Uliveto" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-640.webp"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_choice_land" string="Il sapore di questa terra" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-640.webp"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_home_facts" string="Tre fatti" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-640.webp"/>
+            <t t-snippet="website_torrepulia_theme.s_torrepulia_bib_line" string="Bag in Box in breve" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/images/box-original.jpeg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_roots_cta" string="Radici: lo shop" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/la-regina-bottiglia-500ml.jpeg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_cultivar_opening" string="La Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/img/content/olive-peranzana-raccolta.jpg"/>
             <t t-snippet="website_torrepulia_theme.s_torrepulia_cultivar_history" string="Origini della Peranzana" group="torrepulia" t-thumbnail="/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp"/>
