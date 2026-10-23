@@ -56,6 +56,8 @@
                         <a href="/termini-e-condizioni">Termini di vendita</a>
                         <a href="/privacy-policy">Privacy</a>
                         <a href="/cookie-policy">Cookie</a>
+                        <!-- Reopens the consent bar (Odoo's cookies toggle): the choice can change at any time. -->
+                        <a t-if="website.cookies_bar" href="#" class="o_cookies_bar_toggle" role="button">Preferenze cookie</a>
                     </nav>
                 </div>
             </div>

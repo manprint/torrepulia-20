@@ -1,0 +1,112 @@
+// Consent bar of the Torrepulia site (views/consent.xml): paper surface at the
+// bottom, the two choices with the same weight, close button that refuses.
+#website_cookies_bar .modal-content:has(> .tp-cookies) {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+#website_cookies_bar .tp-cookies {
+    position: relative;
+    padding: 28px 0;
+    background: var(--tp-paper, #fcfbf9);
+    color: var(--tp-ink, #18231f);
+    box-shadow: 0 -10px 30px var(--tp-shadow, rgba(24, 35, 31, .16));
+
+    .tp-cookies-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        max-width: var(--tp-content, 90rem);
+        margin-inline: auto;
+        padding-inline: 48px 88px;
+    }
+    h2 {
+        margin: 0 0 6px;
+        font: 400 1.375rem/1.25 "Libre Caslon Display", Georgia, serif;
+        color: var(--tp-ink, #18231f);
+    }
+    p {
+        max-width: 68ch;
+        margin: 0;
+        font-size: var(--tp-small, .9375rem);
+        line-height: 1.6;
+        color: var(--tp-muted, #526056);
+    }
+    .o_cookies_bar_text_policy {
+        color: var(--tp-ink, #18231f);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        white-space: nowrap;
+    }
+    .tp-cookies-actions {
+        display: flex;
+        flex-shrink: 0;
+        gap: 12px;
+    }
+    .tp-cookies-actions .btn {
+        min-width: 9.5rem;
+        min-height: var(--tp-control, 3rem);
+        padding: var(--tp-control-padding, .75rem 1.5rem);
+        border: 1px solid var(--tp-olive, #2e493b);
+        border-radius: var(--tp-control-radius, 3px);
+        background: var(--tp-olive, #2e493b);
+        color: var(--tp-white, #fff);
+        font-weight: 600;
+        transition: background-color 160ms ease-out, border-color 160ms ease-out;
+
+        &:hover { background: var(--tp-action-hover, #20362a); border-color: var(--tp-action-hover, #20362a); }
+        &:active { transform: scale(.98); }
+    }
+    .o_cookies_bar_close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: var(--tp-control-radius, 3px);
+        background: transparent;
+        box-shadow: none;
+        color: var(--tp-muted, #526056);
+        line-height: 0;
+
+        &:hover { color: var(--tp-ink, #18231f); }
+    }
+    a:focus-visible, .btn:focus-visible, .o_cookies_bar_close:focus-visible {
+        outline: 3px solid var(--tp-focus, #746014);
+        outline-offset: 3px;
+    }
+}
+
+// Arrives from below once, already readable: no bounce, no delay of its own.
+#website_cookies_bar .modal.show .tp-cookies {
+    animation: tp-cookies-in 320ms cubic-bezier(.23, 1, .32, 1);
+}
+@keyframes tp-cookies-in {
+    from { transform: translateY(24px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #website_cookies_bar .modal.show .tp-cookies { animation: none; }
+}
+
+@media (max-width: 767.98px) {
+    #website_cookies_bar .tp-cookies {
+        padding: 20px 0 Max(20px, env(safe-area-inset-bottom));
+
+        .tp-cookies-inner {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            padding-inline: 16px;
+        }
+        h2 { padding-right: 44px; font-size: 1.25rem; }
+        .tp-cookies-actions .btn { flex: 1; min-width: 0; }
+        .o_cookies_bar_close { top: 8px; right: 8px; }
+    }
+}

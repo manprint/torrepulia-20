@@ -4,3 +4,4 @@ from . import photo_campaign
 from . import navigation
 from . import product_image
 from . import oil_profile
+from . import seo

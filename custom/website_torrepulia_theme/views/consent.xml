@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Consent bar of the Torrepulia site (Garante privacy, 10 June 2021):
+         equal choices, the close button refuses (Odoo stores "only essentials"),
+         choice kept six months, cookie policy one click away. Other websites
+         of the database keep Odoo's bar. -->
+    <template id="cookies_bar_torrepulia" inherit_id="website.cookies_bar" name="Torrepulia: barra dei cookie">
+        <xpath expr="//div[@id='website_cookies_bar']/div[hasclass('modal')]" position="attributes">
+            <attribute name="t-att-data-consents-duration">180 if website.torrepulia_theme_enabled else 999</attribute>
+        </xpath>
+        <xpath expr="//div[@id='website_cookies_bar']//section" position="attributes">
+            <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+        <xpath expr="//div[@id='website_cookies_bar']//section" position="before">
+            <section t-if="website.torrepulia_theme_enabled" class="tp-cookies oe_unremovable" aria-labelledby="tp-cookies-title">
+                <!-- First, as Odoo's popup expects: it then focuses the next element, not a choice. -->
+                <button type="button" class="s_popup_close o_cookies_bar_close o_not_editable" aria-label="Chiudi e rifiuta i cookie facoltativi">
+                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+                <div class="tp-cookies-inner">
+                    <div class="tp-cookies-text">
+                        <h2 id="tp-cookies-title">I cookie di questo sito</h2>
+                        <p>Usiamo cookie tecnici, necessari per il carrello e la prenotazione. Solo se accetti useremo anche cookie di statistica e di marketing, anche di terze parti, per capire come viene usato il sito e misurare le nostre campagne.
+                            <a href="/cookie-policy" class="o_cookies_bar_text_policy">Leggi la cookie policy</a></p>
+                    </div>
+                    <div class="tp-cookies-actions">
+                        <a href="#" id="cookies-consent-essential" role="button" class="js_close_popup btn oe_unremovable">Rifiuta</a>
+                        <a href="#" id="cookies-consent-all" role="button" class="js_close_popup btn oe_unremovable">Accetta</a>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
+    <!-- The editorial footer carries both links (Cookie, Preferenze cookie). -->
+    <template id="footer_cookie_policy_link_torrepulia" inherit_id="website.footer_cookie_policy_link" name="Torrepulia: link cookie nel footer">
+        <xpath expr="//div[hasclass('o_cookie_policy_link_container')]" position="attributes">
+            <attribute name="t-if">website.cookies_bar and not website.torrepulia_theme_enabled</attribute>
+        </xpath>
+    </template>
+
+    <!-- Meta Pixel: never before consent. Odoo has GA4 with Consent Mode, not Meta. -->
+    <template id="meta_pixel" inherit_id="website.layout" name="Torrepulia: Meta Pixel">
+        <xpath expr="//head" position="inside">
+            <t t-if="website.torrepulia_theme_enabled and website.cookies_bar and website.torrepulia_meta_pixel_id and not editable">
+                <script t-att-data-pixel-id="website.torrepulia_meta_pixel_id"
+                        t-att-data-consented="'1' if env['ir.http']._is_allowed_cookie('optional') else None">
+                    (function () {
+                        var config = document.currentScript.dataset;
+                        function load() {
+                            if (window.fbq) { return; }
+                            var fbq = window.fbq = function () {
+                                fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
+                            };
+                            window._fbq = window._fbq || fbq;
+                            fbq.push = fbq; fbq.loaded = true; fbq.version = '2.0'; fbq.queue = [];
+                            var script = document.createElement('script');
+                            var url = 'https://connect.facebook.net/en_US/fbevents.js';
+                            script.async = true;
+                            // Right after the click the consent cookie is not written yet: pass
+                            // Odoo's third-party watcher as it does for the scripts it held back.
+                            if ('_src' in script) { script._src = url; } else { script.src = url; }
+                            document.head.appendChild(script);
+                            fbq('init', config.pixelId);
+                            fbq('track', 'PageView');
+                        }
+                        if (config.consented) { load(); } else { document.addEventListener('optionalCookiesAccepted', load, { once: true }); }
+                    })();
+                </script>
+            </t>
+        </xpath>
+    </template>
+
+    <record id="res_config_settings_view_form_meta_pixel" model="ir.ui.view">
+        <field name="name">res.config.settings.form.torrepulia.meta.pixel</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='google_analytics_setting']" position="after">
+                <setting id="torrepulia_meta_pixel_setting" string="Meta Pixel"
+                         help="Si attiva solo con la barra dei cookie e dopo il consenso del visitatore.">
+                    <field name="torrepulia_meta_pixel_id" placeholder="ID numerico del Pixel"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
