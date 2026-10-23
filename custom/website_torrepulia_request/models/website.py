@@ -74,6 +74,14 @@ class Website(models.Model):
         self.ensure_one()
         return False
 
+    def _request_receipt_context(self):
+        """Extra keys frozen in the receipt at submission (page and emails read them).
+
+        The base addon adds none; the campaign addon marks seasonal reservations.
+        """
+        self.ensure_one()
+        return {}
+
     def _torrepulia_selection_allows(self, product):
         self.ensure_one()
         return self._torrepulia_request_enabled() or bool(self._torrepulia_preorder_product_url(product))

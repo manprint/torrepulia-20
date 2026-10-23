@@ -202,7 +202,7 @@ class Website(models.Model):
             raise ReviewValidation(_('Verifica i prodotti della richiesta prima di inviare.'), ['selection'])
         verify_captcha()
         receipt = {key: state[key] for key in ('lines', 'show_prices', 'quantity', 'products_total_display', 'liters_display') if key in state}
-        receipt.update({'reference': draft.name})
+        receipt.update(self._request_receipt_context(), reference=draft.name)
         draft.write({'review_digest': review_digest, 'submission_operation_id': payload['operation_id'],
             'submission_fingerprint': fingerprint, 'public_receipt': receipt,
             'privacy_accepted_at': fields.Datetime.now()})

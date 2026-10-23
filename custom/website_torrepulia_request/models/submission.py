@@ -1,7 +1,6 @@
 """Final CRM handoff and durable, independently processed notifications."""
 from datetime import timedelta
 
-from markupsafe import Markup
 from psycopg2.extensions import TransactionRollbackError
 
 from odoo import api, fields, models, _, tools
@@ -99,6 +98,33 @@ class Notification(models.Model):
             lambda user: user.active and not user.share and record.company_id in user.company_ids)
         return ','.join(sorted({email for user in users if (email := tools.email_normalize(user.email or ''))}))
 
+    def _mail_subject(self):
+        self.ensure_one()
+        record = self.request_id
+        reservation = (record.public_receipt or {}).get('reservation')
+        if self.kind == 'customer':
+            return _('La tua prenotazione %s è registrata', record.name) if reservation else _('Richiesta ricevuta %s', record.name)
+        return (_('Nuova prenotazione %s · %s', record.name, record.contact_name) if reservation
+                else _('Richiesta sito web %s', record.name))
+
+    def _mail_rows(self, base_url, show_prices):
+        """Receipt rows as the email shows them: plain strings, absolute image URLs."""
+        record = self.request_id
+        rows = []
+        for row in (record.public_receipt or {}).get('lines') or [line.snapshot for line in record.line_ids]:
+            # The variant name already carries its values ("Latta 5 LT (Filtrato)").
+            details = [value for value in (
+                (value.get('name', '') if isinstance(value, dict) else value).split(': ')[-1]
+                for value in row.get('attributes', [])) if value not in row.get('name', '')]
+            details += row.get('custom_text', list((row.get('custom_values') or {}).values()))
+            rows.append({
+                'name': row.get('name', ''), 'details': ' · '.join(filter(None, details)),
+                'quantity': '%g' % row['quantity'],
+                'thumbnail': base_url + row['thumbnail'] if row.get('thumbnail') else False,
+                'subtotal': show_prices and row.get('subtotal_display') or False,
+            })
+        return rows
+
     def _body_html(self):
         """Escape all customer/product text; use the immutable server-side receipt.
 
@@ -107,33 +133,25 @@ class Notification(models.Model):
         """
         self.ensure_one()
         record = self.request_id
+        website = record.website_id
         receipt = record.public_receipt or {}
-        show_prices = bool(receipt.get('show_prices') and record.website_id.torrepulia_request_show_prices)
-        body = Markup('<h2>%s</h2><p>%s</p>') % (
-            _('Abbiamo ricevuto la tua richiesta') if self.kind == 'customer' else _('Richiesta sito web ricevuta'), record.name)
-        body += Markup('<ul>')
-        rows = receipt.get('lines') or [line.snapshot for line in record.line_ids]
-        for row in rows:
-            body += Markup('<li>%s — %s %s') % (row.get('name', ''), row['quantity'], row.get('uom_name', ''))
-            for value in row.get('attributes', []):
-                body += Markup(' · %s') % (value.get('name', '') if isinstance(value, dict) else value)
-            for value in row.get('custom_text', list((row.get('custom_values') or {}).values())):
-                body += Markup(' · %s') % value
-            if show_prices and row.get('subtotal_display'):
-                body += Markup(' — %s') % row['subtotal_display']
-            body += Markup('</li>')
-        body += Markup('</ul>')
-        if show_prices and receipt.get('products_total_display'):
-            body += Markup('<p>%s: %s. %s</p>') % (
-                _('Totale prodotti della richiesta'), receipt['products_total_display'], _('Spese di consegna da definire'))
-        if self.kind == 'internal':
-            body += Markup('<p>%s · %s · %s</p><p style="white-space:pre-wrap">%s</p>') % (
-                record.contact_name, record.email, record.phone or '', record.notes or '')
-        body += Markup('<p>%s</p><p>%s</p>') % (
-            _('La richiesta non conferma un ordine e non richiede un pagamento.'),
-            _('Ti contatteremo per definire disponibilità, consegna e condizioni.') if self.kind == 'customer'
-            else _('Aprire l’opportunità CRM per consultare le righe e qualificare la richiesta.'))
-        return body
+        show_prices = bool(receipt.get('show_prices') and website.torrepulia_request_show_prices)
+        base_url = website.get_base_url()
+        partner = record.company_id.partner_id
+        vat = (record.company_id.vat or '').replace(' ', '')
+        return self.env['ir.qweb']._render('website_torrepulia_request.mail_request_body', {
+            'kind': self.kind, 'record': record, 'reservation': receipt.get('reservation'),
+            'first_name': (record.contact_name or '').split(' ')[0],
+            'rows': self._mail_rows(base_url, show_prices),
+            'total': show_prices and receipt.get('products_total_display') or False,
+            'base_url': base_url, 'logo_url': '%s/web/image/website/%s/logo/240x120' % (base_url, website.id),
+            'lead_url': record.opportunity_id and '%s/odoo/crm/%s' % (base_url, record.opportunity_id.id),
+            'company': {
+                'name': record.company_id.name, 'email': record.company_id.email, 'phone': record.company_id.phone,
+                'address': ' · '.join(filter(None, [partner.street, ' '.join(filter(None, [partner.zip, partner.city]))])),
+                'vat': vat[2:] if len(vat) > 2 and vat[:2].isalpha() else vat,
+            },
+        })
 
     @api.model
     def _cron_prepare(self):

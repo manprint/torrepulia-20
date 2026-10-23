@@ -3,6 +3,15 @@
     h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 24px; text-wrap: balance; }
     h2, legend { font-size: 1.5rem; line-height: 1.3; }
     .tp-review-intro { max-width: 68ch; line-height: 1.65; margin-bottom: 32px; }
+    // Seasonal reservation: the campaign facts frozen in the receipt.
+    .tp-review-facts {
+        max-width: 40rem; margin: 0 0 40px; border-bottom: 1px solid var(--tp-line, #d2dcd4);
+        > div { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 16px; align-items: baseline; padding-block: 14px; border-top: 1px solid var(--tp-line, #d2dcd4); }
+        dt { color: var(--tp-gold-text, #746014); font-size: 13px; font-weight: 600; }
+        dd { margin: 0; font: 400 1.25rem/1.35 "Libre Caslon Display", Georgia, serif; }
+    }
+    .tp-review-receipt-title { margin: 0 0 4px; }
+    .tp-review-total { margin: 20px 0 32px; max-width: 68ch; line-height: 1.6; }
     :focus-visible { outline: 3px solid var(--tp-focus, #746014); outline-offset: 4px; }
     a { text-underline-offset: 4px; }
     form.tp-review-layout { margin-top: 32px; max-width: none; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 32px; align-items: start; }
@@ -30,6 +39,8 @@
     [data-review-liters], [data-review-delivery-note] { font-size: 14px; line-height: 1.65; }
     .tp-review-pay-today { padding-block: 20px; margin-block: 20px; border-block: 1px solid var(--tp-line, #d2dcd4); font-weight: 700; color: var(--tp-olive, #2e493b); line-height: 1.5; }
     fieldset { margin-top: 32px; }
+    // Closed until the selection can be sent: it must not look like a field waiting for input.
+    fieldset:disabled :is(input, textarea) { background: var(--tp-photo, #f6f6f4); border-color: var(--tp-line, #d2dcd4); cursor: not-allowed; }
     legend { margin-bottom: 20px; }
     .tp-review-contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .tp-review-contact-grid label, .tp-review-notes { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 14px; }
@@ -61,6 +72,11 @@
     .tp-review-summary-name { color: var(--tp-ink, #18231f); }
     .tp-review-summary-detail { font-size: 12px; color: var(--tp-muted, #526056); overflow-wrap: anywhere; }
     .tp-review-summary-subtotal { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .tp-review-summary-remove {
+        min-height: 44px; margin-top: -8px; padding: 0; border: 0; background: none;
+        color: var(--tp-ink, #18231f); font-weight: 600; text-decoration: underline; text-underline-offset: 4px;
+        &:disabled { opacity: .5; }
+    }
     [data-review-delivery-note] { font: 400 12px/1.65 Manrope, sans-serif; color: var(--tp-muted, #526056); padding-top: 20px; margin: 0; }
     .tp-review-pay-today { border-bottom: 0; padding-block: 20px 0; margin-block: 20px 0; }
     .tp-review-privacy { margin-top: 24px; }

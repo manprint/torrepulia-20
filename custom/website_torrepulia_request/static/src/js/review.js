@@ -58,13 +58,22 @@ export function renderCompactLines(holder, state) {
         title.textContent = _t('%s × %s', line.name, quantity(line.quantity));
         description.append(title);
         for (const detail of [...(line.attributes || []), ...(line.custom_text || [])]) {
-            if (line.name.includes(detail)) continue;
+            // The variant name already carries its values ("Latta 5 LT (Filtrato)").
+            if (line.name.includes(detail.split(': ').pop())) continue;
             const text = doc.createElement('p'); text.className = 'tp-review-summary-detail';
             text.textContent = detail; description.append(text);
         }
         if (line.warning) {
             const warning = doc.createElement('p'); warning.className = 'tp-review-warning';
             warning.textContent = line.warning; description.append(warning);
+        }
+        if (line.available === false) {
+            // No counter on the page for an archived or changed product: removing it here is the only way on.
+            const remove = doc.createElement('button'); remove.type = 'button';
+            remove.className = 'tp-review-summary-remove'; remove.textContent = _t('Rimuovi');
+            remove.dataset.reviewRemove = line.key;
+            remove.setAttribute('aria-label', _t('Rimuovi %s', line.name));
+            description.append(remove);
         }
         row.append(description);
         if (state.show_prices && line.subtotal_display) {

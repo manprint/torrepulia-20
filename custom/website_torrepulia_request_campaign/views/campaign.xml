@@ -16,7 +16,7 @@
             <group string="Shop durante la campagna">
                 <field name="shop_state_label" placeholder="Raccolto 2026 · in prenotazione"/>
                 <field name="shop_band_title" placeholder="Olio nuovo 2026"/>
-                <field name="shop_band_text" placeholder="Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione."/>
+                <field name="shop_band_text" placeholder="Prenotazioni aperte: lo moliamo entro 8 ore dalla raccolta e te lo spediamo appena è pronto. Paghi alla spedizione."/>
             </group>
             <p>I campi vuoti usano il testo indicato, con l'anno di apertura della campagna.</p>
             <p>Seleziona i prodotti filtrati desiderati e trascina le righe per ordinarli. Le varianti sono indipendenti; nessun prodotto viene creato automaticamente.</p>

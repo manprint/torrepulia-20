@@ -138,7 +138,7 @@ class TestHybridMode(HttpCase):
         self.assertEqual(states['Hybrid stock bottle'], 'Pronta in cantina')
         self.assertEqual(states['Hybrid sold-out stock'], 'Finita per ora')
         self.assertEqual(tree.xpath('string(//section[@class="tp-season"]//h2)'), 'La nuova annata')
-        self.assertIn('Lo moliamo e lo spediamo entro 48 ore', tree.xpath('string(//section[@class="tp-season"]//p)'))
+        self.assertIn('lo moliamo entro 8 ore dalla raccolta', tree.xpath('string(//section[@class="tp-season"]//p)'))
         # Out of season the band goes away.
         self.campaign.state = 'closed'
         self.assertFalse(html.fromstring(self.url_open('/shop').content).xpath('//section[@class="tp-season"]'))
@@ -206,3 +206,14 @@ class TestHybridMode(HttpCase):
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(self.env['crm.lead'].search_count([]), counts['crm.lead'] + 1)
         self.assertEqual(self.env['sale.order'].search_count([]), counts['sale.order'])
+        # The receipt freezes the campaign facts: page and emails speak of a reservation.
+        submitted = self.env['torrepulia.request'].search([('email', '=', 'hybrid@example.invalid')])
+        reservation = submitted.public_receipt['reservation']
+        self.assertEqual(reservation['facts'], [['Prezzo', 'Bloccato per tutta la stagione'],
+                                                ['Pagamento', 'Alla spedizione, zero anticipo']])
+        customer = submitted.notification_ids.filtered(lambda item: item.kind == 'customer')
+        self.assertEqual(customer._mail_subject(), 'La tua prenotazione %s è registrata' % submitted.name)
+        body = customer._body_html()
+        self.assertIn('Grazie, Hybrid. La tua prenotazione è registrata.', body)
+        self.assertIn('Bloccato per tutta la stagione', body)
+        self.assertNotIn('non conferma un ordine', body)

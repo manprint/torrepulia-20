@@ -223,7 +223,11 @@ export class RequestCommerce extends Interaction {
         showMessage = (text, error, addition) => {
             if (!this.active) return;
             title.textContent = error ? _t('Richiesta da verificare') : _t('✓ AGGIUNTO ALLA RICHIESTA');
-            message.textContent = addition ? _t('Hai inserito %s confezioni di: %s', addition.quantity, addition.name) : text;
+            message.textContent = addition
+                ? addition.quantity === 1
+                    ? _t('Hai inserito 1 confezione di: %s', addition.name)
+                    : _t('Hai inserito %s confezioni di: %s', addition.quantity, addition.name)
+                : text;
             subtotal.hidden = !addition?.subtotal_display;
             subtotal.textContent = addition?.subtotal_display ? _t('Subtotale: %s', addition.subtotal_display) : '';
             note.hidden = Boolean(error);

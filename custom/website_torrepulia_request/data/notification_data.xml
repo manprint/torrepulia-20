@@ -5,7 +5,7 @@
     <record id="mail_request_customer" model="mail.template">
         <field name="name">Torrepulia: ricevuta richiesta cliente</field>
         <field name="model_id" ref="model_torrepulia_request_notification"/>
-        <field name="subject">Richiesta ricevuta {{ object.request_id.name }}</field>
+        <field name="subject">{{ object._mail_subject() }}</field>
         <field name="email_from">{{ object.company_id.partner_id.email_formatted or user.email_formatted }}</field>
         <field name="use_default_to" eval="False"/>
         <field name="auto_delete" eval="False"/>
@@ -14,7 +14,7 @@
     <record id="mail_request_internal" model="mail.template">
         <field name="name">Torrepulia: nuova richiesta al team</field>
         <field name="model_id" ref="model_torrepulia_request_notification"/>
-        <field name="subject">Richiesta sito web {{ object.request_id.name }}</field>
+        <field name="subject">{{ object._mail_subject() }}</field>
         <field name="email_from">{{ object.company_id.partner_id.email_formatted or user.email_formatted }}</field>
         <field name="use_default_to" eval="False"/>
         <field name="auto_delete" eval="False"/>

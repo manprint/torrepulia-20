@@ -30,7 +30,7 @@ class Campaign(models.Model):
     shop_band_title = fields.Char('Titolo della fascia nello shop', translate=True,
         help='Vuoto: Olio nuovo <anno>.')
     shop_band_text = fields.Char('Testo della fascia nello shop', translate=True,
-        help='Vuoto: Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione.')
+        help='Vuoto: Prenotazioni aperte: lo moliamo entro 8 ore dalla raccolta e te lo spediamo appena è pronto. Paghi alla spedizione.')
 
     _unique_reference = models.Constraint('UNIQUE(website_id, reference)', 'Il riferimento deve essere univoco per website.')
 
@@ -118,7 +118,23 @@ class Website(models.Model):
         return {'url': url,
                 'label': campaign.shop_state_label or _('Raccolto %s · in prenotazione', year),
                 'title': campaign.shop_band_title or _('Olio nuovo %s', year),
-                'text': campaign.shop_band_text or _('Prenotazioni aperte. Lo moliamo e lo spediamo entro 48 ore, paghi alla spedizione.')}
+                'text': campaign.shop_band_text or _('Prenotazioni aperte: lo moliamo entro 8 ore dalla raccolta e te lo spediamo appena è pronto. Paghi alla spedizione.')}
+
+    def _request_receipt_context(self):
+        """Hybrid mode: a request sent while the default campaign is open is a reservation.
+
+        Same facts and defaults as the campaign page, frozen at submission.
+        """
+        context = super()._request_receipt_context()
+        if self._torrepulia_request_enabled() or not self._request_preorder_url():
+            return context
+        campaign = self._public_request_campaign()
+        facts = [(_('Consegna'), campaign.delivery_period),
+                 (_('Prezzo'), campaign.price_note or _('Bloccato per tutta la stagione')),
+                 (_('Pagamento'), campaign.payment_note or _('Alla spedizione, zero anticipo'))]
+        return dict(context, reservation={
+            'season': (campaign.opens_at or fields.Datetime.now()).year,
+            'facts': [[label, value] for label, value in facts if value]})
 
     def _public_request_campaign(self, campaign_id=None):
         """Only a website/company scoped editorial projection; no public model ACL.

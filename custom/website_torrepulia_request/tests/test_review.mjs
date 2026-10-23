@@ -179,3 +179,23 @@ test('seasonal summary renders all server lines once without another quantity ed
     assert.equal(holder.children[0].children.length,1);
     assert.ok(!flatten(holder).some(node=>String(node.textContent).includes('€')));
 });
+
+test('compact summary lets the visitor remove a line that is no longer available', () => {
+    const { renderCompactLines } = fixture();
+    class Element {
+        constructor(tag) { this.tag = tag; this.children = []; this.dataset = {}; this.attributes = {}; }
+        append(...nodes) { this.children.push(...nodes); }
+        replaceChildren() { this.children = []; }
+        setAttribute(name, value) { this.attributes[name] = value; }
+    }
+    const doc = { documentElement: { lang: 'it' }, createElement: tag => new Element(tag) };
+    const holder = new Element('div'); holder.ownerDocument = doc;
+    renderCompactLines(holder, { show_prices: true, lines: [
+        { key: 'old', name: 'Latta 5 LT', quantity: 1, available: false, warning: 'Prodotto archiviato.' },
+        { key: 'new', name: 'Latta 5 LT (Filtrato)', quantity: 2, available: true, subtotal_display: '138,00 €' }] });
+    const flatten = node => [node, ...node.children.flatMap(flatten)];
+    const buttons = flatten(holder).filter(node => node.tag === 'button');
+    assert.equal(buttons.length, 1);
+    assert.equal(buttons[0].dataset.reviewRemove, 'old');
+    assert.equal(buttons[0].attributes['aria-label'], 'Rimuovi Latta 5 LT');
+});

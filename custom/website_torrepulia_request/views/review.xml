@@ -68,22 +68,46 @@
     <template id="review_confirmation" name="Richiesta ricevuta">
         <t t-call="website.layout">
             <div id="wrap" class="tp-request-review container py-5 o_not_editable">
-                <h1>Abbiamo ricevuto la tua richiesta</h1>
-                <p>Riferimento: <strong t-out="receipt['reference']"/></p>
-                <p>Il commerciale esaminerà la tua richiesta e ti contatterà per definire disponibilità, consegna e condizioni. L’invio non conferma un ordine e non richiede un pagamento.</p>
+                <t t-set="reservation" t-value="receipt.get('reservation')"/>
+                <t t-if="reservation">
+                    <h1>La tua prenotazione è registrata</h1>
+                    <p class="tp-review-intro">Riferimento <strong t-out="receipt['reference']"/>. Riceverai a breve un’email con il riepilogo. Quando l’olio nuovo è pronto ti contattiamo per confermare indirizzo, consegna e totale.</p>
+                    <dl t-if="reservation.get('facts')" class="tp-review-facts">
+                        <div t-foreach="reservation['facts']" t-as="fact"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div>
+                    </dl>
+                </t>
+                <t t-else="">
+                    <h1>Abbiamo ricevuto la tua richiesta</h1>
+                    <p>Riferimento: <strong t-out="receipt['reference']"/></p>
+                    <p>Il commerciale esaminerà la tua richiesta e ti contatterà per definire disponibilità, consegna e condizioni. L’invio non conferma un ordine e non richiede un pagamento.</p>
+                </t>
+                <h2 t-if="reservation" class="tp-review-receipt-title">Il tuo olio</h2>
                 <div t-foreach="receipt['lines']" t-as="line" class="tp-review-line">
                     <img t-if="line.get('thumbnail')" t-att-src="line['thumbnail']" alt="" width="96" height="96"/>
-                    <div><h2 t-out="line['name']"/><p t-if="line.get('format')" t-out="line['format']"/>
-                        <p t-foreach="line.get('attributes', [])" t-as="attribute" t-out="attribute"/>
-                        <p t-foreach="line.get('custom_text', [])" t-as="custom" t-out="custom"/>
-                        <p>Quantità: <span t-out="'%g' % line['quantity']"/> <span t-out="line['uom_name']"/></p>
-                        <p t-if="line.get('liters_display')">Contenuto complessivo: <span t-out="line['liters_display']"/></p>
-                        <p t-if="show_prices and line.get('subtotal_display')" class="product_price">Subtotale: <span t-out="line['subtotal_display']"/></p>
+                    <div class="tp-review-details"><h2 t-out="line['name']"/>
+                        <t t-if="reservation">
+                            <!-- The variant name already carries its values ("Latta 5 LT (Filtrato)"). -->
+                            <t t-foreach="line.get('attributes', [])" t-as="attribute">
+                                <p t-if="attribute.split(': ')[-1] not in line['name']" t-out="attribute"/>
+                            </t>
+                            <p t-foreach="line.get('custom_text', [])" t-as="custom" t-out="custom"/>
+                            <p>Quantità <span t-out="'%g' % line['quantity']"/></p>
+                        </t>
+                        <t t-else="">
+                            <p t-if="line.get('format')" t-out="line['format']"/>
+                            <p t-foreach="line.get('attributes', [])" t-as="attribute" t-out="attribute"/>
+                            <p t-foreach="line.get('custom_text', [])" t-as="custom" t-out="custom"/>
+                            <p>Quantità: <span t-out="'%g' % line['quantity']"/> <span t-out="line['uom_name']"/></p>
+                            <p t-if="line.get('liters_display')">Contenuto complessivo: <span t-out="line['liters_display']"/></p>
+                        </t>
+                        <p t-if="show_prices and line.get('subtotal_display')" class="product_price"><t t-if="not reservation">Subtotale: </t><span t-out="line['subtotal_display']"/></p>
                     </div>
                 </div>
-                <p t-if="receipt.get('liters_display')">Contenuto complessivo della richiesta: <strong t-out="receipt['liters_display']"/></p>
-                <p t-if="show_prices and receipt.get('products_total_display')" class="product_price">Totale prodotti: <strong t-out="receipt['products_total_display']"/>. Spese di consegna ancora da definire.</p>
-                <a href="/shop" class="btn btn-outline-primary">Aggiungi altri prodotti</a>
+                <p t-if="receipt.get('liters_display') and not reservation">Contenuto complessivo della richiesta: <strong t-out="receipt['liters_display']"/></p>
+                <p t-if="show_prices and receipt.get('products_total_display')" class="product_price tp-review-total">Totale prodotti: <strong t-out="receipt['products_total_display']"/>.
+                    <t t-if="reservation">Spedizione esclusa: te la confermiamo prima della partenza.</t><t t-else="">Spese di consegna ancora da definire.</t></p>
+                <a t-if="reservation" href="/l-olio" class="btn btn-outline-primary">Scopri come nasce La Regina</a>
+                <a t-else="" href="/shop" class="btn btn-outline-primary">Aggiungi altri prodotti</a>
             </div>
         </t>
     </template>

@@ -157,13 +157,19 @@ export class SeasonalCampaign extends Interaction {
             }
         }
         const number = value => new Intl.NumberFormat(document.documentElement.lang || 'it').format(value);
+        const packs = value => value === 1 ? _t('1 confezione') : _t('%s confezioni', number(value));
         this.holder.querySelector('[data-campaign-counts]').textContent =
-            _t('Formati di questa campagna: %s confezioni. Intera richiesta: %s confezioni.', number(counts.campaign), number(counts.request));
+            _t('Formati di questa campagna: %s. Intera richiesta: %s.', packs(counts.campaign), packs(counts.request));
         const other = this.holder.querySelector('[data-campaign-other]');
         other.hidden = counts.other <= 0;
-        other.textContent = _t('La richiesta comprende anche %s confezioni di altri prodotti o configurazioni. Le ritrovi nel riepilogo qui sotto.', number(counts.other));
-        const warning = state.lines.filter(line => line.warning).map(line => line.warning).join(' ');
-        this.message(warning);
+        other.textContent = _t('La richiesta comprende anche %s di altri prodotti o configurazioni. Le ritrovi nel riepilogo qui sotto.', packs(counts.other));
+        // One sentence for the whole request: each line keeps its own warning in the summary.
+        const unavailable = state.lines.filter(line => !line.available).length;
+        this.message(unavailable === 1
+            ? _t('Un prodotto della richiesta non è più disponibile: rimuovilo dal riepilogo per completare la prenotazione.')
+            : unavailable
+                ? _t('%s prodotti della richiesta non sono più disponibili: rimuovili dal riepilogo per completare la prenotazione.', unavailable)
+                : '');
         this.renderDock();
     }
 
