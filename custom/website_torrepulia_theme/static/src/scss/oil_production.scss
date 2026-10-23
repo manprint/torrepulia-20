@@ -1,5 +1,5 @@
 .tp-site.tp-cinematic {
-    .tp-production-cards, .tp-oil-pairings {
+    .tp-process, .tp-oil-pairings {
         background: var(--tp-white);
         color: var(--tp-ink);
         h2, h3 {
@@ -11,31 +11,31 @@
         h2 { font-size: 52px; line-height: 1.12; }
         p { line-height: 1.8; text-wrap: pretty; }
     }
-    .tp-production-cards {
-        .card {
-            border-radius: 8px;
-            background: var(--tp-white);
-            box-shadow: 0 4px 20px rgba(24, 35, 31, .07) !important;
-            min-width: 0;
+    // The four steps are an ordered list: the sequence is the information, no numerals needed.
+    .tp-process {
+        @media (min-width: 992px) {
+            .tp-process-intro { position: sticky; top: 120px; }
         }
-        .tp-phase-mark { min-height: 48px; }
-        .tp-phase-mark > img { flex: 0 0 28px; }
-        .tp-phase-number {
-            color: #806318;
-            font: 400 40px/1.2 "Libre Caslon Display", Georgia, serif;
-            font-variant-numeric: tabular-nums;
+        .tp-process-intro p { max-width: 40ch; font-size: 18px; color: var(--tp-muted); }
+        .tp-process-steps { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--tp-line); }
+        .tp-process-step {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr);
+            gap: 32px;
+            align-items: center;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--tp-line);
         }
-        // Only media has a fixed format; all text remains in natural document flow.
-        .tp-phase-media { aspect-ratio: 1; overflow: hidden; }
-        .tp-phase-media > img {
+        .tp-process-step > img {
             display: block;
             width: 100% !important;
-            height: 100% !important;
+            height: auto !important;
+            aspect-ratio: 4 / 3;
             object-fit: cover;
-            transition: transform 300ms ease-in-out;
+            border-radius: 6px;
         }
-        h3 { font-size: 28px; line-height: 1.15; }
-        p.small { font-size: 14px; text-align: left; color: var(--tp-muted) !important; }
+        h3 { margin: 0 0 8px; font-size: 30px; line-height: 1.15; }
+        .tp-process-step p { margin: 0; max-width: 46ch; color: var(--tp-muted); }
     }
     &:has(.tp-oil-opening) .tp-sensory-list {
         margin-bottom: 0;
@@ -71,22 +71,20 @@
         .btn:hover, .btn:focus-visible { background: var(--tp-olive); border-color: var(--tp-olive); color: var(--tp-white); }
         .btn .icon { flex: 0 0 20px; filter: invert(1); }
     }
-    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-        .tp-production-cards .card:hover .tp-phase-media > img { transform: scale(1.045); }
-    }
     @media (min-width: 1200px) {
-        .tp-production-cards > .container, .tp-oil-pairings > .container { max-width: 1320px; }
+        .tp-process > .container, .tp-oil-pairings > .container { max-width: 1320px; }
     }
     @media (max-width: 767px) {
-        .tp-production-cards, .tp-oil-pairings {
+        .tp-process, .tp-oil-pairings {
             padding-left: 10px;
             padding-right: 10px;
             h2 { font-size: 40px; }
         }
+        .tp-process .tp-process-step { grid-template-columns: 112px minmax(0, 1fr); gap: 20px; padding: 20px 0; align-items: start; }
+        .tp-process .tp-process-step > img { aspect-ratio: 1; }
+        .tp-process h3 { font-size: 24px; }
+        .tp-process .tp-process-step p { font-size: 15px; line-height: 1.7; }
         .tp-oil-pairings h3 { font-size: 30px; }
         &:has(.tp-oil-opening) .tp-sensory-list dd { font-size: 28px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .tp-production-cards .tp-phase-media > img { transition: none; transform: none; }
     }
 }

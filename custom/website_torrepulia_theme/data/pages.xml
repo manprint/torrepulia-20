@@ -12,24 +12,26 @@
     <page key="story" url="/aboutus" title="La famiglia Leone | Torrepulia" description="Da Santino Vincenzo a Michele, Franco e Salvatore. Tre generazioni di agricoltori e la nascita di Torrepulia a Torremaggiore.">
         <snippet ref="s_torrepulia_story_opening"/>
         <snippet ref="s_torrepulia_story_chapters"/>
+        <snippet ref="s_torrepulia_roots_trees"/>
         <snippet ref="s_torrepulia_roots_transition"/>
         <snippet ref="s_torrepulia_roots_values"/>
-        <snippet ref="s_torrepulia_roots_cta"/>
+        <snippet ref="s_torrepulia_choice_family"/>
     </page>
-    <page key="oil" url="/l-olio" title="La Peranzana: cultivar, produzione e gusto | Torrepulia" description="Scopri la Peranzana, il processo produttivo di La Regina e i suoi abbinamenti: dal campo al frantoio, fino alla tua tavola.">
+    <page key="oil" url="/l-olio" title="La Peranzana: cultivar, produzione e gusto | Torrepulia" description="La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, analisi del raccolto 2024 e abbinamenti.">
         <snippet ref="s_torrepulia_cultivar_opening"/>
         <snippet ref="s_torrepulia_cultivar_history"/>
         <snippet ref="s_torrepulia_production_process"/>
+        <snippet ref="s_torrepulia_oil_analysis"/>
         <snippet ref="s_torrepulia_sensory"/>
         <snippet ref="s_torrepulia_pairings"/>
-        <snippet ref="s_torrepulia_packaging"/>
-        <snippet ref="s_torrepulia_roots_cta"/>
+        <snippet ref="s_torrepulia_choice_oil"/>
     </page>
-    <page key="land" url="/territorio" title="Torremaggiore e l'Alto Tavoliere | Torrepulia" description="Il territorio di Torrepulia: Torremaggiore, nell'Alto Tavoliere delle Puglie, luogo d'origine della cultivar Peranzana.">
+    <page key="land" url="/territorio" title="Torremaggiore e l'Alto Tavoliere | Torrepulia" description="Torremaggiore e l'Alto Tavoliere, nel nord della Puglia: dove crescono gli ulivi della famiglia Leone e dove la tradizione colloca le origini della Peranzana.">
         <snippet ref="s_torrepulia_landscape"/>
         <snippet ref="s_torrepulia_land_story"/>
-        <snippet ref="s_torrepulia_brand_story"/>
-        <snippet ref="s_torrepulia_cta"/>
+        <snippet ref="s_torrepulia_land_history"/>
+        <snippet ref="s_torrepulia_land_grove"/>
+        <snippet ref="s_torrepulia_choice_land"/>
     </page>
     <page key="contact" url="/contactus" title="Contatti | Torrepulia" description="Scrivi all'azienda agricola Michele Leone a Torremaggiore. Informazioni su La Regina, formati e richieste commerciali.">
         <section class="tp-section tp-contact-opening" data-snippet="s_form_aside" data-name="Contatti"><div class="container"><h1>Il dialogo comincia qui.</h1><p class="lead">Per una domanda sul nostro olio, un consiglio sui formati<br class="d-none d-md-block"/> o una richiesta commerciale.</p><div class="row g-5 mt-3"><div class="col-lg-4"><h2 class="h3">Azienda agricola<br/>Michele Leone</h2><address>Contrada Pagliara Vecchia SNC<br/>71017 Torremaggiore (FG)<br/>Italia</address><a class="tp-text-link d-block" href="tel:+393806375074">+39 380 637 5074</a><a class="tp-text-link d-block" href="mailto:info@torrepulia.it">info@torrepulia.it</a><a class="tp-text-link d-block mt-4" href="https://maps.google.com/?q=Contrada+Pagliara+Vecchia+Torremaggiore" target="_blank" rel="noopener">Indicazioni stradali <i class="oi ms-1" data-icon="open_in_new" aria-hidden="true"/></a></div><div class="col-lg-7 offset-lg-1"><snippet ref="s_torrepulia_contact_form"/></div></div></div></section>

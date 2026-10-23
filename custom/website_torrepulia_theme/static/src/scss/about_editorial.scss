@@ -96,24 +96,12 @@
         // Real margins preserve the editorial stagger regardless of paragraph length.
         article:nth-child(2) { margin-top: 80px; }
         article:nth-child(3) { margin-top: 160px; }
+        // The year is information, not a watermark: readable and announced.
         .tp-about-year {
-            position: absolute;
-            top: 4px;
-            left: 0;
-            z-index: 0;
-            font: 400 128px/1 "Libre Caslon Display", Georgia, serif;
-            color: var(--tp-ink);
-            opacity: .065;
-            pointer-events: none;
-            user-select: none;
-        }
-        article > p, article > h3 { position: relative; z-index: 1; }
-        .tp-about-period {
-            margin: 0 0 20px;
-            color: var(--tp-olive);
-            font-size: 12px;
-            line-height: 1.6;
-            text-transform: uppercase;
+            margin: 0 0 16px;
+            font: 400 64px/1 "Libre Caslon Display", Georgia, serif;
+            color: var(--tp-gold-text);
+            font-variant-numeric: lining-nums;
         }
         h3 {
             margin: 0 0 24px;
@@ -121,8 +109,7 @@
             font: 400 38px/1.08 "Libre Caslon Display", Georgia, serif;
             text-wrap: balance;
         }
-        .tp-about-title-tail { white-space: nowrap; }
-        article > p:not(.tp-about-period) {
+        article > p:not(.tp-about-year) {
             margin: 0;
             max-width: 42ch;
             font-size: 16px;
@@ -157,7 +144,7 @@
         .tp-about-generations { padding: 72px 0 88px; }
         .tp-about-generations .tp-about-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
         .tp-about-generations article:nth-child(n) { margin-top: 0; }
-        .tp-about-generations article > p:not(.tp-about-period) { max-width: 68ch; }
+        .tp-about-generations article > p:not(.tp-about-year) { max-width: 68ch; }
     }
     @media (max-width: 575px) {
         .tp-about-container { padding: 0 22px; }
@@ -168,7 +155,7 @@
         .tp-about-opening .tp-about-photo img { aspect-ratio: 3 / 2; }
         .tp-about-opening figcaption { left: 16px; right: 16px; bottom: 16px; font-size: 11px; }
         .tp-about-generations { padding: 56px 0 72px; }
-        .tp-about-generations .tp-about-period { margin-bottom: 16px; }
+        .tp-about-generations .tp-about-year { font-size: 52px; }
         .tp-about-generations h3 { font-size: 34px; margin-bottom: 20px; }
     }
     @media (max-width: 359px) {

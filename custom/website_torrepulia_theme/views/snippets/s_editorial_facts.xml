@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Owner-supplied test report of the 2024 harvest (19/11/2024), published whole as a PDF.
+         Static, editable values: the Builder keeps ownership of the section. -->
+    <template id="s_torrepulia_oil_analysis" name="Torrepulia Analisi del raccolto">
+        <section id="analisi" class="s_torrepulia_snippet tp-section tp-analysis o_colored_level" data-snippet="s_torrepulia_oil_analysis" data-name="Analisi del raccolto">
+            <div class="container">
+                <div class="tp-analysis-head">
+                    <h2>Le analisi del raccolto 2024.</h2>
+                    <p>Il 19 novembre 2024 il frantoio ha analizzato il nostro olio. Pubblichiamo il rapporto di prova intero, cos&#236; come ci &#232; stato consegnato.</p>
+                </div>
+                <div class="tp-analysis-key">
+                    <div class="tp-analysis-fact">
+                        <p class="tp-analysis-value">0,17 %</p>
+                        <h3>Acidit&#224;</h3>
+                        <p>Il limite dell&#8217;extravergine &#232; 0,80 %. Resta bassa se le olive sono sane e molite presto.</p>
+                    </div>
+                    <div class="tp-analysis-fact">
+                        <p class="tp-analysis-value">4,91</p>
+                        <h3>Perossidi</h3>
+                        <p>Il limite &#232; 20 meq O&#8322;/kg. Pi&#249; il valore &#232; basso, meno l&#8217;olio si &#232; ossidato.</p>
+                    </div>
+                    <div class="tp-analysis-fact">
+                        <p class="tp-analysis-value">589 <small>mg/kg</small></p>
+                        <h3>Polifenoli totali</h3>
+                        <p>Sono i composti che danno all&#8217;olio l&#8217;amaro e il piccante.</p>
+                    </div>
+                </div>
+                <div class="tp-lab-wrap">
+                    <table class="tp-lab">
+                        <caption class="visually-hidden">Analisi del raccolto 2024 confrontata con i limiti di legge per l'olio extravergine</caption>
+                        <thead><tr><th scope="col">Parametro</th><th scope="col">Valore</th><th scope="col">Limite extravergine</th><th scope="col" class="tp-lab-scale-head">Quota del limite</th></tr></thead>
+                        <tbody>
+                            <tr><th scope="row">Acidit&#224;</th><td class="tp-lab-value">0,17 %</td><td class="tp-lab-limit">0,80 %</td><td><span class="tp-lab-scale" role="img" aria-label="21 per cento del limite"><span style="width: 21%"/></span></td></tr>
+                            <tr><th scope="row">Perossidi</th><td class="tp-lab-value">4,91 meq O&#8322;/kg</td><td class="tp-lab-limit">20</td><td><span class="tp-lab-scale" role="img" aria-label="25 per cento del limite"><span style="width: 25%"/></span></td></tr>
+                            <tr><th scope="row">K232</th><td class="tp-lab-value">1,87</td><td class="tp-lab-limit">2,50</td><td><span class="tp-lab-scale" role="img" aria-label="75 per cento del limite"><span style="width: 75%"/></span></td></tr>
+                            <tr><th scope="row">K270</th><td class="tp-lab-value">0,12</td><td class="tp-lab-limit">0,22</td><td><span class="tp-lab-scale" role="img" aria-label="55 per cento del limite"><span style="width: 55%"/></span></td></tr>
+                            <tr><th scope="row">&#916;K</th><td class="tp-lab-value">0,00</td><td class="tp-lab-limit">0,01</td><td><span class="tp-lab-scale" role="img" aria-label="0 per cento del limite"><span style="width: 0%"/></span></td></tr>
+                            <tr><th scope="row">Acido oleico</th><td class="tp-lab-value">70,2 %</td><td class="tp-lab-limit">55 - 83 %</td><td/></tr>
+                            <tr><th scope="row">Polifenoli totali</th><td class="tp-lab-value">589 mg/kg</td><td class="tp-lab-limit">nessun limite</td><td/></tr>
+                            <tr><th scope="row">Tocoferoli totali</th><td class="tp-lab-value">244 mg/kg</td><td class="tp-lab-limit">nessun limite</td><td/></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tp-analysis-foot">
+                    <p>Analisi rapida in frantoio con strumento XDS Rapid Liquid Analyzer, non di un laboratorio accreditato. I valori riguardano il campione analizzato del raccolto 2024.</p>
+                    <a class="btn btn-outline-primary" href="/website_torrepulia_theme/static/src/docs/rapporto-di-prova-raccolto-2024.pdf" target="_blank" rel="noopener">Rapporto di prova del frantoio (PDF, 123 KB)</a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Page closings: buy from stock now, or reserve the new oil. Different from the home and footer closings. -->
+    <template id="s_torrepulia_choice_oil" name="Torrepulia Scorte o olio nuovo">
+        <section class="s_torrepulia_snippet tp-section tp-choice o_colored_level" data-snippet="s_torrepulia_choice_oil" data-name="Scorte o olio nuovo">
+            <div class="container">
+                <div class="row gy-5 gx-5">
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <h2>Ora che la conosci, assaggiala.</h2>
+                        <p>Due modi per avere La Regina a casa.</p>
+                    </div>
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <div class="tp-choice-options">
+                            <div class="tp-choice-option">
+                                <div><h3>Dalle scorte</h3><p>I formati disponibili partono subito, con consegna in 24-72 ore lavorative.</p></div>
+                                <a class="btn btn-primary" href="/shop">Ordina dalle scorte</a>
+                            </div>
+                            <div class="tp-choice-option">
+                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <a class="btn btn-outline-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_choice_family" name="Torrepulia Lettera della famiglia">
+        <section class="s_torrepulia_snippet tp-section tp-choice o_colored_level" data-snippet="s_torrepulia_choice_family" data-name="Lettera della famiglia">
+            <div class="container">
+                <img class="img img-fluid tp-choice-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/chioma-controluce-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/chioma-controluce-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/chioma-controluce-960.webp 960w, /website_torrepulia_theme/static/src/cinematic/owner/chioma-controluce-1280.webp 1280w" sizes="(min-width: 1320px) 1272px, calc(100vw - 48px)" alt="La chioma di un ulivo controluce, vista dal basso" width="1280" height="533" loading="lazy"/>
+                <div class="row gy-5 gx-5">
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <h2>Ti aspettiamo alla prossima raccolta.</h2>
+                        <p>Ogni anno, tra ottobre e novembre, raccogliamo le olive e moliamo l&#8217;olio nuovo. Se vuoi assaggiarlo tra i primi, prenotalo: lo spediamo appena &#232; pronto.</p>
+                        <p class="tp-choice-signature">Franco e Salvatore Leone</p>
+                    </div>
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <div class="tp-choice-options">
+                            <div class="tp-choice-option">
+                                <div><h3>Olio nuovo</h3><p>Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <a class="btn btn-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
+                            </div>
+                            <div class="tp-choice-option">
+                                <div><h3>Dalle scorte</h3><p>I formati disponibili partono subito, con consegna in 24-72 ore lavorative.</p></div>
+                                <a class="btn btn-outline-primary" href="/shop">Ordina dalle scorte</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Torremaggiore's castle: Raimondo di Sangro was born there on 30 January 1710 (Museo Sansevero, FAI). -->
+    <template id="s_torrepulia_land_history" name="Torrepulia Il castello e la Peranzana">
+        <section class="s_torrepulia_snippet tp-section tp-land-history o_colored_level" data-snippet="s_torrepulia_land_history" data-name="Il castello e la Peranzana">
+            <div class="container">
+                <div class="row gy-4 gx-5">
+                    <div class="col-12 col-lg-4 o_colored_level">
+                        <p class="tp-land-year">1710</p>
+                    </div>
+                    <div class="col-12 col-lg-8 o_colored_level">
+                        <h2>Il castello e la Peranzana.</h2>
+                        <p>Nel castello ducale di Torremaggiore nacque, il 30 gennaio 1710, Raimondo di Sangro, principe di Sansevero: scienziato e inventore, una delle figure pi&#249; curiose del Settecento napoletano. Alla sua famiglia la tradizione lega l&#8217;arrivo della Peranzana nell&#8217;Alto Tavoliere.</p>
+                        <p>Il nome Torrepulia nasce da qui: Torremaggiore e la Puglia, le nostre radici.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_land_grove" name="Torrepulia Uliveto">
+        <section class="s_torrepulia_snippet tp-land-grove o_colored_level" data-snippet="s_torrepulia_land_grove" data-name="Uliveto">
+            <figure>
+                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-1920.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-1920.webp 1920w" sizes="100vw" alt="Le file dell'uliveto di famiglia nell'agro di Torremaggiore, con la luna nel cielo" width="1920" height="1080" loading="lazy"/>
+                <figcaption class="container">Le file del nostro uliveto, nell&#8217;agro di Torremaggiore.</figcaption>
+            </figure>
+        </section>
+    </template>
+    <template id="s_torrepulia_choice_land" name="Torrepulia Il sapore di questa terra">
+        <section class="s_torrepulia_snippet tp-section tp-choice o_colored_level" data-snippet="s_torrepulia_choice_land" data-name="Il sapore di questa terra">
+            <div class="container">
+                <div class="row gy-5 gx-5">
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <h2>Il sapore di questa terra, a casa tua.</h2>
+                        <p>La Regina &#232; l&#8217;olio dell&#8217;Alto Tavoliere: puoi averla subito o aspettare la nuova raccolta.</p>
+                    </div>
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <div class="tp-choice-options">
+                            <div class="tp-choice-option">
+                                <div><h3>Dalle scorte</h3><p>I formati disponibili partono subito, con consegna in 24-72 ore lavorative.</p></div>
+                                <a class="btn btn-primary" href="/shop">Ordina dalle scorte</a>
+                            </div>
+                            <div class="tp-choice-option">
+                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <a class="btn btn-outline-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

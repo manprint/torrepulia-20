@@ -18,8 +18,8 @@
     <template id="s_torrepulia_story_opening" name="Torrepulia Famiglia">
         <section class="s_torrepulia_snippet tp-section tp-story-intro tp-about-opening o_colored_level" data-snippet="s_torrepulia_story_opening" data-name="Famiglia Leone">
             <div class="tp-about-container">
-                <h1>La terra si coltiva.<br/>La passione si tramanda.</h1>
-                <p class="tp-about-subtitle">Azienda Agricola Michele Leone: tre generazioni di olivicoltori a Torremaggiore, legati alla purezza della cultivar Peranzana.</p>
+                <h1>Tre generazioni,<br/>la stessa terra.</h1>
+                <p class="tp-about-subtitle">Siamo la famiglia Leone, olivicoltori a Torremaggiore dal secondo dopoguerra. Coltiviamo la Peranzana e dal 2020 vendiamo il nostro olio con il marchio Torrepulia.</p>
                 <figure class="tp-about-photo">
                     <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore-750.webp 750w, /website_torrepulia_theme/static/src/cinematic/owner/about-franco-salvatore.webp 1035w" sizes="(max-width: 575px) calc(100vw - 44px), (max-width: 1199px) calc(100vw - 80px), (max-width: 1440px) calc(100vw - 128px), 1312px" alt="Franco e Salvatore Leone tra gli ulivi di famiglia, in bianco e nero" width="1035" height="690" loading="eager" fetchpriority="high"/>
                     <figcaption>Franco e Salvatore, la terza generazione.</figcaption>
@@ -34,22 +34,19 @@
                 <!-- DOM order stays chronological when the stagger collapses on mobile. -->
                 <div class="tp-about-grid">
                     <article>
-                        <span class="tp-about-year" aria-hidden="true">1945</span>
-                        <p class="tp-about-period"><strong>Nel secondo dopoguerra</strong></p>
-                        <h3>La <span class="tp-about-title-tail">pietra miliare.</span></h3>
-                        <p>Al ritorno dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, trasmettendo a suo figlio Michele non solo un mestiere, ma una viscerale devozione per i cicli della natura.</p>
+                        <p class="tp-about-year">1945</p>
+                        <h3>Si riparte dalla terra.</h3>
+                        <p>Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, alcuni gi&#224; secolari, e insegna il mestiere a suo figlio Michele.</p>
                     </article>
                     <article>
-                        <span class="tp-about-year" aria-hidden="true">1980</span>
-                        <p class="tp-about-period"><strong>Gli anni della crescita</strong></p>
-                        <h3>La visione <span class="tp-about-title-tail">e lo sviluppo.</span></h3>
-                        <p>Sotto la guida di papà Michele, l'azienda si radica nel territorio. Con oltre 1.000 piante di ulivo coltivate nell'agro di Torremaggiore, la dedizione artigianale si sposa con una cura agronomica rigorosa, votata all'eccellenza assoluta della Peranzana.</p>
+                        <p class="tp-about-year">1980</p>
+                        <h3>L&#8217;azienda cresce.</h3>
+                        <p>Con pap&#224; Michele l&#8217;azienda cresce fino a oltre 1000 piante di ulivo nell&#8217;agro di Torremaggiore. Il modo di lavorare resta quello imparato dal nonno.</p>
                     </article>
                     <article>
-                        <span class="tp-about-year" aria-hidden="true">2020</span>
-                        <p class="tp-about-period"><strong>Dal 2020 a oggi</strong></p>
-                        <h3>L'innovazione <span class="tp-about-title-tail">di Torrepulia.</span></h3>
-                        <p>Noi, Franco e Salvatore, abbiamo raccolto questo testimone secolare. Con background in economia e ingegneria gestionale, abbiamo unito le competenze moderne all'amore per la terra, fondando Torrepulia per portare la nostra filiera corta direttamente al consumatore, senza intermediari.</p>
+                        <p class="tp-about-year">2020</p>
+                        <h3>Nasce Torrepulia.</h3>
+                        <p>Noi, Franco e Salvatore, siamo cresciuti tra questi ulivi e il profumo delle olive appena frante. Con studi in economia e ingegneria gestionale, nel 2020 abbiamo fondato Torrepulia per vendere il nostro olio direttamente a chi lo usa, senza intermediari.</p>
                     </article>
                 </div>
             </div>
@@ -62,13 +59,27 @@
     </template>
     <template id="s_torrepulia_landscape" name="Torrepulia Paesaggio">
         <section class="s_torrepulia_snippet tp-landscape" data-snippet="s_torrepulia_landscape" data-name="Alto Tavoliere">
-            <img src="/website_torrepulia_theme/static/src/img/content/alto-tavoliere.jpg" alt="Il paesaggio dell'Alto Tavoliere delle Puglie" loading="eager"/>
-            <div class="container"><h1>Il nostro orizzonte<br/>è l'Alto Tavoliere.</h1><p>Torremaggiore, Puglia.</p></div>
+            <img src="/website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-1920.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-1920.webp 1920w" sizes="100vw" alt="I nostri vigneti e i campi dell'Alto Tavoliere fino all'orizzonte, visti da un tetto di coppi" width="1920" height="1080" loading="eager" fetchpriority="high"/>
+            <div class="container"><h1>Il nostro orizzonte<br/>&#232; l'Alto Tavoliere.</h1><p>Torremaggiore, Puglia.</p></div>
         </section>
     </template>
     <template id="s_torrepulia_land_story" name="Torrepulia Terra">
-        <section class="s_torrepulia_snippet tp-section" data-snippet="s_torrepulia_land_story" data-name="Torremaggiore">
-            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Una terra.<br/>Il suo carattere.</h2></div><div class="col-lg-6 offset-lg-1"><p class="lead">I nostri uliveti si trovano nell'agro di Torremaggiore, in provincia di Foggia.</p><p>Il terreno del Tavoliere, il vento e la luce della Puglia accompagnano il lavoro della famiglia Leone. Terreni drenanti e clima continentale favoriscono la coltivazione della Peranzana.</p><p>Torremaggiore, San Severo e San Paolo di Civitate sono il territorio di origine di questa cultivar. Un paesaggio agricolo e una storia a cui il nostro olio appartiene.</p><a class="tp-text-link" href="/l-olio">Conosci la Peranzana <i class="oi ms-2" data-icon="arrow_forward" aria-hidden="true"/></a></div></div></div>
+        <section class="s_torrepulia_snippet tp-section tp-land-where o_colored_level" data-snippet="s_torrepulia_land_story" data-name="Dove siamo">
+            <div class="container">
+                <div class="row gy-5 gx-5 align-items-center">
+                    <div class="col-12 col-lg-6 o_colored_level">
+                        <h2>Nel nord della Puglia.</h2>
+                        <p class="lead">I nostri ulivi sono nell&#8217;agro di Torremaggiore, in provincia di Foggia: &#232; l&#8217;Alto Tavoliere, dove la pianura comincia a salire verso i Monti Dauni.</p>
+                        <p>Estati calde e asciutte, inverni freddi, il vento che attraversa la pianura: &#232; il clima in cui la Peranzana &#232; di casa. Tra Torremaggiore, San Severo e San Paolo di Civitate si concentra la sua coltivazione.</p>
+                        <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="/l-olio">Conosci la Peranzana <img class="icon tp-icon-out" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt="" width="20" height="20"/></a>
+                    </div>
+                    <div class="col-12 col-lg-6 o_colored_level">
+                        <figure class="tp-oil-map">
+                            <t t-call="website_torrepulia_theme.s_puglia_map"/>
+                        </figure>
+                    </div>
+                </div>
+            </div>
         </section>
     </template>
 </odoo>

@@ -13,6 +13,13 @@ SCOPED_VIEWS = ('torrepulia_footer', 'torrepulia_layout', 'torrepulia_shop_page'
                 'torrepulia_product_page', 'torrepulia_header_contact')
 
 
+def inline_puglia_map(env, root):
+    """Replace calls to the Puglia map with its SVG: page content must stay plain HTML for the Builder."""
+    for call in root.xpath('.//t[@t-call="%s.s_puglia_map"]' % MODULE):
+        svg = etree.fromstring(env.ref(MODULE + '.s_puglia_map').arch_db.encode())[0]
+        call.getparent().replace(call, copy.deepcopy(svg))
+
+
 class Website(models.Model):
     _inherit = 'website'
 
@@ -61,6 +68,7 @@ class Website(models.Model):
             for offset, node in enumerate(fragment):
                 parent.insert(index + offset, copy.deepcopy(node))
         # Materialized HTML gives each page independent Builder ownership.
+        inline_puglia_map(self.env, wrap)
         for catalog in wrap.xpath('.//*[@t-att-data-filter-id]'):
             catalog.set('data-filter-id', str(self.env.ref('website_sale.dynamic_filter_all_products').id))
             del catalog.attrib['t-att-data-filter-id']

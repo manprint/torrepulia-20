@@ -1,0 +1,199 @@
+// La Peranzana and La famiglia: the 2024 analysis, how we work, and the closing choice.
+.tp-site.tp-cinematic {
+    .tp-analysis, .tp-choice, .tp-method {
+        h2, h3 { font-family: "Libre Caslon Display", Georgia, serif; font-weight: 400; color: var(--tp-olive); text-wrap: balance; }
+        h2 { font-size: 52px; line-height: 1.12; overflow-wrap: break-word; }
+        p { text-wrap: pretty; }
+    }
+
+    // Analysis of the 2024 harvest: three values read first, then the whole sheet against the EVO limits.
+    .tp-analysis {
+        padding: var(--tp-section-space) 0;
+        background: var(--tp-pale);
+        color: var(--tp-ink);
+        scroll-margin-top: 100px;
+        > .container { max-width: 1320px; }
+        .tp-analysis-head p { max-width: 60ch; margin: 20px 0 0; font-size: 18px; line-height: 1.75; color: var(--tp-muted); }
+        .tp-analysis-key {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin: 56px 0 48px;
+            border-top: 1px solid var(--tp-line);
+        }
+        .tp-analysis-fact { min-width: 0; padding: 28px 32px 0 0; }
+        .tp-analysis-fact + .tp-analysis-fact { padding-left: 32px; border-left: 1px solid var(--tp-line); }
+        .tp-analysis-value {
+            margin: 0 0 16px;
+            font: 400 clamp(3rem, 5.5vw, 4.75rem)/1 "Libre Caslon Display", Georgia, serif;
+            color: var(--tp-olive);
+            font-variant-numeric: lining-nums tabular-nums;
+            small { font: 600 15px/1 Manrope, sans-serif; color: var(--tp-muted); }
+        }
+        h3 { margin: 0 0 8px; font: 600 15px/1.4 Manrope, sans-serif; color: var(--tp-ink); }
+        .tp-analysis-fact p:last-child { max-width: 34ch; margin: 0; font-size: 15px; line-height: 1.7; color: var(--tp-muted); }
+        .tp-lab-wrap { padding: 24px 32px; border-radius: 4px; background: var(--tp-white); }
+        .tp-analysis-foot {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px 40px;
+            margin-top: 28px;
+            p { max-width: 64ch; margin: 0; font-size: var(--tp-small); line-height: 1.6; color: var(--tp-muted); }
+        }
+    }
+
+    // How we work: four verbs with their facts, no cards.
+    .tp-roots-values.tp-method {
+        > .container { max-width: 1320px; }
+        h2 + p { max-width: 36ch; margin: 20px 0 0; font-size: 18px; line-height: 1.75; color: var(--tp-muted); }
+    }
+    .tp-method-list {
+        margin: 0;
+        border-top: 1px solid var(--tp-line);
+        > div {
+            display: grid;
+            grid-template-columns: 200px minmax(0, 1fr);
+            gap: 8px 32px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--tp-line);
+        }
+        dt { font: 400 30px/1.15 "Libre Caslon Display", Georgia, serif; color: var(--tp-olive); }
+        dd { max-width: 52ch; margin: 0; font-size: 17px; line-height: 1.75; color: var(--tp-ink); }
+        a { color: var(--tp-olive); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
+        a:hover { color: var(--tp-ink); }
+    }
+
+    // The tractor photo carries its people.
+    .tp-roots-photo { margin: 0; }
+    .tp-roots-photo figcaption { margin-top: 12px; color: var(--tp-on-dark-muted); font-size: var(--tp-small); line-height: 1.6; }
+    .tp-roots-transition-copy h2 { margin-bottom: 28px; }
+
+    // Closing: stock now or the new oil. Pale and typographic, unlike the home's photo and the dark footer.
+    .tp-choice {
+        padding: var(--tp-section-space) 0;
+        background: var(--tp-pale);
+        color: var(--tp-ink);
+        > .container { max-width: 1320px; }
+        h2 + p { max-width: 40ch; margin: 20px 0 0; font-size: 18px; line-height: 1.75; color: var(--tp-muted); }
+        .tp-choice-signature { margin: 32px 0 0; font: 400 28px/1.2 "Libre Caslon Display", Georgia, serif; color: var(--tp-olive); }
+    }
+    .tp-choice-options { border-top: 1px solid var(--tp-line); }
+    .tp-choice-option {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px 40px;
+        align-items: center;
+        padding: 32px 0;
+        border-bottom: 1px solid var(--tp-line);
+        h3 { margin: 0 0 8px; font-size: 34px; line-height: 1.15; }
+        p { max-width: 44ch; margin: 0; color: var(--tp-muted); line-height: 1.7; }
+        .btn { min-width: 240px; transition: background-color 160ms var(--tp-ease-out), color 160ms var(--tp-ease-out), transform 120ms var(--tp-ease-out); }
+        .btn:active { transform: scale(.98); }
+    }
+
+    // The grandfather's trees: the oldest proof of the story, shown at full size.
+    .tp-trees {
+        padding: var(--tp-section-space) 0;
+        background: var(--tp-white);
+        color: var(--tp-ink);
+        > .container { max-width: 1320px; }
+        figure { margin: 0; }
+        img {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .tp-trees-main img { aspect-ratio: 3 / 2; }
+        figcaption { margin-top: 12px; color: var(--tp-muted); font-size: var(--tp-small); line-height: 1.6; }
+        h2 {
+            margin: 0 0 24px;
+            font: 400 52px/1.12 "Libre Caslon Display", Georgia, serif;
+            color: var(--tp-olive);
+            text-wrap: balance;
+        }
+        .tp-trees-copy p { max-width: 44ch; font-size: 17px; line-height: 1.8; text-wrap: pretty; }
+        .tp-trees-second { margin-top: 32px; aspect-ratio: 3 / 2; }
+    }
+    .tp-choice .tp-choice-photo {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 12 / 5;
+        object-fit: cover;
+        margin-bottom: 56px;
+        border-radius: 8px;
+    }
+
+    // Il territorio: the horizon photo keeps its sky; the scrim only darkens where the title sits.
+    .tp-landscape::before { background: linear-gradient(0deg, rgba(15, 34, 22, .72), rgba(15, 34, 22, .1) 65%); }
+    .tp-landscape > img { object-position: 50% 40%; }
+    .tp-land-where, .tp-land-history {
+        padding: var(--tp-section-space) 0;
+        color: var(--tp-ink);
+        > .container { max-width: 1320px; }
+        h2 { margin: 0 0 24px; font: 400 52px/1.12 "Libre Caslon Display", Georgia, serif; color: var(--tp-olive); text-wrap: balance; }
+        p { max-width: 58ch; font-size: 17px; line-height: 1.8; text-wrap: pretty; }
+        .lead { font-size: 20px; line-height: 1.7; }
+    }
+    .tp-land-where { background: var(--tp-white); }
+    .tp-land-history { background: var(--tp-pale); }
+    .tp-land-history .tp-land-year {
+        max-width: none;
+        margin: 0;
+        font: 400 clamp(5rem, 11vw, 9rem)/.9 "Libre Caslon Display", Georgia, serif;
+        color: var(--tp-gold-text);
+        font-variant-numeric: lining-nums;
+    }
+    .tp-land-grove {
+        background: var(--tp-white);
+        figure { margin: 0; }
+        img { display: block; width: 100% !important; height: auto !important; aspect-ratio: 21 / 9; object-fit: cover; }
+        figcaption { padding-top: 12px; padding-bottom: 12px; color: var(--tp-muted); font-size: var(--tp-small); }
+    }
+
+    // The sensory subtitle needs air under the title, above all on phones.
+    .tp-sensory h2 + .lead { margin-top: 20px; color: var(--tp-on-dark-muted); }
+
+    // Quote placeholders are hidden from visitors; when shown in the Builder they read as unfinished.
+    .tp-placeholder {
+        margin: 32px 0 0;
+        padding: 20px 24px;
+        border: 2px dashed var(--tp-gold);
+        border-radius: 4px;
+        background: var(--tp-paper);
+        color: var(--tp-ink);
+        p, footer { margin: 0; color: inherit; font-size: 15px; }
+        footer { margin-top: 8px; font-weight: 600; }
+    }
+
+    @media (max-width: 991px) {
+        .tp-analysis h2, .tp-choice h2, .tp-method h2, .tp-trees h2, .tp-land-where h2, .tp-land-history h2 { font-size: 44px; }
+    }
+    @media (max-width: 767px) {
+        .tp-analysis h2, .tp-choice h2, .tp-method h2, .tp-trees h2, .tp-land-where h2, .tp-land-history h2 { font-size: 36px; }
+        .tp-land-where .lead { font-size: 18px; }
+        .tp-land-grove img { aspect-ratio: 4 / 3; }
+        .tp-trees .tp-trees-second { display: none; }
+        .tp-choice .tp-choice-photo { aspect-ratio: 3 / 2; margin-bottom: 40px; }
+        .tp-analysis {
+            .tp-analysis-key { grid-template-columns: minmax(0, 1fr); margin: 40px 0 32px; }
+            .tp-analysis-fact, .tp-analysis-fact + .tp-analysis-fact { padding: 24px 0; border-left: 0; border-bottom: 1px solid var(--tp-line); }
+            .tp-lab-wrap { margin: 0 calc(var(--bs-gutter-x, 1.5rem) * -.5); padding: 16px; }
+            .tp-analysis-foot .btn { width: 100%; }
+        }
+        .tp-method-list > div { grid-template-columns: minmax(0, 1fr); padding: 20px 0; }
+        .tp-method-list dt { font-size: 26px; }
+        .tp-method-list dd { font-size: 16px; }
+        .tp-choice-option { grid-template-columns: minmax(0, 1fr); padding: 28px 0; }
+        .tp-choice-option h3 { font-size: 30px; }
+        .tp-choice-option .btn { width: 100%; min-width: 0; }
+        .tp-sensory h2 + .lead { margin-top: 16px; margin-bottom: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .tp-choice-option .btn { transition: none; }
+        .tp-choice-option .btn:active { transform: none; }
+    }
+}

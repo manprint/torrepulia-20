@@ -43,6 +43,7 @@
             <div class="tp-idcard-intro">
                 <h2 id="tp-idcard-title">Carta d'identità dell'olio</h2>
                 <p class="tp-idcard-source" t-out="profile._torrepulia_source()"/>
+                <a t-if="profile.report_url" class="tp-idcard-report" t-att-href="profile.report_url" target="_blank" rel="noopener">Leggi il rapporto di prova (PDF)</a>
                 <dl t-if="profile._torrepulia_facts()" class="tp-idcard-facts">
                     <div t-foreach="profile._torrepulia_facts()" t-as="fact"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div>
                 </dl>

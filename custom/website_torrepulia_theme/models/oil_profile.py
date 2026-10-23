@@ -16,8 +16,9 @@ class OilProfile(models.Model):
     cultivar = fields.Char('Cultivar', translate=True)
     origin = fields.Char('Uliveti', translate=True)
     harvest_period = fields.Char('Periodo di raccolta', translate=True)
-    lab = fields.Char('Laboratorio', help='Chi ha eseguito l\'analisi, per esempio il frantoio.')
+    lab = fields.Char('Laboratorio', help='Chi ha eseguito l\'analisi. Resta interno: il sito scrive "il frantoio".')
     report_date = fields.Date('Data del rapporto di prova')
+    report_url = fields.Char('Rapporto di prova (PDF)', help='Link al rapporto di prova intero, mostrato con le analisi.')
     acidity = fields.Float('Acidità (% acido oleico)', digits=(6, 2))
     peroxides = fields.Float('Perossidi (meq O2/kg)', digits=(6, 2))
     k232 = fields.Float('K232', digits=(6, 2))
@@ -58,12 +59,12 @@ class OilProfile(models.Model):
         return rows
 
     def _torrepulia_source(self):
+        # The mill may change from one harvest to the next: the site never names it.
         self.ensure_one()
         parts = [self.name]
-        if self.lab:
-            parts.append(self.lab)
         if self.report_date:
-            parts.append('Rapporto del %s' % format_date(self.env, self.report_date, date_format='d MMMM y'))
+            parts.append('Rapporto di prova del frantoio del %s' % format_date(
+                self.env, self.report_date, date_format='d MMMM y'))
         return '. '.join(parts) + '.'
 
 

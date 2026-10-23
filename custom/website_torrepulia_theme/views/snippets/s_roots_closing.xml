@@ -1,44 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="s_torrepulia_roots_transition" name="Torrepulia Radici: il patto con la Puglia">
-        <section class="s_torrepulia_snippet tp-section tp-roots-transition text-white o_colored_level" data-snippet="s_torrepulia_roots_transition" data-name="Radici: il patto con la Puglia">
+    <template id="s_torrepulia_roots_trees" name="Torrepulia Gli ulivi del nonno">
+        <section class="s_torrepulia_snippet tp-section tp-trees o_colored_level" data-snippet="s_torrepulia_roots_trees" data-name="Gli ulivi del nonno">
             <div class="container">
-                <div class="row gx-5 gy-4 align-items-center">
-                    <div class="col-12 col-md-6 order-1 o_colored_level">
-                        <img class="img img-fluid w-100 rounded-3" src="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg" alt="Fotografia storica della famiglia Leone al lavoro con il trattore tra i campi" width="690" height="445" loading="lazy"/>
+                <div class="row gy-5 gx-5 align-items-end">
+                    <div class="col-12 col-lg-7 order-2 order-lg-1 o_colored_level">
+                        <figure class="tp-trees-main">
+                            <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/ulivo-secolare-960.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/ulivo-secolare-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/ulivo-secolare-960.webp 960w, /website_torrepulia_theme/static/src/cinematic/owner/ulivo-secolare-1280.webp 1280w" sizes="(min-width: 1320px) 740px, (min-width: 992px) 56vw, calc(100vw - 48px)" alt="Il tronco contorto di un ulivo secolare nell'uliveto di famiglia" width="960" height="640" loading="lazy"/>
+                            <figcaption>Uno degli ulivi secolari ereditati dal nonno.</figcaption>
+                        </figure>
                     </div>
-                    <div class="col-12 col-md-6 order-2 order-md-3 o_colored_level">
-                        <h2 class="text-white mb-0">Dal secondo dopoguerra, un patto indissolubile con la Puglia.</h2>
-                    </div>
-                    <div class="col-12 col-md-6 order-3 order-md-2 o_colored_level">
-                        <div class="p-md-4 pe-2 pe-md-5 tp-roots-transition-copy">
-                            <p class="lead text-light mb-0">La nostra non è la storia di un marchio nato a tavolino, ma il racconto di una famiglia che ha attraversato i mutamenti del tempo restando fedele a un unico pezzo di terra. Ogni goccia di olio La Regina racchiude i ricordi delle nostre vendemmie, il profumo dei frantoi di una volta e l'onestà di un lavoro fatto a regola d'arte. Coltiviamo, raccogliamo e confezioniamo a Torremaggiore, per proteggere l'integrità di un olio extravergine puro.</p>
+                    <div class="col-12 col-lg-5 order-1 order-lg-2 o_colored_level">
+                        <div class="tp-trees-copy">
+                            <h2>Gli ulivi del nonno.</h2>
+                            <p>Tra i nostri ulivi ci sono piante secolari: sono quelle che nonno Santino Vincenzo ha ereditato e curato per primo. Accanto crescono gli alberi piantati negli anni e quelli pi&#249; giovani, messi a dimora da poco.</p>
+                            <p>Ogni raccolta li mette insieme: alberi di et&#224; diverse, come le generazioni della nostra famiglia.</p>
+                            <img class="img img-fluid tp-trees-second" src="/website_torrepulia_theme/static/src/cinematic/owner/ulivi-secolari-640.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/ulivi-secolari-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/ulivi-secolari-960.webp 960w" sizes="(min-width: 992px) 34vw, calc(100vw - 48px)" alt="Un ulivo secolare tra le file dell'uliveto, a Torremaggiore" width="640" height="427" loading="lazy"/>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </template>
-    <template id="s_torrepulia_roots_values" name="Torrepulia Radici: la filosofia">
-        <section class="s_torrepulia_snippet tp-section tp-roots-values o_colored_level" data-snippet="s_torrepulia_roots_values" data-name="Radici: la nostra filosofia">
+    <template id="s_torrepulia_roots_transition" name="Torrepulia Radici: il patto con la Puglia">
+        <section class="s_torrepulia_snippet tp-section tp-roots-transition text-white o_colored_level" data-snippet="s_torrepulia_roots_transition" data-name="Radici: una famiglia, una terra">
             <div class="container">
-                <h2 class="text-center mb-3">I Pilastri della nostra Filosofia</h2>
-                <p class="tp-roots-values-subtitle text-center text-muted small mx-auto mb-5">La qualità del nostro olio extravergine nasce da scelte precise e non negoziabili.</p>
-                <div class="row g-4 g-lg-5">
-                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
-                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">I</p>
-                        <h3 class="h4 fw-bold mb-3">Filiera Corta Certificata</h3>
-                        <p class="text-dark tp-roots-description mb-0">Nessun intermediario, nessuna contaminazione. Seguiamo ogni singola fase, dalla cura dell'uliveto all'imbottigliamento nell'agro di Torremaggiore, per garantirti la tracciabilità assoluta di un olio che viaggia direttamente dalla nostra terra alla tua tavola.</p>
+                <div class="row gx-5 gy-4 align-items-center">
+                    <div class="col-12 col-md-6 o_colored_level">
+                        <figure class="tp-roots-photo">
+                            <img class="img img-fluid w-100 rounded-3" src="/website_torrepulia_theme/static/src/img/content/santino-michele-storia.jpg" alt="Fotografia storica in bianco e nero: un uomo alla guida di un trattore tra i campi e un altro in piedi accanto" width="690" height="445" loading="lazy"/>
+                            <figcaption>Pap&#224; Michele sul trattore e nonno Santino Vincenzo.</figcaption>
+                        </figure>
                     </div>
-                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
-                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">II</p>
-                        <h3 class="h4 fw-bold mb-3">Trasparenza Totale</h3>
-                        <p class="text-dark tp-roots-description mb-0">La vera qualità si misura, non si racconta. Condividiamo orgogliosamente le analisi chimiche della nostra Peranzana, certificando una bassissima acidità e un'altissima carica di polifenoli benefici per la tua salute.</p>
+                    <div class="col-12 col-md-6 o_colored_level">
+                        <div class="tp-roots-transition-copy">
+                            <h2 class="text-white">Una famiglia, un pezzo di terra.</h2>
+                            <p class="lead text-light mb-0">La nostra non &#232; la storia di un marchio nato a tavolino, ma di una famiglia rimasta legata alla stessa terra. In La Regina ci sono i ricordi di tante raccolte e il lavoro fatto come ci hanno insegnato nonno Santino Vincenzo e pap&#224; Michele.</p>
+                            <!-- Placeholder for a real family quote: hidden from visitors, listed in the Builder's invisible elements. -->
+                            <blockquote class="tp-placeholder o_snippet_desktop_invisible o_snippet_mobile_invisible d-none">
+                                <p>[SEGNAPOSTO, NON PUBBLICATO] Qui una frase vera di nonno Santino Vincenzo o di pap&#224; Michele.</p>
+                                <footer>[Chi l&#8217;ha detta]</footer>
+                            </blockquote>
+                        </div>
                     </div>
-                    <div class="col-12 col-md-4 mb-4 mb-md-0 o_colored_level">
-                        <p class="tp-roots-numeral h5 fw-bold mb-2" aria-hidden="true">III</p>
-                        <h3 class="h4 fw-bold mb-3">Rispetto del Territorio</h3>
-                        <p class="text-dark tp-roots-description mb-0">Adottiamo pratiche agricole sostenibili per proteggere la biodiversità dell'Alto Tavoliere delle Puglie. Custodiamo i nostri ulivi secolari con lo stesso rispetto con cui nonno Vincenzo ha avviato questa storia.</p>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_torrepulia_roots_values" name="Torrepulia Radici: come lavoriamo">
+        <section class="s_torrepulia_snippet tp-section tp-roots-values tp-method o_colored_level" data-snippet="s_torrepulia_roots_values" data-name="Come lavoriamo">
+            <div class="container">
+                <div class="row gy-4 gx-5">
+                    <div class="col-12 col-lg-5 o_colored_level">
+                        <h2>Come lavoriamo.</h2>
+                        <p>Siamo una famiglia, non una filiera: ogni passaggio passa dalle nostre mani.</p>
+                    </div>
+                    <div class="col-12 col-lg-7 o_colored_level">
+                        <dl class="tp-method-list">
+                            <div><dt>Curiamo</dt><dd>Tutto l&#8217;anno, non solo in autunno: potiamo noi gli alberi in inverno, lavoriamo il terreno in primavera e in estate e li seguiamo fino alla raccolta.</dd></div>
+                            <div><dt>Raccogliamo</dt><dd>Tra ottobre e novembre, dai nostri ulivi nell&#8217;agro di Torremaggiore.</dd></div>
+                            <div><dt>Moliamo</dt><dd>Entro 8 ore dalla raccolta, nel nostro frantoio partner. Seguiamo la molitura di persona.</dd></div>
+                            <div><dt>Spediamo</dt><dd>L&#8217;olio confezionato torna nel nostro magazzino e da l&#236; parte direttamente per casa tua, senza intermediari.</dd></div>
+                            <div><dt>Misuriamo</dt><dd>Il rapporto di prova del frantoio sul raccolto 2024 &#232; pubblico: acidit&#224; 0,17 %, polifenoli totali 589 mg/kg. <a href="/l-olio#analisi">Leggi le analisi</a></dd></div>
+                        </dl>
                     </div>
                 </div>
             </div>

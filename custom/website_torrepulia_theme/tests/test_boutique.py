@@ -17,7 +17,9 @@ class TestOilProfile(TransactionCase):
         self.assertEqual(rows['K270']['ratio'], 100)
         self.assertIsNone(rows['Polifenoli totali']['ratio'])
         self.assertIn('589', rows['Polifenoli totali']['value'])
-        self.assertIn('Frantoio di prova', profile._torrepulia_source())
+        # The mill may change every harvest: the site never names it.
+        self.assertNotIn('Frantoio di prova', profile._torrepulia_source())
+        self.assertIn('Rapporto di prova del frantoio del 19 ', profile._torrepulia_source())
         self.assertFalse(profile._torrepulia_facts())
 
 

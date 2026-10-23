@@ -1,61 +1,58 @@
-# Handoff Torrepulia: stato al 23/10/2026 (sera)
+# Handoff Torrepulia: stato al 23/10/2026 (notte)
 
-Documento di ripresa per la prossima sessione di lavoro. Ultimo commit deployato: `740277b`
-(caratteri locali al posto di Google Fonts), dopo `ddef52a` (Fase 3 e collaudo).
+Documento di ripresa per la prossima sessione di lavoro. Ultimo lavoro: pagine editoriali
+(La Peranzana, La famiglia, Il territorio, sezione famiglia della home), migrazione
+`20.0.3.13.0`, dopo `740277b` (caratteri locali) e `ddef52a` (Fase 3 e collaudo).
 
-## Prossima sessione: La Peranzana (/l-olio) e La famiglia (/aboutus)
+## Fatto il 23/10 (notte): pagine editoriali dopo la critica
 
-Obiettivo: applicare la critica del 23/10 alle due pagine con i materiali dell'utente. I
-testi sono nel Builder: modificarli via migrazione con backup della vista (autorizzato),
-mantenendo le sezioni editabili. Verifica visiva a 1440 e 390 px, una sola tornata di test,
-commit e deploy solo dopo aver mostrato il risultato all'utente.
+Migrazione `20.0.3.13.0` (`models/editorial_pages.py`): ricostruisce le sezioni salvate nel
+Builder dagli snippet, con copia disattivata di ogni vista (`before_editorial_pages_*`,
+`before_family_alignment_*`); tiene le sezioni aggiunte dal gestore; si può rieseguire.
+In locale è già applicata (`refresh_editorial_pages`, `align_home_family` da `odoo shell`).
 
-Materiali e risposte dell'utente (23/10):
-- **Analisi**: `C:\Users\salvatore.leone\Downloads\torrepulia_odoo20\Torrepulia foto webp\Analisi olio 2024.pdf`.
-  Rapporto di prova del Frantoio Sacco Oliveti, Torremaggiore, 19/11/2024, committente
-  Leone, misurato con XDS Rapid Liquid Analyzer (analisi rapida, non laboratorio
-  accreditato; numero di rapporto vuoto). "Riproducibile liberamente solo nella sua
-  totalità": pubblicare il PDF intero (file statico del tema) e chiamarlo "rapporto di prova
-  del frantoio", mai "certificato". Valori: acidità 0,17 %, perossidi 4,91, K232 1,87,
-  K270 0,12, DeltaK 0,00, acido oleico 70,23 %, polifenoli totali 588,98 mg/kg, tocoferoli
-  243,55 mg/kg. Idrossitirosolo + tirosolo + derivati (6,95 + 12,88 + 134,40 + 100,92 +
-  80,28 + 16,83) = circa 352 mg/kg, sopra la soglia di 250 mg/kg del claim UE 432/2012:
-  utilizzabile solo con la formula autorizzata ("I polifenoli dell'olio d'oliva
-  contribuiscono alla protezione dei lipidi ematici dallo stress ossidativo", con 20 g al
-  giorno) e meglio dopo conferma di un laboratorio. Fino ad allora niente frasi salutistiche
-  generiche come "benefici per la tua salute".
-- **Dimensione**: "oltre 1000 piante di ulivo nell'agro di Torremaggiore" (niente ettari né
-  contrada).
-- **Foto del trattore**: papà Michele sul trattore e nonno Santino Vincenzo. Didascalia da
-  aggiungere; uniformare ovunque il nome del nonno a "Santino Vincenzo"; anno non noto.
-- **"Filiera corta certificata"**: non esiste una certificazione. L'utente: "noi
-  raccogliamo, moliamo e spediamo". Togliere "certificata" e scrivere il fatto. **Da
-  chiedere all'utente**: la molitura avviene al Frantoio Sacco Oliveti (di terzi)? Se sì,
-  scrivere "moliamo entro poche ore al frantoio di Torremaggiore", non "moliamo noi".
-- **Chi fa cosa**: "siamo piccoli, tutti fanno tutto": niente sezione sui ruoli.
-- **Frasi del padre o del nonno**: non ci sono. Se utili, predisporre segnaposto ben
-  marcati e **non pubblicarli come citazioni reali** finché l'utente non li sostituisce.
+- **/l-olio**: apertura con link a processo e analisi; storia + mappa della home (SVG
+  inline, mai `t-call` nelle pagine: toglie la sezione al Builder); processo a elenco
+  ("Raccogliamo, moliamo, spediamo.": entro 8 ore, frantoio partner, molitura seguita di
+  persona, estrazione sotto i 27 °C, confezionato poi in magazzino); nuovo blocco
+  `s_torrepulia_oil_analysis` (#analisi, valori 2024 statici e modificabili, nota "analisi
+  rapida, non laboratorio accreditato", PDF intero
+  `static/src/docs/rapporto-di-prova-raccolto-2024.pdf`); Bag in Box tolto; chiusura
+  `s_torrepulia_choice_oil`.
+- **Bag in Box**: spiegazione nella descrizione del suo prodotto (`website_description`,
+  solo se vuota), senza kicker né CTA.
+- **Carta d'identità** sulla scheda prodotto: non nomina più il frantoio ("Rapporto di
+  prova del frantoio del …"); nuovo campo `report_url` (link al PDF). Il campo `lab` resta
+  interno.
+- **/aboutus**: "Tre generazioni, la stessa terra."; anni leggibili; capitoli 1945/1980/2020
+  (ulivi ereditati "alcuni già secolari", oltre 1000 piante, ricordo delle olive appena
+  frante); fascia `s_torrepulia_roots_trees` "Gli ulivi del nonno." (FOT_9550, FOT_9561);
+  foto del trattore con didascalia; "Come lavoriamo" (Curiamo, Raccogliamo, Moliamo,
+  Spediamo, Misuriamo); chiusura firmata `s_torrepulia_choice_family` con FOT_9704.
+- **Home, sezione famiglia**: testi allineati ad /aboutus (sostituzioni esatte), firma
+  "Torremaggiore, dal 1945.". La chiusura della home mantiene "ulivi secolari" (veri).
+- **/territorio**: apertura FOT_9842 (vigneti e orizzonte, sono dell'azienda); "Nel nord
+  della Puglia." con mappa; `s_torrepulia_land_history` "1710 · Il castello e la
+  Peranzana." (Raimondo di Sangro nato nel castello ducale il 30/1/1710; il legame con la
+  Peranzana solo come tradizione; origine del nome Torrepulia); fascia FOT_9507; chiusura
+  `s_torrepulia_choice_land`. Tolta la storia di famiglia ripetuta.
+- **Segnaposto citazioni** (processo su /l-olio, foto del trattore su /aboutus):
+  `[SEGNAPOSTO, NON PUBBLICATO]`, classi `o_snippet_desktop_invisible
+  o_snippet_mobile_invisible d-none`. L'utente li sostituisce nel Builder ("Elementi
+  invisibili") e li rende visibili.
 
-Interventi (dalla critica, in ordine di priorità):
-1. /l-olio: blocco "Le analisi del raccolto 2024" (3 valori grandi + tabella con i limiti,
-   riusando `torrepulia.oil.profile` e il template `pdp_oil_profile`) con link al PDF.
-2. /l-olio: togliere il Bag in Box (`s_bag_in_box`) e portarlo nella scheda del Bag in Box;
-   chiusura con doppia scelta "Ordina dalle scorte" / "Prenota l'olio nuovo".
-3. /l-olio: luoghi ridotti a un paragrafo + mappa della home; card 01-04 riscritte (niente
-   griglia di card uguali), righe di testo entro 70 caratteri, sentence case, spaziatura
-   del sottotitolo sensoriale su mobile.
-4. /aboutus: via i "pilastri" e le affermazioni non documentate ("certificata", "ulivi
-   secolari", "sostenibili", "benefici per la salute", "condividiamo le analisi" senza
-   link); "vendemmie" diventa "raccolte"; "secolare" va tolto (la storia parte dal 1945);
-   registro meno enfatico; fascia "Come lavoriamo" con fatti e link alle analisi; date in
-   filigrana leggibili; finale con firma "Franco e Salvatore Leone" e invito a prenotare.
-5. Entrambe: chiusure diverse da quella di home e footer; gerarchia dei nomi (azienda
-   Leone, marchio Torrepulia, olio La Regina, cultivar Peranzana); immagini del processo
-   con srcset (process-crates servita a 960 px per 273 px, 188 KB).
+Regole sui testi decise con l'utente: mai nominare il frantoio (scrivere "frantoio
+partner"); niente superlativi non dimostrabili, "biologico", "certificata", frasi
+salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non si citano.
 
-Altre cose aperte: URL del nuovo sito di produzione (per verificare compressione, caratteri,
-corriere e bonifico); configurazione in produzione di corriere espresso e bonifico con IBAN;
-testo di esaurimento della latta ("Prenota l'olio nuovo!") da cambiare a cura dell'utente.
+Foto: `C:\Users\salvatore.leone\Downloads\torrepulia_odoo20\Torrepulia foto webp\Foto campagna`
+utilizzabili; le foto di prodotto mostrano bottiglie vecchie, non usarle.
+
+Altre cose aperte: frasi vere di papà o del nonno per i segnaposto; URL del nuovo sito di
+produzione (per verificare compressione, caratteri, corriere e bonifico); configurazione in
+produzione di corriere espresso e bonifico con IBAN; testo di esaurimento della latta
+("Prenota l'olio nuovo!") da cambiare a cura dell'utente; analisi del raccolto 2026
+(nuovo profilo olio + PDF + aggiornare il blocco analisi nel Builder).
 
 ## Obiettivo e vincoli
 
@@ -111,7 +108,7 @@ Proposta di direzione approvata: https://claude.ai/artifact/LKRhjcMZMbsqV8AX7T8x
 3. **Fatto il 23/10:** microinterazioni, token di colore, audit (vedi Fase 3).
 4. **Fatto il 23/10 in locale:** collaudo end-to-end (vedi Fase 3). Restano: correzione
    Google Fonts, verifica in produzione (serve l'URL della VM), poi SEO di base e analytics.
-5. **Dopo i materiali dell'utente:** La Peranzana e La famiglia (critica del 23/10: analisi
+5. **Fatto il 23/10 (notte):** La Peranzana, La famiglia e Il territorio (critica del 23/10: analisi
    2024 in pagina, Bag in Box nella sua scheda, affermazioni non documentate da togliere,
    errori "vendemmie" / "secolare" / nome del nonno, sentence case, chiusure con
    "Prenota l'olio nuovo"). Materiali chiesti: PDF analisi, ettari o piante e contrada,
