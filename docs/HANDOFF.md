@@ -1,40 +1,67 @@
-# Handoff Torrepulia: stato al 23/10/2026 (sera tardi)
+# Handoff Torrepulia: stato al 24/10/2026
 
-Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23/10 è su `main`
-e deployato (ultimi commit: pagine editoriali, home, footer, menu, correzioni produzione,
-pagina olio nuovo). Versioni: tema `20.0.3.17.0`, richieste `20.0.1.15.0`, campagne `20.0.1.8.0`.
-Apertura pubblica prevista **entro fine ottobre 2026**.
+Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-24/10 è su
+`main` e deployato. Versioni: tema `20.0.3.18.0`, richieste `20.0.1.16.0`, campagne `20.0.1.8.0`.
+Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
+http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
+sostituirà torrepulia.it (dominio senza www, come il vecchio).
 
 ## Prossima sessione: verso l'apertura
 
-In ordine di priorità (il punto 1 è bloccante):
+1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi
+   CSS 1,3 MB e JS 2,7 MB arrivano senza compressione. Proposta: Caddy nel compose della VM
+   (`encode zstd gzip`, Let's Encrypt automatico), DNS di torrepulia.it verso 212.227.88.91,
+   porte 80/443 fino al container `dind-to20`, `proxy_mode = True`, `web.base.url` in https
+   con `web.base.url.freeze`, redirect www → dominio senza www. In `odoo.conf` della VM anche
+   `list_db = False` (la master password l'utente l'ha impostata il 23/10).
+2. **Configurazione a cura dell'utente** (fatto il 23/10: master password, attributo
+   Filtrazione, corriere):
+   - **server di posta in uscita (SMTP) + SPF/DKIM su torrepulia.it: senza, nessuna email
+     parte** (conferma prenotazione, notifiche, ordini);
+   - team commerciale con almeno un membro con email (notifica interna);
+   - bonifico: pubblicare "Bonifico bancario" con l'IBAN e nascondere il metodo oggi
+     pubblicato (il footer dice "Pagamento con paga su fattura");
+   - giacenze dei formati a scorte dopo la molitura (oggi tutti "Temporaneamente esaurito",
+     checkout non raggiungibile);
+   - campagna: "Consegna" → "Tra novembre e dicembre" (oggi "Consegna prevista tra..."
+     ripete l'etichetta), "Prezzo" → "Bloccato per tutta la stagione";
+   - cookie policy da completare con GA4 e Meta prima di inserirne gli ID (GA4: Impostazioni
+     sito → Google Analytics; Meta: nuovo campo "Meta Pixel" sotto).
+3. **Collaudo finale in produzione:** un ordine dalle scorte e una prenotazione veri (email
+   comprese), poi apertura.
 
-1. **Verifica in produzione e HTTPS.** Serve dall'utente l'URL del nuovo sito di produzione e
-   come è configurato il proxy della VM (Nginx, Caddy, altro).
-   - Certificato Let's Encrypt sul proxy; parametro di sistema `web.base.url` in `https://`
-     con il dominio giusto (e `web.base.url.freeze`). Senza HTTPS il browser segna "Non
-     sicuro" nel checkout (vedi anche `random_uuid.js`).
-   - Controllare in produzione: pagine dopo le migrazioni 3.13-3.17 e campagne 1.8.0,
-     compressione del proxy (in locale CSS 1,3 MB / JS 2,7 MB non compressi), caratteri
-     locali, checkout completo (corriere + bonifico), prenotazione completa.
-2. **Configurazione in produzione** (a cura dell'utente, guidata):
-   - scheda azienda completa (ragione sociale, P. IVA, indirizzo, email, telefono) e link
-     social in Sito web → Impostazioni → Social media: il footer li legge da lì;
-   - corriere espresso 9,90 €, gratuito da 89 €; bonifico con IBAN;
-   - campagna olio nuovo: "Periodo indicativo di consegna" → "Tra novembre e dicembre",
-     "Indicazione prezzo" → "Bloccato per tutta la stagione"; modalità commerciale "Acquisto
-     online + prenotazione stagionale" con team commerciale (già fatto dall'utente il 23/10);
-   - testo di esaurimento della latta ("Prenota l'olio nuovo!").
-3. **Email di conferma automatica della prenotazione.** Il passo 2 di "Come funziona" dice
-   "Ti scriviamo un'email con il riepilogo": l'utente vuole che parta da sola (modello email
-   + automazione all'arrivo della richiesta/opportunità CRM).
-4. **SEO di base:** titoli e descrizioni di tutte le pagine, immagine di condivisione,
-   sitemap e robots, dati strutturati prodotto, **redirect dagli indirizzi del vecchio
-   torrepulia.it** (punto delicato).
-5. **Cookie e analytics:** banner di consenso conforme prima di GA4 e Meta Pixel (si
-   collegano solo a sviluppo finito, scelta dell'utente).
-6. **Collaudo finale in produzione:** un ordine dalle scorte e una prenotazione veri, poi
-   apertura.
+## Fatto il 23-24/10: verso l'apertura
+
+- **Verifica produzione (23/10):** pagine 200, nessuno scorrimento a 1440/390, caratteri
+  locali, nessun errore JS. Il gestore database era pubblico senza master password:
+  sistemato dall'utente.
+- **Testi:** via "lo spediamo entro 48 ore" (scheda prodotto, fascia shop): ora "Lo moliamo
+  entro 8 ore dalla raccolta e te lo spediamo appena è pronto". Plurale "1 confezione".
+- **Email di prenotazione** (`website_torrepulia_request`, `views/mail.xml`): le notifiche
+  esistenti (coda `torrepulia.request.notification`, cron ogni 5 minuti, coda email nativa)
+  ora usano un template QWeb per client email (tabelle, stili in linea). La ricevuta salva
+  `reservation` (stagione + fatti della campagna) all'invio tramite
+  `website._request_receipt_context()` (vuoto nella base, campagna in modalità ibrida).
+  Oggetto calcolato `_mail_subject()` (migrazione 1.16.0 sui template noupdate). Anche
+  `/la-tua-richiesta/conferma` parla di prenotazione.
+- **SEO** (`website_torrepulia_theme/models/seo.py`, migrazione 3.18.0,
+  `_torrepulia_launch_seo`, rieseguibile): home di nuovo indicizzata (in produzione aveva
+  `noindex`) con titolo/descrizione del seed; /shop "Acquista olio extravergine Peranzana";
+  descrizione predefinita delle schede prodotto; immagine di condivisione
+  `torrepulia-condivisione.jpg`; `/terms` (testo Odoo in inglese) → 301
+  `/termini-e-condizioni` (`controllers/terms.py`); `/privacy` → `/privacy-policy`, fuori
+  sitemap. Redirect 301 dal vecchio sito (anch'esso Odoo, indirizzi dalla sua sitemap):
+  schede prodotto per codice LARGBIB5/LARG6BT500/LARG2BT500/LARGLAT5, /home, blog,
+  livechat, /brand-listing. Nessun valore del gestore viene sovrascritto. Odoo 20 applica i
+  301 solo se nessuna rotta risponde; i dati strutturati prodotto sono già nativi.
+- **Cookie** (`views/consent.xml`, `scss/consent.scss`): barra accesa sul sito, testi
+  italiani, Rifiuta/Accetta con lo stesso peso, la X rifiuta, scelta valida 180 giorni,
+  "Preferenze cookie" nel footer. GA4 nativo con Consent Mode. Meta Pixel
+  (`website.torrepulia_meta_pixel_id`) caricato solo dopo il consenso.
+- **Prenotazione bloccata da righe archiviate (24/10):** dopo l'aggiunta della Filtrazione
+  le bozze vecchie contenevano varianti archiviate senza modo di toglierle sulla pagina
+  campagna. Ora "Rimuovi" nel riepilogo compatto, un solo avviso in alto, campi chiusi
+  riconoscibili.
 
 Facoltativo, rinviato dall'utente: filestore nel backup del deploy, backup giornaliero
 separato e copia fuori dalla VM (oggi: solo `pg_dump` del DB sulla VM, ultimi 10 deploy).
@@ -280,9 +307,9 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (121 al 23/10, dopo il riordino dei test della home):
+- Test Odoo (141 al 24/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
-- Test JS (45): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
+- Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,
   senza `--test-enable`, poi `docker restart torrepulia-20-local-dev-odoo-1`.
 - Verifica visiva: Playwright in Python locale. Per servire il database giusto senza
@@ -316,6 +343,11 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
 - La scheda prodotto riscrive l'URL con la variante (`?filtrazione-…`) e cancella l'hash.
 - Se la versione del modulo in locale è già quella nuova, una migrazione aggiunta dopo non
   riparte: eseguirla a mano da `odoo shell`. In produzione parte normalmente.
+- Odoo 20: i redirect 301/302 di `website.rewrite` valgono solo se nessuna rotta risponde
+  (fallback 404); `/shop/<slug>-<id>` usa l'ID finale, quindi un vecchio ID esistente vince.
+- Il popup di Odoo mette il focus sul secondo elemento attivabile (presume che il primo sia
+  la X): nella barra dei cookie la X va per prima.
+- Il metodo `get_current_website()` non esiste in Odoo 20: usare `self.env.website`.
 - Il modulo campagne esegue `_install_request_campaign_pages` a ogni `-u`: i cambi di testo
   vanno resi "una volta sola" con un passo nel backup (`visual_bullets_copy_v1`,
   `opening_facts_v2`) o un attributo sullo snippet (`data-hero-facts`).
