@@ -74,6 +74,17 @@ class Website(models.Model):
             del catalog.attrib['t-att-data-filter-id']
         return etree.tostring(root, encoding='unicode')
 
+    # Layout extensions that rewrite Odoo's header and footer: they belong to the Torrepulia site
+    # only, so another website of the database keeps whatever header or footer its builder picks.
+    SITE_ONLY_VIEWS = ('navigation_layout', 'footer_editorial')
+
+    def _torrepulia_scope_navigation(self):
+        self.ensure_one()
+        for name in self.SITE_ONLY_VIEWS:
+            view = self.env.ref(MODULE + '.' + name, raise_if_not_found=False)
+            if view and not view.website_id:
+                view.website_id = self
+
     @api.model
     def _provision_torrepulia_site(self):
         websites = self.search([('torrepulia_theme_enabled', '=', True)])
@@ -105,6 +116,7 @@ class Website(models.Model):
                 view.write({'website_id': website.id, 'active': True})
                 self._torrepulia_xmlid(name, view)
 
+        website._torrepulia_scope_navigation()
         contact_view = self.env.ref(MODULE + '.torrepulia_header_contact')
         if not contact_view.website_id:
             contact_view.write({'website_id': website.id, 'active': True})

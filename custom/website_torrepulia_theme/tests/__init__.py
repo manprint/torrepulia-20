@@ -5,3 +5,4 @@ from . import test_editorial_cleanup
 from . import test_boutique
 from . import test_editorial_pages
 from . import test_footer
+from . import test_other_websites

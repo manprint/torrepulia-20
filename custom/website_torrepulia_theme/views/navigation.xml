@@ -5,10 +5,11 @@
         <xpath expr="//header[@id='top']" position="attributes">
             <attribute name="t-attf-class" add="#{website.torrepulia_theme_enabled and 'o_no_autohide_menu' or ''}" separator=" "/>
         </xpath>
-        <xpath expr="//header/t[@t-call='website.navbar']" position="attributes">
+        <!-- Descendant axis: Odoo's header templates (e.g. "boxed") nest the navbar call, any site may use them. -->
+        <xpath expr="//header//t[@t-call='website.navbar']" position="attributes">
             <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
         </xpath>
-        <xpath expr="//header/t[@t-call='website.template_header_mobile']" position="attributes">
+        <xpath expr="//header//t[@t-call='website.template_header_mobile']" position="attributes">
             <attribute name="t-if">not website.torrepulia_theme_enabled</attribute>
         </xpath>
         <xpath expr="//footer/div[@id='footer']" position="attributes">

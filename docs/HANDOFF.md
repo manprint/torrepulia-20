@@ -80,6 +80,14 @@ sezione sensoriale di /l-olio e i capitoli di /aboutus (`SENSORY_ONLY`).
 - Corretto uno scorrimento orizzontale di 9 px tra 768 e 1320 px: sezioni con righe `.gx-5`
   e contenitore a 15 px (regola in `editorial_facts.scss`).
 
+### Altri siti nello stesso database (`20.0.3.16.0`)
+
+In produzione la creazione di un nuovo sito falliva ("L'elemento '<xpath expr=//header/t[@t-call='website.navbar']>'
+non può esser localizzato"): `navigation_layout` era generico e lo stile di intestazione "boxed" di Odoo
+annida la chiamata a `website.navbar`. Ora `navigation_layout` e `footer_editorial` appartengono al sito
+Torrepulia (`website._torrepulia_scope_navigation`, provisioning + migrazione 3.16) e gli agganci usano
+`//header//t[...]`. Test `test_other_websites`: un sito nuovo prova tutti gli stili di intestazione e footer.
+
 Regole sui testi decise con l'utente: mai nominare il frantoio (scrivere "frantoio
 partner"); niente superlativi non dimostrabili, "biologico", "certificata", frasi
 salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non si citano.
