@@ -1,6 +1,61 @@
-# Handoff Torrepulia: stato al 23/10/2026
+# Handoff Torrepulia: stato al 23/10/2026 (sera)
 
-Documento di ripresa per la prossima sessione di lavoro. Ultimo commit deployato: vedi `git log` (Fase 2 punto 1, shop a righe e olio nuovo).
+Documento di ripresa per la prossima sessione di lavoro. Ultimo commit deployato: `740277b`
+(caratteri locali al posto di Google Fonts), dopo `ddef52a` (Fase 3 e collaudo).
+
+## Prossima sessione: La Peranzana (/l-olio) e La famiglia (/aboutus)
+
+Obiettivo: applicare la critica del 23/10 alle due pagine con i materiali dell'utente. I
+testi sono nel Builder: modificarli via migrazione con backup della vista (autorizzato),
+mantenendo le sezioni editabili. Verifica visiva a 1440 e 390 px, una sola tornata di test,
+commit e deploy solo dopo aver mostrato il risultato all'utente.
+
+Materiali e risposte dell'utente (23/10):
+- **Analisi**: `C:\Users\salvatore.leone\Downloads\torrepulia_odoo20\Torrepulia foto webp\Analisi olio 2024.pdf`.
+  Rapporto di prova del Frantoio Sacco Oliveti, Torremaggiore, 19/11/2024, committente
+  Leone, misurato con XDS Rapid Liquid Analyzer (analisi rapida, non laboratorio
+  accreditato; numero di rapporto vuoto). "Riproducibile liberamente solo nella sua
+  totalità": pubblicare il PDF intero (file statico del tema) e chiamarlo "rapporto di prova
+  del frantoio", mai "certificato". Valori: acidità 0,17 %, perossidi 4,91, K232 1,87,
+  K270 0,12, DeltaK 0,00, acido oleico 70,23 %, polifenoli totali 588,98 mg/kg, tocoferoli
+  243,55 mg/kg. Idrossitirosolo + tirosolo + derivati (6,95 + 12,88 + 134,40 + 100,92 +
+  80,28 + 16,83) = circa 352 mg/kg, sopra la soglia di 250 mg/kg del claim UE 432/2012:
+  utilizzabile solo con la formula autorizzata ("I polifenoli dell'olio d'oliva
+  contribuiscono alla protezione dei lipidi ematici dallo stress ossidativo", con 20 g al
+  giorno) e meglio dopo conferma di un laboratorio. Fino ad allora niente frasi salutistiche
+  generiche come "benefici per la tua salute".
+- **Dimensione**: "oltre 1000 piante di ulivo nell'agro di Torremaggiore" (niente ettari né
+  contrada).
+- **Foto del trattore**: papà Michele sul trattore e nonno Santino Vincenzo. Didascalia da
+  aggiungere; uniformare ovunque il nome del nonno a "Santino Vincenzo"; anno non noto.
+- **"Filiera corta certificata"**: non esiste una certificazione. L'utente: "noi
+  raccogliamo, moliamo e spediamo". Togliere "certificata" e scrivere il fatto. **Da
+  chiedere all'utente**: la molitura avviene al Frantoio Sacco Oliveti (di terzi)? Se sì,
+  scrivere "moliamo entro poche ore al frantoio di Torremaggiore", non "moliamo noi".
+- **Chi fa cosa**: "siamo piccoli, tutti fanno tutto": niente sezione sui ruoli.
+- **Frasi del padre o del nonno**: non ci sono. Se utili, predisporre segnaposto ben
+  marcati e **non pubblicarli come citazioni reali** finché l'utente non li sostituisce.
+
+Interventi (dalla critica, in ordine di priorità):
+1. /l-olio: blocco "Le analisi del raccolto 2024" (3 valori grandi + tabella con i limiti,
+   riusando `torrepulia.oil.profile` e il template `pdp_oil_profile`) con link al PDF.
+2. /l-olio: togliere il Bag in Box (`s_bag_in_box`) e portarlo nella scheda del Bag in Box;
+   chiusura con doppia scelta "Ordina dalle scorte" / "Prenota l'olio nuovo".
+3. /l-olio: luoghi ridotti a un paragrafo + mappa della home; card 01-04 riscritte (niente
+   griglia di card uguali), righe di testo entro 70 caratteri, sentence case, spaziatura
+   del sottotitolo sensoriale su mobile.
+4. /aboutus: via i "pilastri" e le affermazioni non documentate ("certificata", "ulivi
+   secolari", "sostenibili", "benefici per la salute", "condividiamo le analisi" senza
+   link); "vendemmie" diventa "raccolte"; "secolare" va tolto (la storia parte dal 1945);
+   registro meno enfatico; fascia "Come lavoriamo" con fatti e link alle analisi; date in
+   filigrana leggibili; finale con firma "Franco e Salvatore Leone" e invito a prenotare.
+5. Entrambe: chiusure diverse da quella di home e footer; gerarchia dei nomi (azienda
+   Leone, marchio Torrepulia, olio La Regina, cultivar Peranzana); immagini del processo
+   con srcset (process-crates servita a 960 px per 273 px, 188 KB).
+
+Altre cose aperte: URL del nuovo sito di produzione (per verificare compressione, caratteri,
+corriere e bonifico); configurazione in produzione di corriere espresso e bonifico con IBAN;
+testo di esaurimento della latta ("Prenota l'olio nuovo!") da cambiare a cura dell'utente.
 
 ## Obiettivo e vincoli
 
@@ -78,7 +133,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   ripulito anche con vendita da esaurito consentita (`commerce.py`, `availability.xml`).
 - Collaudo locale (script `collaudo.py purchase|preorder|closed` nella scratchpad della
   sessione): 33/33. Ordini di prova S00019, S00020; opportunità 106 e 108.
-- Da fare: Google Fonts (Inter, Inter Tight) collegati da Odoo, problema di privacy.
+- Google Fonts: risolto in `740277b` (migrazione 20.0.3.12.0, test `test_brand_fonts_are_self_hosted`).
 
 ## Fase 2.2 (home e checkout)
 
