@@ -98,6 +98,9 @@ class Website(models.Model):
         campaign = self._public_request_campaign()
         return '/prenotailtuoolio' if campaign and campaign._is_open() else False
 
+    def _torrepulia_seasonal_open(self):
+        return bool(self._request_preorder_url())
+
     def _torrepulia_preorder_product_url(self, product):
         """Hybrid mode: products of the open default campaign are reserved, not bought."""
         self.ensure_one()

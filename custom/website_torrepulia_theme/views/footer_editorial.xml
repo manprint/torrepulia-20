@@ -26,7 +26,7 @@
                     <nav aria-label="L'olio">
                         <h2>L&#8217;olio</h2>
                         <a href="/shop">Acquista olio</a>
-                        <t t-if="website.torrepulia_seasonal_navigation"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
+                        <t t-if="website._torrepulia_seasonal_visible()"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
                         <a href="/shop/cart">Carrello</a>
                         <a href="/my/home">Il mio account</a>
                     </nav>

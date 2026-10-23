@@ -217,3 +217,15 @@ class TestHybridMode(HttpCase):
         self.assertIn('Grazie, Hybrid. La tua prenotazione è registrata.', body)
         self.assertIn('Bloccato per tutta la stagione', body)
         self.assertNotIn('non conferma un ordine', body)
+
+    def test_new_oil_menu_follows_the_campaign(self):
+        # A plain menu entry, as in production before the launch migration.
+        menu = self.env['website.menu'].create({'name': 'Olio nuovo', 'url': '/prenotailtuoolio',
+            'parent_id': self.website.menu_id.id, 'website_id': self.website.id})
+        self.env['website.menu'].search([('website_id', '=', self.website.id), ('id', '!=', menu.id)]).torrepulia_seasonal = False
+        self.website.torrepulia_seasonal_navigation = False
+        self.website._torrepulia_flag_seasonal_menu()
+        self.assertTrue(menu.torrepulia_seasonal)
+        self.assertIn('mc-menu-seasonal', self.url_open('/').text)
+        self.campaign.state = 'closed'
+        self.assertNotIn('mc-menu-seasonal', self.url_open('/').text)

@@ -32,7 +32,7 @@
         <xpath expr="//div[@id='mc-footer']/div[hasclass('footer-bottom')]" position="before">
             <div class="mc-footer-groups">
                 <nav aria-label="Acquisto"><h2>Acquisto</h2><a href="/shop">Acquista olio</a><a href="/shop/cart">Carrello</a>
-                    <t t-if="website.torrepulia_seasonal_navigation"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
+                    <t t-if="website._torrepulia_seasonal_visible()"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
                 </nav>
                 <nav aria-label="Storia e territorio"><h2>Storia e territorio</h2>
                     <a t-foreach="website._torrepulia_footer_pages(['oil', 'story', 'land'])" t-as="page" t-att-href="page.url"><t t-out="page.name.split(' | ')[0]"/></a>
@@ -62,7 +62,7 @@
         </ul>
     </template>
     <template id="navigation_item" name="Torrepulia menu item">
-        <li t-if="menu.is_visible and not menu.torrepulia_navigation_hidden and (not menu.torrepulia_seasonal or website.torrepulia_seasonal_navigation)" t-att-class="'mc-menu-seasonal' if menu.torrepulia_seasonal else None">
+        <li t-if="menu.is_visible and not menu.torrepulia_navigation_hidden and (not menu.torrepulia_seasonal or website._torrepulia_seasonal_visible())" t-att-class="'mc-menu-seasonal' if menu.torrepulia_seasonal else None">
             <details t-if="menu.child_id" class="mc-menu-group"><summary><span t-field="menu.name"/></summary><ul>
                 <t t-foreach="menu.child_id" t-as="menu"><t t-call="website_torrepulia_theme.navigation_item"/></t>
             </ul></details>

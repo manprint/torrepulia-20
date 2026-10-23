@@ -8,6 +8,7 @@ import logging
 from lxml import etree
 
 from odoo import fields, models
+from odoo.fields import Domain
 from odoo.tools import file_open
 from odoo.tools.binary import BinaryBytes
 
@@ -61,8 +62,11 @@ class Website(models.Model):
         self.ensure_one()
         with file_open(MODULE + '/data/pages.xml', 'rb') as source:
             home = etree.parse(source).getroot().find('page[@key="home"]')
-        page = self.env['website.page'].search([('url', '=', '/'), ('website_id', 'in', [self.id, False])],
-                                               order='website_id', limit=1)
+        # The page Odoo serves at "/" (as in website.page._get_page_info): url is translated,
+        # so look it up in the website language; a website page wins over a generic one.
+        pages = self.env['website.page'].with_context(lang=self.default_lang_id.code or 'en_US')
+        page = pages.browse(list(pages._search(Domain('url', '=ilike', '/') & self.website_domain(),
+                                               order='website_id asc', limit=1)))
         if page:
             # A home without index would keep the whole site out of search results.
             page.website_indexed = True

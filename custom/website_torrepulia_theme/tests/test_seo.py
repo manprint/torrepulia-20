@@ -29,13 +29,16 @@ class TestLaunchSeo(HttpCase):
         self.assertEqual(by_path['/home'].redirect_type, '301')
 
     def test_home_is_indexed_and_shop_speaks_italian(self):
-        home = self.env['website.page'].search([('url', '=', '/'), ('website_id', 'in', [self.website.id, False])],
-                                               order='website_id', limit=1)
-        home.website_indexed = False
-        home.view_id.website_meta_description = 'This is the homepage of the website'
+        # As in production: every "/" page without index and with Odoo's placeholder description.
+        homes = self.env['website.page'].search([('url', '=', '/')])
+        homes.website_indexed = False
+        homes.view_id.website_meta_title = False
+        homes.view_id.website_meta_description = 'This is the homepage of the website'
         self.website._torrepulia_launch_seo()
-        self.assertTrue(home.website_indexed)
-        self.assertIn('Peranzana', home.view_id.website_meta_description)
+        home = self.url_open('/').text
+        self.assertNotIn('name="robots" content="noindex"', home)
+        self.assertIn('Olio extravergine Peranzana della famiglia Leone</title>', home)
+        self.assertNotIn('This is the homepage of the website', home)
         self.assertTrue(self.website.social_default_image)
         shop = self.url_open('/shop').text
         self.assertIn('<title>Acquista olio extravergine Peranzana | Torrepulia</title>', shop)

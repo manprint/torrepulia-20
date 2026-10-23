@@ -13,12 +13,30 @@ class Website(models.Model):
 
     torrepulia_seasonal_navigation = fields.Boolean('Show seasonal oil menu', default=False)
 
+    def _torrepulia_seasonal_open(self):
+        """The new-oil campaign takes reservations; the campaign addon provides it."""
+        self.ensure_one()
+        return False
+
+    def _torrepulia_seasonal_visible(self):
+        # Seasonal links leave the menu and the footer by themselves when the campaign closes.
+        self.ensure_one()
+        return self.torrepulia_seasonal_navigation and self._torrepulia_seasonal_open()
+
+    def _torrepulia_flag_seasonal_menu(self):
+        """Mark the menu entry of the reservation page as seasonal (gold outline, shown in season)."""
+        self.ensure_one()
+        menus = self.env['website.menu'].search([('website_id', '=', self.id)])
+        if not menus.filtered('torrepulia_seasonal'):
+            menus.filtered(lambda menu: (menu.url or '').rstrip('/') == '/prenotailtuoolio').torrepulia_seasonal = True
+        self.torrepulia_seasonal_navigation = True
+
     def _torrepulia_navigation(self):
         self.ensure_one()
         return self.menu_id.child_id.filtered(
             lambda menu: menu.website_id == self and menu.is_visible
             and not menu.torrepulia_navigation_hidden
-            and (not menu.torrepulia_seasonal or self.torrepulia_seasonal_navigation)
+            and (not menu.torrepulia_seasonal or self._torrepulia_seasonal_visible())
         )
 
     # Social fields of the company, in the order the footer lists them, with their Odoo UI icon.
