@@ -2,11 +2,24 @@ import { Interaction } from '@web/public/interaction';
 import { registry } from '@web/core/registry';
 
 let sequence = 0;
+// The home links here ("Come funziona"). Odoo's sanitizer strips ids from product descriptions,
+// so the first explainer of the page receives the anchor when the page runs.
+const ANCHOR = 'come-funziona';
+// Read at load: the product page rewrites the URL with the chosen variant and drops the hash.
+const requestedAnchor = typeof window !== 'undefined' && window.location.hash === `#${ANCHOR}`;
 
 export class BagInBox extends Interaction {
     static selector = '.tp-site .tp-bib';
 
     start() {
+        const doc = this.el.ownerDocument;
+        if (!this.el.id && !doc.getElementById(ANCHOR) && doc.querySelector(BagInBox.selector) === this.el) {
+            this.el.id = ANCHOR;
+            this.registerCleanup(() => this.el.removeAttribute('id'));
+            if (requestedAnchor || doc.defaultView.location.hash === `#${ANCHOR}`) {
+                doc.defaultView.requestAnimationFrame(() => this.el.scrollIntoView({ block: 'start' }));
+            }
+        }
         const button = this.el.querySelector('.tp-bib-hotspot');
         const tooltip = this.el.querySelector('.tp-bib-tooltip');
         if (!button || !tooltip) return;

@@ -3,9 +3,10 @@
         <section class="tp-campaign o_colored_level" data-snippet="s_torrepulia_request_campaign" data-name="Richiesta del nuovo raccolto" data-columns="2" data-editorial-layout="2" data-visual-bullets="1">
             <div class="tp-campaign-hero">
                 <div><h1>Prenota il tuo olio del nuovo raccolto</h1>
-                    <p class="tp-campaign-intro">Prenota oggi senza alcun anticipo la tua quota di La Regina: lo moliamo e lo spediamo entro 48 ore.</p>
+                    <p class="tp-campaign-intro">Scegli adesso i formati: raccogliamo, moliamo entro 8 ore dalla raccolta e te lo spediamo appena &#232; pronto.</p>
+                    <a class="btn btn-primary tp-campaign-hero-cta" href="#tp-campaign-formats">Scegli i formati</a>
                 </div>
-                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/campaign/land-1280.webp" alt="Gli uliveti Torrepulia a Torremaggiore" loading="eager"/>
+                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp 1280w" sizes="(max-width: 767px) 100vw, 45vw" alt="Una mano tra i rami di un ulivo con le olive Peranzana pronte per la raccolta" width="1280" height="853" loading="eager" fetchpriority="high"/>
             </div>
             <div class="tp-campaign-content o_not_editable"><p>Caricamento della campagna…</p></div>
             <div class="tp-campaign-review tp-request-review o_not_editable" data-tp-review="" data-review-lazy=""><p>Il modulo e il riepilogo della richiesta vengono caricati durante la visita. Nessun dato personale viene salvato nella pagina.</p></div>
@@ -13,15 +14,22 @@
     </template>
     <template id="campaign_content" name="Prodotti della campagna">
         <t t-if="campaign and (opened or editing)">
+            <!-- The facts read the campaign: each season edits them there, not in the page. -->
+            <dl class="tp-campaign-facts" aria-label="La prenotazione in breve">
+                <div t-if="campaign.delivery_period"><dt>Consegna</dt><dd t-out="campaign.delivery_period"/></div>
+                <div><dt>Prezzo</dt><dd t-out="campaign.price_note or 'Bloccato per tutta la stagione'"/></div>
+                <div><dt>Pagamento</dt><dd t-out="campaign.payment_note or 'Alla spedizione, zero anticipo'"/></div>
+            </dl>
+            <section class="tp-campaign-steps" aria-labelledby="tp-campaign-steps-title">
+                <h2 id="tp-campaign-steps-title">Come funziona</h2>
+                <ol>
+                    <li><strong>Scegli</strong><span>Formati e quantit&#224;: filtrato, non filtrato o entrambi.</span></li>
+                    <li><strong>Ricevi la conferma</strong><span>Ti scriviamo un&#8217;email con il riepilogo della prenotazione.</span></li>
+                    <li><strong>Paghi alla spedizione</strong><span>Quando l&#8217;olio nuovo parte da Torremaggiore.</span></li>
+                </ol>
+            </section>
             <h2 id="tp-campaign-formats" class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
             <p class="tp-campaign-formats-description" t-if="campaign.introduction" t-out="campaign.introduction"/>
-            <div class="tp-campaign-benefits-banner">
-            <ul class="tp-campaign-benefits" aria-label="La prenotazione in breve">
-                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4 M12 14v3"/></svg><div><strong>PREZZO BLOCCATO</strong><span>Garantito per tutta la stagione.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 21 19 3 M8 17C3 17 2 12 3 9c5 0 8 3 5 8Z M12 12c-1-5 2-9 7-9 1 5-1 9-7 9Z M12 13c5-3 9-1 9 3-5 3-8 2-9-3Z"/></svg><div><strong>FILIERA PROTETTA</strong><span>100% olive di Torremaggiore.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m7.5 12 3 3 6-6"/></svg><div><strong>ZERO ANTICIPO</strong><span>Paghi solo alla spedizione.</span></div></li>
-            </ul>
-            </div>
             <p t-if="editing" class="tp-campaign-demo">Anteprima dimostrativa: nessuna modifica alla richiesta del visitatore.</p>
             <div class="tp-campaign-grid">
                 <article t-foreach="cards" t-as="card" class="tp-campaign-card">

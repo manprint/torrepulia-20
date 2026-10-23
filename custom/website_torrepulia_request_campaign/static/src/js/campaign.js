@@ -54,7 +54,8 @@ export class SeasonalCampaign extends Interaction {
                 this.setCardQuantity(input, Math.round(quantity * 1e9) / 1e9);
             }
             if (event.target.closest('[data-campaign-scroll]')) {
-                this.holder.scrollIntoView({ block: 'start' });
+                // The content holder has no box on wide screens (display: contents): scroll to the formats.
+                (this.el.querySelector('#tp-campaign-formats') || this.holder).scrollIntoView({ block: 'start' });
             }
             if (event.target.closest('[data-campaign-dock-go]')) {
                 this.el.querySelector('.tp-campaign-review')?.scrollIntoView({ block: 'start' });

@@ -17,7 +17,7 @@ class Campaign(models.Model):
     closes_at = fields.Datetime('Chiusura al')
     delivery_period = fields.Char('Periodo indicativo di consegna', translate=True)
     introduction = fields.Text('Testo editoriale', translate=True,
-        default='La produzione della nuova campagna olearia 2026/2027 è limitata. Seleziona le confezioni per la tua tavola:')
+        default='Filtrato o non filtrato, anche insieme: scegli le quantità per ogni formato.')
     shipping_note = fields.Char('Indicazione spedizione', translate=True)
     payment_note = fields.Char('Indicazione pagamento', translate=True)
     price_note = fields.Char('Indicazione prezzo', translate=True,

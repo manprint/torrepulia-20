@@ -1,8 +1,65 @@
-# Handoff Torrepulia: stato al 23/10/2026 (notte)
+# Handoff Torrepulia: stato al 23/10/2026 (sera tardi)
 
-Documento di ripresa per la prossima sessione di lavoro. Ultimo lavoro: pagine editoriali
-(La Peranzana, La famiglia, Il territorio, sezione famiglia della home), migrazione
-`20.0.3.13.0`, dopo `740277b` (caratteri locali) e `ddef52a` (Fase 3 e collaudo).
+Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23/10 è su `main`
+e deployato (ultimi commit: pagine editoriali, home, footer, menu, correzioni produzione,
+pagina olio nuovo). Versioni: tema `20.0.3.17.0`, richieste `20.0.1.15.0`, campagne `20.0.1.8.0`.
+Apertura pubblica prevista **entro fine ottobre 2026**.
+
+## Prossima sessione: verso l'apertura
+
+In ordine di priorità (il punto 1 è bloccante):
+
+1. **Verifica in produzione e HTTPS.** Serve dall'utente l'URL del nuovo sito di produzione e
+   come è configurato il proxy della VM (Nginx, Caddy, altro).
+   - Certificato Let's Encrypt sul proxy; parametro di sistema `web.base.url` in `https://`
+     con il dominio giusto (e `web.base.url.freeze`). Senza HTTPS il browser segna "Non
+     sicuro" nel checkout (vedi anche `random_uuid.js`).
+   - Controllare in produzione: pagine dopo le migrazioni 3.13-3.17 e campagne 1.8.0,
+     compressione del proxy (in locale CSS 1,3 MB / JS 2,7 MB non compressi), caratteri
+     locali, checkout completo (corriere + bonifico), prenotazione completa.
+2. **Configurazione in produzione** (a cura dell'utente, guidata):
+   - scheda azienda completa (ragione sociale, P. IVA, indirizzo, email, telefono) e link
+     social in Sito web → Impostazioni → Social media: il footer li legge da lì;
+   - corriere espresso 9,90 €, gratuito da 89 €; bonifico con IBAN;
+   - campagna olio nuovo: "Periodo indicativo di consegna" → "Tra novembre e dicembre",
+     "Indicazione prezzo" → "Bloccato per tutta la stagione"; modalità commerciale "Acquisto
+     online + prenotazione stagionale" con team commerciale (già fatto dall'utente il 23/10);
+   - testo di esaurimento della latta ("Prenota l'olio nuovo!").
+3. **Email di conferma automatica della prenotazione.** Il passo 2 di "Come funziona" dice
+   "Ti scriviamo un'email con il riepilogo": l'utente vuole che parta da sola (modello email
+   + automazione all'arrivo della richiesta/opportunità CRM).
+4. **SEO di base:** titoli e descrizioni di tutte le pagine, immagine di condivisione,
+   sitemap e robots, dati strutturati prodotto, **redirect dagli indirizzi del vecchio
+   torrepulia.it** (punto delicato).
+5. **Cookie e analytics:** banner di consenso conforme prima di GA4 e Meta Pixel (si
+   collegano solo a sviluppo finito, scelta dell'utente).
+6. **Collaudo finale in produzione:** un ordine dalle scorte e una prenotazione veri, poi
+   apertura.
+
+Facoltativo, rinviato dall'utente: filestore nel backup del deploy, backup giornaliero
+separato e copia fuori dalla VM (oggi: solo `pg_dump` del DB sulla VM, ultimi 10 deploy).
+
+Contenuti che aspettano l'utente: frasi vere di papà o del nonno per i due segnaposto;
+analisi del raccolto 2026 (nuovo profilo olio + PDF + blocco analisi nel Builder); prezzi,
+badge e nomi prodotto definitivi (oggi di prova); foto della testata dell'olio nuovo (in
+produzione c'è il tramonto scelto nel Builder; `olive-raccolta-1280.webp` è disponibile).
+
+## Fatto il 23/10 (sera): pagina olio nuovo e menu
+
+- **/prenotailtuoolio** (modulo campagne `20.0.1.8.0`, `views/snippet.xml`, `models/page.py`
+  passo `opening_facts_v2` / attributo `data-hero-facts`): testata con testo "moliamo entro
+  8 ore", pulsante "Scegli i formati"; tre fatti nella testata letti dalla campagna
+  (`delivery_period`, `price_note`, `payment_note`, con testi predefiniti); "Come funziona"
+  in tre passi; via "PREZZO BLOCCATO / FILIERA PROTETTA / ZERO ANTICIPO" e "produzione
+  limitata" (si produce in base alle prenotazioni). Su schermi ≥768 px una sola griglia a
+  1320 px con `display: contents` su testata e contenuto (nessun nodo spostato via JS). La
+  foto predefinita del tema viene sostituita, quella scelta nel Builder resta.
+- **Bag in Box:** il link della home punta a `<scheda>#come-funziona`. Il sanitizer di Odoo
+  toglie gli `id` dalla descrizione prodotto e la scheda riscrive l'URL con la variante:
+  l'ancora la mette `static/src/js/bag_in_box.js`, che legge l'hash al caricamento.
+- **Menu:** voce stagionale "Olio nuovo" come pulsante con bordo oro (pieno sulla sua
+  pagina, bianco sopra la foto della home); su telefono prima voce con "Prenotazioni aperte"
+  solo se la campagna è aperta (`design_system.scss`, `navigation.xml`).
 
 ## Fatto il 23/10 (notte): pagine editoriali dopo la critica
 
@@ -104,12 +161,6 @@ salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non 
 
 Foto: `C:\Users\salvatore.leone\Downloads\torrepulia_odoo20\Torrepulia foto webp\Foto campagna`
 utilizzabili; le foto di prodotto mostrano bottiglie vecchie, non usarle.
-
-Altre cose aperte: frasi vere di papà o del nonno per i segnaposto; URL del nuovo sito di
-produzione (per verificare compressione, caratteri, corriere e bonifico); configurazione in
-produzione di corriere espresso e bonifico con IBAN; testo di esaurimento della latta
-("Prenota l'olio nuovo!") da cambiare a cura dell'utente; analisi del raccolto 2026
-(nuovo profilo olio + PDF + aggiornare il blocco analisi nel Builder).
 
 ## Obiettivo e vincoli
 
@@ -258,3 +309,18 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
 - Le migrazioni non devono forzare `lang='it_IT'`: il database di test non ha l'italiano.
   Usare la lingua predefinita del sito.
 - Un template nuovo richiede `-u` del modulo: il solo riavvio con dev_mode non lo registra.
+- La home salvata ha versioni `en_US`, `it_IT` (quella pubblica) e `_en_US` diverse: le
+  migrazioni lavorano per elementi (`models/home_copy.py`), non per frasi esatte.
+- Il sanitizer delle descrizioni prodotto (`website_description`) toglie gli `id`, anche
+  scritti dal sistema: ancore da impostare via JS.
+- La scheda prodotto riscrive l'URL con la variante (`?filtrazione-…`) e cancella l'hash.
+- Se la versione del modulo in locale è già quella nuova, una migrazione aggiunta dopo non
+  riparte: eseguirla a mano da `odoo shell`. In produzione parte normalmente.
+- Il modulo campagne esegue `_install_request_campaign_pages` a ogni `-u`: i cambi di testo
+  vanno resi "una volta sola" con un passo nel backup (`visual_bullets_copy_v1`,
+  `opening_facts_v2`) o un attributo sullo snippet (`data-hero-facts`).
+- Template generici del tema che ereditano `website.layout` valgono per tutti i siti del
+  database: agganci xpath robusti (`//header//t[...]`) e template di intestazione/footer
+  legati al sito Torrepulia (`_torrepulia_scope_navigation`).
+- In Git Bash gli heredoc con apici e caratteri speciali (€) si rompono: scrivere gli script
+  in un file nella scratchpad ed eseguirlo.

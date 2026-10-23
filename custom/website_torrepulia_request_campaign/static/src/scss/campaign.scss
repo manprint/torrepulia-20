@@ -13,7 +13,26 @@
     .tp-campaign-intro { margin-top: 0; }
     .tp-campaign-formats-title { margin-bottom: 20px !important; }
     .tp-campaign-formats-description { margin-bottom: 32px !important; }
-    .tp-campaign-benefits-banner { width: calc(100% - 32px); max-width: 900px; box-sizing: border-box; margin: 30px auto 40px; padding: 20px 40px; border-radius: 8px; background: var(--tp-pale, #eef2ed); }
+    // Opening: what to expect before the formats, read from the campaign fields.
+    .tp-campaign-hero-cta { margin-top: 8px; }
+    .tp-campaign-photo { border-radius: 8px; }
+    .tp-campaign-facts {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        margin: 0 0 56px; padding: 0; border-block: 1px solid var(--tp-line, #d2dcd4);
+        > div { padding: 20px 24px 20px 0; }
+        > div + div { padding-left: 24px; border-left: 1px solid var(--tp-line, #d2dcd4); }
+        dt { margin-bottom: 4px; color: var(--tp-gold-text, #746014); font: 600 13px/1.4 Manrope, sans-serif; }
+        dd { margin: 0; font: 400 clamp(1.25rem, 1.8vw, 1.5rem)/1.3 "Libre Caslon Display", Georgia, serif; color: var(--tp-olive, #2e493b); }
+    }
+    .tp-campaign-steps {
+        margin: 0 0 64px;
+        h2 { margin-bottom: 20px; }
+        ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 0; padding: 0; list-style: none; counter-reset: tp-step; }
+        li { counter-increment: tp-step; display: grid; gap: 6px; min-width: 0; }
+        li::before { content: counter(tp-step); font: 400 2.5rem/1 "Libre Caslon Display", Georgia, serif; color: var(--tp-gold-text, #746014); }
+        strong { font-size: 17px; }
+        span { color: var(--tp-muted, #526056); line-height: 1.6; }
+    }
     .tp-campaign-photo { width: 100%; height: 340px; object-fit: cover; }
     .tp-campaign-content, .tp-campaign-review, #tp-campaign-formats { scroll-margin-top: 100px; }
     .tp-campaign-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
@@ -46,11 +65,6 @@
     .tp-review-empty:not([hidden]) { display: grid; justify-items: start; gap: 12px; margin-top: 40px; padding: clamp(20px, 3vw, 32px); border-radius: 4px; background: var(--tp-pale, #eef2ed); }
     .tp-review-empty h2 { margin: 0; font-size: clamp(1.5rem, 2.2vw, 1.875rem); }
     .tp-review-empty p { margin: 0; }
-    .tp-campaign-benefits { display: flex; gap: 24px; margin: 0; padding: 0; list-style: none; }
-    .tp-campaign-benefits li { flex: 1; min-width: 0; display: flex; gap: 12px; align-items: center; font-family: Manrope, sans-serif; }
-    .tp-campaign-benefits svg { width: 32px; height: 32px; flex: 0 0 32px; fill: none; stroke: var(--tp-muted, #526056); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-    .tp-campaign-benefits strong { display: block; color: var(--tp-ink, #18231f); font-size: 13px; font-weight: 700; line-height: 1.5; }
-    .tp-campaign-benefits span { display: block; color: var(--tp-muted, #526056); font-size: 12px; line-height: 1.5; margin-top: 4px; }
     .tp-campaign-summary { margin-block: 0; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
     .tp-campaign-summary p:empty { display: none; }
     .tp-campaign-next { max-width: 70ch; }
@@ -77,8 +91,11 @@
     .tp-campaign {
         .tp-campaign-hero { grid-template-columns: 1fr; gap: 24px; margin-bottom: 40px; }
         .tp-campaign-photo { height: 220px; }
-        .tp-campaign-benefits-banner { width: 100%; padding: 20px; }
-        .tp-campaign-benefits { flex-direction: column; align-items: stretch; gap: 16px; }
+        .tp-campaign-facts { grid-template-columns: 1fr; margin-bottom: 40px;
+            > div, > div + div { padding: 14px 0; border-left: 0; }
+            > div + div { border-top: 1px solid var(--tp-line, #d2dcd4); } }
+        .tp-campaign-steps { margin-bottom: 40px; ol { grid-template-columns: 1fr; gap: 20px; } }
+        .tp-campaign-hero-cta { width: 100%; }
         .tp-campaign-grid, &[data-columns="2"] .tp-campaign-grid { grid-template-columns: 1fr; gap: 16px; }
         // Phone card: a small photo beside the format, the counters across the full width.
         .tp-campaign-card, &[data-columns="2"] .tp-campaign-card,
@@ -111,4 +128,34 @@
     .tp-campaign .tp-campaign-dock:not([hidden]) { animation: none; }
     .tp-campaign .tp-quantity-stepper button { transition: none; }
     .tp-campaign .tp-quantity-stepper button:active:not(:disabled) { transform: none; }
+}
+// Section titles below the opening stay one step under the h1: the theme's generic h2 rule is more specific.
+.tp-site.tp-cinematic .tp-campaign {
+    .tp-campaign-steps h2, .tp-campaign-formats-title { font-size: clamp(1.75rem, 2.6vw, 2.5rem); line-height: 1.15; }
+    .tp-campaign-steps li { align-content: start; }
+}
+
+// Wide screens: one grid for the whole page, on the site's 1320 px measure. The opening text and the
+// campaign facts share the left column, the photo spans both; everything else runs full width.
+// display: contents places the rendered facts beside the photo without moving DOM nodes the Builder saves.
+@media (min-width: 768px) {
+    .tp-campaign {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        column-gap: clamp(32px, 4vw, 64px);
+        padding-inline: Max(clamp(24px, 4.45vw, 64px), calc((100% - 1320px) / 2));
+        > * { grid-column: 1 / -1; min-width: 0; }
+        > .tp-campaign-hero, > .tp-campaign-content { display: contents; }
+        .tp-campaign-hero > div { grid-column: 1; grid-row: 1; align-self: end; }
+        .tp-campaign-hero > .tp-campaign-photo { grid-column: 2; grid-row: 1 / span 2; align-self: stretch; height: 100%; min-height: 420px; }
+        .tp-campaign-content > * { grid-column: 1 / -1; }
+        .tp-campaign-content > .tp-campaign-facts {
+            grid-column: 1; grid-row: 2; align-self: start; grid-template-columns: minmax(0, 1fr); margin: 32px 0 0;
+            > div, > div + div { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; padding: 12px 0; border-left: 0; }
+            > div + div { border-top: 1px solid var(--tp-line, #d2dcd4); }
+            dt { margin: 0; }
+            dd { font-size: clamp(1.125rem, 1.5vw, 1.3rem); }
+        }
+        .tp-campaign-steps { margin-top: 72px; }
+    }
 }

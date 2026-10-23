@@ -62,11 +62,11 @@
         </ul>
     </template>
     <template id="navigation_item" name="Torrepulia menu item">
-        <li t-if="menu.is_visible and not menu.torrepulia_navigation_hidden and (not menu.torrepulia_seasonal or website.torrepulia_seasonal_navigation)">
+        <li t-if="menu.is_visible and not menu.torrepulia_navigation_hidden and (not menu.torrepulia_seasonal or website.torrepulia_seasonal_navigation)" t-att-class="'mc-menu-seasonal' if menu.torrepulia_seasonal else None">
             <details t-if="menu.child_id" class="mc-menu-group"><summary><span t-field="menu.name"/></summary><ul>
                 <t t-foreach="menu.child_id" t-as="menu"><t t-call="website_torrepulia_theme.navigation_item"/></t>
             </ul></details>
-            <a t-elif="menu.url and menu.url != '#'" t-att-href="menu._clean_url()" t-att-target="'_blank' if menu.new_window else None" t-att-rel="'noopener' if menu.new_window else None" t-att-aria-current="'page' if menu._is_active() else None"><span t-field="menu.name"/></a>
+            <a t-elif="menu.url and menu.url != '#'" t-att-href="menu._clean_url()" t-att-target="'_blank' if menu.new_window else None" t-att-rel="'noopener' if menu.new_window else None" t-att-aria-current="'page' if menu._is_active() else None"><span t-field="menu.name"/><small t-if="menu.torrepulia_seasonal and website._torrepulia_preorder_season()" class="mc-menu-seasonal-note">Prenotazioni aperte</small></a>
         </li>
     </template>
     <record id="navigation_website_form" model="ir.ui.view">

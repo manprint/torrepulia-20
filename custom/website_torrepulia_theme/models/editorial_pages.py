@@ -18,6 +18,8 @@ from .home_copy import refine_section
 from .website import MODULE, inline_puglia_map
 
 HOME_KEY = MODULE + '.page_home_view'
+# Set on the product page by static/src/js/bag_in_box.js: the description sanitizer strips ids.
+BIB_ANCHOR = 'come-funziona'
 # Home family section, aligned with La famiglia: exact sentences only, owner rewrites stay untouched.
 HOME_REPLACEMENTS = (
     ("<p>Il primo uliveto, un'eredità d'amore.<br/>La nostra passione, da tre generazioni.</p>",
@@ -46,7 +48,7 @@ HOME_REPLACEMENTS = (
      "Salvatore, siamo cresciuti tra quegli alberi e il profumo delle olive appena frante. Nel 2020 abbiamo "
      "fondato Torrepulia per portare il nostro olio direttamente sulla tua tavola.</p>"),
 )
-REPORT_2024 ='/%s/static/src/docs/rapporto-di-prova-raccolto-2024.pdf' % MODULE
+REPORT_2024 = '/%s/static/src/docs/rapporto-di-prova-raccolto-2024.pdf' % MODULE
 OIL_DESCRIPTION = ('La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, '
                    'analisi del raccolto 2024 e abbinamenti.')
 LAND_DESCRIPTION = ('Torremaggiore e l\'Alto Tavoliere, nel nord della Puglia: dove crescono gli ulivi della '
@@ -197,7 +199,7 @@ def bag_in_box_url(env):
     product = env['product.template'].with_context(active_test=False).search([
         '|', ('torrepulia_format_name', 'ilike', 'bag in box'), ('name', 'ilike', 'bag in box'),
         ('is_published', '=', True)], limit=1)
-    return product.website_url if product else '/shop'
+    return product.website_url + '#' + BIB_ANCHOR if product else '/shop'
 
 
 def align_home_family(env):

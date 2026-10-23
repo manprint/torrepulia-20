@@ -180,7 +180,7 @@ class TestCampaign(RequestCase):
         self.assertEqual(self.website.torrepulia_campaign_page_backup[str(view.id)]['translations'], before)
         self.assertFalse(page.website_indexed)
         self.assertEqual(page.website_meta_title, 'SEO del gestore')
-        self.assertIn('2026/2027', self.campaign.introduction)
+        self.assertEqual(self.campaign.introduction, 'Filtrato o non filtrato, anche insieme: scegli le quantità per ogni formato.')
         self.assertEqual(self.campaign.with_context(lang='it_IT').introduction, self.campaign.introduction)
         self.campaign.introduction = 'Modifica successiva del gestore'
         self.website._install_request_campaign_pages()

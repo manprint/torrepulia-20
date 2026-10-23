@@ -188,7 +188,7 @@ class TestHybridMode(HttpCase):
         self.assertIn('La scorta di famiglia.', cards[1].text_content())
         self.assertTrue(tree.xpath('//*[@data-campaign-dock]//button[@data-campaign-dock-go]'))
         # An empty selection keeps the visitor on the page, pointing back to the formats.
-        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-formats'])
+        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-steps-title', 'tp-campaign-formats'])
         form = html.fromstring(self.url_open('/torrepulia/request/form?layout=campaign').content)
         self.assertEqual(form.xpath('//*[@data-review-empty]//a/@href'), ['#tp-campaign-formats'])
 

@@ -86,11 +86,12 @@ class TestCampaignHttp(HttpCase):
         content = self.content()
         self.assertTrue(content['open'])
         tree = html.fromstring(content['html'])
-        benefits = tree.xpath('//ul[@class="tp-campaign-benefits"]/li')
-        self.assertEqual(len(benefits), 3)
-        self.assertEqual([item.xpath('string(.//strong)') for item in benefits],
-                         ['PREZZO BLOCCATO', 'FILIERA PROTETTA', 'ZERO ANTICIPO'])
-        self.assertIn('2026/2027', tree.text_content())
+        # Facts read the campaign; no certification-like claim, no hard-coded season.
+        self.assertEqual(tree.xpath('//dl[@class="tp-campaign-facts"]//dt/text()'), ['Prezzo', 'Pagamento'])
+        self.assertIn('Alla spedizione, zero anticipo', tree.text_content())
+        self.assertEqual(len(tree.xpath('//section[@class="tp-campaign-steps"]//li')), 3)
+        self.assertNotIn('FILIERA PROTETTA', content['html'])
+        self.assertNotIn('2026/2027', tree.text_content())
         self.assertNotIn('tp-campaign-assurances', content['html'])
         cards = tree.xpath('//*[@data-campaign-config]')
         self.assertEqual([json.loads(card.get('data-campaign-config'))['product_id'] for card in cards], self.products[:2].ids)

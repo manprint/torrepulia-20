@@ -10,6 +10,33 @@ from odoo.addons.website_torrepulia_theme.controllers.reservation import QUANTIT
 LEGACY = {'s_torrepulia_reservation_hero', 's_torrepulia_reservation_conditions',
           's_torrepulia_reservation_form'}
 SNIPPET = 's_torrepulia_request_campaign'
+OLD_INTRODUCTION = 'La produzione della nuova campagna olearia 2026/2027 è limitata. Seleziona le confezioni per la tua tavola:'
+OLD_HERO_INTRO = 'Prenota oggi senza alcun anticipo la tua quota di La Regina: lo moliamo e lo spediamo entro 48 ore.'
+# Any size of the theme's default campaign photo; a photo chosen in the Builder stays.
+DEFAULT_PHOTO = '/website_torrepulia_theme/static/src/cinematic/campaign/land-'
+
+
+def refresh_opening(section, snippet):
+    """Opening of 20.0.1.8.0: new intro and action; the photo changes only if it is still the default."""
+    fresh = snippet.xpath('.//*[contains(concat(" ", normalize-space(@class), " "), " tp-campaign-hero ")]')
+    if not fresh or not fresh[0].xpath('.//p[contains(@class, "tp-campaign-intro")]'):
+        return
+    fresh = fresh[0]
+    for paragraph in section.xpath('.//p[contains(concat(" ", normalize-space(@class), " "), " tp-campaign-intro ")]'):
+        if ''.join(paragraph.itertext()).strip() == OLD_HERO_INTRO:
+            new = copy.deepcopy(fresh.xpath('.//p[contains(@class, "tp-campaign-intro")]')[0])
+            new.tail = paragraph.tail
+            paragraph.getparent().replace(paragraph, new)
+            paragraph = new
+        if not section.xpath('.//*[contains(@class, "tp-campaign-hero-cta")]'):
+            cta = copy.deepcopy(fresh.xpath('.//a[contains(@class, "tp-campaign-hero-cta")]')[0])
+            cta.tail, paragraph.tail = paragraph.tail, None
+            paragraph.addnext(cta)
+    for photo in section.xpath('.//img[contains(@class, "tp-campaign-photo")]'):
+        if (photo.get('src') or '').startswith(DEFAULT_PHOTO):
+            new = copy.deepcopy(fresh.xpath('.//img[contains(@class, "tp-campaign-photo")]')[0])
+            new.tail = photo.tail
+            photo.getparent().replace(photo, new)
 
 
 def replace_legacy(arch, snippet):
@@ -59,6 +86,10 @@ def replace_legacy(arch, snippet):
             for node in section.xpath('.//*[contains(concat(" ", normalize-space(@class), " "), " tp-campaign-next ")]'):
                 node.getparent().remove(node)
                 changed = True
+            if section.get('data-hero-facts') != '1':
+                refresh_opening(section, snippet)
+                section.set('data-hero-facts', '1')
+                changed = True
             if not section.xpath('.//*[@data-review-lazy]'):
                 target = snippet.xpath('.//*[@data-review-lazy]')[0]
                 section.append(copy.deepcopy(target))
@@ -71,6 +102,8 @@ def replace_legacy(arch, snippet):
         first = legacy[0] if legacy else None
         replacement = copy.deepcopy(snippet)
         replacement.set('data-visual-bullets', '1')
+        # A fresh snippet already carries the current opening.
+        replacement.set('data-hero-facts', '1')
         photographs = wrap.xpath('.//section[@data-snippet="s_torrepulia_reservation_hero"]//img[contains(concat(" ", @class, " "), " tp-reservation-hero-image ")]')
         targets = replacement.xpath('.//img')
         if photographs and targets:
@@ -124,6 +157,14 @@ class Website(models.Model):
                 introduction = campaign._fields['introduction'].default(campaign)
                 languages = backup['visual_bullets_copy_v1']['introduction'].keys() | {'en_US'}
                 campaign.write({'introduction': StoredTranslations({lang: introduction for lang in languages})})
+            if 'opening_facts_v2' not in backup:
+                campaign = website.torrepulia_campaign_id
+                stored = dict(campaign._fields['introduction']._get_stored_translations(campaign) or {})
+                backup['opening_facts_v2'] = {'campaign_id': campaign.id, 'introduction': stored}
+                website.torrepulia_campaign_page_backup = backup
+                if stored and all(value == OLD_INTRODUCTION for value in stored.values()):
+                    campaign.write({'introduction': StoredTranslations({
+                        lang: campaign._fields['introduction'].default(campaign) for lang in stored})})
             if not pages:
                 root = etree.Element('t', {'t-name': 'torrepulia.request.campaign.page.%s' % website.id})
                 layout = etree.SubElement(root, 't', {'t-call': 'website.layout'})

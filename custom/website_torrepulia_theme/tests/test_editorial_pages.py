@@ -167,7 +167,7 @@ class TestEditorialPages(TransactionCase):
         self.assertEqual(rebuild_arch(self.env, rebuilt, PAGES[LAND_KEY]), rebuilt)
 
     def test_home_facts_bag_in_box_line_and_tasting_sheet(self):
-        refined = refine_home(self.env, HOME_SAVED, '/shop/bag-in-box-5-l')
+        refined = refine_home(self.env, HOME_SAVED, '/shop/bag-in-box-5-l#come-funziona')
         self.assertEqual(sections(refined), [
             's_cinematic_0', 's_torrepulia_home_facts', 's_cinematic_1', 's_cinematic_5', 's_torrepulia_bib_line',
             's_cinematic_3', 's_cinematic_6'])
@@ -176,7 +176,7 @@ class TestEditorialPages(TransactionCase):
                      'mailto:', '100% Olive'):
             self.assertNotIn(gone, refined)
         for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 8 ore', 'grano appena tagliati', 'frantoio partner',
-                     'href="/shop/bag-in-box-5-l"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', '/l-olio#analisi'):
+                     'href="/shop/bag-in-box-5-l#come-funziona"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', '/l-olio#analisi'):
             self.assertIn(kept, refined)
         self.assertIsNone(UNDOCUMENTED.search(refined))
-        self.assertEqual(refine_home(self.env, refined, '/shop/bag-in-box-5-l'), refined)
+        self.assertEqual(refine_home(self.env, refined, '/shop/bag-in-box-5-l#come-funziona'), refined)

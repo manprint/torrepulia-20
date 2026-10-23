@@ -75,6 +75,33 @@
     .desktop-nav .mc-menu-group > ul { position: absolute; z-index: 15; min-width: 200px; }
     .mobile-menu { max-height: calc(100dvh - 82px); overflow-y: auto; color: var(--tp-ink); }
     .mobile-menu .mc-menu-items a { font-size: 1.25rem; }
+    // In season the new oil is the site's main action: an outlined button in the buttons' language.
+    .desktop-nav .mc-menu-seasonal > a {
+        min-height: 40px;
+        padding: 8px 16px;
+        border: 1px solid var(--tp-gold);
+        border-radius: var(--tp-control-radius);
+        color: var(--tp-olive);
+        text-decoration: none;
+        transition: background-color 160ms var(--tp-ease-out), color 160ms var(--tp-ease-out), border-color 160ms var(--tp-ease-out);
+        &:hover, &:focus-visible, &[aria-current='page'] { background: var(--tp-olive); border-color: var(--tp-olive); color: var(--tp-white); }
+    }
+    .on-photo .desktop-nav .mc-menu-seasonal > a {
+        border-color: rgba(255, 255, 255, .72);
+        color: var(--tp-white);
+        &:hover, &:focus-visible, &[aria-current='page'] { background: var(--tp-white); border-color: var(--tp-white); color: var(--tp-ink); }
+    }
+    .mc-menu-seasonal-note { display: none; }
+    // Phone menu: first item, with its state underneath.
+    .mobile-menu .mc-menu-items { display: flex; flex-direction: column; }
+    .mobile-menu .mc-menu-seasonal {
+        order: -1;
+        > a { flex-direction: column; align-items: flex-start; gap: 2px; color: var(--tp-olive); }
+        .mc-menu-seasonal-note { display: block; color: var(--tp-gold-text); font-size: var(--tp-small); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .desktop-nav .mc-menu-seasonal > a { transition: none; }
+    }
     .mc-account { color: inherit; }
     .cart-count { font-size: var(--tp-small); }
     .mc-footer-groups { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin: 48px 0; }
