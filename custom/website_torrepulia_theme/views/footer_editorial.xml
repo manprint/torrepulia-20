@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Footer: brand and contacts, three short link groups with shipping and payment, legal bar.
+         Company data (name, address, VAT, contacts, social links) comes from the company record.
+         Inherits the layout, so it applies to the theme chrome and to its website-specific copy. -->
+    <template id="footer_editorial" inherit_id="website.layout" priority="95" name="Torrepulia footer">
+        <xpath expr="//div[@id='mc-footer']" position="replace">
+            <div class="footer section-pad oe_structure" id="mc-footer" t-if="website.torrepulia_theme_enabled and not no_footer">
+                <t t-set="tp_company" t-value="website._torrepulia_footer_company()"/>
+                <t t-set="tp_payments" t-value="website._torrepulia_footer_payments()"/>
+                <div class="mc-footer-brandline">
+                    <a class="brand mc-official-brand" href="/" aria-label="Torrepulia, homepage">
+                        <img class="mc-official-logo" src="/website_torrepulia_theme/static/src/img/content/Logo%20Oro.png" alt="Torrepulia, Fratelli Leone" width="160" height="156" loading="lazy"/>
+                    </a>
+                    <div class="mc-footer-statement">
+                        <p class="mc-footer-slogan">La nostra terra,<br/>sulla tua tavola.</p>
+                        <p>Olio extravergine Peranzana della famiglia Leone, da Torremaggiore.</p>
+                    </div>
+                    <address class="mc-footer-contact">
+                        <p t-if="tp_company['email']"><span>Scrivici</span><a t-att-href="'mailto:%s' % tp_company['email']" t-out="tp_company['email']"/></p>
+                        <p t-if="tp_company['phone']"><span>Chiamaci</span><a t-att-href="'tel:%s' % tp_company['phone'].replace(' ', '')" t-out="tp_company['phone']"/></p>
+                        <p t-if="tp_company['street']" class="mc-footer-address"><span>Dove siamo</span><span><t t-out="tp_company['street']"/><br/><t t-out="tp_company['locality']"/></span></p>
+                    </address>
+                </div>
+                <div class="mc-footer-groups">
+                    <nav aria-label="L'olio">
+                        <h2>L&#8217;olio</h2>
+                        <a href="/shop">Acquista olio</a>
+                        <t t-if="website.torrepulia_seasonal_navigation"><a t-foreach="website._torrepulia_footer_pages(['reservation'])" t-as="page" t-att-href="page.url">Olio nuovo</a></t>
+                        <a href="/shop/cart">Carrello</a>
+                        <a href="/my/home">Il mio account</a>
+                    </nav>
+                    <nav aria-label="Chi siamo">
+                        <h2>Chi siamo</h2>
+                        <t t-foreach="[('story', 'La famiglia'), ('oil', 'La Peranzana'), ('land', 'Il territorio'), ('contact', 'Contatti')]" t-as="item">
+                            <a t-foreach="website._torrepulia_footer_pages([item[0]])" t-as="page" t-att-href="page.url" t-out="item[1]"/>
+                        </t>
+                    </nav>
+                    <div class="mc-footer-service">
+                        <h2>Spedizione e pagamento</h2>
+                        <p t-if="website.torrepulia_shipping_note" t-out="website.torrepulia_shipping_note.replace(' €', ' €')"/>
+                        <p t-if="tp_payments">Pagamento con <t t-out="', '.join(tp_payments).lower()"/>.</p>
+                    </div>
+                    <nav t-if="tp_company['socials']" aria-label="Seguici">
+                        <h2>Seguici</h2>
+                        <a t-foreach="tp_company['socials']" t-as="social" class="mc-footer-social" t-att-href="social[1]" target="_blank" rel="noopener"><i class="oi" t-att-data-icon="social[2]" aria-hidden="true"/><span t-out="social[0]"/></a>
+                    </nav>
+                </div>
+                <div class="mc-footer-system d-flex flex-wrap gap-3">
+                    <t t-call="website.language_selector_inline" _div_classes.f="dropup"/>
+                    <t t-call="website_sale.pricelist_selector" _div_classes.f="dropup" _btn_class.f="btn btn-secondary"/>
+                </div>
+                <div class="mc-footer-legal">
+                    <p>&#169; <t t-out="datetime.date.today().year"/> <t t-out="tp_company['name']"/><t t-if="tp_company['vat']"> &#183; <span class="text-nowrap">P. IVA <t t-out="tp_company['vat']"/></span></t></p>
+                    <nav aria-label="Documenti legali">
+                        <a href="/termini-e-condizioni">Termini di vendita</a>
+                        <a href="/privacy-policy">Privacy</a>
+                        <a href="/cookie-policy">Cookie</a>
+                    </nav>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

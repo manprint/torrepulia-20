@@ -21,6 +21,40 @@ class Website(models.Model):
             and (not menu.torrepulia_seasonal or self.torrepulia_seasonal_navigation)
         )
 
+    # Social fields of the company, in the order the footer lists them, with their Odoo UI icon.
+    TORREPULIA_SOCIALS = (('social_instagram', 'Instagram', 'oi_instagram'), ('social_facebook', 'Facebook', 'oi_facebook'),
+                          ('social_tiktok', 'TikTok', 'oi_tiktok'), ('social_youtube', 'YouTube', 'oi_youtube'),
+                          ('social_linkedin', 'LinkedIn', 'oi_linkedin'))
+
+    def _torrepulia_footer_company(self):
+        """Legal name, address, VAT number, contacts and social links, all from the company record."""
+        self.ensure_one()
+        company = self.company_id.sudo()
+        partner = company.partner_id
+        vat = (company.vat or '').replace(' ', '')
+        if len(vat) > 2 and vat[:2].isalpha():
+            vat = vat[2:]  # "IT00722360716" reads as "P. IVA 00722360716".
+        locality = ' '.join(filter(None, [partner.zip, partner.city]))
+        if partner.state_id.code and locality:
+            locality += ' (%s)' % partner.state_id.code
+        return {
+            'name': company.name,
+            'street': ', '.join(filter(None, [partner.street, partner.street2])),
+            'locality': locality,
+            'vat': vat,
+            'email': company.email,
+            'phone': company.phone,
+            'socials': [(label, company[field], icon) for field, label, icon in self.TORREPULIA_SOCIALS if company[field]],
+        }
+
+    def _torrepulia_footer_payments(self):
+        """Names of the payment methods a visitor can actually use on this website."""
+        self.ensure_one()
+        providers = self.env['payment.provider'].sudo().search([
+            ('is_published', '=', True), ('company_id', '=', self.company_id.id),
+            ('website_id', 'in', [False, self.id])])
+        return providers.filtered(lambda p: not p.module_id or p.module_state == 'installed').mapped('name')
+
     def _torrepulia_footer_pages(self, keys):
         self.ensure_one()
         # Like website.menu._compute_visible in installed Odoo 20, inspect page

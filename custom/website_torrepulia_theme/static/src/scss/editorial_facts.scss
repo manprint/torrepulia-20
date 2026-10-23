@@ -1,5 +1,10 @@
 // La Peranzana and La famiglia: the 2024 analysis, how we work, and the closing choice.
 .tp-site.tp-cinematic {
+    // These sections use .gx-5 rows (24 px negative margin): the theme's 15 px container padding
+    // lets the row pass the viewport when the container is full width, between 768 and 1320 px.
+    :is(.tp-process, .tp-oil-pairings, .tp-analysis, .tp-choice, .tp-method, .tp-trees, .tp-land-where, .tp-land-history, .tp-roots-transition) > .container {
+        padding-inline: 24px;
+    }
     .tp-analysis, .tp-choice, .tp-method {
         h2, h3 { font-family: "Libre Caslon Display", Georgia, serif; font-weight: 400; color: var(--tp-olive); text-wrap: balance; }
         h2 { font-size: 52px; line-height: 1.12; overflow-wrap: break-word; }

@@ -64,6 +64,22 @@ sezione sensoriale di /l-olio e i capitoli di /aboutus (`SENSORY_ONLY`).
   piantati da poco"; mai "alcuni secolari".
 - Chiusura della home: link a /territorio (non più email).
 
+### Footer e menu (`20.0.3.15.0`)
+
+- Footer nuovo: `views/footer_editorial.xml` (eredita `website.layout`, priorità 95, sostituisce
+  `#mc-footer`, quindi vale anche sulla copia del sito di `cinematic_chrome`) e
+  `static/src/scss/footer.scss`. Fascia marca + contatti; gruppi L'olio, Chi siamo,
+  Spedizione e pagamento, Seguici; barra © anno · ragione sociale · P. IVA + documenti legali.
+- Dati dall'azienda (`website._torrepulia_footer_company`): nome, indirizzo, P. IVA (prefisso
+  paese tolto), email, telefono, social (`social_*` di `res.company`, icone `oi_*` di Odoo).
+  Righe vuote nascoste. **In produzione compilare la scheda azienda e i social.**
+- Pagamenti (`_torrepulia_footer_payments`): solo provider pubblicati; oggi "bonifico
+  bancario" in testo. Loghi dei metodi (`payment.method.image`) solo quando ci saranno carte.
+- Menu: migrazione 3.15 rende visibile "Il territorio" (sequenza 35, tra La famiglia e
+  Contatti).
+- Corretto uno scorrimento orizzontale di 9 px tra 768 e 1320 px: sezioni con righe `.gx-5`
+  e contenitore a 15 px (regola in `editorial_facts.scss`).
+
 Regole sui testi decise con l'utente: mai nominare il frantoio (scrivere "frantoio
 partner"); niente superlativi non dimostrabili, "biologico", "certificata", frasi
 salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non si citano.
