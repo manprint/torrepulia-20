@@ -21,6 +21,7 @@
     'assets': {
         'web.assets_frontend': [
             'website_torrepulia_request/static/src/xml/availability.xml',
+            'website_torrepulia_request/static/src/js/random_uuid.js',
             'website_torrepulia_request/static/src/js/request_store.js',
             'website_torrepulia_request/static/src/js/request_service.js',
             'website_torrepulia_request/static/src/js/request_binding.js',

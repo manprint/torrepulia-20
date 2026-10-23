@@ -88,6 +88,16 @@ annida la chiamata a `website.navbar`. Ora `navigation_layout` e `footer_editori
 Torrepulia (`website._torrepulia_scope_navigation`, provisioning + migrazione 3.16) e gli agganci usano
 `//header//t[...]`. Test `test_other_websites`: un sito nuovo prova tutti gli stili di intestazione e footer.
 
+### Pagina olio nuovo in produzione (23/10)
+
+- Prodotti non visibili su /prenotailtuoolio: la modalità commerciale del sito di produzione era
+  "Acquisto online standard". Va impostata a "Acquisto online + prenotazione stagionale" (con
+  team commerciale), oltre a campagna "Aperta" e date valide.
+- "crypto.randomUUID is not a function": su HTTP il browser non offre `randomUUID`;
+  `website_torrepulia_request/static/src/js/random_uuid.js` lo ricrea con `getRandomValues`
+  (test `test_random_uuid.mjs`). **La produzione va comunque messa in HTTPS** (Let's Encrypt
+  sul proxy + `web.base.url` in https) prima dell'apertura.
+
 Regole sui testi decise con l'utente: mai nominare il frantoio (scrivere "frantoio
 partner"); niente superlativi non dimostrabili, "biologico", "certificata", frasi
 salutistiche; "secolari" solo per gli alberi; concime, irrigazione e difesa non si citano.
