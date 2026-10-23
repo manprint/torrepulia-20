@@ -95,6 +95,15 @@ class Website(models.Model):
         self.ensure_one()
         return False
 
+    # Builder font values pointing at the self-hosted brand fonts: no Google Fonts request.
+    TORREPULIA_FONTS = {'font': "'Manrope'", 'headings-font': "'Libre Caslon Display'",
+                        'navbar-font': "'Manrope'", 'buttons-font': "'Manrope'"}
+
+    def _torrepulia_use_local_fonts(self):
+        for website in self:
+            self.env['website.assets'].with_context(website_id=website.id).make_scss_customization(
+                '/website/static/src/scss/options/user_values.scss', self.TORREPULIA_FONTS)
+
     def _torrepulia_shop_rows_enabled(self):
         """The shop lists one format per row; a request-only catalogue keeps the native grid."""
         self.ensure_one()

@@ -8,3 +8,15 @@ $o-color-palettes: map-merge($o-color-palettes, (
     ),
 ));
 // Expose the palette in Website Builder without overriding other websites.
+
+// Self-hosted brand fonts (theme.scss @font-face). Without a Google 'url' Odoo
+// links no external stylesheet for them; each website opts in through its own
+// Builder font values (see website._torrepulia_use_local_fonts).
+$o-theme-font-configs: map-merge($o-theme-font-configs, (
+    'Manrope': (
+        'family': ('Manrope', sans-serif),
+    ),
+    'Libre Caslon Display': (
+        'family': ('Libre Caslon Display', Georgia, serif),
+    ),
+));

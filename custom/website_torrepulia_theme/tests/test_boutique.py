@@ -41,6 +41,14 @@ class TestBoutiqueProductPage(HttpCase):
         self.assertIn('Raccolto di prova', page)
         self.assertNotIn("Carta d'identità dell'olio", self.url_open(box.website_url).text)
 
+    def test_brand_fonts_are_self_hosted(self):
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        website._torrepulia_use_local_fonts()
+        self.assertFalse(website.with_context(website_id=website.id)._get_font_urls())
+        head = self.url_open('/').text.partition('</head>')[0]
+        self.assertNotIn('fonts.googleapis.com', head)
+
     def test_shop_lists_one_format_per_row_without_search_or_sorting(self):
         website = self.env['website'].search([], limit=1)
         website.torrepulia_theme_enabled = True
