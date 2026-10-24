@@ -36,17 +36,17 @@
                     <article>
                         <p class="tp-about-year">1945</p>
                         <h3>Si riparte dalla terra.</h3>
-                        <p>Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Cura con le sue mani i pochi ulivi ereditati, gli stessi che oggi sono i nostri ulivi secolari, e insegna il mestiere a suo figlio Michele.</p>
+                        <p>Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Dedica la sua vita ai pochi ulivi ereditati dal padre, curandoli con le proprie mani: sono gli stessi alberi secolari che custodiamo ancora oggi. A suo figlio Michele trasmette il sapere contadino, la passione per il lavoro nei campi e l&#8217;amore per la terra.</p>
                     </article>
                     <article>
                         <p class="tp-about-year">1980</p>
                         <h3>L&#8217;azienda cresce.</h3>
-                        <p>Con pap&#224; Michele l&#8217;azienda cresce fino a oltre 1000 piante di ulivo nell&#8217;agro di Torremaggiore. Il modo di lavorare resta quello imparato dal nonno.</p>
+                        <p>Pap&#224; Michele raccoglie l&#8217;eredit&#224; del nonno: la passione per il lavoro nei campi e l&#8217;amore per la natura. Con lui l&#8217;azienda cresce fino a contare oggi oltre 1.500 piante di ulivo, prevalentemente di cultivar Peranzana, nell&#8217;agro di Torremaggiore. A guidare il lavoro resta la stessa cura per la terra, imparata dal padre e tramandata a noi.</p>
                     </article>
                     <article>
                         <p class="tp-about-year">2020</p>
                         <h3>Nasce Torrepulia.</h3>
-                        <p>Noi, Franco e Salvatore, siamo cresciuti tra questi ulivi e il profumo delle olive appena frante. Con studi in economia e ingegneria gestionale, nel 2020 abbiamo fondato Torrepulia per vendere il nostro olio direttamente a chi lo usa, senza intermediari.</p>
+                        <p>Noi, Franco e Salvatore, siamo cresciuti tra questi ulivi e il profumo delle olive appena frante, con la passione e i valori trasmessi da nostro padre e da nostro nonno. Franco ha coltivato la sua passione per il lavoro nei campi e la produzione dell&#8217;olio; Salvatore ha seguito un percorso in ingegneria gestionale, mantenendo vivo il desiderio di far conoscere un prodotto capace di raccontare la nostra Puglia. Nel 2020 abbiamo unito le nostre competenze per dare vita a Torrepulia e aprire un nuovo capitolo nella storia dell&#8217;azienda agricola Leone. Il nome unisce Torremaggiore e la Puglia, le nostre radici e il luogo da cui tutto comincia. Da qui portiamo il nostro olio direttamente sulla tua tavola, senza intermediari, con la stessa cura che la nostra famiglia dedica a questi ulivi da tre generazioni.</p>
                     </article>
                 </div>
             </div>
@@ -54,7 +54,7 @@
     </template>
     <template id="s_torrepulia_sensory" name="Torrepulia Profilo Sensoriale">
         <section id="profilo" class="s_torrepulia_snippet tp-section tp-sensory" data-snippet="s_torrepulia_sensory" data-name="Profilo sensoriale">
-            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Un equilibrio<br/>da assaporare.</h2><p class="lead">Un fruttato medio che sa di oliva appena colta.</p></div><div class="col-lg-6 offset-lg-1"><dl class="tp-sensory-list"><dt>Alla vista</dt><dd>Verde brillante con riflessi dorati.</dd><dt>Al profumo</dt><dd>Prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, poi la <strong>mandorla fresca</strong>, l&#8217;erba e il grano appena tagliati.</dd><dt>Al gusto</dt><dd>Amaro e piccante ci sono, ma con garbo: si bilanciano e non coprono mai il resto.</dd><dt>Al palato</dt><dd>Scorre fluido e lascia la bocca pulita. Un olio armonico, con un&#8217;acidit&#224; bassa.</dd></dl></div></div></div>
+            <div class="container"><div class="row g-5"><div class="col-lg-5"><h2>Un equilibrio<br/>da assaporare.</h2><p class="lead">Un fruttato medio-intenso, elegante e armonico.</p></div><div class="col-lg-6 offset-lg-1"><dl class="tp-sensory-list"><dt>Alla vista</dt><dd>Verde brillante con riflessi dorati.</dd><dt>Al profumo</dt><dd>Oliva appena colta: prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, poi la <strong>mandorla fresca</strong>.</dd><dt>Al gusto</dt><dd>Morbido e rotondo. Amaro e piccante si sentono, delicati e ben bilanciati tra loro, senza mai coprire il resto.</dd><dt>Al palato</dt><dd>Il finale &#232; pulito, con un&#8217;acidit&#224; bassa.</dd></dl></div></div></div>
         </section>
     </template>
     <template id="s_torrepulia_landscape" name="Torrepulia Paesaggio">

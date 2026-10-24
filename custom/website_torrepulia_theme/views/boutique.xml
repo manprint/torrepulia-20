@@ -43,7 +43,7 @@
             <div class="tp-idcard-intro">
                 <h2 id="tp-idcard-title">Carta d'identità dell'olio</h2>
                 <p class="tp-idcard-source" t-out="profile._torrepulia_source()"/>
-                <a t-if="profile.report_url" class="tp-idcard-report" t-att-href="profile.report_url" target="_blank" rel="noopener">Leggi il rapporto di prova (PDF)</a>
+                <a t-if="profile._torrepulia_report_link()" class="tp-idcard-report" t-att-href="profile._torrepulia_report_link()" target="_blank" rel="noopener">Leggi il rapporto di prova (PDF)</a>
                 <dl t-if="profile._torrepulia_facts()" class="tp-idcard-facts">
                     <div t-foreach="profile._torrepulia_facts()" t-as="fact"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div>
                 </dl>
@@ -74,9 +74,9 @@
     <template id="shop_season" name="New oil season band">
         <t t-set="tp_season" t-value="website._torrepulia_preorder_season()"/>
         <section t-if="tp_season" class="tp-season" aria-labelledby="tp-season-title">
-            <img class="tp-season-photo" src="/website_torrepulia_theme/static/src/cinematic/campaign/land-640.webp"
-                 srcset="/website_torrepulia_theme/static/src/cinematic/campaign/land-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/campaign/land-1280.webp 1280w"
-                 sizes="(max-width: 760px) 100vw, 260px" alt="Gli uliveti di Torremaggiore" width="640" height="360"/>
+            <img class="tp-season-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp"
+                 srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp 1280w"
+                 sizes="(max-width: 760px) 100vw, 260px" alt="Olive Peranzana appena raccolte nel cassone" width="640" height="480"/>
             <div class="tp-season-copy">
                 <h2 id="tp-season-title" t-out="tp_season['title']"/>
                 <p t-if="tp_season['text']" t-out="tp_season['text']"/>

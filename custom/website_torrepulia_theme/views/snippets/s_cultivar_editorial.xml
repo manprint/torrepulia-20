@@ -6,10 +6,10 @@
                 <div class="row gy-5 gx-4 gx-xl-5 align-items-center">
                     <div class="col-12 col-lg-7 o_colored_level">
                         <h1 class="display-5 fw-bold mb-4">La Peranzana.<br/>Il nostro punto <span class="text-nowrap">di origine.</span></h1>
-                        <p class="lead text-dark mb-4">La <strong>Peranzana</strong> &#232; la cultivar dell&#8217;Alto Tavoliere: d&#224; un olio di carattere ed &#232; buona anche come oliva da tavola. La coltiviamo a <strong>Torremaggiore</strong> da tre generazioni. Dalle sue olive nasce <strong>La Regina</strong>, il nostro olio extravergine.</p>
+                        <p class="lead text-dark mb-4">La <strong>Peranzana</strong> &#232; la cultivar dell&#8217;Alto Tavoliere delle Puglie. &#200; a duplice attitudine: apprezzata sia per l&#8217;olio che se ne ricava sia da gustare come oliva da tavola. La coltiviamo nell&#8217;agro di <strong>Torremaggiore</strong> da tre generazioni: qui il vento, la terra fertile del Tavoliere e il sole della Puglia le danno il suo carattere distintivo. Dalle sue olive nasce <strong>La Regina</strong>, il nostro olio extravergine.</p>
                         <div class="tp-oil-links">
                             <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="#processo">Come nasce La Regina <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-right.svg" alt="" width="20" height="20"/></a>
-                            <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="#analisi">Le analisi del raccolto 2024 <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-right.svg" alt="" width="20" height="20"/></a>
+                            <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="#analisi">Le analisi del raccolto <img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-right.svg" alt="" width="20" height="20"/></a>
                         </div>
                     </div>
                     <div class="col-12 col-lg-5 o_colored_level">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-12 col-lg-6 o_colored_level">
                         <h3 class="mb-4">Il cuore della Peranzana.</h3>
-                        <p>Tra <strong>Torremaggiore, San Severo e San Paolo di Civitate</strong> si concentra la coltivazione della Peranzana. I nostri ulivi, oltre 1000 piante, sono nell&#8217;agro di Torremaggiore: da qui viene ogni litro di La Regina.</p>
+                        <p>Tra <strong>Torremaggiore, San Severo e San Paolo di Civitate</strong> si concentra la coltivazione della Peranzana. I nostri uliveti si trovano nell&#8217;agro di Torremaggiore e contano oltre 1.500 piante: dalle loro olive nasce La Regina, il nostro olio extravergine.</p>
                         <a class="tp-oil-process-link text-decoration-none fw-bold d-inline-flex align-items-center gap-2" href="/territorio">Il territorio <img class="icon tp-icon-out" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt="" width="20" height="20"/></a>
                     </div>
                 </div>

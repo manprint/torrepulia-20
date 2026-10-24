@@ -17,7 +17,7 @@
         <snippet ref="s_torrepulia_roots_values"/>
         <snippet ref="s_torrepulia_choice_family"/>
     </page>
-    <page key="oil" url="/l-olio" title="La Peranzana: cultivar, produzione e gusto | Torrepulia" description="La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, analisi del raccolto 2024 e abbinamenti.">
+    <page key="oil" url="/l-olio" title="La Peranzana: cultivar, produzione e gusto | Torrepulia" description="La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, analisi dell'olio e abbinamenti.">
         <snippet ref="s_torrepulia_cultivar_opening"/>
         <snippet ref="s_torrepulia_cultivar_history"/>
         <snippet ref="s_torrepulia_production_process"/>

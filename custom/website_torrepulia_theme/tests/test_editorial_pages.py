@@ -7,7 +7,7 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
-    HOME_REPLACEMENTS, PAGES, PROCESS_PHOTO, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
+    HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
     retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
@@ -72,11 +72,13 @@ class TestEditorialPages(TransactionCase):
             's_torrepulia_oil_analysis', 's_torrepulia_sensory', 's_text_block', 's_torrepulia_pairings',
             's_torrepulia_choice_oil'])
         # The sensory profile follows the owner's tasting sheet.
-        self.assertIn('grano appena tagliati', rebuilt)
+        self.assertIn('medio-intenso, elegante e armonico', rebuilt)
+        self.assertNotIn('grano appena tagliati', rebuilt)
         self.assertNotIn('lattuga', rebuilt)
         self.assertIn('Sezione aggiunta dal gestore', rebuilt)
-        self.assertIn(REPORT_2024, rebuilt)
-        self.assertIn('Rapporto di prova del frantoio', rebuilt)
+        # The analysis is read from the backend: no harvest figures saved in the page.
+        self.assertIn('tp-analysis-content', rebuilt)
+        self.assertNotIn('tp-analysis-value', rebuilt)
         # The home map is inlined: a t-call would take the section away from the Builder.
         self.assertIn('mc-puglia-map', rebuilt)
         self.assertNotIn('t-call="website_torrepulia_theme', rebuilt)
@@ -90,11 +92,12 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('/web/image/781', rebuilt)
         self.assertNotIn('La terra si coltiva', rebuilt)
         self.assertIn('Papà Michele sul trattore e nonno Santino Vincenzo.', rebuilt)
-        self.assertIn('oltre 1000 piante', rebuilt)
+        self.assertIn('oltre 1.500 piante', rebuilt)
         self.assertIn('Franco e Salvatore Leone', rebuilt)
         self.assertEqual(sections(rebuilt)[-1], 's_torrepulia_choice_family')
         self.assertEqual(sections(rebuilt)[2], 's_torrepulia_roots_trees')
-        self.assertIn('gli stessi che oggi sono i nostri ulivi secolari', rebuilt)
+        self.assertIn('sapere contadino', rebuilt)
+        self.assertNotIn('magazzino', rebuilt)
         self.assertIn('<dt>Curiamo</dt>', rebuilt)
         self.assertIsNone(UNDOCUMENTED.search(rebuilt))
         self.assertEqual(rebuild_arch(self.env, rebuilt, PAGES[STORY_KEY]), rebuilt)
@@ -120,7 +123,7 @@ class TestEditorialPages(TransactionCase):
         stored = self.env.cr.fetchone()[0]
         self.assertEqual(set(stored), {'en_US', 'it_IT'})
         self.assertTrue(all('s_torrepulia_oil_analysis' in arch for arch in stored.values()))
-        self.assertIn('analisi del raccolto 2024', view.website_meta_description)
+        self.assertIn("analisi dell'olio", view.website_meta_description)
         backup = [('key', '=like', 'website_torrepulia_theme.before_editorial_pages_%s_%%' % view.id)]
         Views = self.env['ir.ui.view'].with_context(active_test=False)
         self.assertEqual(Views.search_count(backup), 1)
@@ -172,11 +175,11 @@ class TestEditorialPages(TransactionCase):
             's_cinematic_0', 's_torrepulia_home_facts', 's_cinematic_1', 's_cinematic_5', 's_torrepulia_bib_line',
             's_cinematic_3', 's_cinematic_6'])
         for gone in ('Da Torremaggiore alla tua tavola', 'Dalla nostra terra', 'product-note',
-                     'Foglia di pomodoro', 'mela', 'medio-intenso', 'Entro 6', 'antiossidanti', 'habitat ideale',
+                     'Foglia di pomodoro', 'mela', 'grano appena tagliati', 'frantoio partner', 'Entro 6', 'antiossidanti', 'habitat ideale',
                      'mailto:', '100% Olive'):
             self.assertNotIn(gone, refined)
-        for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 8 ore', 'grano appena tagliati', 'frantoio partner',
-                     'href="/shop/bag-in-box-5-l#come-funziona"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', '/l-olio#analisi'):
+        for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 8 ore', 'elegante e armonico', 'frantoio di fiducia',
+                     'href="/shop/bag-in-box-5-l#come-funziona"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', 'Dal 1945'):
             self.assertIn(kept, refined)
         self.assertIsNone(UNDOCUMENTED.search(refined))
         self.assertEqual(refine_home(self.env, refined, '/shop/bag-in-box-5-l#come-funziona'), refined)
@@ -190,3 +193,39 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('raccolta-reti-1280.webp', updated)
         self.assertIn('/web/image/912', updated)
         self.assertEqual(add_process_photo(updated, photo), updated)
+
+    def test_copy_2510_rewrites_only_the_owner_words(self):
+        home = recopy_arch(HOME_SAVED, HOME_KEY)
+        for gone in ('Un solo olio', 'frantoio partner', 'Armonico.'):
+            self.assertNotIn(gone, home)
+        for kept in ('Il carattere della nostra terra.', 'Morbido.', 'medio-intenso', 'LA NOSTRA TERRA. IL TUO OLIO.'):
+            self.assertIn(kept, home)
+        self.assertEqual(recopy_arch(home, HOME_KEY), home)
+        oil = ('<t t-name="oil"><div id="wrap"><section data-snippet="s_torrepulia_sensory"><p class="lead">Vecchio</p>'
+               '<dl><dt>Alla vista</dt><dd>Verde del gestore</dd><dt>Al profumo</dt><dd>erba e grano appena tagliati</dd></dl>'
+               '</section><section data-snippet="s_torrepulia_production_process"><ol>'
+               '<li><img src="/web/image/912"/><div><h3>La raccolta</h3><p>cogliamo</p></div></li>'
+               '<li><div><h3>La molitura</h3><p>nel nostro frantoio partner</p></div></li></ol></section></div></t>')
+        oil = recopy_arch(oil, OIL_KEY)
+        for gone in ('grano appena tagliati', '<p>cogliamo</p>', 'frantoio partner', 'Vecchio'):
+            self.assertNotIn(gone, oil)
+        for kept in ('Verde del gestore', '/web/image/912', 'ricca di polifenoli', 'frantoio di fiducia'):
+            self.assertIn(kept, oil)
+
+    def test_la_peranzana_shows_only_a_recent_analysis(self):
+        Profile = self.env['torrepulia.oil.profile']
+        Profile.search([]).unlink()
+        season = Profile._torrepulia_season()
+        Profile.create({'name': 'Vecchio', 'harvest_year': season - 2, 'acidity': 0.17})
+        Profile.create({'name': 'Senza analisi', 'harvest_year': season - 1, 'cultivar': 'Peranzana'})
+        self.assertFalse(Profile._torrepulia_published_analysis())
+        coming = str(self.env['ir.ui.view']._render_template(
+            'website_torrepulia_theme.oil_analysis_content', {'profile': Profile.browse(), 'season': season}))
+        self.assertIn('Le analisi del raccolto %s.' % season, coming)
+        new = Profile.create({'name': 'Nuovo', 'harvest_year': season, 'acidity': 0.2, 'polyphenols': 600,
+                              'analysis_note': 'Analisi rapida in frantoio.'})
+        self.assertEqual(Profile._torrepulia_published_analysis(), new)
+        shown = str(self.env['ir.ui.view']._render_template(
+            'website_torrepulia_theme.oil_analysis_content', {'profile': new, 'season': season}))
+        for kept in ('Le analisi del raccolto %s.' % season, 'Polifenoli totali', 'Analisi rapida in frantoio.'):
+            self.assertIn(kept, shown)

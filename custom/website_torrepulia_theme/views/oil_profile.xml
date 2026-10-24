@@ -31,7 +31,9 @@
                         <group string="Rapporto di prova">
                             <field name="lab"/>
                             <field name="report_date"/>
-                            <field name="report_url" widget="url"/>
+                            <field name="report_file" filename="report_filename"/>
+                            <field name="report_filename" invisible="1"/>
+                            <field name="report_url" widget="url" invisible="report_file"/>
                         </group>
                     </group>
                     <group string="Analisi">
@@ -47,7 +49,8 @@
                             <field name="tocopherols"/>
                         </group>
                     </group>
-                    <p class="text-muted">I valori lasciati a zero non compaiono sul sito. Acidità, perossidi, K232 e K270 sono mostrati in scala rispetto al limite di legge per l'extravergine.</p>
+                    <field name="analysis_note" placeholder="Analisi rapida in frantoio, non di un laboratorio accreditato."/>
+                    <p class="text-muted">La pagina La Peranzana mostra l'analisi più recente con dei valori, purché del raccolto in corso o di quello prima; altrimenti annuncia le analisi in arrivo. I valori lasciati a zero non compaiono sul sito. Acidità, perossidi, K232 e K270 sono mostrati in scala rispetto al limite di legge per l'extravergine.</p>
                     <field name="product_tmpl_ids" readonly="1">
                         <list><field name="name"/></list>
                     </field>

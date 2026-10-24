@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Owner-supplied test report of the 2024 harvest (19/11/2024), published whole as a PDF.
-         Static, editable values: the Builder keeps ownership of the section. -->
+    <!-- The analysis comes from the latest harvest profile in the backend (torrepulia.oil.profile):
+         the Builder owns the section, the content is loaded when the page runs. -->
     <template id="s_torrepulia_oil_analysis" name="Torrepulia Analisi del raccolto">
         <section id="analisi" class="s_torrepulia_snippet tp-section tp-analysis o_colored_level" data-snippet="s_torrepulia_oil_analysis" data-name="Analisi del raccolto">
             <div class="container">
-                <div class="tp-analysis-head">
-                    <h2>Le analisi del raccolto 2024.</h2>
-                    <p>Il 19 novembre 2024 il frantoio ha analizzato il nostro olio. Pubblichiamo il rapporto di prova intero, cos&#236; come ci &#232; stato consegnato.</p>
-                </div>
-                <div class="tp-analysis-key">
-                    <div class="tp-analysis-fact">
-                        <p class="tp-analysis-value">0,17 %</p>
-                        <h3>Acidit&#224;</h3>
-                        <p>Il limite dell&#8217;extravergine &#232; 0,80 %. Resta bassa se le olive sono sane e molite presto.</p>
+                <div class="tp-analysis-content o_not_editable">
+                    <div class="tp-analysis-head">
+                        <h2>Le analisi del raccolto.</h2>
+                        <p>Pubblichiamo qui il rapporto di prova intero, cos&#236; come ci viene consegnato.</p>
                     </div>
-                    <div class="tp-analysis-fact">
-                        <p class="tp-analysis-value">4,91</p>
-                        <h3>Perossidi</h3>
-                        <p>Il limite &#232; 20 meq O&#8322;/kg. Pi&#249; il valore &#232; basso, meno l&#8217;olio si &#232; ossidato.</p>
-                    </div>
-                    <div class="tp-analysis-fact">
-                        <p class="tp-analysis-value">589 <small>mg/kg</small></p>
-                        <h3>Polifenoli totali</h3>
-                        <p>Sono i composti che danno all&#8217;olio l&#8217;amaro e il piccante.</p>
-                    </div>
-                </div>
-                <div class="tp-lab-wrap">
-                    <table class="tp-lab">
-                        <caption class="visually-hidden">Analisi del raccolto 2024 confrontata con i limiti di legge per l'olio extravergine</caption>
-                        <thead><tr><th scope="col">Parametro</th><th scope="col">Valore</th><th scope="col">Limite extravergine</th><th scope="col" class="tp-lab-scale-head">Quota del limite</th></tr></thead>
-                        <tbody>
-                            <tr><th scope="row">Acidit&#224;</th><td class="tp-lab-value">0,17 %</td><td class="tp-lab-limit">0,80 %</td><td><span class="tp-lab-scale" role="img" aria-label="21 per cento del limite"><span style="width: 21%"/></span></td></tr>
-                            <tr><th scope="row">Perossidi</th><td class="tp-lab-value">4,91 meq O&#8322;/kg</td><td class="tp-lab-limit">20</td><td><span class="tp-lab-scale" role="img" aria-label="25 per cento del limite"><span style="width: 25%"/></span></td></tr>
-                            <tr><th scope="row">K232</th><td class="tp-lab-value">1,87</td><td class="tp-lab-limit">2,50</td><td><span class="tp-lab-scale" role="img" aria-label="75 per cento del limite"><span style="width: 75%"/></span></td></tr>
-                            <tr><th scope="row">K270</th><td class="tp-lab-value">0,12</td><td class="tp-lab-limit">0,22</td><td><span class="tp-lab-scale" role="img" aria-label="55 per cento del limite"><span style="width: 55%"/></span></td></tr>
-                            <tr><th scope="row">&#916;K</th><td class="tp-lab-value">0,00</td><td class="tp-lab-limit">0,01</td><td><span class="tp-lab-scale" role="img" aria-label="0 per cento del limite"><span style="width: 0%"/></span></td></tr>
-                            <tr><th scope="row">Acido oleico</th><td class="tp-lab-value">70,2 %</td><td class="tp-lab-limit">55 - 83 %</td><td/></tr>
-                            <tr><th scope="row">Polifenoli totali</th><td class="tp-lab-value">589 mg/kg</td><td class="tp-lab-limit">nessun limite</td><td/></tr>
-                            <tr><th scope="row">Tocoferoli totali</th><td class="tp-lab-value">244 mg/kg</td><td class="tp-lab-limit">nessun limite</td><td/></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tp-analysis-foot">
-                    <p>Analisi rapida in frantoio con strumento XDS Rapid Liquid Analyzer, non di un laboratorio accreditato. I valori riguardano il campione analizzato del raccolto 2024.</p>
-                    <a class="btn btn-outline-primary" href="/website_torrepulia_theme/static/src/docs/rapporto-di-prova-raccolto-2024.pdf" target="_blank" rel="noopener">Rapporto di prova del frantoio (PDF, 123 KB)</a>
                 </div>
             </div>
         </section>
+    </template>
+    <template id="oil_analysis_content" name="Analisi del raccolto: contenuto">
+        <t t-if="profile">
+            <div class="tp-analysis-head">
+                <h2>Le analisi del raccolto <t t-out="profile.harvest_year"/>.</h2>
+                <p><t t-if="profile.report_date">Il <t t-out="profile._torrepulia_report_day()"/> il frantoio ha analizzato il nostro olio. </t>Pubblichiamo il rapporto di prova intero, cos&#236; come ci &#232; stato consegnato.</p>
+            </div>
+            <div class="tp-analysis-key">
+                <div t-if="profile.acidity" class="tp-analysis-fact">
+                    <p class="tp-analysis-value" t-out="profile._torrepulia_value('acidity', 2, ' %')"/>
+                    <h3>Acidit&#224;</h3>
+                    <p>Il limite dell&#8217;extravergine &#232; 0,80 %. Resta bassa se le olive sono sane e molite presto.</p>
+                </div>
+                <div t-if="profile.peroxides" class="tp-analysis-fact">
+                    <p class="tp-analysis-value" t-out="profile._torrepulia_value('peroxides', 2)"/>
+                    <h3>Perossidi</h3>
+                    <p>Il limite &#232; 20 meq O&#8322;/kg. Pi&#249; il valore &#232; basso, meno l&#8217;olio si &#232; ossidato.</p>
+                </div>
+                <div t-if="profile.polyphenols" class="tp-analysis-fact">
+                    <p class="tp-analysis-value"><t t-out="profile._torrepulia_value('polyphenols', 0)"/> <small>mg/kg</small></p>
+                    <h3>Polifenoli totali</h3>
+                    <p>Sono i composti che danno all&#8217;olio l&#8217;amaro e il piccante.</p>
+                </div>
+            </div>
+            <div class="tp-lab-wrap">
+                <table class="tp-lab">
+                    <caption class="visually-hidden">Analisi del raccolto <t t-out="profile.harvest_year"/> confrontata con i limiti di legge per l'olio extravergine</caption>
+                    <thead><tr><th scope="col">Parametro</th><th scope="col">Valore</th><th scope="col">Limite extravergine</th><th scope="col" class="tp-lab-scale-head">Quota del limite</th></tr></thead>
+                    <tbody>
+                        <tr t-foreach="profile._torrepulia_lab_rows()" t-as="row">
+                            <th scope="row" t-out="row['label']"/>
+                            <td class="tp-lab-value" t-out="row['value']"/>
+                            <td class="tp-lab-limit" t-out="row['limit']"/>
+                            <td><span t-if="row['ratio'] is not None" class="tp-lab-scale" role="img" t-att-aria-label="'%s per cento del limite' % row['ratio']"><span t-attf-style="width: #{row['ratio']}%"/></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div t-if="profile.analysis_note or profile._torrepulia_report_link()" class="tp-analysis-foot">
+                <p t-if="profile.analysis_note" t-out="profile.analysis_note"/>
+                <a t-if="profile._torrepulia_report_link()" class="btn btn-outline-primary" t-att-href="profile._torrepulia_report_link()" target="_blank" rel="noopener">Rapporto di prova del frantoio (PDF)</a>
+            </div>
+        </t>
+        <div t-else="" class="tp-analysis-head">
+            <h2>Le analisi del raccolto <t t-out="season"/>.</h2>
+            <p>Appena molito l&#8217;olio nuovo lo facciamo analizzare e pubblichiamo qui il rapporto di prova intero, cos&#236; come ci viene consegnato.</p>
+        </div>
     </template>
 
     <!-- Page closings: buy from stock now, or reserve the new oil. Different from the home and footer closings. -->
@@ -157,9 +169,9 @@
         <section class="s_torrepulia_snippet tp-home-facts o_colored_level" data-snippet="s_torrepulia_home_facts" data-name="Tre fatti">
             <div class="container">
                 <ul class="tp-home-facts-list">
-                    <li><a href="/territorio"><strong>Oltre 1000</strong><span>ulivi nell&#8217;agro di Torremaggiore</span></a></li>
+                    <li><a href="/territorio"><strong>Oltre 1.500</strong><span>ulivi nell&#8217;agro di Torremaggiore</span></a></li>
                     <li><a href="/l-olio#processo"><strong>Entro 8 ore</strong><span>dalla raccolta alla molitura</span></a></li>
-                    <li><a href="/l-olio#analisi"><strong>0,17 %</strong><span>di acidit&#224;, raccolto 2024</span></a></li>
+                    <li><a href="/aboutus"><strong>Dal 1945</strong><span>tre generazioni sulla stessa terra</span></a></li>
                 </ul>
             </div>
         </section>

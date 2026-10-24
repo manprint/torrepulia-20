@@ -8,7 +8,7 @@ Includes editable editorial snippets, a curated homepage, product/shop styling,
 and local brand imagery sourced from the current Torrepulia website.
     """,
     "category": "Theme",
-    "version": "20.0.3.21.0",
+    "version": "20.0.3.22.0",
     "author": "Torrepulia",
     "license": "LGPL-3",
     "depends": [
@@ -74,6 +74,7 @@ and local brand imagery sourced from the current Torrepulia website.
             "website_torrepulia_theme/static/src/scss/editorial_facts.scss",
             "website_torrepulia_theme/static/src/js/about_editorial.js",
             "website_torrepulia_theme/static/src/js/bag_in_box.js",
+            "website_torrepulia_theme/static/src/js/oil_analysis.js",
             "website_torrepulia_theme/static/src/scss/design_system.scss",
             "website_torrepulia_theme/static/src/scss/footer.scss",
             "website_torrepulia_theme/static/src/scss/consent.scss",

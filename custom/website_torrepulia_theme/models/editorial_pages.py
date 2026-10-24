@@ -14,7 +14,7 @@ from datetime import datetime
 
 from lxml import etree
 
-from .home_copy import refine_section
+from .home_copy import recopy_section, refine_section
 from .website import MODULE, inline_puglia_map
 
 HOME_KEY = MODULE + '.page_home_view'
@@ -50,7 +50,9 @@ HOME_REPLACEMENTS = (
 )
 REPORT_2024 = '/%s/static/src/docs/rapporto-di-prova-raccolto-2024.pdf' % MODULE
 OIL_DESCRIPTION = ('La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, '
-                   'analisi del raccolto 2024 e abbinamenti.')
+                   'analisi dell\'olio e abbinamenti.')
+OIL_DESCRIPTION_2024 = ('La Peranzana di Torremaggiore e come nasce La Regina: raccolta, molitura, '
+                        'analisi del raccolto 2024 e abbinamenti.')
 LAND_DESCRIPTION = ('Torremaggiore e l\'Alto Tavoliere, nel nord della Puglia: dove crescono gli ulivi della '
                     'famiglia Leone e dove la tradizione colloca le origini della Peranzana.')
 # Saved section -> template replacing it (None removes it); `after` inserts new sections.
@@ -298,5 +300,160 @@ def add_process_photos(env):
         view.copy({'name': 'Before the harvest photo', 'active': False, 'arch_fs': False,
                    'key': '%s.before_process_photo_%s_%s' % (MODULE, view.id, stamp)})
         env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+# 25/10: the owner's tasting words, the harvest at veraison and the "trusted" mill, in every saved page.
+OIL_SENSORY = {
+    'lead': 'Un fruttato medio-intenso, elegante e armonico.',
+    'Al profumo': ('Oliva appena colta: prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, '
+                   'poi la <strong>mandorla fresca</strong>.'),
+    'Al gusto': ('Morbido e rotondo. Amaro e piccante si sentono, delicati e ben bilanciati tra loro, senza mai '
+                 'coprire il resto.'),
+    'Al palato': 'Il finale &#232; pulito, con un&#8217;acidit&#224; bassa.',
+}
+OIL_HARVEST = ('Tra ottobre e novembre raccogliamo le olive dalla pianta all&#8217;inizio dell&#8217;invaiatura, '
+               'quando il frutto comincia a cambiare colore: &#232; il momento in cui l&#8217;oliva &#232; pi&#249; '
+               'ricca di polifenoli e di profumi.')
+RECOPY_KEYS = (HOME_KEY, MODULE + '.page_oil_view', MODULE + '.page_story_view')
+MILL_REPLACEMENTS = (('frantoio partner', 'frantoio di fiducia'), ('oltre 1000 piante', 'oltre 1.500 piante'))
+# La famiglia: the owner's chapters, by year.
+CHAPTERS = {
+    '1945': ('Tornato dal fronte, nonno Santino Vincenzo sceglie di ripartire dalla terra. Dedica la sua vita ai pochi '
+             'ulivi ereditati dal padre, curandoli con le proprie mani: sono gli stessi alberi secolari che custodiamo '
+             'ancora oggi. A suo figlio Michele trasmette il sapere contadino, la passione per il lavoro nei campi e '
+             'l&#8217;amore per la terra.'),
+    '1980': ('Pap&#224; Michele raccoglie l&#8217;eredit&#224; del nonno: la passione per il lavoro nei campi e '
+             'l&#8217;amore per la natura. Con lui l&#8217;azienda cresce fino a contare oggi oltre 1.500 piante di ulivo, '
+             'prevalentemente di cultivar Peranzana, nell&#8217;agro di Torremaggiore. A guidare il lavoro resta la stessa '
+             'cura per la terra, imparata dal padre e tramandata a noi.'),
+    '2020': ('Noi, Franco e Salvatore, siamo cresciuti tra questi ulivi e il profumo delle olive appena frante, con la '
+             'passione e i valori trasmessi da nostro padre e da nostro nonno. Franco ha coltivato la sua passione per il '
+             'lavoro nei campi e la produzione dell&#8217;olio; Salvatore ha seguito un percorso in ingegneria gestionale, '
+             'mantenendo vivo il desiderio di far conoscere un prodotto capace di raccontare la nostra Puglia. Nel 2020 '
+             'abbiamo unito le nostre competenze per dare vita a Torrepulia e aprire un nuovo capitolo nella storia '
+             'dell&#8217;azienda agricola Leone. Il nome unisce Torremaggiore e la Puglia, le nostre radici e il luogo da '
+             'cui tutto comincia. Da qui portiamo il nostro olio direttamente sulla tua tavola, senza intermediari, con la '
+             'stessa cura che la nostra famiglia dedica a questi ulivi da tre generazioni.'),
+}
+# Come lavoriamo: packed at the mill and shipped from there; analyses published from the 2026 harvest.
+METHOD = {
+    'Spediamo': 'Confezioniamo l&#8217;olio direttamente in frantoio e lo spediamo a casa tua, senza intermediari.',
+    'Misuriamo': ('Dal raccolto 2026 facciamo analizzare l&#8217;olio nuovo e pubblichiamo il rapporto di prova intero, '
+                  'cos&#236; come ci viene consegnato. <a href="/l-olio#analisi">Le analisi</a>'),
+}
+OIL_LEAD = ('La <strong>Peranzana</strong> &#232; la cultivar dell&#8217;Alto Tavoliere delle Puglie. &#200; a duplice '
+            'attitudine: apprezzata sia per l&#8217;olio che se ne ricava sia da gustare come oliva da tavola. La '
+            'coltiviamo nell&#8217;agro di <strong>Torremaggiore</strong> da tre generazioni: qui il vento, la terra '
+            'fertile del Tavoliere e il sole della Puglia le danno il suo carattere distintivo. Dalle sue olive nasce '
+            '<strong>La Regina</strong>, il nostro olio extravergine.')
+OIL_HEARTLAND = ('Tra <strong>Torremaggiore, San Severo e San Paolo di Civitate</strong> si concentra la coltivazione '
+                 'della Peranzana. I nostri uliveti si trovano nell&#8217;agro di Torremaggiore e contano oltre 1.500 '
+                 'piante: dalle loro olive nasce La Regina, il nostro olio extravergine.')
+OIL_PACKING = ('Confezioniamo l&#8217;olio direttamente in frantoio, in bottiglia, latta o Bag in Box, filtrato o, per '
+               'chi lo preferisce, non filtrato. Da l&#236; lo spediamo a casa tua.')
+HOME_FACT_1945 = '<a href="/aboutus"><strong>Dal 1945</strong><span>tre generazioni sulla stessa terra</span></a>'
+
+
+def _inner(node, markup):
+    fresh = etree.fromstring('<x>%s</x>' % markup)
+    for child in list(node):
+        node.remove(child)
+    node.text = fresh.text
+    for child in fresh:
+        node.append(child)
+
+
+def recopy_oil(root):
+    for section in root.xpath('.//section[@data-snippet="s_torrepulia_sensory"]'):
+        for node in section.xpath('.//p[contains(concat(" ", @class, " "), " lead ")]')[:1]:
+            _inner(node, OIL_SENSORY['lead'])
+        for term in section.xpath('.//dl//dt'):
+            text = OIL_SENSORY.get(''.join(term.itertext()).strip())
+            following = term.getnext()
+            if text and following is not None and following.tag == 'dd':
+                _inner(following, text)
+    for step in root.xpath('.//section[@data-snippet="s_torrepulia_production_process"]//li'):
+        text = {'La raccolta': OIL_HARVEST, 'Il confezionamento': OIL_PACKING}.get(step.xpath('string(.//h3)').strip())
+        for node in step.xpath('.//p')[:1] if text else ():
+            _inner(node, text)
+    for node in root.xpath('.//section[@data-snippet="s_torrepulia_cultivar_opening"]'
+                           '//p[contains(concat(" ", @class, " "), " lead ")]')[:1]:
+        _inner(node, OIL_LEAD)
+    for link in root.xpath('.//section[@data-snippet="s_torrepulia_cultivar_opening"]//a[@href="#analisi"]'):
+        link.text = 'Le analisi del raccolto '
+    for node in root.xpath('.//section[@data-snippet="s_torrepulia_cultivar_history"]'
+                           '//div[contains(concat(" ", @class, " "), " tp-oil-territory ")]//p')[:1]:
+        _inner(node, OIL_HEARTLAND)
+
+
+def recopy_story(root):
+    for article in root.xpath('.//section[@data-snippet="s_torrepulia_story_chapters"]//article'):
+        year = article.xpath('string(.//p[contains(concat(" ", @class, " "), " tp-about-year ")])').strip()
+        texts = article.xpath('./p[not(contains(concat(" ", @class, " "), " tp-about-year "))]')
+        if year in CHAPTERS and texts:
+            _inner(texts[0], CHAPTERS[year])
+
+
+def recopy_method(root):
+    for term in root.xpath('.//dl[contains(concat(" ", @class, " "), " tp-method-list ")]//dt'):
+        text, following = METHOD.get(term.xpath('string(.)').strip()), term.getnext()
+        if text and following is not None and following.tag == 'dd':
+            _inner(following, text)
+
+
+def recopy_home_facts(root):
+    for facts in root.xpath('.//section[@data-snippet="s_torrepulia_home_facts"]'):
+        for strong in facts.xpath('.//a[@href="/territorio"]/strong'):
+            strong.text = 'Oltre 1.500'
+        for link in facts.xpath('.//a[@href="/l-olio#analisi"]'):
+            _inner(link.getparent(), HOME_FACT_1945)
+
+
+def recopy_arch(arch, key, analysis=None):
+    for old, new in MILL_REPLACEMENTS:
+        arch = arch.replace(old, new)
+    if key not in RECOPY_KEYS:
+        return arch
+    root = etree.fromstring(arch)
+    if key == HOME_KEY:
+        for section in root.xpath('.//div[@id="wrap"]/section'):
+            recopy_section(section)
+        recopy_home_facts(root)
+    elif key == MODULE + '.page_oil_view':
+        recopy_oil(root)
+        # The analysis now comes from the backend: the saved 2024 figures leave the page.
+        for section in root.xpath('.//section[@data-snippet="s_torrepulia_oil_analysis"]'):
+            if analysis is not None and not section.xpath('.//*[contains(concat(" ", @class, " "), " tp-analysis-content ")]'):
+                fresh = copy.deepcopy(analysis)
+                fresh.tail = section.tail
+                section.getparent().replace(section, fresh)
+    recopy_story(root)
+    recopy_method(root)
+    return etree.tostring(root, encoding='unicode')
+
+
+def recopy_pages(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    analysis = snippet_section(env, 's_torrepulia_oil_analysis')
+    env.cr.execute("SELECT id FROM ir_ui_view WHERE active AND (key IN %s OR arch_db::text LIKE %s OR arch_db::text LIKE %s)",
+                   [RECOPY_KEYS, '%frantoio partner%', '%oltre 1000 piante%'])
+    for view in Views.browse([row[0] for row in env.cr.fetchall()]):
+        env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        stored = env.cr.fetchone()[0] or {}
+        updated = {lang: recopy_arch(arch, view.key, analysis) for lang, arch in stored.items()}
+        if updated == stored:
+            continue
+        view.copy({'name': 'Before the 25/10 copy', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_copy_2510_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    # The search result no longer promises a harvest the page does not show.
+    for view in Views.search([('key', '=', MODULE + '.page_oil_view')]):
+        for code, _name in env['res.lang'].get_installed():
+            translated = view.with_context(lang=code)
+            if translated.website_meta_description == OIL_DESCRIPTION_2024:
+                translated.website_meta_description = OIL_DESCRIPTION
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')

@@ -1,7 +1,7 @@
-# Handoff Torrepulia: stato al 24/10/2026 (sera)
+# Handoff Torrepulia: stato al 25/10/2026
 
-Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-24/10 è su
-`main` e deployato (ultimo commit di codice `169ed95`). Versioni: tema `20.0.3.21.0`,
+Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-25/10 è su
+`main` e deployato (testi del 25/10 nel tema `20.0.3.22.0`). Versioni: tema `20.0.3.22.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
 http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
@@ -108,6 +108,33 @@ Descrizioni (un paragrafo, sotto il titolo):
 
 In produzione l'utente ha usato " - " al posto della virgola nei nomi: il titolo non va a
 capo dopo "La Regina" (va bene comunque).
+
+## Fatto il 25/10: testi e analisi da un'unica fonte (tema 3.22.0)
+
+Migrazione `recopy_pages` (`models/editorial_pages.py`, `home_copy.recopy_section`): per
+elementi, backup `before_copy_2510_*`, rieseguibile. Decisioni dell'utente, valgono su tutto il sito:
+- **Fruttato medio-intenso** (sostituisce "medio" del 23/10), profilo elegante e armonico,
+  morbido e rotondo, amaro e piccante delicati e ben bilanciati, finale pulito; **niente erba
+  e grano**. Raccolta: "Raccogliamo … è il momento in cui l'oliva è più ricca di polifenoli e
+  di profumi" (mai "antiossidanti").
+- **"Frantoio di fiducia"** (non più "partner"). **Niente magazzino**: "confezioniamo
+  direttamente in frantoio e lo spediamo a casa tua".
+- **Oltre 1.500 ulivi** (non 1000). Franco non ha studiato economia.
+- Home: "Il carattere della nostra terra.", didascalia "Solo Peranzana, solo dai nostri
+  ulivi.", famiglia "Tre generazioni, gli stessi ulivi.", gusto "Morbido. Equilibrato.",
+  fatto "Dal 1945 · tre generazioni sulla stessa terra" al posto di "0,17 %".
+- /aboutus: i tre capitoli 1945/1980/2020 con i testi dell'utente (vecchio sito come fonte).
+- /l-olio: apertura "duplice attitudine", "dalle loro olive nasce La Regina", meta
+  description senza "raccolto 2024".
+- **Analisi:** `s_torrepulia_oil_analysis` ora è un contenitore (`.tp-analysis-content`,
+  `static/src/js/oil_analysis.js`) riempito da `/torrepulia/analisi` con
+  `oil_analysis_content`. Mostra `_torrepulia_published_analysis()`: l'ultima carta d'identità
+  con valori, solo se `harvest_year >= stagione - 1` (stagione = anno da settembre),
+  altrimenti "Le analisi del raccolto <stagione>" in arrivo. Nuovi campi della carta:
+  `report_file` (PDF, servito da `/torrepulia/analisi/<id>/rapporto.pdf`) e `analysis_note`.
+  **Da fare dall'utente:** carta "Raccolto 2025" senza valori collegata ai prodotti a scorte
+  (oggi mostrano la tabella 2024); a dicembre carta "Raccolto 2026" con valori e PDF.
+- Fascia stagionale dello shop con `olive-cassone-*`.
 
 ## Fatto il 24/10 (pomeriggio e sera)
 
@@ -426,7 +453,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (139 al 24/10 sera):
+- Test Odoo (142 al 25/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,
