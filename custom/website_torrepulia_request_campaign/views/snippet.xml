@@ -6,7 +6,7 @@
                     <p class="tp-campaign-intro">Scegli adesso i formati: raccogliamo, moliamo entro 8 ore dalla raccolta e te lo spediamo appena &#232; pronto.</p>
                     <a class="btn btn-primary tp-campaign-hero-cta" href="#tp-campaign-formats">Scegli i formati</a>
                 </div>
-                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp 1280w" sizes="(max-width: 767px) 100vw, 45vw" alt="Una mano tra i rami di un ulivo con le olive Peranzana pronte per la raccolta" width="1280" height="853" loading="eager" fetchpriority="high"/>
+                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1600.webp 1600w" sizes="(max-width: 767px) 100vw, 45vw" alt="Olive Peranzana appena raccolte nel cassone, con una mano nel guanto da lavoro" width="1280" height="960" loading="eager" fetchpriority="high"/>
             </div>
             <div class="tp-campaign-content o_not_editable"><p>Caricamento della campagna…</p></div>
             <div class="tp-campaign-review tp-request-review o_not_editable" data-tp-review="" data-review-lazy=""><p>Il modulo e il riepilogo della richiesta vengono caricati durante la visita. Nessun dato personale viene salvato nella pagina.</p></div>

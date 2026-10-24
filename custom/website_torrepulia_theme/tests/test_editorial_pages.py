@@ -7,7 +7,7 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
-    HOME_REPLACEMENTS, PAGES, REPORT_2024, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
+    HOME_REPLACEMENTS, PAGES, PROCESS_PHOTO, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
     retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
@@ -180,3 +180,13 @@ class TestEditorialPages(TransactionCase):
             self.assertIn(kept, refined)
         self.assertIsNone(UNDOCUMENTED.search(refined))
         self.assertEqual(refine_home(self.env, refined, '/shop/bag-in-box-5-l#come-funziona'), refined)
+
+    def test_process_photo_is_added_once_and_keeps_the_owner_steps(self):
+        saved = ('<t t-name="oil"><div id="wrap"><section data-snippet="s_torrepulia_production_process">'
+                 '<div class="tp-process-intro"><h2>Raccogliamo</h2></div>'
+                 '<ol><li><img src="/web/image/912"/><h3>La raccolta</h3></li></ol></section></div></t>')
+        photo = etree.fromstring(self.env.ref('website_torrepulia_theme.s_torrepulia_production_process').arch_db).xpath(PROCESS_PHOTO)[0]
+        updated = add_process_photo(saved, photo)
+        self.assertIn('raccolta-reti-1280.webp', updated)
+        self.assertIn('/web/image/912', updated)
+        self.assertEqual(add_process_photo(updated, photo), updated)

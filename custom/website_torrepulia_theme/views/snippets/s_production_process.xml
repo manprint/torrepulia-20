@@ -13,12 +13,13 @@
                                 <p>[SEGNAPOSTO, NON PUBBLICATO] Qui una frase vera di pap&#224; Michele o di nonno Santino Vincenzo sulla raccolta.</p>
                                 <footer>[Chi l&#8217;ha detta]</footer>
                             </blockquote>
+                            <img class="img img-fluid tp-process-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1920.webp 1920w" sizes="(min-width: 1200px) 520px, (min-width: 992px) 40vw, 100vw" alt="Un collaboratore trascina il telo della raccolta sotto gli ulivi" width="1280" height="853" loading="lazy"/>
                         </div>
                     </div>
                     <div class="col-12 col-lg-7 o_colored_level">
                         <ol class="tp-process-steps">
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/campaign/olive-640.webp" alt="Olive Peranzana colte dal ramo" width="640" height="427" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-harvest.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-harvest-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-harvest.webp 960w" sizes="(min-width: 992px) 240px, 128px" alt="Ramo carico di olive Peranzana; sullo sfondo un collaboratore scuote la pianta sopra i teli" width="960" height="960" loading="lazy"/>
                                 <div>
                                     <h3>La raccolta</h3>
                                     <p>Tra ottobre e novembre, all&#8217;inizio dell&#8217;invaiatura, cogliamo le olive dalla pianta.</p>

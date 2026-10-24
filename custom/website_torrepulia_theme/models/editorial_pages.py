@@ -266,3 +266,37 @@ def retext_payment(env):
 def link_report_2024(env):
     env['torrepulia.oil.profile'].search([
         ('harvest_year', '=', 2024), ('report_url', '=', False)]).report_url = REPORT_2024
+
+
+# 20.0.3.21.0: the harvest photo under the process intro. Only the photo is added: the steps keep the owner's Builder edits.
+PROCESS_PHOTO = './/img[contains(concat(" ", @class, " "), " tp-process-photo ")]'
+
+
+def add_process_photo(arch, photo):
+    root = etree.fromstring(arch)
+    changed = False
+    for section in root.xpath('.//section[@data-snippet="s_torrepulia_production_process"]'):
+        intro = section.xpath('.//div[contains(concat(" ", @class, " "), " tp-process-intro ")]')
+        if not intro or section.xpath(PROCESS_PHOTO):
+            continue
+        intro[0].append(copy.deepcopy(photo))
+        changed = True
+    return etree.tostring(root, encoding='unicode') if changed else arch
+
+
+def add_process_photos(env):
+    photo = snippet_section(env, 's_torrepulia_production_process').xpath(PROCESS_PHOTO)[0]
+    photo.tail = None
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    for view in Views.search([('key', '=', MODULE + '.page_oil_view')]):
+        env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        stored = env.cr.fetchone()[0] or {}
+        updated = {lang: add_process_photo(arch, photo) for lang, arch in stored.items()}
+        if updated == stored:
+            continue
+        view.copy({'name': 'Before the harvest photo', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_process_photo_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
