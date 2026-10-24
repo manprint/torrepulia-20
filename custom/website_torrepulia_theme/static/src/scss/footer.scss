@@ -1,6 +1,8 @@
-// Footer: brand line with contacts, three short groups, legal bar. Loaded after the older footer rules.
+// Footer: brand line with contacts, four groups, legal bar. Loaded after the older footer rules.
+// One twelve-column grid for both bands: the contacts start where the third group starts.
 .tp-site.tp-cinematic #mc-footer {
     --tp-footer-line: rgba(241, 243, 239, .16);
+    --tp-footer-gap: 32px;
     color: var(--tp-on-dark);
 
     a { color: var(--tp-on-dark); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px;
@@ -9,13 +11,14 @@
 
     .mc-footer-brandline {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        gap: 40px;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 32px var(--tp-footer-gap);
         align-items: center;
         padding-bottom: 48px;
         border-bottom: 1px solid var(--tp-footer-line);
     }
-    .brand.mc-official-brand { width: 112px; height: 110px; min-width: 112px; text-decoration: none; }
+    .mc-footer-identity { grid-column: 1 / 7; display: flex; align-items: center; gap: 32px; min-width: 0; }
+    .brand.mc-official-brand { flex: none; width: 112px; height: 110px; min-width: 112px; text-decoration: none; }
     .mc-official-logo { width: 112px !important; height: 110px !important; }
     .mc-footer-statement p { margin: 0; max-width: 40ch; color: var(--tp-on-dark-muted); font-size: var(--tp-small); line-height: 1.6; }
     .mc-footer-statement .mc-footer-slogan {
@@ -25,20 +28,23 @@
     }
     // Every row has the same rhythm: label and value share a baseline, values carry the same vertical padding.
     .mc-footer-contact {
+        grid-column: 7 / -1;
         display: grid;
         gap: 4px;
         margin: 0;
         font-style: normal;
-        p { display: grid; grid-template-columns: 6.5rem auto; align-items: baseline; margin: 0; }
-        span:first-child { color: var(--tp-gold-line); font-size: 13px; }
-        a, .mc-footer-address span:last-child { display: block; padding: 8px 0; font-size: 17px; line-height: 1.4; }
-        .mc-footer-address span:last-child { color: var(--tp-on-dark-muted); font-size: var(--tp-small); line-height: 1.6; padding-top: 9px; }
+        p { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); align-items: baseline; margin: 0; }
+        // Gold belongs to the column titles only: these labels stay in the muted light tone.
+        span:first-child { color: var(--tp-on-dark-muted); font-size: 13px; }
+        // Email, phone and address are one list of values: same size, colour and leading.
+        a, .mc-footer-address span:last-child { display: block; padding: 8px 0; color: var(--tp-on-dark); font-size: 16px; line-height: 1.5; }
     }
     .mc-footer-groups .mc-footer-social { display: flex; align-items: center; gap: 10px; }
     .mc-footer-social .oi { width: 20px; color: var(--tp-gold-line); font-size: 18px; text-align: center; }
 
     .mc-footer-groups {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        column-gap: var(--tp-footer-gap);
         margin: 40px 0 32px;
         h2 { margin-bottom: 8px; color: var(--tp-gold-line); font-size: 14px; }
         a { width: fit-content; padding: 8px 0; }
@@ -62,12 +68,12 @@
     }
 
     @media (max-width: 991px) {
-        .mc-footer-brandline { grid-template-columns: auto minmax(0, 1fr); }
-        .mc-footer-contact { grid-column: 1 / -1; }
+        .mc-footer-identity, .mc-footer-contact { grid-column: 1 / -1; }
         .mc-footer-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 760px) {
-        .mc-footer-brandline { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-bottom: 32px; }
+        .mc-footer-brandline { gap: 24px; padding-bottom: 32px; }
+        .mc-footer-identity { align-items: flex-start; gap: 20px; }
         .brand.mc-official-brand { width: 88px; height: 86px; min-width: 88px; }
         .mc-official-logo { width: 88px !important; height: 86px !important; }
         .mc-footer-contact p { grid-template-columns: 5.5rem auto; }

@@ -52,7 +52,9 @@ class Website(models.Model):
         vat = (company.vat or '').replace(' ', '')
         if len(vat) > 2 and vat[:2].isalpha():
             vat = vat[2:]  # "IT00722360716" reads as "P. IVA 00722360716".
-        locality = ' '.join(filter(None, [partner.zip, partner.city]))
+        # A city typed in capitals ("TORREMAGGIORE") would shout in the footer.
+        city = partner.city.title() if partner.city and partner.city.isupper() else partner.city
+        locality = ' '.join(filter(None, [partner.zip, city]))
         if partner.state_id.code and locality:
             locality += ' (%s)' % partner.state_id.code
         return {

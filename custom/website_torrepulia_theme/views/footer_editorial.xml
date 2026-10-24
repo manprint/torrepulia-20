@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Footer: brand and contacts, three short link groups with shipping and payment, legal bar.
+    <!-- Footer: brand and contacts, four link groups, legal bar, on one twelve-column grid
+         (contacts start where the third group starts).
          Company data (name, address, VAT, contacts, social links) comes from the company record.
          Inherits the layout, so it applies to the theme chrome and to its website-specific copy. -->
     <template id="footer_editorial" inherit_id="website.layout" priority="95" name="Torrepulia footer">
@@ -9,12 +10,14 @@
                 <t t-set="tp_company" t-value="website._torrepulia_footer_company()"/>
                 <t t-set="tp_payments" t-value="website._torrepulia_footer_payments()"/>
                 <div class="mc-footer-brandline">
-                    <a class="brand mc-official-brand" href="/" aria-label="Torrepulia, homepage">
-                        <img class="mc-official-logo" src="/website_torrepulia_theme/static/src/img/content/Logo%20Oro.png" alt="Torrepulia, Fratelli Leone" width="160" height="156" loading="lazy"/>
-                    </a>
-                    <div class="mc-footer-statement">
-                        <p class="mc-footer-slogan">La nostra terra,<br/>sulla tua tavola.</p>
-                        <p>Olio extravergine Peranzana della famiglia Leone, da Torremaggiore.</p>
+                    <div class="mc-footer-identity">
+                        <a class="brand mc-official-brand" href="/" aria-label="Torrepulia, homepage">
+                            <img class="mc-official-logo" src="/website_torrepulia_theme/static/src/img/content/Logo%20Oro.png" alt="Torrepulia, Fratelli Leone" width="160" height="156" loading="lazy"/>
+                        </a>
+                        <div class="mc-footer-statement">
+                            <p class="mc-footer-slogan">La nostra terra,<br/>sulla tua tavola.</p>
+                            <p>Olio extravergine Peranzana della famiglia Leone, da Torremaggiore.</p>
+                        </div>
                     </div>
                     <address class="mc-footer-contact">
                         <p t-if="tp_company['email']"><span>Scrivici</span><a t-att-href="'mailto:%s' % tp_company['email']" t-out="tp_company['email']"/></p>
