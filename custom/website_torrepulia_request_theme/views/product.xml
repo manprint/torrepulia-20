@@ -7,6 +7,7 @@
             <xpath expr="//page[group/field[@name='torrepulia_format_name']]/group" position="after">
                 <group string="Scheda prodotto sul sito">
                     <field name="torrepulia_web_title"/>
+                    <field name="torrepulia_denomination"/>
                     <field name="torrepulia_sensory_profile" widget="html" placeholder="Note di carciofo, mandorla e pomodoro (Fruttato Medio)."/>
                     <field name="torrepulia_food_pairings" widget="html" placeholder="Ideale a crudo su zuppe, carni rosse e bruschette."/>
                     <field name="torrepulia_shipping_storage" widget="html" placeholder="Inserisci tempi di imballaggio e modalità di protezione verificati per questo formato."/>
@@ -17,7 +18,16 @@
     </record>
     <template id="product_editorial_title" inherit_id="website_torrepulia_theme.cinematic_product_title" priority="100">
         <xpath expr="//h1[not(@t-else)]" position="replace">
-            <h1 t-out="product.torrepulia_web_title or product.name"/>
+            <t t-set="tp_title" t-value="product.torrepulia_web_title or product.name"/>
+            <!-- "La Regina, Bag in Box 5 litri": brand and format, the format on its own line from tablets up. -->
+            <h1 t-if="', ' in tp_title"><t t-out="tp_title.split(', ', 1)[0]"/>,<span class="tp-title-format"> <t t-out="tp_title.split(', ', 1)[1]"/></span></h1>
+            <h1 t-else="" t-out="tp_title"/>
+        </xpath>
+        <!-- Denomination of the product and contents; the format only when the title does not carry it. -->
+        <xpath expr="//p[hasclass('product-subtitle')]" position="replace">
+            <t t-set="tp_subtitle" t-value="[product.torrepulia_format_name if product.torrepulia_format_name and product.torrepulia_format_name.lower() not in tp_title.lower() else '',
+                                             product.torrepulia_denomination, product.torrepulia_format_detail]"/>
+            <p t-if="any(tp_subtitle)" class="product-subtitle" t-out="' · '.join([part for part in tp_subtitle if part])"/>
         </xpath>
     </template>
     <template id="product_editorial_accordions" inherit_id="website_sale.product" priority="100">

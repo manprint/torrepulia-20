@@ -1,5 +1,21 @@
 // Phase 2 boutique: product page choices, assurances and the oil identity card.
 .tp-site.tp-cinematic {
+    // Product name: a buying interface, not a cover. Two lines at most, so that
+    // format and price stay in the first screen; 32px on phones, 52px at 1440.
+    #product_details h1 {
+        max-width: 18ch;
+        font-size: clamp(2rem, calc(1.25rem + 2.2vw), 3.25rem);
+        line-height: 1.1;
+        text-wrap: balance;
+        overflow-wrap: break-word;
+        @media (min-width: 768px) { .tp-title-format { display: block; } }
+    }
+    #product_details .product-subtitle {
+        margin: .75rem 0 1.5rem;
+        color: var(--tp-muted);
+        font-size: 1.0625rem;
+        line-height: 1.5;
+    }
     .tp-option-label,
     .variant_attribute .attribute_name {
         margin: 0 0 .625rem;

@@ -70,10 +70,19 @@ class TestThemeRequestCommerce(HttpCase):
         self.assertIn('<summary>Abbinamenti in cucina</summary>', page.text)
         self.assertIn('<summary>Spedizione e conservazione</summary>', page.text)
         self.assertIn('Note sensoriali approvate QA', page.text)
+        # Subtitle: format (not in the title), default denomination, contents.
+        self.assertIn('Editorial format · Olio extravergine di oliva Peranzana', page.text)
         product.write({'torrepulia_web_title': False, 'torrepulia_sensory_profile': '<p><br></p>'})
         page = self.url_open(product.website_url)
         self.assertNotIn('<summary>Profilo sensoriale</summary>', page.text)
         self.assertIn('Editorial QA oil', page.text)
+        product.write({'name': 'La Regina, Editorial format 5 litri', 'torrepulia_format_detail': '5 litri',
+                       'torrepulia_denomination': 'Olio extravergine di oliva'})
+        page = self.url_open(product.website_url).text
+        self.assertIn('La Regina,<span class="tp-title-format"> Editorial format 5 litri</span>', page)
+        self.assertIn('<p class="product-subtitle">Olio extravergine di oliva · 5 litri</p>', page)
+        product.torrepulia_denomination = False
+        self.assertIn('<p class="product-subtitle">5 litri</p>', self.url_open(product.website_url).text)
         for mode in ['request', 'shop']:
             if mode == 'request':
                 team = self.env['crm.team'].create({'name': 'Editorial team', 'company_id': website.company_id.id})

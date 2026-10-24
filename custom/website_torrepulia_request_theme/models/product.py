@@ -6,6 +6,8 @@ class ProductTemplate(models.Model):
 
     torrepulia_web_title = fields.Char('Titolo della scheda Torrepulia', translate=True, default='La Regina',
         help="Lasciare vuoto per usare il nome del prodotto.")
+    torrepulia_denomination = fields.Char('Denominazione', translate=True, default='Olio extravergine di oliva Peranzana',
+        help="Sottotitolo della scheda, prima del contenuto. Vuoto: solo formato e contenuto.")
     torrepulia_sensory_profile = fields.Html('Profilo sensoriale', translate=True)
     torrepulia_food_pairings = fields.Html('Abbinamenti in cucina', translate=True)
     torrepulia_shipping_storage = fields.Html('Spedizione e conservazione', translate=True)

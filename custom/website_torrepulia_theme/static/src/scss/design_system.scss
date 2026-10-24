@@ -48,7 +48,8 @@
     // would override Regina's compact opening and constrain colored surfaces.
     .mc-section { min-width: 0; }
     .mc-section p { max-width: var(--tp-reading); }
-    .mc-page h1, .mc-institutional h1, #product_details h1, .tp-shop-title { font-size: var(--tp-title-1); line-height: 1.08; overflow-wrap: break-word; }
+    // Product names have their own, smaller scale (boutique.scss).
+    .mc-page h1, .mc-institutional h1, .tp-shop-title { font-size: var(--tp-title-1); line-height: 1.08; overflow-wrap: break-word; }
     .mc-page .mc-section h2 { font-size: var(--tp-title-2); line-height: 1.1; overflow-wrap: break-word; }
     .mc-page .mc-section h3 { font-size: var(--tp-title-3); line-height: 1.15; }
     .mc-section :is(.family-story, .hero-description, .sensory-text, .process p, .format-description, .territory p, .culinary p) { font-size: var(--tp-body); line-height: 1.7; }
