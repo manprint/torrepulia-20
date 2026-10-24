@@ -45,13 +45,15 @@
                     <h2 t-out="'Riepilogo Prenotazione' if campaign_review else 'Riepilogo'"/><div t-if="campaign_review" data-review-compact-lines="" aria-live="polite"/>
                     <p data-review-liters="" hidden="hidden"/>
                     <p data-review-sum="" hidden="hidden"/>
-                    <p t-if="campaign_review" data-review-delivery-note="">Spese di spedizione calcolate in base al CAP e comunicate prima della partenza.</p>
+                    <!-- Shipping as the shop states it (website setting), so one change updates both. -->
+                    <p t-if="campaign_review" data-review-delivery-note="" t-out="('torrepulia_shipping_note' in website._fields and website.torrepulia_shipping_note) or 'Spese di spedizione indicate nella conferma d’ordine.'"/>
                     <p class="tp-review-pay-today" data-review-pay-today="">Totale da pagare oggi: 0,00 €</p>
                     <p t-if="not campaign_review" data-review-delivery-note="">Spese di spedizione calcolate in base al CAP e comunicate prima della partenza. Nessun addebito ora.</p>
                     <label class="tp-review-privacy"><input type="checkbox" name="privacy_accepted" required="required"/>
                             <span>Ho letto l'<a href="/privacy-policy" target="_blank" rel="noopener">informativa sulla privacy</a> e acconsento al trattamento dei dati per rispondere alla richiesta.</span>
                         </label>
-                    <p>L’invio non conferma un ordine e non richiede un pagamento.</p>
+                    <p t-if="campaign_review">Prenotare non ti impegna: fino alla conferma d’ordine puoi cambiare o annullare, senza costi.</p>
+                    <p t-else="">L’invio non conferma un ordine e non richiede un pagamento.</p>
                     <div class="tp-review-send"><button type="submit" class="btn btn-primary" disabled="disabled">Conferma la mia prenotazione</button>
                         <span data-review-sending="" role="status" hidden="hidden">Invio in corso. Attendi la conferma…</span>
                     </div>
@@ -71,7 +73,9 @@
                 <t t-set="reservation" t-value="receipt.get('reservation')"/>
                 <t t-if="reservation">
                     <h1>La tua prenotazione è registrata</h1>
-                    <p class="tp-review-intro">Riferimento <strong t-out="receipt['reference']"/>. Riceverai a breve un’email con il riepilogo. Quando l’olio nuovo è pronto ti contattiamo per confermare indirizzo, consegna e totale.</p>
+                    <p class="tp-review-intro">Riferimento <strong t-out="receipt['reference']"/>. Riceverai a breve un’email con il riepilogo.
+                        Qualche giorno prima della molitura ti mandiamo la conferma d’ordine: avrai <t t-out="reservation.get('confirmation_days', 7)"/> giorni per confermarla e completare il pagamento.
+                        Fino ad allora puoi cambiare o annullare la prenotazione rispondendo all’email.</p>
                     <dl t-if="reservation.get('facts')" class="tp-review-facts">
                         <div t-foreach="reservation['facts']" t-as="fact"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div>
                     </dl>
@@ -105,7 +109,7 @@
                 </div>
                 <p t-if="receipt.get('liters_display') and not reservation">Contenuto complessivo della richiesta: <strong t-out="receipt['liters_display']"/></p>
                 <p t-if="show_prices and receipt.get('products_total_display')" class="product_price tp-review-total">Totale prodotti: <strong t-out="receipt['products_total_display']"/>.
-                    <t t-if="reservation">Spedizione esclusa: te la confermiamo prima della partenza.</t><t t-else="">Spese di consegna ancora da definire.</t></p>
+                    <t t-if="reservation" t-out="reservation.get('shipping_note') or 'Spese di spedizione indicate nella conferma d’ordine.'"/><t t-else="">Spese di consegna ancora da definire.</t></p>
                 <a t-if="reservation" href="/l-olio" class="btn btn-outline-primary">Scopri come nasce La Regina</a>
                 <a t-else="" href="/shop" class="btn btn-outline-primary">Aggiungi altri prodotti</a>
             </div>

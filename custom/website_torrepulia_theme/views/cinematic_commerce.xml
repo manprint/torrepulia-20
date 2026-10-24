@@ -65,7 +65,7 @@
                     <button t-elif="stock['blocked']" type="button" class="button dark format-link" disabled="disabled">Acquista <t t-out="p.torrepulia_format_name"/></button>
                     <a t-else="" class="button dark format-link" t-att-href="p.website_url">Acquista <t t-out="p.torrepulia_format_name"/><img class="icon" src="/website_torrepulia_theme/static/src/cinematic/icons/arrow-up-right.svg" alt=""/></a>
                     <a t-if="stock['blocked'] and not stock['preorder']" class="text-link mc-format-details-link" t-att-href="p.website_url">Dettagli del prodotto</a>
-                    <p t-if="stock['preorder']" class="small">Nessun anticipo: paghi alla spedizione.</p>
+                    <p t-if="stock['preorder']" class="small">Nessun anticipo: paghi alla conferma dell&#8217;ordine.</p>
                     <p t-elif="website.torrepulia_shipping_note" class="small" t-out="website.torrepulia_shipping_note"/>
                     <p t-else="" class="small">Spedizione calcolata alla conferma dell'ordine.</p>
                 </div>

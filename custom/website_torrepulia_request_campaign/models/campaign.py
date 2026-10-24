@@ -19,7 +19,10 @@ class Campaign(models.Model):
     introduction = fields.Text('Testo editoriale', translate=True,
         default='Filtrato o non filtrato, anche insieme: scegli le quantità per ogni formato.')
     shipping_note = fields.Char('Indicazione spedizione', translate=True)
-    payment_note = fields.Char('Indicazione pagamento', translate=True)
+    payment_note = fields.Char('Indicazione pagamento', translate=True,
+        help="Vuoto: Nessun anticipo, paghi alla conferma dell'ordine.")
+    confirmation_days = fields.Integer("Giorni per confermare l'ordine", default=7, required=True,
+        help="Tempo per confermare e pagare la conferma d'ordine inviata prima della molitura. Pagina, email e conferma lo citano.")
     price_note = fields.Char('Indicazione prezzo', translate=True,
         help='Condizione editoriale approvata dal gestore. Non modifica né blocca i prezzi dei preventivi Odoo.')
     closed_message = fields.Text('Messaggio campagna chiusa', required=True, translate=True,
@@ -30,9 +33,16 @@ class Campaign(models.Model):
     shop_band_title = fields.Char('Titolo della fascia nello shop', translate=True,
         help='Vuoto: Olio nuovo <anno>.')
     shop_band_text = fields.Char('Testo della fascia nello shop', translate=True,
-        help='Vuoto: Prenotazioni aperte: lo moliamo entro 8 ore dalla raccolta e te lo spediamo appena è pronto. Paghi alla spedizione.')
+        help="Vuoto: Prenotazioni aperte, senza anticipo: prima della molitura ti mandiamo la conferma d'ordine.")
 
     _unique_reference = models.Constraint('UNIQUE(website_id, reference)', 'Il riferimento deve essere univoco per website.')
+
+    def _public_facts(self):
+        """Delivery, price and payment as the page, the emails and the receipt state them."""
+        self.ensure_one()
+        return [(_('Consegna'), self.delivery_period),
+                (_('Prezzo'), self.price_note or _('Bloccato per tutta la stagione')),
+                (_('Pagamento'), self.payment_note or _("Nessun anticipo, paghi alla conferma dell'ordine"))]
 
     @api.constrains('opens_at', 'closes_at', 'website_id', 'line_ids')
     def _check_campaign(self):
@@ -121,7 +131,7 @@ class Website(models.Model):
         return {'url': url,
                 'label': campaign.shop_state_label or _('Raccolto %s · in prenotazione', year),
                 'title': campaign.shop_band_title or _('Olio nuovo %s', year),
-                'text': campaign.shop_band_text or _('Prenotazioni aperte: lo moliamo entro 8 ore dalla raccolta e te lo spediamo appena è pronto. Paghi alla spedizione.')}
+                'text': campaign.shop_band_text or _("Prenotazioni aperte, senza anticipo: prima della molitura ti mandiamo la conferma d'ordine.")}
 
     def _request_receipt_context(self):
         """Hybrid mode: a request sent while the default campaign is open is a reservation.
@@ -132,12 +142,11 @@ class Website(models.Model):
         if self._torrepulia_request_enabled() or not self._request_preorder_url():
             return context
         campaign = self._public_request_campaign()
-        facts = [(_('Consegna'), campaign.delivery_period),
-                 (_('Prezzo'), campaign.price_note or _('Bloccato per tutta la stagione')),
-                 (_('Pagamento'), campaign.payment_note or _('Alla spedizione, zero anticipo'))]
         return dict(context, reservation={
             'season': (campaign.opens_at or fields.Datetime.now()).year,
-            'facts': [[label, value] for label, value in facts if value]})
+            'facts': [[label, value] for label, value in campaign._public_facts() if value],
+            'confirmation_days': campaign.confirmation_days,
+            'shipping_note': self.torrepulia_shipping_note or ''})
 
     def _public_request_campaign(self, campaign_id=None):
         """Only a website/company scoped editorial projection; no public model ACL.

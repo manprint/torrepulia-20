@@ -66,7 +66,7 @@
                                 <a class="btn btn-primary" href="/shop">Ordina dalle scorte</a>
                             </div>
                             <div class="tp-choice-option">
-                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla conferma dell&#8217;ordine.</p></div>
                                 <a class="btn btn-outline-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                     <div class="col-12 col-lg-7 o_colored_level">
                         <div class="tp-choice-options">
                             <div class="tp-choice-option">
-                                <div><h3>Olio nuovo</h3><p>Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <div><h3>Olio nuovo</h3><p>Prenoti senza anticipo e paghi alla conferma dell&#8217;ordine.</p></div>
                                 <a class="btn btn-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
                             </div>
                             <div class="tp-choice-option">
@@ -142,7 +142,7 @@
                                 <a class="btn btn-primary" href="/shop">Ordina dalle scorte</a>
                             </div>
                             <div class="tp-choice-option">
-                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla spedizione.</p></div>
+                                <div><h3>Olio nuovo</h3><p>L&#8217;olio della nuova raccolta, appena molito. Prenoti senza anticipo e paghi alla conferma dell&#8217;ordine.</p></div>
                                 <a class="btn btn-outline-primary" href="/prenotailtuoolio">Prenota l&#8217;olio nuovo</a>
                             </div>
                         </div>

@@ -16,17 +16,18 @@
         <t t-if="campaign and (opened or editing)">
             <!-- The facts read the campaign: each season edits them there, not in the page. -->
             <dl class="tp-campaign-facts" aria-label="La prenotazione in breve">
-                <div t-if="campaign.delivery_period"><dt>Consegna</dt><dd t-out="campaign.delivery_period"/></div>
-                <div><dt>Prezzo</dt><dd t-out="campaign.price_note or 'Bloccato per tutta la stagione'"/></div>
-                <div><dt>Pagamento</dt><dd t-out="campaign.payment_note or 'Alla spedizione, zero anticipo'"/></div>
+                <t t-foreach="campaign._public_facts()" t-as="fact"><div t-if="fact[1]"><dt t-out="fact[0]"/><dd t-out="fact[1]"/></div></t>
             </dl>
+            <!-- The reservation as it happens: nothing to pay today, the order confirmation before
+                 the milling, a bank transfer within the campaign's days, then the oil leaves. -->
             <section class="tp-campaign-steps" aria-labelledby="tp-campaign-steps-title">
                 <h2 id="tp-campaign-steps-title">Come funziona</h2>
                 <ol>
-                    <li><strong>Scegli</strong><span>Formati e quantit&#224;: filtrato, non filtrato o entrambi.</span></li>
-                    <li><strong>Ricevi la conferma</strong><span>Ti scriviamo un&#8217;email con il riepilogo della prenotazione.</span></li>
-                    <li><strong>Paghi alla spedizione</strong><span>Quando l&#8217;olio nuovo parte da Torremaggiore.</span></li>
+                    <li><strong>Prenoti</strong><span>Formati e quantit&#224;, filtrato o non filtrato. Oggi non paghi nulla.</span></li>
+                    <li><strong>Confermi l&#8217;ordine</strong><span>Qualche giorno prima della molitura ti mandiamo la conferma d&#8217;ordine, con il prezzo di oggi e le spese di spedizione. Hai <t t-out="campaign.confirmation_days"/> giorni per confermarla e completare il pagamento.</span></li>
+                    <li><strong>Lo ricevi a casa</strong><span>Ricevuto il pagamento, ti spediamo l&#8217;olio nuovo direttamente da Torremaggiore.</span></li>
                 </ol>
+                <p class="tp-campaign-steps-note">Fino alla conferma d&#8217;ordine puoi cambiare o annullare la prenotazione, senza costi.</p>
             </section>
             <h2 id="tp-campaign-formats" class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
             <p class="tp-campaign-formats-description" t-if="campaign.introduction" t-out="campaign.introduction"/>

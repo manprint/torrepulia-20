@@ -238,6 +238,31 @@ def move_bag_in_box(env):
         product.with_context(lang=lang).website_description = bag_in_box_description(env)
 
 
+# 20.0.3.20.0: reservations are paid on the order confirmation, before the oil leaves.
+PAYMENT_REPLACEMENTS = (('paghi alla spedizione', 'paghi alla conferma dell\u2019ordine'),)
+
+
+def retext_payment(env):
+    """Saved pages (closings of La Peranzana, La famiglia, Il territorio) in every stored language."""
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE %s AND active", ['%paghi alla spedizione%'])
+    for view_id, stored in env.cr.fetchall():
+        updated = {}
+        for lang, arch in (stored or {}).items():
+            for old, new in PAYMENT_REPLACEMENTS:
+                arch = arch.replace(old, new)
+            updated[lang] = arch
+        if updated == stored:
+            continue
+        view = Views.browse(view_id)
+        view.copy({'name': 'Before the payment wording', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_payment_wording_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
 def link_report_2024(env):
     env['torrepulia.oil.profile'].search([
         ('harvest_year', '=', 2024), ('report_url', '=', False)]).report_url = REPORT_2024

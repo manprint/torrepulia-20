@@ -32,6 +32,7 @@
         li::before { content: counter(tp-step); font: 400 2.5rem/1 "Libre Caslon Display", Georgia, serif; color: var(--tp-gold-text, #746014); }
         strong { font-size: 17px; }
         span { color: var(--tp-muted, #526056); line-height: 1.6; }
+        .tp-campaign-steps-note { margin: 24px 0 0; max-width: none; color: var(--tp-muted, #526056); font-size: var(--tp-small, .9375rem); }
     }
     .tp-campaign-photo { width: 100%; height: 340px; object-fit: cover; }
     .tp-campaign-content, .tp-campaign-review, #tp-campaign-formats { scroll-margin-top: 100px; }

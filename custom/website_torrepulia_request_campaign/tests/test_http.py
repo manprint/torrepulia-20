@@ -88,7 +88,9 @@ class TestCampaignHttp(HttpCase):
         tree = html.fromstring(content['html'])
         # Facts read the campaign; no certification-like claim, no hard-coded season.
         self.assertEqual(tree.xpath('//dl[@class="tp-campaign-facts"]//dt/text()'), ['Prezzo', 'Pagamento'])
-        self.assertIn('Alla spedizione, zero anticipo', tree.text_content())
+        self.assertIn("Nessun anticipo, paghi alla conferma dell'ordine", tree.text_content())
+        self.assertIn('Hai 7 giorni per confermarla e completare il pagamento', tree.text_content())
+        self.assertNotIn('bonifico', tree.text_content())
         self.assertEqual(len(tree.xpath('//section[@class="tp-campaign-steps"]//li')), 3)
         self.assertNotIn('FILIERA PROTETTA', content['html'])
         self.assertNotIn('2026/2027', tree.text_content())

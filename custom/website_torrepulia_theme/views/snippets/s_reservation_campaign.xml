@@ -36,7 +36,7 @@
             <div class="tp-value-grid">
                 <div class="tp-value-item"><h3>Prezzo Bloccato</h3><p>14 € / Litro garantito per tutta la campagna, senza rincari successivi.</p></div>
                 <div class="tp-value-item"><h3>Freschezza Assoluta</h3><p>Spedizione rapida entro 48 ore dalla molitura in frantoio.</p></div>
-                <div class="tp-value-item"><h3>Zero Rischi</h3><p>Nessun anticipo richiesto. Paghi solo alla conferma della spedizione.</p></div>
+                <div class="tp-value-item"><h3>Zero Rischi</h3><p>Nessun anticipo richiesto. Paghi solo alla conferma dell&#8217;ordine.</p></div>
             </div>
         </section>
     </template>

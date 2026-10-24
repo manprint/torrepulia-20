@@ -138,7 +138,7 @@ class TestHybridMode(HttpCase):
         self.assertEqual(states['Hybrid stock bottle'], 'Pronta in cantina')
         self.assertEqual(states['Hybrid sold-out stock'], 'Finita per ora')
         self.assertEqual(tree.xpath('string(//section[@class="tp-season"]//h2)'), 'La nuova annata')
-        self.assertIn('lo moliamo entro 8 ore dalla raccolta', tree.xpath('string(//section[@class="tp-season"]//p)'))
+        self.assertIn("prima della molitura ti mandiamo la conferma d'ordine", tree.xpath('string(//section[@class="tp-season"]//p)'))
         # Out of season the band goes away.
         self.campaign.state = 'closed'
         self.assertFalse(html.fromstring(self.url_open('/shop').content).xpath('//section[@class="tp-season"]'))
@@ -210,13 +210,17 @@ class TestHybridMode(HttpCase):
         submitted = self.env['torrepulia.request'].search([('email', '=', 'hybrid@example.invalid')])
         reservation = submitted.public_receipt['reservation']
         self.assertEqual(reservation['facts'], [['Prezzo', 'Bloccato per tutta la stagione'],
-                                                ['Pagamento', 'Alla spedizione, zero anticipo']])
+                                                ['Pagamento', "Nessun anticipo, paghi alla conferma dell'ordine"]])
+        self.assertEqual(reservation['confirmation_days'], 7)
         customer = submitted.notification_ids.filtered(lambda item: item.kind == 'customer')
         self.assertEqual(customer._mail_subject(), 'La tua prenotazione %s è registrata' % submitted.name)
         body = customer._body_html()
         self.assertIn('Grazie, Hybrid. La tua prenotazione è registrata.', body)
         self.assertIn('Bloccato per tutta la stagione', body)
         self.assertNotIn('non conferma un ordine', body)
+        self.assertNotIn('alla spedizione', body)
+        self.assertIn('Hai 7 giorni per confermarlo e completare il pagamento', body)
+        self.assertNotIn('bonifico', body)
 
     def test_new_oil_menu_follows_the_campaign(self):
         # A plain menu entry, as in production before the launch migration.
