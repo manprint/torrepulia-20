@@ -1,10 +1,11 @@
-# Handoff Torrepulia: stato al 24/10/2026
+# Handoff Torrepulia: stato al 24/10/2026 (sera)
 
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-24/10 è su
-`main` e deployato. Versioni: tema `20.0.3.18.0`, richieste `20.0.1.16.0`, campagne `20.0.1.8.0`.
+`main` e deployato (ultimo commit di codice `954302f`). Versioni: tema `20.0.3.20.0`,
+richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
 http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
-sostituirà torrepulia.it (dominio senza www, come il vecchio).
+sostituirà torrepulia.it (dominio senza www, come il vecchio, che è anch'esso Odoo).
 
 ## Prossima sessione: verso l'apertura
 
@@ -13,22 +14,129 @@ sostituirà torrepulia.it (dominio senza www, come il vecchio).
    (`encode zstd gzip`, Let's Encrypt automatico), DNS di torrepulia.it verso 212.227.88.91,
    porte 80/443 fino al container `dind-to20`, `proxy_mode = True`, `web.base.url` in https
    con `web.base.url.freeze`, redirect www → dominio senza www. In `odoo.conf` della VM anche
-   `list_db = False` (la master password l'utente l'ha impostata il 23/10).
-2. **Configurazione a cura dell'utente** (fatto il 23/10: master password, attributo
-   Filtrazione, corriere):
+   `list_db = False` (la master password l'utente l'ha impostata il 23/10). È il giorno in
+   cui si spegne il vecchio sito ed entrano in gioco i redirect 301.
+2. **Configurazione a cura dell'utente** (fatto: master password, attributo Filtrazione,
+   corriere):
    - **server di posta in uscita (SMTP) + SPF/DKIM su torrepulia.it: senza, nessuna email
      parte** (conferma prenotazione, notifiche, ordini);
    - team commerciale con almeno un membro con email (notifica interna);
-   - bonifico: pubblicare "Bonifico bancario" con l'IBAN e nascondere il metodo oggi
-     pubblicato (il footer dice "Pagamento con paga su fattura");
-   - giacenze dei formati a scorte dopo la molitura (oggi tutti "Temporaneamente esaurito",
-     checkout non raggiungibile);
-   - campagna: "Consegna" → "Tra novembre e dicembre" (oggi "Consegna prevista tra..."
-     ripete l'etichetta), "Prezzo" → "Bloccato per tutta la stagione";
+   - pagamenti: per ora **solo bonifico** (pubblicare "Bonifico bancario" con IBAN e
+     nascondere "paga su fattura", che il footer mostra). Altri metodi online solo dopo un
+     benchmark dell'utente;
+   - giacenze dei formati a scorte dopo la molitura (oggi "Temporaneamente esaurito");
+   - campagna: "Prezzo" oggi "Prezzo bloccato garantito" → "Bloccato per tutta la stagione"
+     o vuoto; "Consegna" oggi "Consegna prevista tra…" ripete l'etichetta → "Tra novembre e
+     dicembre";
+   - prodotti (testi preparati il 24/10, vedi sotto): nome con il formato, titolo web vuoto,
+     un solo paragrafo di descrizione; 6 bottiglie: formato "6 bottiglie", contenuto "6
+     bottiglie da 500 ml"; Bag in Box: "5 litri" minuscolo; latta: unità L e quantità 5 sulla
+     variante (oggi "13,80 € / Unità"); attributo "Non Filtrato" → "Non filtrato";
+   - scheda azienda: via "Contrada Pagliara Vecchia SNC" (oggi "Pagliara Vecchia SNC
+     Contrada Torremaggiore");
+   - menu di produzione: c'è "Home" e "Acquista" (in locale niente Home, "Acquista olio");
+   - shop: filtri per attributo visibili in produzione (in locale spenti). Nel Builder il
+     menu "Filtri" della pagina prodotti, oppure attributo Filtrazione → Visibilità →
+     Nascosto (da verificare l'opzione esatta del menu "Filtri" in Odoo 20);
+   - **termini e condizioni**: incollare l'articolo 6-BIS (testo sotto) dopo il punto 6.2;
+     far rivedere 7.1 (refuso "per interno"), 7.2 (PayPal non attivo), 10.4 (rimborso su
+     carta) a chi ha scritto i termini;
    - cookie policy da completare con GA4 e Meta prima di inserirne gli ID (GA4: Impostazioni
-     sito → Google Analytics; Meta: nuovo campo "Meta Pixel" sotto).
+     sito → Google Analytics; Meta: campo "Meta Pixel" subito sotto).
 3. **Collaudo finale in produzione:** un ordine dalle scorte e una prenotazione veri (email
    comprese), poi apertura.
+4. Facoltativo, dopo l'apertura: modello di email per la conferma d'ordine (preventivo
+   dall'opportunità) con scadenza e istruzioni di pagamento.
+
+## Flusso della prenotazione (deciso il 24/10)
+
+Prenoti (zero anticipo, non è un ordine) → email di riepilogo → qualche giorno prima della
+molitura conferma d'ordine (prezzo bloccato, spedizione, totale) → **7 giorni** per
+confermarla e completare il pagamento (campo campagna `confirmation_days`) → ricevuto il
+pagamento, spedizione da Torremaggiore. Modifica o annullamento senza costi fino alla
+conferma d'ordine. Spese di spedizione lette da `website.torrepulia_shipping_note` (lo
+stesso campo dello shop). Regole di testo: mai "paghi alla spedizione", mai il metodo di
+pagamento nei testi del sito e delle email (solo nella conferma d'ordine), tono morbido
+("Prenoti · Confermi l'ordine · Lo ricevi a casa", "Ricevuto il pagamento, ti spediamo
+l'olio nuovo direttamente da Torremaggiore").
+
+Articolo da incollare nei termini (dopo 6.2, titolo con lo stile di "6. CONFERMA
+DELL'ORDINE"):
+
+> **6-BIS. PRENOTAZIONE DELL'OLIO NUOVO**
+> 6-bis.1 Durante la campagna di raccolta l'utente può prenotare i Prodotti del nuovo
+> raccolto dalla pagina "Olio nuovo" del Sito. La prenotazione è gratuita, non comporta
+> alcun pagamento e non costituisce un ordine ai sensi dei punti 5 e 6.
+> 6-bis.2 Al ricevimento della prenotazione MICHELE LEONE invia all'utente un'e-mail di
+> riepilogo. Fino all'invio della conferma d'ordine di cui al punto 6-bis.3, l'utente può
+> modificare o annullare la prenotazione senza alcun costo, rispondendo a tale e-mail o
+> contattando MICHELE LEONE ai recapiti indicati sul Sito.
+> 6-bis.3 Prima della molitura MICHELE LEONE invia all'utente, tramite e-mail, una conferma
+> d'ordine con i Prodotti prenotati, il prezzo indicato sul Sito al momento della
+> prenotazione, le spese di spedizione calcolate secondo le tariffe indicate sul Sito e
+> l'importo totale.
+> 6-bis.4 L'ordine si intende concluso con il pagamento dell'importo totale, da effettuarsi
+> entro 7 (sette) giorni dall'invio della conferma d'ordine con le modalità in essa
+> indicate, tra quelle previste al punto 7. Per gli ordini derivanti da una prenotazione
+> tale termine sostituisce quello indicato al punto 7.2. Decorso il termine senza che il
+> pagamento sia stato effettuato, la prenotazione decade senza alcun costo per l'utente.
+> 6-bis.5 La spedizione avviene dopo il ricevimento del pagamento, secondo quanto previsto
+> al punto 8. Dalla conclusione dell'ordine si applicano integralmente le presenti
+> Condizioni generali di vendita, compreso il diritto di recesso di cui al punto 10.
+
+## Testi dei prodotti (preparati il 24/10, da inserire dall'utente)
+
+| | Nome prodotto | Formato | Contenuto | Per chi è questo formato |
+|---|---|---|---|---|
+| Duetto | La Regina, Duetto | Duetto | 2 bottiglie da 500 ml | Per un regalo, o per assaggiarla la prima volta. |
+| 6 bottiglie | La Regina, 6 bottiglie | 6 bottiglie | 6 bottiglie da 500 ml | Per la tavola di ogni giorno, una bottiglia alla volta. |
+| Latta | La Regina, latta 5 litri | Latta | 5 litri | Per la dispensa di casa, da travasare poco alla volta. |
+| Bag in Box | La Regina, Bag in Box 5 litri | Bag in Box | 5 litri | Per chi usa l'olio ogni giorno, fino all'ultima goccia. |
+
+Descrizioni (un paragrafo, sotto il titolo):
+- Duetto: «Due bottiglie da 500 ml di La Regina nella confezione regalo. Per far assaggiare
+  la nostra Peranzana a chi non la conosce ancora, o per tenerne una in tavola e una di
+  scorta.»
+- 6 bottiglie: «Sei bottiglie da 500 ml in vetro scuro, che ripara l'olio dalla luce. Se ne
+  apre una alla volta e le altre restano intatte: la scorta per la cucina di tutti i giorni.»
+- Latta: «Cinque litri di La Regina in latta, che tiene l'olio al buio. Il formato della
+  dispensa: si travasa poco alla volta in un'oliera e si conserva al fresco, lontano da
+  fonti di calore.»
+- Bag in Box: «Cinque litri di La Regina in una sacca che si richiude su sé stessa a ogni
+  erogazione e lascia entrare poca aria, dentro una scatola che ripara dalla luce. Il
+  formato per chi usa l'olio ogni giorno, a crudo e in cucina.»
+
+In produzione l'utente ha usato " - " al posto della virgola nei nomi: il titolo non va a
+capo dopo "La Regina" (va bene comunque).
+
+## Fatto il 24/10 (pomeriggio e sera)
+
+- **Home in `noindex` (fix 3.19.0):** la 3.18.0 cercava la home senza lingua (l'url di
+  `website.page` è tradotto) e correggeva un altro record. Ora `_torrepulia_launch_seo` usa
+  la stessa ricerca di `website.page._get_page_info` (lingua del sito, `website_domain()`,
+  `order='website_id asc'`). Verificato in produzione.
+- **Menu stagionale:** "Olio nuovo" (menu e footer) visibile solo con lo switch del sito
+  **e** la campagna aperta (`website._torrepulia_seasonal_visible()`,
+  `_torrepulia_seasonal_open()` nel modulo campagne). La 3.19.0 ha messo il flag
+  `torrepulia_seasonal` sulla voce di produzione (bordo oro) e acceso lo switch.
+- **Filtrazione:** la 3.19.0 imposta l'attributo "Filtrazione" a `pills` (in produzione era
+  radio); il tema lo disegna come interruttore.
+- **Footer su una griglia a 12 colonne** (`footer.scss`, `.mc-footer-identity`): marchio
+  sulla metà sinistra, contatti allineati alla terza colonna, quattro colonne uguali, oro
+  solo ai titoli, email/telefono/indirizzo 16 px stesso colore, città in maiuscolo resa
+  leggibile (`navigation.py`). Il footer resta allineato all'header (cornice a tutta
+  larghezza, come la home): le pagine editoriali hanno contenitori più stretti.
+- **Scheda prodotto:** titolo con scala propria (`boutique.scss`, 52 px desktop / 32 px
+  telefono, `calc()` dentro `clamp()` per libsass), a capo dopo la virgola da 768 px
+  (`.tp-title-format`). Sottotitolo composto: formato (solo se non nel titolo) ·
+  `torrepulia_denomination` (nuovo campo, predefinito "Olio extravergine di oliva
+  Peranzana", vuoto = omesso) · contenuto. La pagina prodotto ha anche la classe `.mc-page`:
+  serve la specificità di `#product_details`.
+- **Flusso prenotazione (campagne 1.9.0, tema 3.20.0):** testi di pagina, riepilogo,
+  pagina di conferma, email cliente/team, riquadro scheda prodotto, fascia shop, riga dei
+  formati in home e chiusure editoriali (migrazione con backup `before_payment_wording_*`).
+  Fatti della campagna centralizzati in `campaign._public_facts()`. La migrazione campagne
+  svuota i vecchi `payment_note`/`shop_band_text` "paghi alla spedizione".
 
 ## Fatto il 23-24/10: verso l'apertura
 
@@ -307,7 +415,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (141 al 24/10):
+- Test Odoo (139 al 24/10 sera):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,
@@ -348,6 +456,13 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
 - Il popup di Odoo mette il focus sul secondo elemento attivabile (presume che il primo sia
   la X): nella barra dei cookie la X va per prima.
 - Il metodo `get_current_website()` non esiste in Odoo 20: usare `self.env.website`.
+- L'url di `website.page` è tradotto: cercare le pagine nella lingua del sito, come fa
+  `_get_page_info`.
+- libsass calcola `1.25rem + 2.2vw` dentro `clamp()` e fallisce: scrivere `calc(...)`.
+- Odoo mette in cache le pagine pubbliche e la sitemap (12 ore): dopo un cambio, le verifiche
+  da anonimo possono vedere la versione vecchia.
+- Lo script di collaudo deve impostare il cookie `website_cookies_bar`: la barra dei
+  cookie copre i pulsanti.
 - Il modulo campagne esegue `_install_request_campaign_pages` a ogni `-u`: i cambi di testo
   vanno resi "una volta sola" con un passo nel backup (`visual_bullets_copy_v1`,
   `opening_facts_v2`) o un attributo sullo snippet (`data-hero-facts`).
