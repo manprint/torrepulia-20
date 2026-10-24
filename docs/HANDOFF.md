@@ -1,7 +1,7 @@
 # Handoff Torrepulia: stato al 24/10/2026 (sera)
 
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-24/10 è su
-`main` e deployato (ultimo commit di codice `954302f`). Versioni: tema `20.0.3.20.0`,
+`main` e deployato (ultimo commit di codice `169ed95`). Versioni: tema `20.0.3.21.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
 http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
@@ -110,6 +110,17 @@ In produzione l'utente ha usato " - " al posto della virgola nei nomi: il titolo
 capo dopo "La Regina" (va bene comunque).
 
 ## Fatto il 24/10 (pomeriggio e sera)
+
+- **Foto della raccolta (tema 3.21.0):** da `Foto Raccolta/` (WhatsApp 24/10, collaboratori
+  con consenso) tre scatti convertiti in `cinematic/owner/`: `olive-cassone-*` (testata di
+  /prenotailtuoolio, messa dall'utente nel Builder e predefinita dello snippet campagna),
+  `process-harvest*` ("La raccolta" su /l-olio, messa dall'utente nel Builder e predefinita
+  dello snippet), `raccolta-reti-*` (telo sotto gli ulivi, colonna dell'introduzione del
+  processo: la migrazione `add_process_photos` aggiunge solo la foto, backup
+  `before_process_photo_*`). L'introduzione resta fissa solo su schermi alti almeno 820 px.
+  Scartati: scatti con tubi e parafango (16.11.36, 16.17.47) e i doppioni del trattore.
+- **Video Instagram:** servono i file originali (non i link); taglio 6-10 s muto in
+  MP4/WebM + poster come `hero-desktop/mobile`, niente embed di Instagram (cookie di Meta).
 
 - **Home in `noindex` (fix 3.19.0):** la 3.18.0 cercava la home senza lingua (l'url di
   `website.page` è tradotto) e correggeva un altro record. Ora `_torrepulia_launch_seo` usa
