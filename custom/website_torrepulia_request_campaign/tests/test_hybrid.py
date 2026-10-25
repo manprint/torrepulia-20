@@ -189,7 +189,8 @@ class TestHybridMode(HttpCase):
         self.assertIn('La scorta di famiglia.', cards[1].text_content())
         self.assertTrue(tree.xpath('//*[@data-campaign-dock]//button[@data-campaign-dock-go]'))
         # An empty selection keeps the visitor on the page, pointing back to the formats.
-        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-steps-title', 'tp-campaign-formats'])
+        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-steps-title', 'tp-campaign-formats', 'tp-campaign-faq-title'])
+        self.assertIn('giorni per confermarla', tree.xpath('string(//section[@class="tp-campaign-faq"])'))
         form = html.fromstring(self.url_open('/torrepulia/request/form?layout=campaign').content)
         self.assertEqual(form.xpath('//*[@data-review-empty]//a/@href'), ['#tp-campaign-formats'])
 
@@ -223,6 +224,11 @@ class TestHybridMode(HttpCase):
         self.assertNotIn('alla spedizione', body)
         self.assertIn('Hai 7 giorni per confermarlo e completare il pagamento', body)
         self.assertNotIn('bonifico', body)
+        # The receipt page counts as a reservation lead for GA4 and the Meta Pixel.
+        page = html.fromstring(self.url_open('/la-tua-richiesta/conferma').content)
+        marker = page.xpath('//*[@data-tp-conversion="lead"]')
+        self.assertEqual([(node.get('data-tp-reference'), node.get('data-tp-lead-source')) for node in marker],
+                         [(submitted.name, 'prenotazione')])
 
     def test_new_oil_menu_follows_the_campaign(self):
         # A plain menu entry, as in production before the launch migration.

@@ -37,4 +37,18 @@
             </button>
         </xpath>
     </template>
+
+    <!-- Free shipping in reach: the total is re-rendered on every cart change, the line follows it. -->
+    <template id="cart_free_shipping" inherit_id="website_sale.total" name="Torrepulia: spedizione gratuita">
+        <xpath expr="//table[@name='cart_total_table']" position="after">
+            <t t-set="tp_free_shipping" t-value="website_sale_order._torrepulia_free_shipping()"/>
+            <div t-if="tp_free_shipping" class="tp-free-shipping" t-att-data-reached="'1' if not tp_free_shipping['remaining'] else None">
+                <p t-if="tp_free_shipping['remaining']">Ti mancano
+                    <strong t-out="tp_free_shipping['remaining']" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                    per la spedizione gratuita.</p>
+                <p t-else="">La spedizione è gratuita.</p>
+                <span class="tp-free-shipping-bar" aria-hidden="true"><span t-attf-style="width: #{tp_free_shipping['progress']}%"/></span>
+            </div>
+        </xpath>
+    </template>
 </odoo>

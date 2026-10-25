@@ -21,6 +21,22 @@ class SaleOrder(models.Model):
             website = self.env['website'].sudo().search([('company_id', '=', self.company_id.id)], limit=1)
         return website if website.torrepulia_theme_enabled else self.env['website']
 
+    def _torrepulia_free_shipping(self):
+        """Distance from the free shipping of the shop carrier, for the cart total; False if none applies.
+
+        Same carrier and same amount as the checkout (total with taxes, delivery line excluded).
+        """
+        self.ensure_one()
+        website = self._torrepulia_website()
+        if not website or self.state != 'draft' or not self._has_deliverable_products():
+            return False
+        carrier = website._torrepulia_shipping_carrier()
+        if not carrier.free_over or carrier.amount <= 0:
+            return False
+        amount = self._compute_amount_total_without_delivery()
+        return {'threshold': carrier.amount, 'remaining': max(carrier.amount - amount, 0),
+                'progress': min(round(amount / carrier.amount * 100), 100)}
+
     def _compute_type_name(self):
         super()._compute_type_name()
         for order in self:

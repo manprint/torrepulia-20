@@ -166,3 +166,28 @@ class TestLaunchSeo(HttpCase):
         # The address with the reference still reaches the product.
         response = self.url_open('/shop/larglat5-la-regina-latta-%s' % tin.id, allow_redirects=False)
         self.assertIn(response.status_code, (200, 301, 302, 303))
+
+    def test_cart_tells_how_far_free_shipping_is(self):
+        self.env['delivery.carrier'].search([]).is_published = False
+        self.env['delivery.carrier'].create({
+            'name': 'Corriere di prova', 'delivery_type': 'fixed', 'fixed_price': 9.9, 'is_published': True,
+            'free_over': True, 'amount': 99, 'website_id': self.website.id,
+            'product_id': self.env['product.product'].create({'name': 'Spedizione di prova', 'type': 'service'}).id})
+        bottle = self.env['product.product'].create({
+            'name': 'Bottiglia di prova', 'list_price': 60, 'type': 'consu', 'is_published': True,
+            'website_id': self.website.id, 'taxes_id': False})
+
+        def add():
+            response = self.url_open('/shop/cart/add', data=json.dumps({'jsonrpc': '2.0', 'method': 'call', 'id': 1,
+                'params': {'product_template_id': bottle.product_tmpl_id.id, 'product_id': bottle.id, 'quantity': 1}}),
+                headers={'Content-Type': 'application/json'})
+            self.assertEqual(response.status_code, 200, response.text)
+
+        add()
+        cart = self.url_open('/shop/cart').text
+        self.assertIn('Ti mancano', cart)
+        self.assertIn('width: 61%', cart)
+        add()
+        cart = self.url_open('/shop/cart').text
+        self.assertNotIn('Ti mancano', cart)
+        self.assertIn('La spedizione è gratuita.', cart)

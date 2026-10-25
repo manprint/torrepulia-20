@@ -63,6 +63,22 @@
                 </article>
             </div>
             <p t-if="not cards">Il gestore sta preparando i formati di questa campagna. Puoi scegliere dal <a href="/shop">catalogo</a>.</p>
+            <!-- The doubts before reserving, answered in the page (and to search engines, which read it rendered). -->
+            <section t-if="cards" class="tp-campaign-faq" aria-labelledby="tp-campaign-faq-title">
+                <h2 id="tp-campaign-faq-title">Domande frequenti</h2>
+                <details><summary>Devo pagare qualcosa adesso?</summary>
+                    <p>No. La prenotazione &#232; gratuita e non &#232; un ordine: oggi scegli soltanto formati e quantit&#224;.</p></details>
+                <details><summary>Quando confermo l&#8217;ordine?</summary>
+                    <p>Qualche giorno prima della molitura ti mandiamo per email la conferma d&#8217;ordine, con il prezzo di oggi e le spese di spedizione. Hai <t t-out="campaign.confirmation_days"/> giorni per confermarla e completare il pagamento.</p></details>
+                <details><summary>Posso cambiare o annullare la prenotazione?</summary>
+                    <p>S&#236;, senza costi, fino alla conferma d&#8217;ordine: basta rispondere all&#8217;email di riepilogo che ricevi dopo la prenotazione.</p></details>
+                <details><summary>Quando arriva l&#8217;olio?</summary>
+                    <p>Ricevuto il pagamento, ti spediamo l&#8217;olio nuovo direttamente da Torremaggiore, appena &#232; confezionato in frantoio.</p></details>
+                <details t-if="website.torrepulia_shipping_note"><summary>Quanto costa la spedizione?</summary>
+                    <p t-out="website.torrepulia_shipping_note"/></details>
+                <details><summary>Filtrato o non filtrato?</summary>
+                    <p>Il filtrato &#232; limpido ed &#232; quello che proponiamo di solito. Il non filtrato &#232; l&#8217;olio come esce dal frantoio, velato e dal gusto pi&#249; pieno: va consumato nei primi mesi.</p></details>
+            </section>
             <!-- Phones: the selection stays in view until the visitor reaches the review form. -->
             <div t-if="cards and not editing" class="tp-campaign-dock" data-campaign-dock="" hidden="hidden"
                  t-att-data-currency="cards[0].get('currency')">

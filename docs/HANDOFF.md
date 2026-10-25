@@ -59,6 +59,23 @@ Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed s
   certificato); termini di vendita con caratteri rovinati ("propriet�") e 10.1 (10 giorni) contro
   10.2 (14 giorni); Merchant Center, Profilo dell'attività Google, metodi di pagamento online.
 
+## 26/10: conversione (tema 3.30.0, richieste-tema 1.8.0, campagne 1.11.0)
+
+- **Spedizione gratuita nel carrello:** sotto il totale "Ti mancano X € per la spedizione gratuita"
+  con barra, oppure "La spedizione è gratuita." (`cart_free_shipping` su `website_sale.total`, che
+  Odoo rigenera a ogni modifica del carrello; `sale.order._torrepulia_free_shipping`, stesso corriere
+  dei dati strutturati e stesso importo del checkout).
+- **Conversioni** (`static/src/js/conversions.js`): sulla ricevuta della richiesta/prenotazione
+  `generate_lead` per GA4 e `Lead` per il Pixel (marcatore `data-tp-conversion` in richieste-tema);
+  sulla conferma d'ordine `Purchase` per il Pixel (GA4 ha già `purchase` dal tracking nativo di
+  Odoo, insieme a view_item, add_to_cart, view_cart, begin_checkout). Una volta per riferimento
+  nella scheda del browser; il Pixel parte solo dopo il consenso.
+- **FAQ della prenotazione** nel contenuto della campagna (sei domande, giorni dalla campagna e
+  spedizione dal campo del sito). **Da far verificare all'utente** la risposta "Filtrato o non
+  filtrato?" (velato, gusto più pieno, da consumare nei primi mesi).
+- Sitemap rigenerata e inviata, termini corretti dall'utente (26/10). I "caratteri rovinati"
+  segnalati il 25/10 erano un errore di lettura della console: il file era in UTF-8 corretto.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

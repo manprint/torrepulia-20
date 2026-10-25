@@ -24,3 +24,15 @@
     .badge[class*="info"] { background: var(--tp-pale) !important; color: var(--tp-olive) !important; border-color: var(--tp-line) !important; }
     #o_cart_summary :is(.h5, strong), .o_total_card :is(strong, .fw-bold) { font-variant-numeric: tabular-nums; }
 }
+
+// Free shipping under the cart total: one quiet line and a thin olive bar.
+.tp-site .tp-free-shipping {
+    margin-top: .75rem;
+    padding-top: .75rem;
+    border-top: 1px solid var(--tp-line);
+    p { margin: 0 0 .5rem; font-size: .875rem; color: var(--tp-ink); }
+    strong { font-variant-numeric: tabular-nums; }
+    .tp-free-shipping-bar { display: block; height: 3px; background: var(--tp-pale); border-radius: 2px; overflow: hidden; }
+    .tp-free-shipping-bar > span { display: block; height: 100%; background: var(--tp-olive); }
+    &[data-reached] p { color: var(--tp-olive); }
+}

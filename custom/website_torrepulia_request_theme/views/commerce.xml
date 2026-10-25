@@ -44,4 +44,12 @@
         </div>
         <p t-else="">Nessun formato disponibile. <a href="/shop">Scopri il catalogo</a></p>
     </template>
+
+    <!-- Conversion of the reservation or request for GA4 and the Meta Pixel (theme static/src/js/conversions.js). -->
+    <template id="review_confirmation_conversion" inherit_id="website_torrepulia_request.review_confirmation" name="Torrepulia: conversione della richiesta">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <span hidden="" data-tp-conversion="lead" t-att-data-tp-reference="receipt['reference']"
+                  t-att-data-tp-lead-source="'prenotazione' if receipt.get('reservation') else 'richiesta'"/>
+        </xpath>
+    </template>
 </odoo>
