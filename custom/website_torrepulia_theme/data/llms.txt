@@ -1,0 +1,26 @@
+# Torrepulia
+
+> La Regina, olio extravergine di oliva monovarietale Peranzana dell'azienda agricola della famiglia Leone a Torremaggiore (Foggia), nel nord della Puglia. Solo Peranzana, solo dai nostri ulivi: oltre 1.500 piante, curate dalla stessa famiglia dal 1945. Vendita diretta online su questo sito.
+
+- Produttore: la famiglia Leone, tre generazioni sulla stessa terra, a Torremaggiore, nell'Alto Tavoliere.
+- Varietà: Peranzana, la cultivar di Torremaggiore e dell'Alto Tavoliere.
+- Raccolta e molitura: raccogliamo quando l'oliva è più ricca di polifenoli e di profumi e la moliamo entro 8 ore dalla raccolta in un frantoio di fiducia. Confezioniamo direttamente in frantoio e spediamo a casa.
+- Profilo sensoriale: fruttato medio-intenso, elegante e armonico; morbido e rotondo, con amaro e piccante delicati e ben bilanciati e un finale pulito.
+- Formati: Duetto (2 bottiglie da 500 ml in confezione regalo), 6 bottiglie da 500 ml, latta da 5 litri, Bag in Box da 5 litri. Ogni formato è disponibile filtrato o non filtrato, allo stesso prezzo.
+- Olio nuovo: durante la campagna di raccolta l'olio del nuovo raccolto si prenota senza anticipo dalla pagina "Olio nuovo". Prima della molitura arriva la conferma d'ordine con prezzo e spedizione; ricevuto il pagamento, l'olio parte da Torremaggiore. Fino alla conferma d'ordine la prenotazione si modifica o si annulla senza costi.
+{shipping}
+## Pagine principali
+
+- [L'olio]({base}/l-olio): la Peranzana e come nasce La Regina, dalla raccolta alla molitura; profilo sensoriale e analisi del raccolto
+- [La famiglia]({base}/aboutus): tre generazioni della famiglia Leone, dal 1945
+- [Il territorio]({base}/territorio): Torremaggiore e l'Alto Tavoliere
+- [Acquista]({base}/shop): i formati, con prezzi e disponibilità aggiornati
+- [Olio nuovo]({base}/prenotailtuoolio): la prenotazione dell'olio del nuovo raccolto, aperta durante la campagna
+- [Contatti]({base}/contactus)
+
+## Condizioni
+
+- [Termini e condizioni di vendita]({base}/termini-e-condizioni)
+- [Privacy policy]({base}/privacy-policy)
+- [Cookie policy]({base}/cookie-policy)
+{contacts}

@@ -57,6 +57,33 @@ class TestLaunchSeo(HttpCase):
         self.website.cookies_bar = False
         self.assertNotIn('data-pixel-id', self.url_open('/').text)
 
+    def test_llms_txt_is_served_and_the_manager_text_stays(self):
+        self.website.llms_txt = False
+        self.website.company_id.email = 'info@torrepulia.it'
+        self.website._torrepulia_llms_txt()
+        response = self.url_open('/llms.txt')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.text.startswith('# Torrepulia\n'))
+        self.assertIn('(%s/l-olio)' % self.website.get_base_url(), response.text)
+        self.assertIn('- Email: info@torrepulia.it', response.text)
+        self.assertNotIn('{', response.text)
+        self.website.llms_txt = '# Testo del gestore'
+        self.website._torrepulia_llms_txt()
+        self.assertEqual(self.website.llms_txt, '# Testo del gestore')
+
+    def test_structured_data_describe_the_company_and_the_products(self):
+        company = self.website.company_id
+        company.write({'phone': '+39 0882 000000', 'city': 'Torremaggiore', 'social_instagram': 'https://www.instagram.com/torrepulia'})
+        organization = self.website._prepare_jsonld_vals()
+        self.assertEqual(organization['telephone'], '+39 0882 000000')
+        self.assertEqual(organization['address']['addressLocality'], 'Torremaggiore')
+        self.assertEqual(organization['sameAs'], ['https://www.instagram.com/torrepulia'])
+        product = self.env['product.template'].create({
+            'name': 'Latta di prova', 'is_published': True, 'website_id': self.website.id})
+        page = self.url_open(product.website_url).text
+        self.assertIn('"brand": {"@type": "Brand", "name": "%s"}' % self.website.name, page)
+        self.assertIn('"description": "Latta di prova: olio extravergine monovarietale Peranzana', page)
+
     def test_terms_lead_to_the_sales_terms_page(self):
         if not self.env['website.page'].search_count([('url', '=', '/termini-e-condizioni')]):
             self.skipTest('No sales terms page in this database')

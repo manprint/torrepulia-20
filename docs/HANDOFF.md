@@ -11,6 +11,22 @@ CSS/JS in gzip). Il vecchio indirizzo http://212.227.88.91:10000/ non risponde p
 il dominio del sito `https://torrepulia.it` (Website → Impostazioni → Dominio) e
 `web.base.url` = `https://torrepulia.it` con `web.base.url.freeze` = True.
 
+## 25/10 sera: SEO e monitoraggio (tema 3.27.0, da deployare)
+
+- **/llms.txt** (nativo in Odoo 20, campo `website.llms_txt`, Impostazioni → "Edit llms.txt"): la
+  migrazione 3.27.0 lo scrive una volta sola se vuoto (`_torrepulia_llms_txt`, testo in
+  `data/llms.txt` con fatti, formati, prenotazione, spedizione dal campo del sito, pagine e contatti
+  dall'azienda; niente prezzi né analisi 2024). Poi lo modifica l'utente.
+- **Dati strutturati:** Organization con ragione sociale, descrizione, email, telefono, indirizzo e
+  social (`sameAs`) dell'azienda; prodotti con `brand` (nome del sito) e descrizione di ripiego.
+- **`proxy_mode = True`** in `config/odoo.conf`. Da verificare che la VM usi questa configurazione
+  e che Apache invii `RequestHeader set X-Forwarded-Proto "https"`: la prova è
+  `curl -s https://torrepulia.it/robots.txt | grep Sitemap` → deve dire https.
+- **A cura dell'utente:** GA4 (ID G-… in Sito web → Impostazioni → Google Analytics, il consenso c'è
+  già; prima completare la cookie policy), Search Console (proprietà Dominio già valida se verificata
+  via DNS; altrimenti file HTML nel campo "Google Search Console"), invio della sitemap
+  `https://torrepulia.it/sitemap.xml`, descrizioni delle 4 categorie shop (oggi senza).
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

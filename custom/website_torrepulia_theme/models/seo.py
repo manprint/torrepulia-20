@@ -17,6 +17,8 @@ MODULE = 'website_torrepulia_theme'
 
 # Odoo's own placeholder descriptions, in the languages of the database.
 DEFAULT_DESCRIPTIONS = {'This is the homepage of the website', 'Questa è la pagina principale del sito web'}
+ORGANIZATION_DESCRIPTION = ('Azienda agricola della famiglia Leone a Torremaggiore, in Puglia: La Regina, '
+                            'olio extravergine di oliva monovarietale Peranzana dai propri ulivi.')
 SHOP_TITLE = 'Acquista olio extravergine Peranzana | Torrepulia'
 SHOP_DESCRIPTION = ('La Regina in latta, Bag in Box e bottiglie da 500 ml: olio extravergine monovarietale '
                     'Peranzana della famiglia Leone, spedito da Torremaggiore.')
@@ -106,6 +108,58 @@ class Website(models.Model):
         } for path, target in targets.items() if path not in existing])
         _logger.info('Torrepulia SEO: %s redirects from the previous site', len(set(targets) - existing))
 
+    def _torrepulia_llms_txt(self):
+        """Odoo's /llms.txt from the theme's text, written once: the manager edits it in the settings."""
+        self.ensure_one()
+        if (self.llms_txt or '').strip():
+            return
+        with file_open(MODULE + '/data/llms.txt', 'r') as source:
+            text = source.read()
+        company = self._torrepulia_footer_company()
+        shipping = self.with_context(lang=self.default_lang_id.code).torrepulia_shipping_note
+        contacts = [line for line in (
+            company['name'],
+            ', '.join(filter(None, [company['street'], company['locality']])),
+            company['email'] and 'Email: %s' % company['email'],
+            company['phone'] and 'Telefono: %s' % company['phone'],
+        ) if line]
+        self.llms_txt = text.format(
+            base=self.get_base_url(),
+            # The note usually opens with "Spedizione gratuita…": no label in front of it then.
+            shipping=('- %s\n' if shipping.lower().startswith('spedizion') else '- Spedizione: %s\n') % shipping
+            if shipping else '',
+            contacts='\n## Contatti\n\n' + ''.join('- %s\n' % line for line in contacts) if contacts else '',
+        )
+
+    def _prepare_jsonld_vals(self):
+        # Odoo describes the organization by name and logo only: add what the company record knows.
+        vals = super()._prepare_jsonld_vals()
+        if not self.torrepulia_theme_enabled:
+            return vals
+        company = self.company_id.sudo()
+        extra = {
+            'legalName': company.name,
+            'description': ORGANIZATION_DESCRIPTION,
+            'email': company.email,
+            'telephone': company.phone,
+            'address': self._build_postaladdress_jsonld_vals(company.partner_id),
+            'sameAs': [company[field] for field, _label, _icon in self.TORREPULIA_SOCIALS if company[field]],
+        }
+        vals.update({key: value for key, value in extra.items() if value})
+        return vals
+
+
+def _product_description(template):
+    return '%s: olio extravergine monovarietale Peranzana della famiglia Leone, da Torremaggiore.' % template.name
+
+
+def _product_jsonld(vals, template, website):
+    """Brand and a description for the product markup, as on the page itself."""
+    if website.torrepulia_theme_enabled:
+        vals.setdefault('description', template.description_sale or _product_description(template))
+        vals.setdefault('brand', {'@type': 'Brand', 'name': website.name})
+    return vals
+
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
@@ -120,7 +174,21 @@ class ProductTemplate(models.Model):
         # Without a sales description Odoo leaves product pages with no description at all.
         res = super()._default_website_meta()
         if not self.description_sale and self.env.website.torrepulia_theme_enabled:
-            description = '%s: olio extravergine monovarietale Peranzana della famiglia Leone, da Torremaggiore.' % self.name
+            description = _product_description(self)
             res['default_opengraph']['og:description'] = description
             res['default_meta_description'] = description
         return res
+
+    def _prepare_jsonld_vals(self):
+        vals = super()._prepare_jsonld_vals()
+        website = self.env.website or self.env['website'].browse(self.env.context.get('host_id'))
+        return _product_jsonld(vals, self, website)
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def _prepare_jsonld_vals(self, **kwargs):
+        vals = super()._prepare_jsonld_vals(**kwargs)
+        website = self.env.website or self.env['website'].browse(self.env.context.get('host_id'))
+        return _product_jsonld(vals, self.product_tmpl_id, website)
