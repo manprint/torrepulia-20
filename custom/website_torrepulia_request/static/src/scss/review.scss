@@ -27,7 +27,8 @@
     .tp-review-stepper { display: flex; align-items: center; gap: 6px; }
     .tp-review-stepper button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: var(--tp-olive, #2e493b); color: var(--tp-white, #fff); font-size: 24px; }
     .tp-review-stepper button:disabled { opacity: .4; }
-    input:not([type="checkbox"]), textarea { width: 100%; min-width: 0; border: 1px solid var(--tp-field, #829088); padding: 10px 12px; min-height: 44px; border-radius: 3px; background: var(--tp-white, #fff); color: var(--tp-ink, #18231f); }
+    input:not([type="checkbox"]), textarea, select { width: 100%; min-width: 0; border: 1px solid var(--tp-field, #829088); padding: 10px 12px; min-height: 44px; border-radius: 3px; background: var(--tp-white, #fff); color: var(--tp-ink, #18231f); }
+    select { font: inherit; }
     .tp-review-stepper input { width: 56px; padding: 4px; border: 0; text-align: center; font-variant-numeric: tabular-nums; appearance: textfield; }
     .tp-review-stepper input::-webkit-inner-spin-button { appearance: none; }
     [aria-invalid="true"] { border: 2px solid var(--tp-alert, #8b1e1e); }
@@ -40,7 +41,8 @@
     .tp-review-pay-today { padding-block: 20px; margin-block: 20px; border-block: 1px solid var(--tp-line, #d2dcd4); font-weight: 700; color: var(--tp-olive, #2e493b); line-height: 1.5; }
     fieldset { margin-top: 32px; }
     // Closed until the selection can be sent: it must not look like a field waiting for input.
-    fieldset:disabled :is(input, textarea) { background: var(--tp-photo, #f6f6f4); border-color: var(--tp-line, #d2dcd4); cursor: not-allowed; }
+    fieldset:disabled :is(input, textarea, select) { background: var(--tp-photo, #f6f6f4); border-color: var(--tp-line, #d2dcd4); cursor: not-allowed; }
+    .tp-review-street { grid-column: 1 / -1; }
     legend { margin-bottom: 20px; }
     .tp-review-contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .tp-review-contact-grid label, .tp-review-notes { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 14px; }

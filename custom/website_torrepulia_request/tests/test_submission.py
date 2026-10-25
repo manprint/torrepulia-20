@@ -139,6 +139,20 @@ class TestFinalSubmission(RequestCase):
         self.assertEqual(draft.state, 'submitted')
         self.assertEqual(len(draft.notification_ids.mail_id), 2)
 
+    def test_submission_wakes_preparation_and_mail_queue(self):
+        prepare = self.env.ref('website_torrepulia_request.cron_prepare_request_notifications')
+        queue = self.env.ref('mail.ir_cron_mail_scheduler_action')
+        Trigger = self.env['ir.cron.trigger'].sudo()
+        before = {cron: Trigger.search_count([('cron_id', '=', cron.id)]) for cron in (prepare, queue)}
+        site, session, draft = self._draft()
+        self._line(draft, site)
+        self._submit(draft, site)
+        # The receipt does not wait for the five-minute run nor for the hourly mail queue.
+        self.assertEqual(Trigger.search_count([('cron_id', '=', prepare.id)]), before[prepare] + 1)
+        with patch.object(type(self.env['mail.mail']), 'send', side_effect=AssertionError('No SMTP during preparation')):
+            self.env['torrepulia.request.notification']._cron_prepare()
+        self.assertEqual(Trigger.search_count([('cron_id', '=', queue.id)]), before[queue] + 1)
+
     def test_receipt_prices_only_when_authorized_at_both_boundaries(self):
         site, session, draft = self._draft()
         self._line(draft, site)

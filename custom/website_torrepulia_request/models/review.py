@@ -19,8 +19,30 @@ class ReviewValidation(ValidationError):
         self.field_names = list(field_names)
 
 
+SHIPPING_FIELDS = ('street', 'zip', 'city', 'state_code')
+
+
+def shipping_values(payload):
+    """Shipping address of a reservation: all four fields or none; Italian CAP and province code."""
+    if not any(key in payload for key in SHIPPING_FIELDS):
+        return None, []
+    values, errors = {}, []
+    for key in SHIPPING_FIELDS:
+        value = payload.get(key, '')
+        value = ' '.join(value.split()) if isinstance(value, str) else None
+        if (not value or len(value) > 256
+                or any(ord(char) < 32 or 0xD800 <= ord(char) <= 0xDFFF for char in value)
+                or key == 'zip' and not re.fullmatch(r'[0-9]{5}', value)
+                or key == 'state_code' and not re.fullmatch(r'[A-Za-z]{2}', value)):
+            errors.append(key)
+        else:
+            values[key] = value.upper() if key == 'state_code' else value
+    return (None if errors else values), errors
+
+
 def submission_values(payload):
-    allowed = {'selection_id', 'revision', 'operation_id', 'contact_name', 'email', 'phone', 'notes', 'delivery_area', 'privacy_accepted'}
+    allowed = {'selection_id', 'revision', 'operation_id', 'contact_name', 'email', 'phone', 'notes', 'delivery_area',
+               'privacy_accepted', *SHIPPING_FIELDS}
     if not isinstance(payload, dict) or set(payload) - allowed:
         raise ReviewValidation(_('Dati di invio non validi.'))
     if (not isinstance(payload.get('selection_id'), str) or not re.fullmatch(r'[0-9a-f]{32}', payload['selection_id'])
@@ -43,12 +65,17 @@ def submission_values(payload):
         errors.append('email')
     if payload.get('privacy_accepted') is not True:
         errors.append('privacy_accepted')
+    shipping, shipping_errors = shipping_values(payload)
+    errors += shipping_errors
     if errors:
         raise ReviewValidation(_('Verifica i campi indicati e la presa visione dell’informativa privacy.'), sorted(set(errors)))
     clean['email'] = email
     area = ' '.join(clean.pop('delivery_area', '').split())
     if area:
         clean['notes'] = 'CAP o Città: %s%s' % (area, '\n\n' + clean['notes'] if clean['notes'] else '')
+    if shipping:
+        clean['address'] = '%(street)s, %(zip)s %(city)s (%(state_code)s)' % shipping
+        clean['shipping'] = shipping
     return clean
 
 

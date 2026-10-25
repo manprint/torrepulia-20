@@ -145,6 +145,20 @@ class QuoteRequest(models.Model):
                 for v in custom_values.values()):
             raise ValidationError(_('Valori personalizzati non validi o mancanti.'))
 
+    def _shipping_lead_values(self, shipping):
+        """Native address fields of the opportunity: "New quotation" copies them on the customer it creates."""
+        if not shipping:
+            return {}
+        if not isinstance(shipping, dict) or set(shipping) != {'street', 'zip', 'city', 'state_code'}:
+            raise ValidationError(_('Indirizzo di spedizione non valido.'))
+        italy = self.env.ref('base.it')
+        province = self.env['res.country.state'].sudo().search(
+            [('country_id', '=', italy.id), ('code', '=', shipping['state_code'])], limit=1)
+        if not province:
+            raise ValidationError(_('Provincia non valida.'))
+        return {'street': shipping['street'], 'zip': shipping['zip'], 'city': shipping['city'],
+                'state_id': province.id, 'country_id': italy.id}
+
     def _submit(self, visitor_website, contact):
         """Only final submission creates an opportunity; it never creates a contact/order.
 
@@ -182,6 +196,7 @@ class QuoteRequest(models.Model):
                 custom_values=line.custom_values, line=line)
             line.snapshot = line._snapshot_values()
         clean['partner_id'] = visitor_website._torrepulia_request_partner().id or False
+        shipping = self._shipping_lead_values(contact.get('shipping'))
         self.write(clean)
         site = self.website_id.sudo()
         site._check_torrepulia_request_settings()
@@ -202,6 +217,7 @@ class QuoteRequest(models.Model):
             'torrepulia_website_id': site.id,
             'torrepulia_request_origin': 'Richiesta sito web',
             'description': tools.plaintext2html(self.notes or ''),
+            **shipping,
         })
         # Internal transition bypasses the public write guard, not ORM validation.
         super(QuoteRequest, self).write({
@@ -216,8 +232,10 @@ class QuoteRequest(models.Model):
                 'contact': clean,
             },
         })
-        self.env['torrepulia.request.notification'].create([
+        notifications = self.env['torrepulia.request.notification'].create([
             {'request_id': self.id, 'kind': kind} for kind in ('internal', 'customer')])
+        # The receipt leaves within seconds; the five-minute run only retries.
+        notifications._trigger_cron('website_torrepulia_request.cron_prepare_request_notifications')
         return True
 
     @api.model

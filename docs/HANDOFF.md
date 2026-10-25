@@ -157,6 +157,17 @@ elementi, backup `before_copy_2510_*`, rieseguibile. Decisioni dell'utente, valg
   "Bonifico bancario"; messaggio "In attesa" del fornitore in italiano (oggi "Please find the
   payment details below."); Vendite → Impostazioni: Firma online spenta, Pagamento online acceso
   al 100 %; nome delle imposte in italiano (oggi in locale "0% Exports", "Tax 15%").
+- **Email in pochi secondi:** l'invio della richiesta sveglia `cron_prepare_request_notifications`
+  e la preparazione sveglia `mail.ir_cron_mail_scheduler_action` (nativo: ogni ora). I turni
+  periodici restano come rete di sicurezza (`_trigger_cron` in `submission.py`).
+- **Indirizzo nella prenotazione:** il modulo della campagna chiede via, CAP (5 cifre), città e
+  provincia (elenco `res.country.state` IT) al posto di "CAP o Città"; il modulo richieste generico
+  resta con "CAP o Città". L'indirizzo va in `torrepulia.request.address` e nei campi nativi
+  dell'opportunità (`_shipping_lead_values`): "Nuovo preventivo → crea cliente" lo copia sul contatto.
+- Email: Zoho piano gratuito, SMTP `smtp.zoho.eu` 465 SSL, filtro FROM `info@torrepulia.it`,
+  dominio alias torrepulia.it con mittente e catchall `info`. DNS su Aruba: SPF `spf.zoho.eu`,
+  DKIM selettore `zoho` (1024 bit), DMARC `p=none`. Team destinatario configurato il 25/10 (senza,
+  l'invio della prenotazione si annulla e resta bozza).
 - La chat del portale ("Hai una domanda? Scrivici") è un componente isolato con stile proprio
   (pulsante "Invia" viola di Odoo): non raggiungibile dal tema.
 
@@ -477,7 +488,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (143 al 25/10):
+- Test Odoo (144 al 25/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,

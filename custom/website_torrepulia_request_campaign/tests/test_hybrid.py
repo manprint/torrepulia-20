@@ -199,7 +199,8 @@ class TestHybridMode(HttpCase):
         payload = {'selection_id': state['selection_id'], 'revision': state['revision'],
             'operation_id': secrets.token_hex(16), 'contact_name': 'Hybrid guest',
             'email': 'hybrid@example.invalid', 'privacy_accepted': True,
-            'phone': '+39 380 000 0000', 'delivery_area': '71017'}
+            'phone': '+39 380 000 0000', 'street': 'Via Roma 12', 'zip': '71017',
+            'city': 'Torremaggiore', 'state_code': 'fg'}
         with patch.object(type(self.env['ir.mail_server']), 'send_email', return_value='<hybrid@example.invalid>'):
             response = self.url_open('/torrepulia/campaign/submit', data={
                 'csrf_token': bootstrap['csrf_token'], 'payload': json.dumps(payload)})

@@ -163,6 +163,7 @@ class Notification(models.Model):
         """
         candidates = self.search([('state', 'in', ['pending', 'failed']), ('attempts', '<', 5),
                                   ('retry_at', '<=', fields.Datetime.now())], limit=100)
+        queued = False
         for item in candidates:
             self.env.cr.execute('SELECT id FROM torrepulia_request_notification WHERE id = %s FOR UPDATE SKIP LOCKED', [item.id])
             if not self.env.cr.fetchone():
@@ -186,9 +187,20 @@ class Notification(models.Model):
                             'auto_delete': False,
                         })
                     item.write({'state': 'queued', 'mail_id': mail_id, 'attempts': attempt, 'error': False})
+                    queued = True
             except (ConcurrencyError, TransactionRollbackError):
                 raise
             except Exception as error:
                 # Store a useful internal diagnostic without placing PII in logs.
                 item.write({'state': 'failed', 'attempts': attempt, 'error': str(error)[:2000],
                             'retry_at': fields.Datetime.now() + timedelta(hours=1)})
+        if queued:
+            # Odoo's queue manager runs hourly: the receipt must not wait for it.
+            self._trigger_cron('mail.ir_cron_mail_scheduler_action')
+
+    @api.model
+    def _trigger_cron(self, xmlid):
+        # Wakes the cron worker at commit; the scheduled interval stays as the safety net.
+        cron = self.env.ref(xmlid, raise_if_not_found=False)
+        if cron:
+            cron.sudo()._trigger()

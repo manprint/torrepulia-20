@@ -35,7 +35,19 @@
                             <label>Nome e cognome *<input type="text" name="contact_name" autocomplete="name" required="required" maxlength="256" t-att-value="prefill.get('contact_name', '')"/></label>
                             <label>Email *<input type="email" name="email" autocomplete="email" required="required" maxlength="256" t-att-value="prefill.get('email', '')"/></label>
                             <label>Telefono<t t-if="campaign_review"> *</t><input t-att-required="campaign_review or None" type="tel" name="phone" autocomplete="tel" maxlength="256" t-att-value="prefill.get('phone', '')"/></label>
-                            <label>CAP o Città<t t-if="campaign_review"> *</t><input t-att-required="campaign_review or None" type="text" name="delivery_area" maxlength="256" class="tp-review-delivery-area"/>
+                            <!-- A reservation becomes a shipped order: the address goes on the opportunity, and from
+                                 there on the customer Odoo creates with the order confirmation. -->
+                            <t t-if="campaign_review">
+                                <label class="tp-review-street">Via e numero civico *<input type="text" name="street" autocomplete="shipping street-address" required="required" maxlength="256"/></label>
+                                <label>CAP *<input type="text" name="zip" autocomplete="shipping postal-code" inputmode="numeric" pattern="[0-9]{5}" required="required" maxlength="5"/></label>
+                                <label>Città *<input type="text" name="city" autocomplete="shipping address-level2" required="required" maxlength="256"/></label>
+                                <label>Provincia *<select name="state_code" autocomplete="shipping address-level1" required="required">
+                                    <option value="">Scegli</option>
+                                    <option t-foreach="request.env['res.country.state'].sudo().search([('country_id.code', '=', 'IT')], order='name')" t-as="province" t-att-value="province.code" t-out="province.name"/>
+                                </select></label>
+                                <small class="tp-review-field-help tp-review-street">Ci serve per spedirti l&#8217;olio e calcolare le spese di spedizione. Spediamo in Italia.</small>
+                            </t>
+                            <label t-else="">CAP o Città<input type="text" name="delivery_area" maxlength="256" class="tp-review-delivery-area"/>
                                 <small class="tp-review-field-help">Necessario esclusivamente per una stima indicativa delle spese di spedizione.</small>
                             </label>
                         </div>

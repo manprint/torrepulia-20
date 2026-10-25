@@ -51,24 +51,30 @@ class TestCampaignHttp(HttpCase):
         self.assertEqual(form.get('action'),'/torrepulia/campaign/submit')
         self.assertFalse(form.xpath('.//*[@data-review-lines]'))
         self.assertTrue(form.xpath('.//*[@data-review-compact-lines]'))
-        for name in ('phone','delivery_area'):
+        for name in ('phone','street','zip','city'):
             self.assertTrue(form.xpath('.//input[@name="%s" and @required]' % name))
+        self.assertTrue(form.xpath('.//select[@name="state_code" and @required]/option[@value="FG"]'))
+        self.assertFalse(form.xpath('.//input[@name="delivery_area"]'))
         self.assertIn('Riepilogo Prenotazione',result.text)
         state = self.update('set_configuration',self.products[0],2)
         bootstrap=self.url_open('/torrepulia/request/current').json()
         counts={model:self.env[model].search_count([]) for model in ('crm.lead','sale.order','res.partner')}
         payload={'selection_id':state['selection_id'],'revision':state['revision'],
             'operation_id':secrets.token_hex(16),'contact_name':'Seasonal guest',
-            'email':'seasonal-summary@example.invalid','privacy_accepted':True,'phone':'','delivery_area':''}
+            'email':'seasonal-summary@example.invalid','privacy_accepted':True,'phone':'',
+            'street':'','zip':'','city':'','state_code':''}
         def send():
             return self.url_open('/torrepulia/campaign/submit',data={
                 'csrf_token':bootstrap['csrf_token'],'payload':json.dumps(payload)})
         rejected=send()
         self.assertEqual(rejected.status_code,422)
-        self.assertEqual(set(rejected.json()['fields']),{'phone','delivery_area'})
+        self.assertEqual(set(rejected.json()['fields']),{'phone','street','zip','city','state_code'})
         self.assertEqual(self.url_open('/torrepulia/request/current').json()['state']['quantity'],2)
         for model,count in counts.items():self.assertEqual(self.env[model].search_count([]),count)
-        payload.update(phone='+1 202-555-0123',delivery_area='Torremaggiore (FG)')
+        # A CAP that is not five digits is refused before any opportunity exists.
+        payload.update(phone='+1 202-555-0123',street='Via Roma 12',zip='710',city='Torremaggiore',state_code='FG')
+        self.assertEqual(send().json()['fields'],['zip'])
+        payload.update(zip='71017')
         with patch.object(type(self.env['ir.mail_server']),'send_email',return_value='<seasonal-test@example.invalid>'):
             submitted=send()
             self.assertEqual(submitted.status_code,200,submitted.text)
@@ -76,7 +82,14 @@ class TestCampaignHttp(HttpCase):
         self.assertEqual(self.env['crm.lead'].search_count([]),counts['crm.lead']+1)
         self.assertEqual(self.env['sale.order'].search_count([]),counts['sale.order'])
         record=self.env['torrepulia.request'].search([('selection_id','=',state['selection_id'])])
-        self.assertIn('Torremaggiore (FG)',record.opportunity_id.description)
+        lead=record.opportunity_id
+        self.assertEqual((lead.street,lead.zip,lead.city,lead.state_id.code,lead.country_id.code),
+                         ('Via Roma 12','71017','Torremaggiore','FG','IT'))
+        self.assertEqual(record.address,'Via Roma 12, 71017 Torremaggiore (FG)')
+        # "New quotation" creates the customer from the opportunity, address included.
+        customer=lead._create_customer()
+        self.assertEqual((customer.street,customer.zip,customer.city,customer.state_id.code),
+                         ('Via Roma 12','71017','Torremaggiore','FG'))
 
     def test_cards_prices_set_quantities_keep_other_products_no_crm(self):
         reference_unit = self.env['product.base.unit'].create({'name': 'L'})

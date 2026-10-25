@@ -19,11 +19,12 @@ class SeasonalCampaign(http.Controller):
             values = json.loads(payload) if isinstance(payload, str) and len(payload.encode()) <= 16384 else {}
         except (ValueError, TypeError):
             values = {}
-        missing = [name for name in ('phone', 'delivery_area')
+        # The order confirmation ships the oil: the reservation needs the full address.
+        missing = [name for name in ('phone', 'street', 'zip', 'city', 'state_code')
                    if not isinstance(values, dict) or not isinstance(values.get(name), str) or not values[name].strip()]
         if missing:
             return RequestReview()._response({'ok': False, 'code': 'invalid',
-                'message': _('Compila telefono e CAP o Città per completare la prenotazione.'), 'fields': missing}, 422)
+                'message': _('Compila telefono e indirizzo di spedizione per completare la prenotazione.'), 'fields': missing}, 422)
         return RequestReview().submit(payload=payload, recaptcha_token_response=recaptcha_token_response,
                                       turnstile_captcha=turnstile_captcha, **kwargs)
 

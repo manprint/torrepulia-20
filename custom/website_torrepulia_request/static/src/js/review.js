@@ -271,6 +271,11 @@ export class RequestReview extends Interaction {
         }
         if (!this.attempt.pending && !this.form.reportValidity()) return;
         const contact = Object.fromEntries(['contact_name', 'email', 'phone', 'notes', 'delivery_area'].map(name => [name, this.form.elements.namedItem(name)?.value || '']));
+        // The reservation form asks for the shipping address; the request form does not have these fields.
+        for (const name of ['street', 'zip', 'city', 'state_code']) {
+            const input = this.form.elements.namedItem(name);
+            if (input) contact[name] = input.value || '';
+        };
         contact.privacy_accepted = this.form.elements.namedItem('privacy_accepted').checked;
         this.setBusy(true);
         this.el.querySelector('[data-review-error]').hidden = true;
