@@ -11,7 +11,7 @@ CSS/JS in gzip). Il vecchio indirizzo http://212.227.88.91:10000/ non risponde p
 il dominio del sito `https://torrepulia.it` (Website → Impostazioni → Dominio) e
 `web.base.url` = `https://torrepulia.it` con `web.base.url.freeze` = True.
 
-## 25/10 sera: SEO e monitoraggio (tema 3.27.0, da deployare)
+## 25/10 sera: SEO e monitoraggio (tema 3.27.0-3.28.0)
 
 - **/llms.txt** (nativo in Odoo 20, campo `website.llms_txt`, Impostazioni → "Edit llms.txt"): la
   migrazione 3.27.0 lo scrive una volta sola se vuoto (`_torrepulia_llms_txt`, testo in
@@ -19,9 +19,11 @@ il dominio del sito `https://torrepulia.it` (Website → Impostazioni → Domini
   dall'azienda; niente prezzi né analisi 2024). Poi lo modifica l'utente.
 - **Dati strutturati:** Organization con ragione sociale, descrizione, email, telefono, indirizzo e
   social (`sameAs`) dell'azienda; prodotti con `brand` (nome del sito) e descrizione di ripiego.
-- **`proxy_mode = True`** in `config/odoo.conf`. Da verificare che la VM usi questa configurazione
-  e che Apache invii `RequestHeader set X-Forwarded-Proto "https"`: la prova è
-  `curl -s https://torrepulia.it/robots.txt | grep Sitemap` → deve dire https.
+- **robots.txt e sitemap in https (tema 3.28.0):** la VM usa un suo `odoo.conf` (il `proxy_mode = True`
+  messo in `config/odoo.conf` non arriva) e l'utente non ha accesso alla VM. `controllers/crawlers.py`
+  riscrive `http://<dominio>/` in `https://<dominio>/` in robots.txt e sitemap quando il dominio del
+  sito è https e la richiesta arriva in http dallo stesso host. Diventa inutile (senza danni) quando
+  sulla VM ci saranno `proxy_mode = True` e `X-Forwarded-Proto https` da Apache.
 - **A cura dell'utente:** GA4 (ID G-… in Sito web → Impostazioni → Google Analytics, il consenso c'è
   già; prima completare la cookie policy), Search Console (proprietà Dominio già valida se verificata
   via DNS; altrimenti file HTML nel campo "Google Search Console"), invio della sitemap

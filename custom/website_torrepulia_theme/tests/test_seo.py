@@ -71,6 +71,19 @@ class TestLaunchSeo(HttpCase):
         self.website._torrepulia_llms_txt()
         self.assertEqual(self.website.llms_txt, '# Testo del gestore')
 
+    def test_robots_and_sitemap_publish_the_https_domain(self):
+        # As in production: the proxy reaches Odoo in http, the website domain is https.
+        host = '127.0.0.1:%s' % self.http_port()
+        self.website.domain = 'https://%s' % host
+        robots = self.url_open('/robots.txt').text
+        self.assertIn('Sitemap: https://%s/sitemap.xml' % host, robots)
+        sitemap = self.url_open('/sitemap.xml').text
+        self.assertIn('<loc>https://%s/' % host, sitemap)
+        self.assertNotIn('http://%s' % host, sitemap)
+        # A website without an https domain keeps the address of the request.
+        self.website.domain = False
+        self.assertIn('Sitemap: http://%s/sitemap.xml' % host, self.url_open('/robots.txt').text)
+
     def test_structured_data_describe_the_company_and_the_products(self):
         company = self.website.company_id
         company.write({'phone': '+39 0882 000000', 'city': 'Torremaggiore', 'social_instagram': 'https://www.instagram.com/torrepulia'})
