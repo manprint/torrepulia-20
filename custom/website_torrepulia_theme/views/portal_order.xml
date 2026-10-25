@@ -95,6 +95,23 @@
         </xpath>
     </template>
 
+    <!-- The page that runs the payment processing says "payment being processed": a bank transfer pays
+         nothing yet. Same page and flow, other words; card payments keep Odoo's. -->
+    <template id="portal_order_transfer_status" inherit_id="payment.payment_status" priority="30">
+        <!-- Odoo's own sentences stay for every other payment, with their translations. -->
+        <xpath expr="//div[hasclass('o_payment_status_pending')]/h1" position="before">
+            <t t-set="tp_transfer" t-value="tx.provider_id.sudo().custom_mode == 'wire_transfer' and tx.sale_order_ids[:1]._torrepulia_website()"/>
+            <h1 t-if="tp_transfer" class="h3-fs">Stiamo registrando la tua conferma d&#8217;ordine</h1>
+            <p t-if="tp_transfer">Un istante: ti mostriamo subito i dati per il bonifico.</p>
+        </xpath>
+        <xpath expr="//div[hasclass('o_payment_status_pending')]/h1[not(@t-if)]" position="attributes">
+            <attribute name="t-if">not tp_transfer</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_payment_status_pending')]/p[not(@t-if)]" position="attributes">
+            <attribute name="t-if">not tp_transfer</attribute>
+        </xpath>
+    </template>
+
     <template id="portal_order_sidebar" inherit_id="portal.portal_record_sidebar" priority="30">
         <xpath expr="//div[hasclass('d-lg-block', 'mt-4', 'small', 'text-center', 'text-muted')]" position="attributes">
             <attribute name="t-if">not (website and website.torrepulia_theme_enabled)</attribute>

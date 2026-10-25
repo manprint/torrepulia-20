@@ -1,7 +1,7 @@
 # Handoff Torrepulia: stato al 25/10/2026
 
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-25/10 è su
-`main` e deployato (ultimo: tema `20.0.3.25.0`). Versioni: tema `20.0.3.25.0`,
+`main` e deployato (ultimo: tema `20.0.3.26.0`). Versioni: tema `20.0.3.26.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. **Dal 25/10 la produzione è su
 https://torrepulia.it** (spostata dall'utente; www → dominio senza www e http → https in 301,
@@ -181,6 +181,10 @@ elementi, backup `before_copy_2510_*`, rieseguibile. Decisioni dell'utente, valg
   ordine confermato. Un solo corpo `mail_order_confirmation_body` con `kind`; `message_post_with_source`
   sostituisce la cornice "light" che Odoo forza con `mail_layout_bare`. Conferma manuale dopo il bonifico:
   Odoo non invia email, usare "Invia per email" sull'ordine confermato.
+- **Pagina intermedia del bonifico (tema 3.26.0):** `/payment/status` resta (in Odoo 20 e' lei che avvia
+  l'elaborazione asincrona della transazione: saltarla vorrebbe dire rifare blocchi ed elaborazione del
+  core), ma per il bonifico sugli ordini Torrepulia dice "Stiamo registrando la tua conferma d'ordine";
+  carte e altri siti mantengono i testi di Odoo con le loro traduzioni (`portal_order_transfer_status`).
 - **Popup di pagamento:** difetto di Odoo 20 (`portal_prepayment.js` legge `data-is-partially-paid="false"`
   come vero e apre la finestra a ogni visita); patch in `static/src/js/portal_prepayment.js`.
 - PDF: lo stile viene dal "Layout documenti" dell'azienda (configurazione dell'utente).
