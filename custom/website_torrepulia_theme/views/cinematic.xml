@@ -2,6 +2,8 @@
 <odoo>
   <template id="s_cinematic_0" name="Apertura Torrepulia"><section class="hero mc-section mc-banner-contained mc-static-hero o_colored_level o_full_screen_height" aria-labelledby="hero-title" data-snippet="s_cinematic_0" data-name="Apertura Torrepulia">
       <picture>
+        <source media="(max-width: 760px) and (max-aspect-ratio: 3/5)" srcset="/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-portrait-648.webp"/>
+        <source media="(max-width: 760px) and (orientation: portrait)" srcset="/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-portrait-1080.webp"/>
         <source srcset="/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp 1920w" sizes="(max-width: 760px) 1650px, 100vw">
         <img class="hero-photo" src="/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-1920.webp" alt="La Regina Torrepulia su pietra, tra foglie di ulivo" fetchpriority="high" loading="eager" data-mimetype="undefined" style="width: 100% !important"/>
       </source></picture>

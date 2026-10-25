@@ -1,3 +1,6 @@
+import json
+import re
+
 from odoo.tests import HttpCase, tagged
 
 
@@ -103,3 +106,63 @@ class TestLaunchSeo(HttpCase):
         response = self.url_open('/terms', allow_redirects=False)
         self.assertEqual(response.status_code, 301)
         self.assertTrue(response.headers['Location'].endswith('/termini-e-condizioni'))
+
+    def test_product_markup_tells_shipping_and_the_organization_the_returns(self):
+        self.env['delivery.carrier'].search([]).is_published = False
+        carrier = self.env['delivery.carrier'].create({
+            'name': 'Corriere di prova', 'delivery_type': 'fixed', 'fixed_price': 9.9, 'is_published': True,
+            'free_over': True, 'amount': 99, 'website_id': self.website.id,
+            'product_id': self.env['product.product'].create({'name': 'Spedizione di prova', 'type': 'service'}).id})
+        cheap, rich = self.env['product.template'].create([
+            {'name': 'Duetto di prova', 'list_price': 22, 'is_published': True, 'website_id': self.website.id, 'taxes_id': False},
+            {'name': 'Scorta di prova', 'list_price': 120, 'is_published': True, 'website_id': self.website.id, 'taxes_id': False}])
+        offers = {}
+        for product in (cheap, rich):
+            page = self.url_open(product.website_url).text
+            markup = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', page, re.S)]
+            graph = [node for block in markup for node in block.get('@graph', [block])]
+            offers[product] = next(node for node in graph if node.get('@type') == 'Product')['offers']
+        self.assertEqual(offers[cheap]['shippingDetails']['shippingRate']['value'], 9.9)
+        self.assertEqual(offers[rich]['shippingDetails']['shippingRate']['value'], 0)
+        self.assertEqual(offers[cheap]['shippingDetails']['shippingDestination'], [{'@type': 'DefinedRegion', 'addressCountry': 'IT'}])
+        self.assertEqual(offers[cheap]['shippingDetails']['deliveryTime']['transitTime']['maxValue'], 3)
+        carrier.is_published = False
+        self.assertFalse(self.website._torrepulia_shipping_jsonld(22))
+        policy = self.website._prepare_jsonld_vals()['hasMerchantReturnPolicy']
+        self.assertEqual(policy['merchantReturnDays'], 14)
+
+    def test_one_product_categories_leave_the_index_and_the_sitemap(self):
+        Category = self.env['product.public.category']
+        bottles, tins = Category.create([{'name': 'Bottiglie di prova'}, {'name': 'Latte di prova'}])
+        self.env['product.template'].create([
+            {'name': 'Bottiglia uno', 'is_published': True, 'website_id': self.website.id, 'public_categ_ids': [bottles.id]},
+            {'name': 'Bottiglia due', 'is_published': True, 'website_id': self.website.id, 'public_categ_ids': [bottles.id]},
+            {'name': 'Latta sola', 'is_published': True, 'website_id': self.website.id, 'public_categ_ids': [tins.id]}])
+        tins_page = self.url_open(tins.website_url).text
+        self.assertIn('<meta name="robots" content="noindex"/>', tins_page)
+        self.assertIn('<meta name="description" content="Latte di prova: La Regina, olio extravergine', tins_page)
+        self.assertNotIn('name="robots"', self.url_open(bottles.website_url).text)
+        self.env['ir.attachment'].search([('url', '=like', '/sitemap%')]).unlink()
+        sitemap = self.url_open('/sitemap.xml').text
+        self.assertIn(bottles.website_url, sitemap)
+        self.assertNotIn(tins.website_url, sitemap)
+
+    def test_product_addresses_leave_out_the_internal_reference(self):
+        self.env['website.rewrite'].search([('name', '=like', 'torrepulia.it precedente%')]).unlink()
+        tin = self.env['product.template'].create({
+            'name': 'La Regina latta', 'default_code': 'LARGLAT5', 'is_published': True, 'website_id': self.website.id})
+        self.assertEqual(tin.with_context(website_id=self.website.id).website_url, '/shop/la-regina-latta-%s' % tin.id)
+        # Redirects written before: the target still had the reference in it.
+        old = self.env['website.rewrite'].create({
+            'name': 'torrepulia.it precedente: latta', 'url_from': '/shop/olio-evo-la-regina-lattina-5-litri-4',
+            'url_to': '/shop/larglat5-la-regina-latta-%s' % tin.id, 'redirect_type': '301', 'website_id': self.website.id})
+        manager = self.env['website.rewrite'].create({
+            'name': 'Gestore', 'url_from': '/shop/olio-evo-la-regina-duetto-2-bottiglie-500ml-3',
+            'url_to': '/shop', 'redirect_type': '301', 'website_id': self.website.id})
+        self.website._torrepulia_refresh_product_redirects()
+        self.assertEqual(old.url_to, '/shop/la-regina-latta-%s' % tin.id)
+        self.assertEqual(manager.url_to, '/shop')
+        self.assertIn('/shop/la-regina-latta-%s"' % tin.id, self.url_open('/shop').text)
+        # The address with the reference still reaches the product.
+        response = self.url_open('/shop/larglat5-la-regina-latta-%s' % tin.id, allow_redirects=False)
+        self.assertIn(response.status_code, (200, 301, 302, 303))

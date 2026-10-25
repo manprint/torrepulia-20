@@ -19,6 +19,11 @@ MODULE = 'website_torrepulia_theme'
 DEFAULT_DESCRIPTIONS = {'This is the homepage of the website', 'Questa è la pagina principale del sito web'}
 ORGANIZATION_DESCRIPTION = ('Azienda agricola della famiglia Leone a Torremaggiore, in Puglia: La Regina, '
                             'olio extravergine di oliva monovarietale Peranzana dai propri ulivi.')
+# Shipping as the footer and the product page tell it: 24-72 working hours after one day to pack.
+HANDLING_DAYS = (0, 1)
+TRANSIT_DAYS = (1, 3)
+# The Codice del Consumo withdrawal window, point 10 of the sales terms.
+RETURN_DAYS = 14
 SHOP_TITLE = 'Acquista olio extravergine Peranzana | Torrepulia'
 SHOP_DESCRIPTION = ('La Regina in latta, Bag in Box e bottiglie da 500 ml: olio extravergine monovarietale '
                     'Peranzana della famiglia Leone, spedito da Torremaggiore.')
@@ -97,9 +102,7 @@ class Website(models.Model):
             placeholder.write({'website_indexed': False, 'is_published': False})
             targets['/privacy'] = '/privacy-policy'
         for path, code in OLD_PRODUCTS.items():
-            template = (self.env['product.template'].search([('default_code', '=ilike', code)], limit=1)
-                        or self.env['product.product'].search([('default_code', '=ilike', code)], limit=1).product_tmpl_id)
-            targets[path] = template.website_url if template else '/shop'
+            targets[path] = self._torrepulia_old_product_url(code)
         rewrites = self.env['website.rewrite']
         existing = set(rewrites.search([('website_id', 'in', [self.id, False])]).mapped('url_from'))
         rewrites.create([{
@@ -107,6 +110,31 @@ class Website(models.Model):
             'redirect_type': '301', 'website_id': self.id,
         } for path, target in targets.items() if path not in existing])
         _logger.info('Torrepulia SEO: %s redirects from the previous site', len(set(targets) - existing))
+
+    def _torrepulia_old_product(self, code):
+        """Product template with this internal reference, read with this website's addresses."""
+        self.ensure_one()
+        env = self.with_context(website_id=self.id).env
+        return (env['product.template'].search([('default_code', '=ilike', code)], limit=1)
+                or env['product.product'].search([('default_code', '=ilike', code)], limit=1).product_tmpl_id)
+
+    def _torrepulia_old_product_url(self, code):
+        template = self._torrepulia_old_product(code)
+        return template.website_url if template else '/shop'
+
+    def _torrepulia_refresh_product_redirects(self):
+        """Our redirects to a product page follow its address without the internal reference.
+
+        Only a target still on the same product is updated: another target set by the manager stays.
+        """
+        self.ensure_one()
+        rewrites = self.env['website.rewrite'].search([
+            ('website_id', '=', self.id), ('url_from', 'in', list(OLD_PRODUCTS))])
+        for rewrite in rewrites:
+            template = self._torrepulia_old_product(OLD_PRODUCTS[rewrite.url_from])
+            if (template and (rewrite.url_to or '').startswith('/shop/')
+                    and rewrite.url_to.endswith('-%s' % template.id)):
+                rewrite.url_to = template.website_url
 
     def _torrepulia_llms_txt(self):
         """Odoo's /llms.txt from the theme's text, written once: the manager edits it in the settings."""
@@ -144,9 +172,73 @@ class Website(models.Model):
             'telephone': company.phone,
             'address': self._build_postaladdress_jsonld_vals(company.partner_id),
             'sameAs': [company[field] for field, _label, _icon in self.TORREPULIA_SOCIALS if company[field]],
+            # One policy for the whole shop: Google reads it from the organization for every product.
+            'hasMerchantReturnPolicy': {
+                '@type': 'MerchantReturnPolicy',
+                'applicableCountry': company.country_id.code or 'IT',
+                'returnPolicyCategory': 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                'merchantReturnDays': RETURN_DAYS,
+                'returnMethod': 'https://schema.org/ReturnByMail',
+            },
         }
         vals.update({key: value for key, value in extra.items() if value})
         return vals
+
+    def _torrepulia_shipping_carrier(self):
+        """The published fixed-price carrier of the checkout, for the shipping cost of the markup."""
+        self.ensure_one()
+        return self.env['delivery.carrier'].sudo().search([
+            ('delivery_type', '=', 'fixed'), ('is_published', '=', True),
+            ('website_id', 'in', [self.id, False]), ('company_id', 'in', [self.company_id.id, False]),
+        ], limit=1)
+
+    def _torrepulia_shipping_jsonld(self, price, preorder=False):
+        """Shipping cost of one product as the checkout computes it, free over the carrier threshold."""
+        self.ensure_one()
+        carrier = self._torrepulia_shipping_carrier()
+        if not carrier:
+            return False
+        free = carrier.free_over and price >= carrier.amount
+        details = {
+            '@type': 'OfferShippingDetails',
+            'shippingRate': {'@type': 'MonetaryAmount', 'value': 0 if free else carrier.fixed_price,
+                             'currency': self.currency_id.name},
+            'shippingDestination': [{'@type': 'DefinedRegion', 'addressCountry': code}
+                                    for code in (carrier.country_ids.mapped('code') or ['IT'])],
+        }
+        # A reservation leaves after the milling: no delivery time to promise yet.
+        if not preorder:
+            details['deliveryTime'] = {
+                '@type': 'ShippingDeliveryTime',
+                'handlingTime': {'@type': 'QuantitativeValue', 'minValue': HANDLING_DAYS[0],
+                                 'maxValue': HANDLING_DAYS[1], 'unitCode': 'DAY'},
+                'transitTime': {'@type': 'QuantitativeValue', 'minValue': TRANSIT_DAYS[0],
+                                'maxValue': TRANSIT_DAYS[1], 'unitCode': 'DAY'},
+            }
+        return details
+
+    def _enumerate_pages(self, query_string=None, force=False, ignore_custom_homepage=False):
+        # The sitemap leaves out the categories carrying noindex (views/shop_templates.xml).
+        # Link search in the Builder (query_string) still lists them.
+        pages = super()._enumerate_pages(query_string, force, ignore_custom_homepage)
+        if query_string or not self.torrepulia_theme_enabled:
+            yield from pages
+            return
+        for page in pages:
+            path = page['loc'].split('/shop/category/', 1)
+            if len(path) == 2:
+                _name, category_id = self.env['ir.http']._unslug(path[1].split('/', 1)[0])
+                if category_id and self._torrepulia_thin_category(self.env['product.public.category'].browse(category_id)):
+                    continue
+            yield page
+
+    def _torrepulia_thin_category(self, category):
+        """A shop category listing one product at most: its page repeats the product page."""
+        self.ensure_one()
+        if not self.torrepulia_theme_enabled or not category:
+            return False
+        return self.env['product.template'].search_count(
+            Domain(self.sale_product_domain()) & Domain('public_categ_ids', 'child_of', category.id), limit=2) < 2
 
 
 def _product_description(template):
@@ -191,4 +283,37 @@ class ProductProduct(models.Model):
     def _prepare_jsonld_vals(self, **kwargs):
         vals = super()._prepare_jsonld_vals(**kwargs)
         website = self.env.website or self.env['website'].browse(self.env.context.get('host_id'))
+        if website.torrepulia_theme_enabled and (offer := vals.get('offers')):
+            # Odoo says OutOfStock for a format of the open campaign: it is reserved, not sold out.
+            preorder = bool(website._torrepulia_format_preorder(self))
+            if preorder:
+                offer['availability'] = 'https://schema.org/PreOrder'
+            if shipping := website._torrepulia_shipping_jsonld(offer.get('price') or 0, preorder):
+                offer['shippingDetails'] = shipping
         return _product_jsonld(vals, self.product_tmpl_id, website)
+
+
+class ProductPublicCategory(models.Model):
+    _inherit = 'product.public.category'
+
+    def _default_website_meta(self):
+        # Odoo leaves shop categories without a description: say what the format is.
+        res = super()._default_website_meta()
+        if self.env.website.torrepulia_theme_enabled:
+            description = ('%s: La Regina, olio extravergine monovarietale Peranzana della famiglia Leone, '
+                           'spedito da Torremaggiore.' % self.name)
+            res['default_opengraph']['og:description'] = description
+            res['default_meta_description'] = description
+        return res
+
+
+class IrHttp(models.AbstractModel):
+    _inherit = 'ir.http'
+
+    @classmethod
+    def _slug(cls, value):
+        # The product addresses carry the name only, not the internal reference ("larg6bt500-…").
+        if (isinstance(value, models.BaseModel) and value._name in ('product.template', 'product.product')
+                and value.env.website.torrepulia_theme_enabled):
+            value = value.with_context(display_default_code=False)
+        return super()._slug(value)

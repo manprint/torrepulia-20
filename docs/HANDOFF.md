@@ -29,6 +29,36 @@ il dominio del sito `https://torrepulia.it` (Website → Impostazioni → Domini
   via DNS; altrimenti file HTML nel campo "Google Search Console"), invio della sitemap
   `https://torrepulia.it/sitemap.xml`, descrizioni delle 4 categorie shop (oggi senza).
 
+## 25/10 notte: piano SEO/prestazioni (tema 3.29.0, richieste-tema 1.7.0, campagne 1.10.0)
+
+Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed senza quota).
+- **Dati prodotto:** i formati della campagna aperta escono `PreOrder` (Odoo diceva `OutOfStock`);
+  `shippingDetails` dal corriere pubblicato a prezzo fisso (gratis sopra la soglia `free_over`,
+  destinazione dai paesi del corriere o IT, 0-1 + 1-3 giorni, niente tempi per le prenotazioni);
+  `hasMerchantReturnPolicy` 14 giorni sull'Organization (`models/seo.py`).
+- **Indirizzi prodotto senza codice interno:** `ir.http._slug` con `display_default_code=False` sul
+  sito Torrepulia (`/shop/la-regina-6-bottiglie-7` al posto di `/shop/larg6bt500-…-7`; il vecchio
+  indirizzo arriva comunque per ID). La migrazione aggiorna i 301 del vecchio sito che puntavano al
+  prodotto (`_torrepulia_refresh_product_redirects`, solo se il target è ancora quel prodotto).
+- **Categorie con un solo prodotto:** `noindex` (`views/shop_templates.xml`) e fuori dalla sitemap
+  (`_enumerate_pages` in `models/seo.py`); tutte le categorie hanno una descrizione di ripiego.
+- **Hero su telefono:** due ritagli verticali (`hero-foglie-portrait-648/1080.webp`, 61 e 88 KB al
+  posto dei 187 KB del 1920, tagliati al 65 % come l'`object-position`), `<source media>` aggiunti
+  alla home salvata (`add_portrait_hero`, backup `before_portrait_hero_*`). Paesaggio di chiusura
+  ricompresso (531 → 233 KB, stesso nome). Logo dell'header `loading="eager"`.
+- **Prenotazione nell'HTML:** `website.page._get_response` (campagne, `models/page.py`) mette i
+  formati nella pagina per i visitatori anonimi a ogni visita (anche dalla cache); la pagina salvata
+  e la cache tengono il segnaposto, il JS ricarica come prima. Contenuto da `campaign_content()`
+  in `controllers/campaign.py`, lo stesso dell'endpoint JSON.
+- **/olio-nuovo** → 301 `/prenotailtuoolio` (creato da `_install_request_campaign_pages`).
+- **Profilo sensoriale delle schede** (campo prodotto, richieste-tema 1.7.0): i testi con "appena
+  colta", erba, grano o "fruttato medio" passano alle parole del 25/10; il vecchio testo resta come
+  nota nel chatter del prodotto.
+- Verificato: sulla scheda in prenotazione l'unica azione visibile è "Prenota l'olio nuovo".
+- **A cura dell'utente:** certificato HTTPS anche per `www.torrepulia.it` (oggi errore di nome sul
+  certificato); termini di vendita con caratteri rovinati ("propriet�") e 10.1 (10 giorni) contro
+  10.2 (14 giorni); Merchant Center, Profilo dell'attività Google, metodi di pagamento online.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

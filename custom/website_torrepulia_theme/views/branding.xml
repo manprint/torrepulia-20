@@ -3,7 +3,7 @@
     <template id="cinematic_official_branding" inherit_id="website_torrepulia_theme.cinematic_chrome" name="Torrepulia official logos">
         <xpath expr="//div[contains(@class, 'mc-header')]//a[@class='brand']" position="replace">
             <a class="brand mc-official-brand" href="/" aria-label="Torrepulia, homepage">
-                <img class="mc-official-logo" t-att-src="'/website_torrepulia_theme/static/src/img/content/Logo%20Oro.png' if request.httprequest.path.strip('/') in ['', request.lang.url_code] else '/web/image/website/%s/logo/192x192' % website.id" alt="Torrepulia, Fratelli Leone" width="88" height="86"/>
+                <img class="mc-official-logo" t-att-src="'/website_torrepulia_theme/static/src/img/content/Logo%20Oro.png' if request.httprequest.path.strip('/') in ['', request.lang.url_code] else '/web/image/website/%s/logo/192x192' % website.id" alt="Torrepulia, Fratelli Leone" width="88" height="86" loading="eager"/>
             </a>
         </xpath>
         <xpath expr="//div[@id='mc-footer']//a[@class='brand']" position="replace">

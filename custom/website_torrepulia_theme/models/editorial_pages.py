@@ -10,6 +10,7 @@ kept, like the home cleanup.
 """
 import copy
 import json
+import re
 from datetime import datetime
 
 from lxml import etree
@@ -262,6 +263,33 @@ def retext_aroma(env):
         view = Views.browse(view_id)
         view.copy({'name': 'Before the aroma wording', 'active': False, 'arch_fs': False,
                    'key': '%s.before_aroma_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+# 20.0.3.29.0: on a phone the hero shows a 1080 px high slice of the 1920 photo. The
+# portrait crops hold that slice (cut at the 65 % of the CSS object-position, so the
+# framing does not move) at a third of the weight.
+HERO_PHOTO = '/website_torrepulia_theme/static/src/cinematic/images/'
+HERO_PORTRAIT = ('<source media="(max-width: 760px) and (max-aspect-ratio: 3/5)" srcset="%(path)shero-foglie-portrait-648.webp"/>'
+                 '<source media="(max-width: 760px) and (orientation: portrait)" srcset="%(path)shero-foglie-portrait-1080.webp"/>'
+                 % {'path': HERO_PHOTO})
+HERO_SOURCE = re.compile(r'<source(?=[^>]*%shero-foglie-640\.webp)' % re.escape(HERO_PHOTO))
+
+
+def add_portrait_hero(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE %s AND active", ['%hero-foglie-640.webp%'])
+    for view_id, stored in env.cr.fetchall():
+        updated = {lang: arch if 'hero-foglie-portrait' in arch else HERO_SOURCE.sub(HERO_PORTRAIT + '<source', arch, count=1)
+                   for lang, arch in (stored or {}).items()}
+        if updated == stored:
+            continue
+        view = Views.browse(view_id)
+        view.copy({'name': 'Before the portrait hero', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_portrait_hero_%s_%s' % (MODULE, view.id, stamp)})
         env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')

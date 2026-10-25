@@ -8,7 +8,7 @@ from odoo.tools import file_open
 
 from ..models.editorial_pages import (
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
-    retext_aroma, retext_home)
+    add_portrait_hero, retext_aroma, retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
 OIL_SAVED = ('<t t-name="oil"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
@@ -245,4 +245,26 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('<dd>Prima il verde del <strong>pomodoro</strong>.</dd>', arch)
         backups = self.env['ir.ui.view'].with_context(active_test=False).search_count(
             [('key', '=like', 'website_torrepulia_theme.before_aroma_%s_%%' % view.id)])
+        self.assertEqual(backups, 1)
+
+    def test_phones_get_the_portrait_hero_once(self):
+        view = self.env['ir.ui.view'].create({'name': 'Hero', 'type': 'qweb', 'key': 'website_torrepulia_theme.test_hero',
+                                              'arch': '<t t-name="hero"><p>x</p></t>'})
+        photo = '/website_torrepulia_theme/static/src/cinematic/images/hero-foglie-'
+        saved = ('<t t-name="hero"><section class="hero"><picture><source srcset="%(p)s640.webp 640w, %(p)s1920.webp 1920w" '
+                 'sizes="(max-width: 760px) 1650px, 100vw"><img class="hero-photo" src="%(p)s1920.webp"/></source></picture></section></t>'
+                 % {'p': photo})
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved, 'it_IT': saved}), view.id])
+        add_portrait_hero(self.env)
+        add_portrait_hero(self.env)
+        self.env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        for arch in self.env.cr.fetchone()[0].values():
+            picture = etree.fromstring(arch).find('.//picture')
+            sources = picture.xpath('.//source')
+            self.assertEqual([source.get('srcset') for source in sources[:2]],
+                             [photo + 'portrait-648.webp', photo + 'portrait-1080.webp'])
+            self.assertEqual(len(sources), 3)
+            self.assertTrue(sources[0].get('media').startswith('(max-width: 760px)'))
+        backups = self.env['ir.ui.view'].with_context(active_test=False).search_count(
+            [('key', '=like', 'website_torrepulia_theme.before_portrait_hero_%s_%%' % view.id)])
         self.assertEqual(backups, 1)

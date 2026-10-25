@@ -1,4 +1,13 @@
+from markupsafe import Markup
+
 from odoo import fields, models
+
+# 25/10: the product pages still described the oil of before the owner's words ("fruttato
+# medio", "oliva appena colta", grass and wheat). Only a text with one of these changes.
+OLD_SENSORY_MARKS = ('appena colta', 'grano', 'erba', 'Fruttato Medio', 'fruttato medio ', 'fruttato medio.')
+PRODUCT_SENSORY = Markup('<p>Un fruttato medio-intenso, elegante e armonico. Al naso arriva prima il verde del pomodoro '
+                         'e del carciofo, poi la mandorla fresca. In bocca &#232; morbido e rotondo: amaro e piccante '
+                         'delicati e ben bilanciati, finale pulito.</p>')
 
 
 class ProductTemplate(models.Model):
@@ -11,6 +20,17 @@ class ProductTemplate(models.Model):
     torrepulia_sensory_profile = fields.Html('Profilo sensoriale', translate=True)
     torrepulia_food_pairings = fields.Html('Abbinamenti in cucina', translate=True)
     torrepulia_shipping_storage = fields.Html('Spedizione e conservazione', translate=True)
+
+    def _torrepulia_retext_sensory(self):
+        """Sensory profile in the words of 25/10, in every language; the old text stays in the chatter."""
+        for code, _name in self.env['res.lang'].get_installed():
+            for template in self.with_context(lang=code).search([('torrepulia_sensory_profile', '!=', False)]):
+                current = template.torrepulia_sensory_profile or ''
+                if not any(mark in current for mark in OLD_SENSORY_MARKS):
+                    continue
+                template.message_post(body=Markup('Profilo sensoriale (%s) prima del testo del 25/10:<br/>%s') % (code, current),
+                                      subtype_xmlid='mail.mt_note')
+                template.torrepulia_sensory_profile = PRODUCT_SENSORY
 
 
 class Website(models.Model):

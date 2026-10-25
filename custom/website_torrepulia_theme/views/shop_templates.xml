@@ -17,4 +17,12 @@
         </xpath>
     </template>
 
+    <!-- A category with one product repeats its product page: followed, not indexed (and out of the sitemap). -->
+    <template id="thin_category_noindex" inherit_id="website.layout" name="Torrepulia: categorie con un solo prodotto">
+        <xpath expr="//meta[@t-if='no_index']" position="after">
+            <meta t-if="not no_index and main_object and main_object._name == 'product.public.category' and website._torrepulia_thin_category(main_object)"
+                  name="robots" content="noindex"/>
+        </xpath>
+    </template>
+
 </odoo>
