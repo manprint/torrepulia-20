@@ -246,11 +246,12 @@ jobs:
               exit 1
             fi
             if ! echo "$ps" | awk '$3 == "starting" { s = 1 } END { exit !s }'; then
-              body=$(curl -fsS -m 10 http://127.0.0.1:10000/web/health 2>/dev/null || true)
+              # Inside the odoo container: the public exposure (proxy, port) may change without the deploy knowing.
+              body=$(dc exec -T odoo python3 -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8069/web/health', timeout=10).read().decode())" 2>/dev/null || true)
               grep -q pass <<<"$body" && break
             fi
             if [ "$(date +%s)" -ge "$deadline" ]; then
-              echo "::error::timeout 3 min: stack non healthy o Odoo non risponde su 127.0.0.1:10000"
+              echo "::error::timeout 3 min: stack non healthy o Odoo non risponde su 8069 nel container"
               dc logs --no-color --tail=100
               exit 1
             fi
@@ -271,4 +272,4 @@ jobs:
           REMOTE
 
       - name: Deploy result
-        run: echo "::notice::DEPLOY OK - stack healthy, Odoo risponde internamente su 127.0.0.1:10000 della VM (porta pubblica 10000 non ancora aperta)"
+        run: echo "::notice::DEPLOY OK - stack healthy, Odoo risponde su 8069 nel container"
