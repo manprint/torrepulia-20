@@ -7,3 +7,4 @@ from . import test_editorial_pages
 from . import test_footer
 from . import test_other_websites
 from . import test_seo
+from . import test_order_confirmation

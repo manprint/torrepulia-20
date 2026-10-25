@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Same PDF as Odoo's quotation, named after what it is for the customer. Not in the Print menu. -->
+    <record id="action_report_order_confirmation" model="ir.actions.report">
+        <field name="name">Conferma d'ordine</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale.report_saleorder</field>
+        <field name="print_report_name">"Conferma d'ordine %s" % object.name</field>
+    </record>
+
+    <!-- noupdate: the manager may retouch subject and sender in the backend; the body is a view. -->
+    <data noupdate="1">
+        <record id="mail_order_confirmation" model="mail.template">
+            <field name="name">Torrepulia: conferma d'ordine</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">La tua conferma d'ordine {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="email_layout_xmlid">website_torrepulia_theme.mail_layout_bare</field>
+            <field name="report_template_ids" eval="[(4, ref('action_report_order_confirmation'))]"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html"><div><t t-out="object._torrepulia_confirmation_html()"/></div></field>
+        </record>
+    </data>
+</odoo>

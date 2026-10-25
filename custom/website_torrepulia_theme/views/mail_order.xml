@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Order confirmation email, same look as the reservation emails (website_torrepulia_request,
+         mail_request_body): tables, inline styles and the theme colors. Neutral on the payment
+         method: the page linked by the button lists the ones the site offers. -->
+    <template id="mail_order_confirmation_body" name="Torrepulia: email della conferma d'ordine">
+        <t t-set="serif" t-value="&quot;font-family:'Libre Caslon Display',Georgia,'Times New Roman',serif;font-weight:400;color:#18231f;&quot;"/>
+        <t t-set="sans" t-value="&quot;font-family:Manrope,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;&quot;"/>
+        <div t-attf-style="margin:0;padding:24px 12px;background-color:#f6f6f4;#{sans}">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="max-width:600px;margin:0 auto;background-color:#ffffff;border:1px solid #d2dcd4;border-collapse:separate;">
+                <tr><td align="center" style="padding:32px 40px 8px;">
+                    <a t-att-href="base_url" style="text-decoration:none;">
+                        <img t-att-src="logo_url" t-att-alt="company['name']" width="120" style="display:block;width:120px;height:auto;border:0;"/>
+                    </a>
+                </td></tr>
+                <tr><td style="padding:24px 40px 0;">
+                    <h1 t-attf-style="margin:0 0 12px;font-size:30px;line-height:1.2;#{serif}">
+                        <t t-if="first_name">Ecco la tua conferma d&#8217;ordine, <t t-out="first_name"/>.</t>
+                        <t t-else="">Ecco la tua conferma d&#8217;ordine.</t>
+                    </h1>
+                    <p style="margin:0;font-size:16px;line-height:1.6;color:#526056;">
+                        Prezzo bloccato e spese di spedizione incluse. Riferimento <strong style="color:#18231f;" t-out="order.name"/>.
+                    </p>
+                </td></tr>
+
+                <tr><td style="padding:32px 40px 0;">
+                    <h2 t-attf-style="margin:0 0 8px;font-size:22px;line-height:1.3;#{serif}">Il tuo olio</h2>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                        <tr t-foreach="rows" t-as="row">
+                            <td width="68" valign="top" style="padding:16px 12px 16px 0;border-bottom:1px solid #d2dcd4;">
+                                <img t-att-src="row['thumbnail']" alt="" width="56" height="56"
+                                     style="display:block;width:56px;height:56px;border:0;background-color:#f6f6f4;object-fit:contain;"/>
+                            </td>
+                            <td valign="top" style="padding:16px 0;border-bottom:1px solid #d2dcd4;font-size:15px;line-height:1.5;">
+                                <strong style="color:#18231f;font-weight:600;" t-out="row['name']"/><br/>
+                                <span style="color:#526056;">Quantità <t t-out="row['quantity']"/></span>
+                            </td>
+                            <td valign="top" align="right" style="padding:16px 0 16px 16px;border-bottom:1px solid #d2dcd4;font-size:15px;line-height:1.5;color:#18231f;white-space:nowrap;"
+                                t-out="row['subtotal']"/>
+                        </tr>
+                        <tr t-if="shipping">
+                            <td colspan="2" style="padding:14px 0;border-bottom:1px solid #d2dcd4;font-size:15px;line-height:1.5;color:#18231f;">Spedizione</td>
+                            <td align="right" style="padding:14px 0 14px 16px;border-bottom:1px solid #d2dcd4;font-size:15px;line-height:1.5;color:#18231f;white-space:nowrap;" t-out="shipping"/>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding:16px 0 0;font-size:15px;line-height:1.5;color:#18231f;font-weight:600;">Totale <span style="font-weight:400;color:#526056;">IVA inclusa</span></td>
+                            <td align="right" style="padding:16px 0 0 16px;font-size:19px;line-height:1.4;color:#18231f;font-weight:600;white-space:nowrap;" t-out="total"/>
+                        </tr>
+                    </table>
+                </td></tr>
+
+                <tr><td style="padding:36px 40px 0;">
+                    <p t-if="deadline" style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#18231f;">
+                        Conferma l&#8217;ordine e completa il pagamento entro il <strong t-out="deadline"/>.
+                        Nella pagina trovi il riepilogo completo e scegli come pagare.
+                    </p>
+                    <p t-else="" style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#18231f;">
+                        Nella pagina trovi il riepilogo completo e scegli come pagare.
+                    </p>
+                    <a t-att-href="portal_url" style="display:inline-block;padding:14px 32px;background-color:#2e493b;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;border-radius:3px;">Conferma e paga</a>
+                    <p style="margin:20px 0 0;font-size:15px;line-height:1.6;color:#526056;">
+                        Ricevuto il pagamento, ti spediamo l&#8217;olio direttamente da Torremaggiore.
+                    </p>
+                </td></tr>
+
+                <tr><td style="padding:32px 40px 0;">
+                    <p style="margin:0;padding:20px 24px;background-color:#eef2ed;font-size:15px;line-height:1.6;color:#18231f;">
+                        Vuoi cambiare qualcosa o hai una domanda? Rispondi a questa email<t t-if="company['phone']"> o chiamaci al
+                        <a t-attf-href="tel:#{company['phone'].replace(' ', '')}" style="color:#2e493b;font-weight:600;text-decoration:underline;" t-out="company['phone']"/></t>.
+                    </p>
+                </td></tr>
+
+                <tr><td style="padding:40px 40px 32px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                        <tr><td style="padding-top:20px;border-top:1px solid #d2dcd4;font-size:13px;line-height:1.6;color:#526056;">
+                            Famiglia Leone, Torremaggiore<br/>
+                            <t t-out="company['name']"/><t t-if="company['address']"> · <t t-out="company['address']"/></t><br/>
+                            <t t-if="company['vat']">P. IVA <t t-out="company['vat']"/> · </t>
+                            <a t-att-href="base_url" style="color:#526056;" t-out="base_url.split('://')[-1]"/>
+                        </td></tr>
+                    </table>
+                </td></tr>
+            </table>
+        </div>
+    </template>
+
+    <!-- The body above is the whole email: no Odoo notification frame around it. -->
+    <template id="mail_layout_bare" name="Torrepulia: email senza cornice">
+        <t t-out="message.body"/>
+    </template>
+
+    <!-- PDF of the confirmation: the title and the dates speak of a confirmation, not of a quote. -->
+    <template id="report_order_confirmation" inherit_id="sale.report_saleorder_document" priority="30">
+        <xpath expr="//t[@t-set='layout_document_title']/span[@t-elif]" position="replace">
+            <span t-elif="doc.state in ['draft','sent'] and doc._torrepulia_website()">Conferma d&#8217;ordine </span>
+            <span t-elif="doc.state in ['draft','sent']">Quotation # </span>
+        </xpath>
+        <xpath expr="//div[@name='informations_date']/strong[@t-elif]" position="replace">
+            <strong t-elif="doc.state in ['draft', 'sent'] and doc._torrepulia_website()">Data</strong>
+            <strong t-elif="doc.state in ['draft', 'sent']">Quotation Date</strong>
+        </xpath>
+        <xpath expr="//div[@name='expiration_date']/strong" position="replace">
+            <strong t-if="doc._torrepulia_website()">Da confermare entro</strong>
+            <strong t-else="">Expiration</strong>
+        </xpath>
+    </template>
+</odoo>
