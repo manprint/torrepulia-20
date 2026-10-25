@@ -1,7 +1,7 @@
 # Handoff Torrepulia: stato al 25/10/2026
 
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-25/10 è su
-`main` e deployato (ultimo: tema `20.0.3.24.0`). Versioni: tema `20.0.3.24.0`,
+`main` e deployato (ultimo: tema `20.0.3.25.0`). Versioni: tema `20.0.3.25.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. **Dal 25/10 la produzione è su
 https://torrepulia.it** (spostata dall'utente; www → dominio senza www e http → https in 301,
@@ -173,6 +173,14 @@ elementi, backup `before_copy_2510_*`, rieseguibile. Decisioni dell'utente, valg
   "La tua conferma d'ordine S000xx", PDF "Conferma d'ordine S000xx.pdf" da `action_report_order_confirmation`);
   `type_name` "Conferma d'ordine"; PDF con titolo "Conferma d'ordine", "Data", "Da confermare entro".
   Il modello email e' noupdate (oggetto e mittente modificabili dal backend), il corpo e' una vista.
+- **Email di pagamento e di ordine confermato (tema 3.25.0):** sul sito Torrepulia
+  `_send_payment_succeeded_for_order_mail` usa `mail_order_payment` (al posto di "Pending Order": con il
+  bonifico beneficiario, IBAN, importo, causale e scadenza; oggetto "Completa il bonifico per l'ordine…")
+  e `_get_confirmation_template` usa `mail_order_confirmed` ("Il tuo ordine … è confermato", indirizzo
+  di spedizione), inviata quando un pagamento con carta conferma l'ordine o con "Invia per email" su un
+  ordine confermato. Un solo corpo `mail_order_confirmation_body` con `kind`; `message_post_with_source`
+  sostituisce la cornice "light" che Odoo forza con `mail_layout_bare`. Conferma manuale dopo il bonifico:
+  Odoo non invia email, usare "Invia per email" sull'ordine confermato.
 - **Popup di pagamento:** difetto di Odoo 20 (`portal_prepayment.js` legge `data-is-partially-paid="false"`
   come vero e apre la finestra a ogni visita); patch in `static/src/js/portal_prepayment.js`.
 - PDF: lo stile viene dal "Layout documenti" dell'azienda (configurazione dell'utente).
@@ -496,7 +504,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (146 al 25/10):
+- Test Odoo (147 al 25/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,

@@ -23,5 +23,30 @@
             <field name="auto_delete" eval="True"/>
             <field name="body_html" type="html"><div><t t-out="object._torrepulia_confirmation_html()"/></div></field>
         </record>
+        <!-- Replaces Odoo's "Pending Order": sent when a payment starts (bank transfer: its details)
+             or is received without confirming the order. -->
+        <record id="mail_order_payment" model="mail.template">
+            <field name="name">Torrepulia: pagamento dell'ordine</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">{{ object._torrepulia_payment_subject() }}</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="email_layout_xmlid">website_torrepulia_theme.mail_layout_bare</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html"><div><t t-out="object._torrepulia_order_html('payment')"/></div></field>
+        </record>
+        <!-- Replaces Odoo's order confirmation: paid and confirmed, the oil gets ready to leave. -->
+        <record id="mail_order_confirmed" model="mail.template">
+            <field name="name">Torrepulia: ordine confermato</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Il tuo ordine {{ object.name }} è confermato</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="email_layout_xmlid">website_torrepulia_theme.mail_layout_bare</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html"><div><t t-out="object._torrepulia_order_html('confirmed')"/></div></field>
+        </record>
     </data>
 </odoo>
