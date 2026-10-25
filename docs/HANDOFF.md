@@ -3,9 +3,13 @@
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-25/10 è su
 `main` e deployato (ultimo: tema `20.0.3.23.0`). Versioni: tema `20.0.3.23.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
-Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
-http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
-sostituirà torrepulia.it (dominio senza www, come il vecchio, che è anch'esso Odoo).
+Apertura pubblica prevista **entro fine ottobre 2026**. **Dal 25/10 la produzione è su
+https://torrepulia.it** (spostata dall'utente; www → dominio senza www e http → https in 301,
+CSS/JS in gzip). Il vecchio indirizzo http://212.227.88.91:10000/ non risponde più.
+**Da sistemare:** canonical, `og:url`, `og:image` e la sitemap in robots.txt escono in
+`http://`: Odoo non sa di essere dietro HTTPS. Servono `proxy_mode = True` in `odoo.conf`,
+il dominio del sito `https://torrepulia.it` (Website → Impostazioni → Dominio) e
+`web.base.url` = `https://torrepulia.it` con `web.base.url.freeze` = True.
 
 ## Prossima sessione: verso l'apertura
 
