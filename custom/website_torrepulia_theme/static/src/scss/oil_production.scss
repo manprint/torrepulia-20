@@ -18,10 +18,11 @@
             .tp-process-intro { position: sticky; top: 120px; }
         }
         .tp-process-intro p { max-width: 40ch; font-size: 18px; color: var(--tp-muted); }
+        // The Builder writes the image's pixel height inline when the page is saved: the ratio must win.
         .tp-process-photo {
             display: block;
-            width: 100%;
-            height: auto;
+            width: 100% !important;
+            height: auto !important;
             aspect-ratio: 3 / 2;
             margin-top: 40px;
             object-fit: cover;
