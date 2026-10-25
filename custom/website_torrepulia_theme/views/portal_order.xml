@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The order confirmation sent before the milling is a native quotation: on the Torrepulia
+         site it speaks the reservation's words ("Conferma d'ordine", "Conferma e paga") and stays
+         neutral on the payment method, so a card provider can join the bank transfer later. -->
+    <template id="portal_order_breadcrumbs" inherit_id="sale.portal_my_home_menu_sale" priority="30">
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/a" position="replace">
+            <a t-if="sale_order" t-attf-href="/my/quotes?{{ keep_query() }}"><t t-if="website and website.torrepulia_theme_enabled">Conferme d'ordine</t><t t-else="">Quotations</t></a>
+        </xpath>
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']/t[@t-else]" position="replace">
+            <t t-else=""><t t-if="website and website.torrepulia_theme_enabled">Conferme d'ordine</t><t t-else="">Quotations</t></t>
+        </xpath>
+    </template>
+
+    <template id="portal_order_page" inherit_id="sale.sale_order_portal_template" priority="30">
+        <xpath expr="//t[@t-set='subtitle']" position="replace">
+            <t t-set="subtitle"><t t-if="website and website.torrepulia_theme_enabled">IVA inclusa</t><t t-else="">Tax Included</t></t>
+        </xpath>
+        <xpath expr="//a[@id='o_sale_portal_paynow']/t[1]" position="replace">
+            <t t-if="not sale_order.signature and sale_order._has_to_be_paid() and not payment_amount"><t t-if="website and website.torrepulia_theme_enabled"> <t t-if="sale_order.transaction_ids">Paga con un altro metodo</t><t t-else="">Conferma e paga</t></t><t t-else=""> Accept &amp; Pay</t></t>
+        </xpath>
+        <xpath expr="//div[@id='portal_sale_content']/following-sibling::div//t[@t-elif]/a/t[1]" position="replace">
+            <t t-if="not sale_order.signature"><t t-if="website and website.torrepulia_theme_enabled"><t t-if="sale_order.transaction_ids">Paga con un altro metodo</t><t t-else="">Conferma e paga</t></t><t t-else="">Accept &amp; Pay</t></t>
+        </xpath>
+        <xpath expr="//a[@id='o_sale_portal_paynow_mobile']/t[1]" position="replace">
+            <t t-if="not sale_order.signature and sale_order._has_to_be_paid() and not payment_amount"><t t-if="website and website.torrepulia_theme_enabled"><t t-if="sale_order.transaction_ids">Paga con un altro metodo</t><t t-else="">Conferma e paga</t></t><t t-else="">Accept &amp; Pay</t></t>
+        </xpath>
+        <!-- Declining the confirmation cancels the reservation, at no cost (sales terms, 6-bis). -->
+        <xpath expr="//div[@id='modaldecline']//h4[hasclass('modal-title')]" position="replace">
+            <h4 class="modal-title"><t t-if="website and website.torrepulia_theme_enabled">Annulla l&#8217;ordine</t><t t-else="">Reject This Quotation</t></h4>
+        </xpath>
+        <xpath expr="//div[@id='modaldecline']//main/p" position="replace">
+            <p t-if="website and website.torrepulia_theme_enabled">L&#8217;ordine viene annullato senza alcun costo. Se ci dici perch&#233;, ci aiuti a migliorare.</p>
+            <p t-else="">Tell us why you are refusing this quotation, this will help us improve our services.</p>
+        </xpath>
+        <xpath expr="//div[@id='modaldecline']//button[@type='submit']" position="replace">
+            <button type="submit" t-att-id="sale_order.id" class="btn btn-danger">
+                <i class="oi" data-icon="close"></i> <t t-if="website and website.torrepulia_theme_enabled">Annulla l&#8217;ordine</t><t t-else="">Reject</t>
+            </button>
+        </xpath>
+        <xpath expr="//div[@id='modaldecline']//button[@data-bs-dismiss='modal'][hasclass('btn-primary')]" position="replace">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><t t-if="website and website.torrepulia_theme_enabled">Torna indietro</t><t t-else="">Discard</t></button>
+        </xpath>
+        <xpath expr="//div[@id='sale_order_communication']/h4" position="replace">
+            <h4 class="pb-1"><t t-if="website and website.torrepulia_theme_enabled">Hai una domanda? Scrivici</t><t t-else="">Provide feedback</t></h4>
+        </xpath>
+    </template>
+
+    <template id="portal_order_content" inherit_id="sale.sale_order_portal_content" priority="30">
+        <xpath expr="//div[@id='introduction']//span[hasclass('text-muted')]/t[@t-else]" position="replace">
+            <t t-else=""><t t-if="website and website.torrepulia_theme_enabled">Conferma d'ordine per</t><t t-else="">Quotation for</t></t>
+        </xpath>
+        <xpath expr="//div[@id='introduction']//span[hasclass('text-warning-emphasis')]" position="replace">
+            <span class="text-warning-emphasis"><t t-if="website and website.torrepulia_theme_enabled">Da confermare entro il</t><t t-else="">Valid until</t> <span t-field="sale_order.validity_date" t-options='{"widget": "date"}'/></span>
+        </xpath>
+        <xpath expr="//div[@id='address_combined']/span[hasclass('badge')]" position="replace">
+            <span class="badge text-bg-info"><t t-if="website and website.torrepulia_theme_enabled">Spedizione e fatturazione</t><t t-else="">Delivery &amp; Billing</t></span>
+        </xpath>
+    </template>
+
+    <template id="portal_order_pay_modal" inherit_id="sale.sale_order_portal_pay_modal" priority="30">
+        <xpath expr="//h4[hasclass('modal-title')]" position="replace">
+            <h4 class="modal-title"><t t-if="website and website.torrepulia_theme_enabled">Conferma e paga</t><t t-else="">Pay Order</t></h4>
+        </xpath>
+        <!-- The new sentence goes in first: the next xpath rewrites the t-if this one looks for. -->
+        <xpath expr="//div[@t-if='sale_order._has_to_be_paid() and full_prepayment']" position="before">
+            <div t-if="sale_order._has_to_be_paid() and full_prepayment and website and website.torrepulia_theme_enabled and not prepayment_available" class="mb-3 tp-pay-intro">
+                Pagando <span t-out="amount" t-options="{'widget': 'monetary', 'display_currency': sale_order.currency_id}" class="fw-bold"/>
+                confermi l&#8217;ordine a nome di <b t-field="sale_order.partner_id.commercial_partner_id"/>.
+                Ricevuto il pagamento, ti spediamo l&#8217;olio da Torremaggiore.
+            </div>
+        </xpath>
+        <xpath expr="//div[@t-if='sale_order._has_to_be_paid() and full_prepayment']" position="attributes">
+            <attribute name="t-if">sale_order._has_to_be_paid() and full_prepayment and not (website and website.torrepulia_theme_enabled and not prepayment_available)</attribute>
+        </xpath>
+    </template>
+
+    <!-- Bank transfer details shown once the order is confirmed: Italian labels, the site's colours. -->
+    <template id="portal_order_transfer_details" inherit_id="payment_custom.custom_payment_transfer_details" priority="30">
+        <xpath expr="//div[hasclass('card', 'bg-info')]" position="attributes">
+            <attribute name="t-attf-class">card flex-grow-1 order-3 order-md-1 #{'tp-transfer-card' if website and website.torrepulia_theme_enabled else 'bg-info'}</attribute>
+            <attribute name="class"/>
+        </xpath>
+        <xpath expr="//b[normalize-space()='Beneficiary:']" position="replace">
+            <b><t t-if="website and website.torrepulia_theme_enabled">Beneficiario:</t><t t-else="">Beneficiary:</t></b>
+        </xpath>
+        <xpath expr="//b[normalize-space()='Bank Account:']" position="replace">
+            <b><t t-if="website and website.torrepulia_theme_enabled">IBAN:</t><t t-else="">Bank Account:</t></b>
+        </xpath>
+        <xpath expr="//b[normalize-space()='Amount:']" position="replace">
+            <b><t t-if="website and website.torrepulia_theme_enabled">Importo:</t><t t-else="">Amount:</t></b>
+        </xpath>
+        <xpath expr="//b[normalize-space()='Communication:']" position="replace">
+            <b><t t-if="website and website.torrepulia_theme_enabled">Causale:</t><t t-else="">Communication:</t></b>
+        </xpath>
+    </template>
+
+    <template id="portal_order_sidebar" inherit_id="portal.portal_record_sidebar" priority="30">
+        <xpath expr="//div[hasclass('d-lg-block', 'mt-4', 'small', 'text-center', 'text-muted')]" position="attributes">
+            <attribute name="t-if">not (website and website.torrepulia_theme_enabled)</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_order_contact" inherit_id="portal.portal_my_contact" priority="30">
+        <xpath expr="//span[hasclass('small')][hasclass('text-muted')]" position="replace">
+            <span class="small text-muted"><t t-if="website and website.torrepulia_theme_enabled">Il tuo referente</t><t t-else="">Your Contact</t></span>
+        </xpath>
+    </template>
+</odoo>

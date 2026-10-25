@@ -20,7 +20,7 @@ ORIGIN = ("Coltiviamo i nostri ulivi nell&#8217;agro di Torremaggiore, nell&#821
 # harmonious; soft and round, bitter and pungent delicate and balanced; clean finish, low acidity.
 SENSORY = (
     ("Pomodoro verde.<br/>Carciofo e mandorla.",
-     "La Peranzana ha un profilo elegante e armonico. Al naso un fruttato medio-intenso di oliva appena colta: "
+     "La Peranzana ha un profilo elegante e armonico. Al naso un fruttato medio-intenso: "
      "prima il verde del pomodoro e del carciofo, poi la mandorla fresca."),
     ("Morbido.<br/>Equilibrato.",
      "In bocca &#232; morbido e rotondo. Amaro e piccante si sentono, delicati e ben bilanciati tra loro, senza "

@@ -240,6 +240,33 @@ def move_bag_in_box(env):
         product.with_context(lang=lang).website_description = bag_in_box_description(env)
 
 
+# 20.0.3.23.0: the fruity already is the olive; the aroma goes straight to tomato, artichoke and almond.
+AROMA_REPLACEMENTS = (
+    ('Al naso un fruttato medio-intenso di oliva appena colta: prima', 'Al naso un fruttato medio-intenso: prima'),
+    ('Oliva appena colta: prima il verde del', 'Prima il verde del'),
+)
+
+
+def retext_aroma(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE %s AND active", ['%appena colta%'])
+    for view_id, stored in env.cr.fetchall():
+        updated = {}
+        for lang, arch in (stored or {}).items():
+            for old, new in AROMA_REPLACEMENTS:
+                arch = arch.replace(old, new)
+            updated[lang] = arch
+        if updated == stored:
+            continue
+        view = Views.browse(view_id)
+        view.copy({'name': 'Before the aroma wording', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_aroma_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
 # 20.0.3.20.0: reservations are paid on the order confirmation, before the oil leaves.
 PAYMENT_REPLACEMENTS = (('paghi alla spedizione', 'paghi alla conferma dell\u2019ordine'),)
 
@@ -307,7 +334,7 @@ def add_process_photos(env):
 # 25/10: the owner's tasting words, the harvest at veraison and the "trusted" mill, in every saved page.
 OIL_SENSORY = {
     'lead': 'Un fruttato medio-intenso, elegante e armonico.',
-    'Al profumo': ('Oliva appena colta: prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, '
+    'Al profumo': ('Prima il verde del <strong>pomodoro</strong> e del <strong>carciofo</strong>, '
                    'poi la <strong>mandorla fresca</strong>.'),
     'Al gusto': ('Morbido e rotondo. Amaro e piccante si sentono, delicati e ben bilanciati tra loro, senza mai '
                  'coprire il resto.'),

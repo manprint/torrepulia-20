@@ -87,6 +87,8 @@ html:has(.tp-cinematic) .o-website-builder_wrapper {
     #product_details h1,.tp-shop-title,.mc-institutional h1{font-size:50px;}
     .mc-institutional .tp-process-timeline h3{font-size:32px;overflow-wrap:anywhere;}
     .o_wsale_products_grid_table_wrapper .oe_product_image{min-height:240px;}
+    /* Odoo's z-index:0 on the details column traps the fixed bar below the identity card and the footer. */
+    #product_details{z-index:auto;}
     #o_wsale_product_cta_section{position:fixed;bottom:0;left:0;right:0;z-index:9;background:white;border-top:1px solid #cbd4ce;padding:12px 22px Max(12px,env(safe-area-inset-bottom));margin:0!important;max-width:none;width:100%;display:flex;flex-direction:row-reverse;gap:12px;align-items:center;}
     #o_wsale_product_cta_section #o_wsale_cta_wrapper{margin:0!important;flex:1;}
     #o_wsale_product_cta_section .availability_messages:empty{display:none;}

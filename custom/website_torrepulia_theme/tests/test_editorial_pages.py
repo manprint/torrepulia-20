@@ -8,7 +8,7 @@ from odoo.tools import file_open
 
 from ..models.editorial_pages import (
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
-    retext_home)
+    retext_aroma, retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
 OIL_SAVED = ('<t t-name="oil"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
@@ -229,3 +229,20 @@ class TestEditorialPages(TransactionCase):
             'website_torrepulia_theme.oil_analysis_content', {'profile': new, 'season': season}))
         for kept in ('Le analisi del raccolto %s.' % season, 'Polifenoli totali', 'Analisi rapida in frantoio.'):
             self.assertIn(kept, shown)
+
+    def test_aroma_drops_the_fresh_olive_once(self):
+        view = self.env['ir.ui.view'].create({'name': 'Aroma', 'type': 'qweb', 'key': 'website_torrepulia_theme.test_aroma',
+                                              'arch': '<t t-name="aroma"><p>x</p></t>'})
+        saved = ('<t t-name="aroma"><p>Al naso un fruttato medio-intenso di oliva appena colta: prima il verde.</p>'
+                 '<dd>Oliva appena colta: prima il verde del <strong>pomodoro</strong>.</dd></t>')
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved}), view.id])
+        retext_aroma(self.env)
+        retext_aroma(self.env)
+        self.env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        arch = self.env.cr.fetchone()[0]['en_US']
+        self.assertNotIn('appena colta', arch)
+        self.assertIn('Al naso un fruttato medio-intenso: prima il verde.', arch)
+        self.assertIn('<dd>Prima il verde del <strong>pomodoro</strong>.</dd>', arch)
+        backups = self.env['ir.ui.view'].with_context(active_test=False).search_count(
+            [('key', '=like', 'website_torrepulia_theme.before_aroma_%s_%%' % view.id)])
+        self.assertEqual(backups, 1)

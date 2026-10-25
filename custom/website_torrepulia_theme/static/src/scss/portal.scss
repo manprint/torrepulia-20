@@ -1,0 +1,13 @@
+// Order confirmation in the portal: Odoo's info blue becomes the site's pale olive.
+.tp-site .o_portal_sidebar {
+    .badge.text-bg-info { background: var(--tp-pale, #eef2ed) !important; color: var(--tp-olive, #2e493b) !important; font-weight: 600; }
+    .alert-info { background: var(--tp-pale, #eef2ed); border-color: var(--tp-line, #d6ddd7); color: var(--tp-ink, #18231f); }
+    #introduction { background: var(--tp-paper, #f7f5ef) !important; }
+}
+.tp-site .modal .tp-pay-intro { line-height: 1.7; }
+.tp-site .tp-transfer-card {
+    background: var(--tp-pale, #eef2ed);
+    border: 1px solid var(--tp-line, #d6ddd7);
+    color: var(--tp-ink, #18231f);
+    pre { background: var(--tp-white, #fff); border: 1px solid var(--tp-line, #d6ddd7); }
+}

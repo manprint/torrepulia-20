@@ -1,7 +1,7 @@
 # Handoff Torrepulia: stato al 25/10/2026
 
 Documento di ripresa per la prossima sessione di lavoro. Tutto il lavoro del 23-25/10 è su
-`main` e deployato (testi del 25/10 nel tema `20.0.3.22.0`). Versioni: tema `20.0.3.22.0`,
+`main` e deployato (ultimo: tema `20.0.3.23.0`). Versioni: tema `20.0.3.23.0`,
 richieste `20.0.1.16.0`, richieste-tema `20.0.1.6.0`, campagne `20.0.1.9.0`.
 Apertura pubblica prevista **entro fine ottobre 2026**. Produzione provvisoria:
 http://212.227.88.91:10000/ (Odoo esposto direttamente, senza proxy). Il nuovo sito
@@ -135,6 +135,26 @@ elementi, backup `before_copy_2510_*`, rieseguibile. Decisioni dell'utente, valg
   **Da fare dall'utente:** carta "Raccolto 2025" senza valori collegata ai prodotti a scorte
   (oggi mostrano la tabella 2024); a dicembre carta "Raccolto 2026" con valori e PDF.
 - Fascia stagionale dello shop con `olive-cassone-*`.
+
+### 25/10 (mattina), tema 3.23.0
+- Profumo senza "oliva appena colta" (`retext_aroma`, backup `before_aroma_*`).
+- Barra fissa della scheda prodotto su telefono: `#product_details { z-index: auto }` (lo
+  `z-index: 0` di Odoo la faceva finire sotto carta d'identità e footer).
+- **Conferma d'ordine nel portale** (`views/portal_order.xml`, `scss/portal.scss`, solo sul sito
+  Torrepulia): "Conferme d'ordine", "Conferma e paga" (neutro sul metodo, Stripe arriverà),
+  "Paga con un altro metodo" se c'è già una transazione, "Da confermare entro il", "IVA inclusa",
+  "Il tuo referente", niente "Powered by Odoo", finestra di rifiuto "Annulla l'ordine", dettagli
+  del bonifico Beneficiario/IBAN/Importo/Causale. Nuova dipendenza `payment_custom`.
+- La firma online è già un campo nativo per ordine (`require_signature`, "Firma online" nella
+  scheda dell'ordine); il predefinito si toglie in Vendite → Impostazioni → Firma online.
+- Verificato: una conferma d'ordine creata dal backend con olio in campagna si paga col bonifico
+  (transazione pending). Il blocco "olio del nuovo raccolto" vale solo per i carrelli del sito.
+- **Configurazione in produzione:** conto bancario (IBAN) sull'azienda, collegato al fornitore
+  "Bonifico bancario"; messaggio "In attesa" del fornitore in italiano (oggi "Please find the
+  payment details below."); Vendite → Impostazioni: Firma online spenta, Pagamento online acceso
+  al 100 %; nome delle imposte in italiano (oggi in locale "0% Exports", "Tax 15%").
+- La chat del portale ("Hai una domanda? Scrivici") è un componente isolato con stile proprio
+  (pulsante "Invia" viola di Odoo): non raggiungibile dal tema.
 
 ## Fatto il 24/10 (pomeriggio e sera)
 
@@ -453,7 +473,7 @@ compressi (gzip: 166 KB e 607 KB): verificare la compressione del proxy in produ
   `/mnt/torrepulia`, sola lettura per l'utente del container) e `...-db-1`.
   Database: `torrepulia_cinematic_install` (sito locale, porta 8069) e
   `torrepulia_request_test` (test). Il server serve di default `odoo_dev`.
-- Test Odoo (142 al 25/10):
+- Test Odoo (143 al 25/10):
   `docker exec torrepulia-20-local-dev-odoo-1 bash -c 'odoo --db_host "$HOST" --db_user "$USER" --db_password "$PASSWORD" -d torrepulia_request_test -u website_torrepulia_theme,website_torrepulia_request,website_torrepulia_request_theme,website_torrepulia_request_campaign --stop-after-init --http-port=8079 --max-cron-threads=0 --test-enable --test-tags=/website_torrepulia_theme,/website_torrepulia_request,/website_torrepulia_request_theme,/website_torrepulia_request_campaign --log-level=test'`
 - Test JS (48): `MSYS_NO_PATHCONV=1 docker exec -w /mnt/torrepulia/custom torrepulia-20-local-dev-odoo-1 bash -c 'node --test website_torrepulia_request*/tests/*.mjs'`
 - Aggiornare il sito locale: stesso comando con `-d torrepulia_cinematic_install`,
