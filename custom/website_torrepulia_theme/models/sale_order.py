@@ -60,7 +60,7 @@ class SaleOrder(models.Model):
     def _torrepulia_payment_subject(self):
         self.ensure_one()
         transaction = self.get_portal_last_transaction()
-        if transaction.state == 'pending' and transaction.provider_code == 'custom':
+        if transaction.state == 'pending' and transaction.provider_id.custom_mode == 'wire_transfer':
             return 'Completa il bonifico per l’ordine %s' % self.name
         if transaction.state == 'pending':
             return 'Pagamento in elaborazione per l’ordine %s' % self.name
@@ -68,11 +68,11 @@ class SaleOrder(models.Model):
 
     def _torrepulia_transfer_details(self, transaction):
         """Rows the customer copies into the bank app: beneficiary, IBAN, amount, reference."""
-        if transaction.state != 'pending' or transaction.provider_code != 'custom':
+        if transaction.state != 'pending' or transaction.provider_id.custom_mode != 'wire_transfer':
             return []
         account = transaction.provider_id._get_custom_bank_account()
         reference = transaction._get_communication() if hasattr(transaction, '_get_communication') else transaction.reference
-        rows = [('Beneficiario', account.holder_name or account.partner_id.name), ('IBAN', account.acc_number)] if account else []
+        rows = [('Beneficiario', account.holder_name or account.partner_id.name), ('IBAN', account.account_number)] if account else []
         return rows + [('Importo', format_amount(self.env, transaction.amount, transaction.currency_id)),
                        ('Causale', reference or self.name)]
 

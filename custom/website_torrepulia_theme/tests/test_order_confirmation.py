@@ -48,6 +48,29 @@ class TestOrderConfirmation(TransactionCase):
         confirmed = str(self.order._torrepulia_order_html('confirmed'))
         self.assertIn('Il tuo ordine è confermato', confirmed)
 
+    def test_bank_transfer_email_gives_iban_and_reference(self):
+        # Production has an IBAN on the transfer provider: the template is rendered against real orders on update.
+        self.website.torrepulia_theme_enabled = True
+        account = self.env['res.partner.bank'].create({
+            'partner_id': self.env.company.partner_id.id, 'account_number': 'IT60X0542811101000000123456',
+            'holder_name': 'Azienda agricola di prova'})
+        provider = self.env.ref('payment.payment_provider_transfer')
+        provider.write({'partner_bank_id': account.id})
+        transaction = self.env['payment.transaction'].create({
+            'provider_id': provider.id, 'payment_method_id': self.env.ref('payment_custom.payment_method_wire_transfer').id,
+            'amount': self.order.amount_total, 'currency_id': self.order.currency_id.id,
+            'partner_id': self.partner.id, 'sale_order_ids': [(6, 0, self.order.ids)]})
+        transaction.with_context(payment_safe_write=True)._set_pending()
+        details = dict(self.order._torrepulia_transfer_details(transaction))
+        self.assertEqual(details['IBAN'].replace(' ', ''), 'IT60X0542811101000000123456')
+        self.assertEqual(details['Beneficiario'], 'Azienda agricola di prova')
+        self.assertTrue(details['Causale'])
+        template = self.env.ref('website_torrepulia_theme.mail_order_payment')
+        body = template._render_field('body_html', self.order.ids)[self.order.id]
+        self.assertIn(details['IBAN'], body)
+        self.assertIn('Ora completa il bonifico', body)
+        self.assertIn('Completa il bonifico', self.order._torrepulia_payment_subject())
+
     def test_other_websites_keep_odoo_quotation(self):
         self.website.torrepulia_theme_enabled = False
         self.assertEqual(self.order._find_mail_template(), self.env.ref('sale.email_template_edi_sale'))
