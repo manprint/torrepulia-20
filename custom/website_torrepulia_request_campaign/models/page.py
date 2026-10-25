@@ -1,10 +1,13 @@
 import copy
+import re
 
 from lxml import etree
 
 from odoo import api, models
+from odoo.http import Response
 from odoo.tools.translate import StoredTranslations
 from odoo.addons.website_torrepulia_theme.controllers.reservation import QUANTITIES
+from ..controllers.campaign import campaign_content
 
 
 LEGACY = {'s_torrepulia_reservation_hero', 's_torrepulia_reservation_conditions',
@@ -14,6 +17,9 @@ OLD_INTRODUCTION = 'La produzione della nuova campagna olearia 2026/2027 è limi
 OLD_HERO_INTRO = 'Prenota oggi senza alcun anticipo la tua quota di La Regina: lo moliamo e lo spediamo entro 48 ore.'
 # Any size of the theme's default campaign photo; a photo chosen in the Builder stays.
 DEFAULT_PHOTO = '/website_torrepulia_theme/static/src/cinematic/campaign/land-'
+NEW_OIL_PATH = '/olio-nuovo'
+# The holder of the formats as the snippet saves it: one loading paragraph.
+CONTENT_PLACEHOLDER = re.compile(r'(<div[^>]*class="[^"]*\btp-campaign-content\b[^"]*"[^>]*>)\s*<p>[^<]*</p>\s*(</div>)')
 
 
 def refresh_opening(section, snippet):
@@ -184,3 +190,39 @@ class Website(models.Model):
                     backup.setdefault(str(view.id), {'key': view.key, 'translations': before})
                     website.torrepulia_campaign_page_backup = backup
                     view.write({'arch_db': StoredTranslations(after), 'arch_fs': False, 'arch_updated': True})
+            # The menu says "Olio nuovo": the address people type leads to the campaign page.
+            if not self.env['website.rewrite'].search_count([('website_id', '=', website.id), ('url_from', '=', NEW_OIL_PATH)]):
+                self.env['website.rewrite'].create({'name': 'Olio nuovo', 'url_from': NEW_OIL_PATH, 'url_to': '/prenotailtuoolio',
+                                                    'redirect_type': '301', 'website_id': website.id})
+
+
+class WebsitePage(models.Model):
+    _inherit = 'website.page'
+
+    def _get_response(self, request):
+        """Visitors and search engines get the formats in the page, not only after the script.
+
+        The saved page keeps the placeholder (the Builder never stores prices or the campaign
+        state) and the cached page too: the formats are rendered here on every visit, then the
+        script refreshes them as before. Logged-in users keep the script alone.
+        """
+        response = super()._get_response(request)
+        website = request.env.website
+        if (not response or response.status_code != 200 or not website.torrepulia_theme_enabled
+                or not request.env.user._is_public() or SNIPPET not in (self.view_id.sudo().arch or '')):
+            return response
+        if hasattr(response, 'flatten'):
+            response.flatten()
+        html = response.get_data(as_text=True)
+        if not CONTENT_PLACEHOLDER.search(html):
+            return response
+        content = campaign_content(website)['html']
+        # A new response: the one from super() may be the object kept in the page cache.
+        headers = response.headers.copy()
+        headers.pop('Content-Length', None)
+        served = Response(headers=headers, mimetype=response.mimetype, status=response.status,
+                          response=[CONTENT_PLACEHOLDER.sub(lambda match: match.group(1) + content + match.group(2), html, count=1)])
+        for name in ('_cached_view_id', '_cached_page'):
+            if hasattr(response, name):
+                setattr(served, name, getattr(response, name))
+        return served

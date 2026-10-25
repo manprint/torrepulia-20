@@ -9,6 +9,72 @@ from odoo.addons.website_torrepulia_theme.controllers.reservation import Torrepu
 from odoo.addons.website_torrepulia_request.controllers.review import RequestReview
 
 
+def campaign_content(website, selected=None, editing=False):
+    """Formats of the campaign as the page shows them: rendered HTML and what the script needs.
+
+    Read by the JSON endpoint and, for visitors, straight into the page (models/page.py).
+    """
+    campaign = website._public_request_campaign(selected)
+    now = fields.Datetime.now()
+    transitions = [value for value in (campaign.opens_at, campaign.closes_at) if value and value > now] if campaign else []
+    opened = bool(campaign and campaign._is_open() and website._torrepulia_selection_enabled())
+    cards = []
+    configurations = []
+    if campaign:
+        ids = campaign.line_ids.product_id.ids
+        products = request.env['product.product'].search(
+            Domain('id', 'in', ids) & Domain('product_tmpl_id', 'in',
+                request.env['product.template'].search(website.sale_product_domain() &
+                    Domain('id', 'in', campaign.line_ids.product_id.product_tmpl_id.ids) &
+                    Domain('is_published', '=', True)).ids))
+        by_id = {product.id: product for product in products}
+        configurations = [{'product_id': product.id, 'uom_id': product.uom_id.id} for product in products]
+    if campaign and (opened or editing):
+        by_template = {}
+        for line in campaign.line_ids.sorted(lambda row: (row.sequence, row.id)):
+            product = by_id.get(line.product_id.id)
+            if not product:
+                continue
+            template = product.product_tmpl_id
+            can_set = (template.type != 'combo' and
+                       not template.valid_product_template_attribute_line_ids.filtered(
+                           lambda attr: attr.attribute_id.create_variant == 'no_variant'))
+            # One card per format; each campaign variant (Filtrato, Non filtrato) is a counter in it.
+            card = by_template.get(template.id)
+            if not card:
+                card = by_template[template.id] = {
+                    'product': product, 'name': template.torrepulia_format_name or template.name,
+                    'content': line.content or template.torrepulia_shop_audience or '',
+                    'description': line.description or '',
+                    'price': None, 'reference_price': None, 'reference_unit': '', 'choices': []}
+                cards.append(card)
+            choice = {'product': product, 'label': ', '.join(product.product_template_attribute_value_ids.mapped('name')),
+                      'config': json.dumps({'product_id': product.id, 'uom_id': product.uom_id.id}),
+                      'can_set': can_set, 'unit_price': None, 'price': None}
+            if website._torrepulia_request_prices_visible() and not editing:
+                info = template._get_combination_info(combination=product.product_template_attribute_value_ids,
+                    product_id=product.id, add_qty=1, pricelist=request.pricelist, fiscal_position=request.fiscal_position)
+                if not info.get('hide_price'):
+                    currency = info['currency']
+                    choice['unit_price'] = info['price']
+                    choice['price'] = format_amount(request.env, info['price'], currency)
+                    card['currency'] = currency.name
+                    if not card['price']:
+                        card['price'] = choice['price']
+                        if info.get('base_unit_price') and info.get('base_unit_name'):
+                            card['reference_price'] = format_amount(request.env, info['base_unit_price'], currency)
+                            card['reference_unit'] = info['base_unit_name']
+            card['choices'].append(choice)
+        for card in cards:
+            # A single price for the format unless its variants are priced differently.
+            card['same_price'] = len({choice['price'] for choice in card['choices']}) == 1
+    values = {'campaign': campaign, 'cards': cards, 'opened': opened, 'editing': editing,
+              'summary_url': website._torrepulia_request_url(), 'website': website}
+    rendered = request.env['ir.ui.view']._render_template('website_torrepulia_request_campaign.campaign_content', values)
+    return {'html': str(rendered), 'campaign': campaign, 'opened': opened,
+            'configurations': configurations, 'transitions': transitions, 'now': now}
+
+
 class SeasonalCampaign(http.Controller):
     @http.route('/torrepulia/campaign/submit', type='http', auth='public', website=True,
                 methods=['POST'], csrf=True, sitemap=False)
@@ -64,68 +130,13 @@ class SeasonalCampaign(http.Controller):
             selected = int(campaign_id) if campaign_id else None
         except (ValueError, TypeError):
             return request.make_json_response({'error': _('Campagna non valida.')}, status=422)
-        campaign = website._public_request_campaign(selected)
-        now = fields.Datetime.now()
-        transitions = [value for value in (campaign.opens_at, campaign.closes_at) if value and value > now] if campaign else []
-        opened = bool(campaign and campaign._is_open() and website._torrepulia_selection_enabled())
-        cards = []
-        configurations = []
-        if campaign:
-            ids = campaign.line_ids.product_id.ids
-            products = request.env['product.product'].search(
-                Domain('id', 'in', ids) & Domain('product_tmpl_id', 'in',
-                    request.env['product.template'].search(website.sale_product_domain() &
-                        Domain('id', 'in', campaign.line_ids.product_id.product_tmpl_id.ids) &
-                        Domain('is_published', '=', True)).ids))
-            by_id = {product.id: product for product in products}
-            configurations = [{'product_id': product.id, 'uom_id': product.uom_id.id} for product in products]
-        if campaign and (opened or editing):
-            by_template = {}
-            for line in campaign.line_ids.sorted(lambda row: (row.sequence, row.id)):
-                product = by_id.get(line.product_id.id)
-                if not product:
-                    continue
-                template = product.product_tmpl_id
-                can_set = (template.type != 'combo' and
-                           not template.valid_product_template_attribute_line_ids.filtered(
-                               lambda attr: attr.attribute_id.create_variant == 'no_variant'))
-                # One card per format; each campaign variant (Filtrato, Non filtrato) is a counter in it.
-                card = by_template.get(template.id)
-                if not card:
-                    card = by_template[template.id] = {
-                        'product': product, 'name': template.torrepulia_format_name or template.name,
-                        'content': line.content or template.torrepulia_shop_audience or '',
-                        'description': line.description or '',
-                        'price': None, 'reference_price': None, 'reference_unit': '', 'choices': []}
-                    cards.append(card)
-                choice = {'product': product, 'label': ', '.join(product.product_template_attribute_value_ids.mapped('name')),
-                          'config': json.dumps({'product_id': product.id, 'uom_id': product.uom_id.id}),
-                          'can_set': can_set, 'unit_price': None, 'price': None}
-                if website._torrepulia_request_prices_visible() and not editing:
-                    info = template._get_combination_info(combination=product.product_template_attribute_value_ids,
-                        product_id=product.id, add_qty=1, pricelist=request.pricelist, fiscal_position=request.fiscal_position)
-                    if not info.get('hide_price'):
-                        currency = info['currency']
-                        choice['unit_price'] = info['price']
-                        choice['price'] = format_amount(request.env, info['price'], currency)
-                        card['currency'] = currency.name
-                        if not card['price']:
-                            card['price'] = choice['price']
-                            if info.get('base_unit_price') and info.get('base_unit_name'):
-                                card['reference_price'] = format_amount(request.env, info['base_unit_price'], currency)
-                                card['reference_unit'] = info['base_unit_name']
-                card['choices'].append(choice)
-            for card in cards:
-                # A single price for the format unless its variants are priced differently.
-                card['same_price'] = len({choice['price'] for choice in card['choices']}) == 1
-        values = {'campaign': campaign, 'cards': cards, 'opened': opened, 'editing': editing,
-                  'summary_url': website._torrepulia_request_url(), 'website': website}
-        rendered = request.env['ir.ui.view']._render_template('website_torrepulia_request_campaign.campaign_content', values)
-        response = request.make_json_response({'html': str(rendered),
-            'configurations': configurations,
+        content = campaign_content(website, selected, editing)
+        campaign, now, transitions = content['campaign'], content['now'], content['transitions']
+        response = request.make_json_response({'html': content['html'],
+            'configurations': content['configurations'],
             'refresh_after': max(1, int((min(transitions) - now).total_seconds()) + 1) if transitions else None,
             'campaign_reference': campaign.reference if campaign else None,
-            'open': opened, 'summary_url': website._torrepulia_request_url()})
+            'open': content['opened'], 'summary_url': website._torrepulia_request_url()})
         response.headers['Cache-Control'] = 'private, no-store'
         return response
 

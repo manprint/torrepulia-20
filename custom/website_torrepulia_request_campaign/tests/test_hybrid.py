@@ -1,4 +1,5 @@
 import json
+import re
 import secrets
 from unittest.mock import patch
 
@@ -234,3 +235,34 @@ class TestHybridMode(HttpCase):
         self.assertIn('mc-menu-seasonal', self.url_open('/').text)
         self.campaign.state = 'closed'
         self.assertNotIn('mc-menu-seasonal', self.url_open('/').text)
+
+    def test_reserved_formats_are_preorders_in_the_product_markup(self):
+        def offer(product):
+            page = self.url_open(product.product_tmpl_id.website_url).text
+            blocks = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', page, re.S)]
+            return next(node for block in blocks for node in block.get('@graph', [block]) if node.get('@type') == 'Product')['offers']
+        self.assertEqual(offer(self.seasonal)['availability'], 'https://schema.org/PreOrder')
+        self.assertNotEqual(offer(self.stock).get('availability'), 'https://schema.org/PreOrder')
+        self.campaign.state = 'closed'
+        self.assertNotEqual(offer(self.seasonal).get('availability'), 'https://schema.org/PreOrder')
+
+    def test_visitors_get_the_formats_in_the_page_and_olio_nuovo_leads_there(self):
+        self.website._install_request_campaign_pages()
+        self.website._install_request_campaign_pages()  # One redirect, whatever the updates.
+        self.assertEqual(self.env['website.rewrite'].search_count([('url_from', '=', '/olio-nuovo')]), 1)
+        response = self.url_open('/olio-nuovo', allow_redirects=False)
+        self.assertEqual(response.status_code, 301)
+        self.assertTrue(response.headers['Location'].endswith('/prenotailtuoolio'))
+        for _visit in range(2):  # The second visit comes from the page cache.
+            tree = html.fromstring(self.url_open('/prenotailtuoolio').content)
+            holder = tree.xpath('//*[contains(concat(" ", @class, " "), " tp-campaign-content ")]')[0]
+            self.assertEqual([card.xpath('string(.//h3)') for card in holder.xpath('.//article[@class="tp-campaign-card"]')],
+                             ['Hybrid new harvest'])
+            self.assertIn('Come funziona', holder.text_content())
+        # The saved page keeps the placeholder: no price or campaign state stored by the Builder.
+        page = self.env['website.page'].search([('url', '=', '/prenotailtuoolio'), ('website_id', '=', self.website.id)])
+        self.assertIn('Caricamento della campagna', page.view_id.arch)
+        self.campaign.state = 'closed'
+        tree = html.fromstring(self.url_open('/prenotailtuoolio').content)
+        self.assertFalse(tree.xpath('//article[@class="tp-campaign-card"]'))
+        self.assertIn('Campagna non aperta', tree.text_content())
