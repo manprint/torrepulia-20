@@ -99,6 +99,17 @@ Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed s
   prevista dal", ora di Roma), `brand` = nome del sito, descrizione di ripiego come la scheda.
   Attivazione: Sito web → Impostazioni → "Google Merchant Center" → feed con URL e token da dare
   a Merchant Center.
+- **Termini 10.4 e Privacy Policy (tema 3.33.0):** il 10.4 segue l'art. 56 del Codice del Consumo
+  (rimborso con consegna standard inclusa, entro 14 giorni, stesso mezzo di pagamento, trattenuta
+  fino al rientro dei Prodotti), riscritto solo se ha ancora "ECCEZIONE delle spese di spedizione"
+  (`retext_refund_clause`, backup `before_refund_clause_*`). Privacy Policy dai trattamenti reali
+  (ordini, prenotazioni, contatti, area personale, avviso di disponibilità, GA4/Pixel con consenso,
+  log), conservazione, destinatari (IONOS SE, Zoho EU, corrieri, banca, commercialista), diritti
+  (`recopy_privacy_policy`, solo sul vecchio modello "Questa Applicazione raccoglie").
+  **Da confermare dall'utente:** conservazione di prenotazioni non concluse e richieste (12 mesi,
+  scelta nostra); GA4 a 14 mesi va impostato in Analytics. Restano da far rivedere nei termini:
+  10.2 (raccomandata obbligatoria: l'art. 54 ammette qualsiasi dichiarazione esplicita), 10.5
+  (decadenza totale: l'art. 57 prevede solo la responsabilità per la diminuzione di valore), 10.6.
 - **Test locali lenti:** il `odoo.conf` del container ha `dev_mode = reload,qweb,xml` (template
   ricompilati a ogni richiesta) e il PC ha poca RAM libera: le schede prodotto nei test arrivano a
   10-14 s e superano il timeout di `url_open` (12 s) in modo intermittente. La CI non esegue i test

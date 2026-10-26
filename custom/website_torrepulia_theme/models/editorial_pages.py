@@ -298,49 +298,112 @@ def add_portrait_hero(env):
 
 
 # 20.0.3.31.0: the cookie policy names what the site really sets (technical cookies, GA4, Meta Pixel),
-# who provides it, for how long, and how to change the choice. Only the old generic text is replaced.
+# who provides it, for how long, and how to change the choice. 20.0.3.33.0: the privacy policy says
+# what the site really processes. Only the old generic texts are replaced, with a disabled backup.
 COOKIE_POLICY_OLD = 'Internet Explorer'
 COOKIE_DESCRIPTION_OLD = 'Informazioni sui cookie e sul titolare del trattamento di torrepulia.it.'
 COOKIE_DESCRIPTION = ('Quali cookie usa torrepulia.it, a che cosa servono, per quanto tempo restano nel browser '
                       'e come cambiare la tua scelta.')
+PRIVACY_POLICY_OLD = 'Questa Applicazione raccoglie'
+PRIVACY_DESCRIPTION_OLD = 'Informativa sul trattamento dei dati personali di torrepulia.it.'
+PRIVACY_DESCRIPTION = ('Quali dati personali tratta torrepulia.it per ordini, prenotazioni e contatti, '
+                       'per quanto tempo li conserva e quali sono i tuoi diritti.')
 
 
-def cookie_policy_arch(arch, policy):
+def legal_arch(arch, text, old_marker):
     """The legal section keeps its title and takes the new text; anything else in the page stays."""
     root = etree.fromstring(arch)
     for container in root.xpath('.//section[contains(concat(" ", @class, " "), " tp-legal ")]'
                                 '/div[contains(concat(" ", @class, " "), " tp-reading ")]'):
-        if COOKIE_POLICY_OLD not in etree.tostring(container, encoding='unicode'):
+        if old_marker not in etree.tostring(container, encoding='unicode'):
             continue
         for node in list(container):
             if node.tag != 'h1':
                 container.remove(node)
-        for node in policy:
+        for node in text:
             container.append(copy.deepcopy(node))
     return etree.tostring(root, encoding='unicode')
 
 
-def recopy_cookie_policy(env):
+def recopy_legal_page(env, url, source, old_marker, descriptions, backup):
+    """The saved legal page at url takes docs/source/<source> while it still has old_marker."""
     Views = env['ir.ui.view'].sudo().with_context(active_test=False)
     stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    with file_open(MODULE + '/docs/source/cookie-policy.html', 'rb') as source:
-        fragment = html.fromstring(source.read().decode('utf-8'))
+    with file_open(MODULE + '/docs/source/' + source, 'rb') as stream:
+        fragment = html.fromstring(stream.read().decode('utf-8'))
     # Serialized as XML once: the saved page is an XML arch.
-    policy = etree.fromstring(etree.tostring(fragment, method='xml'))
-    for page in env['website.page'].sudo().search([('url', '=', '/cookie-policy')]):
+    text = etree.fromstring(etree.tostring(fragment, method='xml'))
+    old_description, description = descriptions
+    for page in env['website.page'].sudo().search([('url', '=', url)]):
         view = page.view_id
         env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
         stored = env.cr.fetchone()[0] or {}
-        updated = {lang: cookie_policy_arch(arch, policy) if COOKIE_POLICY_OLD in arch else arch
+        updated = {lang: legal_arch(arch, text, old_marker) if old_marker in arch else arch
                    for lang, arch in stored.items()}
         if updated != stored:
-            view.copy({'name': 'Before the cookie policy of 26/10', 'active': False, 'arch_fs': False,
-                       'key': '%s.before_cookie_policy_%s_%s' % (MODULE, view.id, stamp)})
+            view.copy({'name': 'Before the legal text of 26/10', 'active': False, 'arch_fs': False,
+                       'key': '%s.%s_%s_%s' % (MODULE, backup, view.id, stamp)})
             env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
         for code, _name in env['res.lang'].get_installed():
             translated = view.with_context(lang=code)
-            if (translated.website_meta_description or '').strip() in ('', COOKIE_DESCRIPTION_OLD):
-                translated.website_meta_description = COOKIE_DESCRIPTION
+            if (translated.website_meta_description or '').strip() in ('', old_description):
+                translated.website_meta_description = description
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+def recopy_cookie_policy(env):
+    recopy_legal_page(env, '/cookie-policy', 'cookie-policy.html', COOKIE_POLICY_OLD,
+                      (COOKIE_DESCRIPTION_OLD, COOKIE_DESCRIPTION), 'before_cookie_policy')
+
+
+def recopy_privacy_policy(env):
+    recopy_legal_page(env, '/privacy-policy', 'privacy-policy.html', PRIVACY_POLICY_OLD,
+                      (PRIVACY_DESCRIPTION_OLD, PRIVACY_DESCRIPTION), 'before_privacy_policy')
+
+
+# 20.0.3.33.0: the refund on withdrawal as article 56 of the Codice del Consumo (D.Lgs. 206/2005)
+# requires it: standard delivery included, within 14 days, same means of payment. Only the old
+# clause (shipping costs excluded, 30 days) is rewritten; the rest of the owner's terms stays.
+REFUND_OLD = 'ECCEZIONE delle spese di spedizione'
+REFUND_CLAUSE = (
+    '10.4 MICHELE LEONE rimborsa al Cliente tutti i pagamenti ricevuti, comprese le spese di consegna, '
+    'senza indebito ritardo e comunque entro 14 (quattordici) giorni dal giorno in cui è informata '
+    'della decisione di recedere. Non sono rimborsati i soli costi supplementari dovuti alla scelta, da parte '
+    'del Cliente, di un tipo di consegna diverso dal tipo meno costoso di consegna standard offerto. Il '
+    'rimborso è effettuato con lo stesso mezzo di pagamento usato per la transazione iniziale, salvo che '
+    'il Cliente abbia espressamente convenuto altrimenti e a condizione che non debba sostenere alcun costo '
+    'quale conseguenza del rimborso; per i pagamenti con bonifico bancario il Cliente indica l’IBAN sul '
+    'quale ricevere il rimborso. MICHELE LEONE può trattenere il rimborso finché non abbia '
+    'ricevuto i Prodotti oppure finché il Cliente non abbia dimostrato di averli rispediti, se '
+    'precedente. Restano a carico del Cliente i soli costi diretti della restituzione dei Prodotti, come '
+    'indicato al punto 10.3 (articoli 56 e 57 del D.Lgs. 206/2005, Codice del Consumo).')
+
+
+def refund_clause_arch(arch):
+    root = etree.fromstring(arch)
+    for node in root.xpath('.//*[self::p or self::div or self::li][starts-with(normalize-space(.), "10.4")]'):
+        # The innermost element holding the clause only: never a wrapper of 10.5 and the others.
+        if REFUND_OLD not in ''.join(node.itertext()) or '10.5' in ''.join(node.itertext()):
+            continue
+        for child in list(node):
+            node.remove(child)
+        node.text = REFUND_CLAUSE
+    return etree.tostring(root, encoding='unicode')
+
+
+def retext_refund_clause(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE %s AND active", ['%' + REFUND_OLD + '%'])
+    for view_id, stored in env.cr.fetchall():
+        updated = {lang: refund_clause_arch(arch) if REFUND_OLD in arch else arch for lang, arch in (stored or {}).items()}
+        if updated == stored:
+            continue
+        view = Views.browse(view_id)
+        view.copy({'name': 'Before the refund clause of 26/10', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_refund_clause_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')
 

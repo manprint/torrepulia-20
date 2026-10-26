@@ -8,7 +8,8 @@ from odoo.tools import file_open
 
 from ..models.editorial_pages import (
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
-    COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, add_portrait_hero, recopy_cookie_policy, retext_aroma, retext_home)
+    COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, PRIVACY_DESCRIPTION, PRIVACY_DESCRIPTION_OLD, REFUND_CLAUSE, add_portrait_hero,
+    recopy_cookie_policy, recopy_privacy_policy, retext_aroma, retext_home, retext_refund_clause)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
 OIL_SAVED = ('<t t-name="oil"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
@@ -299,3 +300,48 @@ class TestEditorialPages(TransactionCase):
         self.assertEqual(arch.count('class="tp-cookie-table"'), 3)
         self.assertEqual(view.website_meta_description, COOKIE_DESCRIPTION)
         self.assertEqual(Views.search_count(backup_key), before + 1)
+
+    def test_refund_clause_follows_the_consumer_code_once(self):
+        view = self.env['ir.ui.view'].create({'name': 'Termini', 'type': 'qweb', 'key': 'website_torrepulia_theme.test_terms',
+                                              'arch': '<t t-name="terms"><p>x</p></t>'})
+        saved = ('<t t-name="terms"><div><p>10.3 Spese di restituzione a carico del cliente.</p>'
+                 '<p>10.4 MICHELE LEONE dopo la verifica procederà con il rimborso fatta <b>ECCEZIONE delle spese di spedizione</b>. '
+                 'Il rimborso avverrà entro e non oltre 30 giorni.</p>'
+                 '<p>10.5 Il diritto di recesso decade.</p></div></t>')
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved, 'it_IT': saved}), view.id])
+        retext_refund_clause(self.env)
+        retext_refund_clause(self.env)
+        self.env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        for arch in self.env.cr.fetchone()[0].values():
+            paragraphs = [''.join(node.itertext()) for node in etree.fromstring(arch).iter('p')]
+            self.assertEqual(paragraphs[0], '10.3 Spese di restituzione a carico del cliente.')
+            self.assertEqual(paragraphs[1], REFUND_CLAUSE)
+            self.assertEqual(paragraphs[2], '10.5 Il diritto di recesso decade.')
+        self.assertIn('comprese le spese di consegna', REFUND_CLAUSE)
+        self.assertIn('entro 14 (quattordici) giorni', REFUND_CLAUSE)
+        backups = self.env['ir.ui.view'].with_context(active_test=False).search_count(
+            [('key', '=like', 'website_torrepulia_theme.before_refund_clause_%s_%%' % view.id)])
+        self.assertEqual(backups, 1)
+
+    def test_privacy_policy_tells_what_the_site_processes(self):
+        website = self.env['website'].search([], limit=1)
+        saved = ('<t t-name="privacy"><t t-call="website.layout"><div id="wrap" class="oe_structure tp-page">'
+                 '<section class="tp-section tp-legal" data-snippet="s_text_block"><div class="container tp-reading">'
+                 '<h1>Privacy Policy</h1><p>Questa Applicazione raccoglie alcuni Dati Personali</p></div></section></div></t></t>')
+        page = self.env['website.page'].search([('url', '=', '/privacy-policy')], limit=1)
+        if not page:
+            view = self.env['ir.ui.view'].create({'name': 'Privacy', 'type': 'qweb', 'arch': '<t t-name="privacy"><p>x</p></t>',
+                                                  'key': 'website_torrepulia_theme.test_privacy', 'website_id': website.id})
+            page = self.env['website.page'].create({'url': '/privacy-policy', 'view_id': view.id, 'website_id': website.id})
+        view = page.view_id
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved}), view.id])
+        view.invalidate_recordset(['arch_db'])
+        view.website_meta_description = PRIVACY_DESCRIPTION_OLD
+        recopy_privacy_policy(self.env)
+        arch = view.arch
+        self.assertNotIn('Questa Applicazione raccoglie', arch)
+        for kept in ('<h1>Privacy Policy</h1>', 'IONOS SE', 'Zoho Corporation', 'Prenotazione dell', 'art. 2220',
+                     'Data Privacy Framework', 'garanteprivacy.it'):
+            self.assertIn(kept, arch)
+        self.assertNotIn('YouTube', arch)
+        self.assertEqual(view.website_meta_description, PRIVACY_DESCRIPTION)
