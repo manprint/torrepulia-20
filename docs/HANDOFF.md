@@ -145,6 +145,20 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
   corriere di `_torrepulia_shipping_carrier`; la nota di spedizione del sito si nasconde quando
   ci sono le cifre.
 
+## 27/10: richiesta di recensione (tema 3.35.0)
+
+- Su "Richiedi valutazioni" di Odoo (Sito web → Impostazioni, sezione Shop), `models/reviews.py`: sul
+  sito Torrepulia i giorni contano dall'ultima consegna al corriere completata (`picking_ids.date_done`,
+  finestra di 14 giorni), non dalla data dell'ordine; flag `torrepulia_review_sent`; gli ordini
+  Torrepulia sono marcati `is_rating_email_sent` prima del passaggio nativo, che resta per gli altri
+  siti. Email `mail_order_review` (corpo `mail_order_review_body`, stessa cornice delle email d'ordine):
+  "Com'è La Regina?", pulsante Google (campo "Link recensioni Google"), "Valuta" per ogni formato se le
+  recensioni sulle schede sono attive, aiuto in caso di problemi, una sola email per ordine.
+- Migrazione: modello Torrepulia al posto di quello di Odoo, ritardo 5 → 7 giorni; paragrafo
+  "Richiesta di recensione" nella privacy policy (legittimo interesse, opposizione rispondendo).
+- **A cura dell'utente:** spuntare "Richiedi valutazioni" (accende anche le recensioni con stelle
+  sulle schede) e incollare il link del Profilo dell'attività su Google ("Chiedi recensioni").
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

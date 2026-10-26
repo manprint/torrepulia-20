@@ -114,6 +114,84 @@
         </div>
     </template>
 
+    <!-- Review request, a few days after the oil left (models/reviews.py): same frame as the order
+         emails. Every customer is asked, as Google requires; a problem goes to a reply, not a review form. -->
+    <template id="mail_order_review_body" name="Torrepulia: richiesta di recensione">
+        <t t-set="serif" t-value="&quot;font-family:'Libre Caslon Display',Georgia,'Times New Roman',serif;font-weight:400;color:#18231f;&quot;"/>
+        <t t-set="sans" t-value="&quot;font-family:Manrope,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;&quot;"/>
+        <t t-set="button" t-value="'display:inline-block;padding:14px 32px;background-color:#2e493b;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;border-radius:3px;'"/>
+        <div t-attf-style="margin:0;padding:24px 12px;background-color:#f6f6f4;#{sans}">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="max-width:600px;margin:0 auto;background-color:#ffffff;border:1px solid #d2dcd4;border-collapse:separate;">
+                <tr><td align="center" style="padding:32px 40px 8px;">
+                    <a t-att-href="base_url" style="text-decoration:none;">
+                        <img t-att-src="logo_url" t-att-alt="company['name']" width="120" style="display:block;width:120px;height:auto;border:0;"/>
+                    </a>
+                </td></tr>
+                <tr><td style="padding:24px 40px 0;">
+                    <h1 t-attf-style="margin:0 0 12px;font-size:30px;line-height:1.2;#{serif}">Com&#8217;è La Regina<t t-if="first_name">, <t t-out="first_name"/></t>?</h1>
+                    <p style="margin:0;font-size:16px;line-height:1.6;color:#526056;">
+                        Ormai il tuo olio è sulla tua tavola. Ci regali un minuto? Il tuo parere aiuta chi ci sceglie per la prima volta
+                        e dice a noi cosa fare meglio la prossima stagione.
+                    </p>
+                </td></tr>
+                <tr t-if="google_url"><td style="padding:32px 40px 0;">
+                    <a t-att-href="google_url" t-att-style="button">Lascia una recensione su Google</a>
+                </td></tr>
+                <tr t-if="reviews_on_site and rows"><td style="padding:32px 40px 0;">
+                    <h2 t-attf-style="margin:0 0 8px;font-size:22px;line-height:1.3;#{serif}"><t t-if="google_url">Oppure racconta</t><t t-else="">Racconta</t> il tuo formato sul sito</h2>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                        <tr t-foreach="rows" t-as="row">
+                            <td width="68" valign="middle" style="padding:16px 12px 16px 0;border-bottom:1px solid #d2dcd4;">
+                                <img t-att-src="row['thumbnail']" alt="" width="56" height="56"
+                                     style="display:block;width:56px;height:56px;border:0;background-color:#f6f6f4;object-fit:contain;"/>
+                            </td>
+                            <td valign="middle" style="padding:16px 0;border-bottom:1px solid #d2dcd4;font-size:15px;line-height:1.5;color:#18231f;font-weight:600;" t-out="row['name']"/>
+                            <td valign="middle" align="right" style="padding:16px 0 16px 16px;border-bottom:1px solid #d2dcd4;white-space:nowrap;">
+                                <a t-att-href="row['url']" style="color:#2e493b;font-size:15px;font-weight:600;text-decoration:underline;">Valuta</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td></tr>
+                <tr t-if="not google_url and not (reviews_on_site and rows)"><td style="padding:32px 40px 0;">
+                    <a t-att-href="portal_url" t-att-style="button">Vedi il tuo ordine</a>
+                </td></tr>
+                <tr><td style="padding:32px 40px 0;">
+                    <p style="margin:0;padding:20px 24px;background-color:#eef2ed;font-size:15px;line-height:1.6;color:#18231f;">
+                        C&#8217;è stato un problema con la consegna o con l&#8217;olio? Rispondi a questa email<t t-if="company['phone']"> o chiamaci al
+                        <a t-attf-href="tel:#{company['phone'].replace(' ', '')}" style="color:#2e493b;font-weight:600;text-decoration:underline;" t-out="company['phone']"/></t>: ce ne occupiamo noi.
+                    </p>
+                </td></tr>
+                <tr><td style="padding:40px 40px 32px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                        <tr><td style="padding-top:20px;border-top:1px solid #d2dcd4;font-size:13px;line-height:1.6;color:#526056;">
+                            Ti scriviamo una sola volta per l&#8217;ordine <t t-out="order.name"/>. Se non vuoi più ricevere richieste come questa, rispondi e scrivicelo.<br/><br/>
+                            Famiglia Leone, Torremaggiore<br/>
+                            <t t-out="company['name']"/><t t-if="company['address']"> · <t t-out="company['address']"/></t><br/>
+                            <t t-if="company['vat']">P. IVA <t t-out="company['vat']"/> · </t>
+                            <a t-att-href="base_url" style="color:#526056;" t-out="base_url.split('://')[-1]"/>
+                        </td></tr>
+                    </table>
+                </td></tr>
+            </table>
+        </div>
+    </template>
+
+    <record id="res_config_settings_view_form_reviews" model="ir.ui.view">
+        <field name="name">res.config.settings.form.torrepulia.reviews</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='send_order_rating_emails_setting']" position="inside">
+                <div invisible="not send_order_rating_emails" class="mt-2">
+                    <label string="Link recensioni Google" for="torrepulia_google_review_url" class="o_light_label me-2"/>
+                    <field name="torrepulia_google_review_url" placeholder="https://g.page/r/…/review" class="oe_inline" style="min-width: 16rem;"/>
+                    <div class="text-muted small mt-1">Sul sito Torrepulia i giorni contano dalla consegna al corriere, non dalla conferma dell'ordine.</div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
     <!-- The body above is the whole email: no Odoo notification frame around it. -->
     <template id="mail_layout_bare" name="Torrepulia: email senza cornice">
         <t t-out="message.body"/>

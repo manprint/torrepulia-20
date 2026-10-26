@@ -104,8 +104,6 @@ class SaleOrder(models.Model):
         shipping_cost = sum(delivery.mapped('price_total'))
         transaction = self.get_portal_last_transaction().sudo()
         address = self.partner_shipping_id
-        partner = self.company_id.partner_id
-        vat = (self.company_id.vat or '').replace(' ', '')
         return self.env['ir.qweb']._render('website_torrepulia_theme.mail_order_confirmation_body', {
             'kind': kind,
             'order': self,
@@ -125,6 +123,17 @@ class SaleOrder(models.Model):
                 address.name, address.street, address.street2,
                 ' '.join(filter(None, [address.zip, address.city, address.state_id.code and '(%s)' % address.state_id.code])),
             ) if value],
+            **self._torrepulia_mail_frame(),
+        })
+
+    def _torrepulia_mail_frame(self):
+        """Links and company lines shared by every Torrepulia order email (header, buttons, footer)."""
+        self.ensure_one()
+        website = self._torrepulia_website()
+        base_url = website.get_base_url()
+        partner = self.company_id.partner_id
+        vat = (self.company_id.vat or '').replace(' ', '')
+        return {
             'portal_url': base_url + self.get_portal_url(),
             'base_url': base_url,
             'logo_url': '%s/web/image/website/%s/logo/240x120' % (base_url, website.id),
@@ -133,7 +142,7 @@ class SaleOrder(models.Model):
                 'address': ' · '.join(filter(None, [partner.street, ' '.join(filter(None, [partner.zip, partner.city]))])),
                 'vat': vat[2:] if len(vat) > 2 and vat[:2].isalpha() else vat,
             },
-        })
+        }
 
     def _torrepulia_confirmation_html(self):
         return self._torrepulia_order_html('confirmation')

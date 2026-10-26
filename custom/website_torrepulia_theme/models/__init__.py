@@ -7,3 +7,4 @@ from . import oil_profile
 from . import seo
 from . import product_feed
 from . import sale_order
+from . import reviews

@@ -362,6 +362,49 @@ def recopy_privacy_policy(env):
                       (PRIVACY_DESCRIPTION_OLD, PRIVACY_DESCRIPTION), 'before_privacy_policy')
 
 
+# 20.0.3.35.0: the review request after delivery (models/reviews.py) has its paragraph in the
+# privacy policy of 26/10, before the statistics. Pages without that structure stay as they are.
+REVIEW_HEADING = 'Richiesta di recensione'
+
+
+def review_privacy_arch(arch, section):
+    root = etree.fromstring(arch)
+    if REVIEW_HEADING in ''.join(root.itertext()):
+        return arch
+    for heading in root.xpath('.//section[contains(concat(" ", @class, " "), " tp-legal ")]//h3'):
+        if ''.join(heading.itertext()).strip() == 'Statistiche e marketing':
+            for node in section:
+                heading.addprevious(copy.deepcopy(node))
+            break
+    return etree.tostring(root, encoding='unicode')
+
+
+def add_review_privacy(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    with file_open(MODULE + '/docs/source/privacy-policy.html', 'rb') as stream:
+        source = etree.fromstring(etree.tostring(html.fromstring(stream.read().decode('utf-8')), method='xml'))
+    # The heading and the paragraphs up to the next heading, as the source file has them.
+    start = next(node for node in source if node.tag == 'h3' and ''.join(node.itertext()).strip() == REVIEW_HEADING)
+    section = [start]
+    for node in start.itersiblings():
+        if node.tag in ('h2', 'h3'):
+            break
+        section.append(node)
+    for page in env['website.page'].sudo().search([('url', '=', '/privacy-policy')]):
+        view = page.view_id
+        env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        stored = env.cr.fetchone()[0] or {}
+        updated = {lang: review_privacy_arch(arch, section) for lang, arch in stored.items()}
+        if updated == stored:
+            continue
+        view.copy({'name': 'Before the review paragraph', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_review_privacy_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
 # 20.0.3.33.0: the refund on withdrawal as article 56 of the Codice del Consumo (D.Lgs. 206/2005)
 # requires it: standard delivery included, within 14 days, same means of payment. Only the old
 # clause (shipping costs excluded, 30 days) is rewritten; the rest of the owner's terms stays.
