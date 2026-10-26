@@ -3,7 +3,7 @@ import re
 import secrets
 from unittest.mock import patch
 
-from lxml import html
+from lxml import etree, html
 
 from odoo import fields
 from odoo.exceptions import ValidationError
@@ -276,3 +276,20 @@ class TestHybridMode(HttpCase):
         tree = html.fromstring(self.url_open('/prenotailtuoolio').content)
         self.assertFalse(tree.xpath('//article[@class="tp-campaign-card"]'))
         self.assertIn('Campagna non aperta', tree.text_content())
+
+    def test_merchant_feed_lists_reserved_formats_as_preorders(self):
+        self.env['res.config.settings'].create({'group_gmc_feed': True}).execute()
+        feed = self.env['product.feed'].create({'name': 'GMC', 'website_id': self.website.id})
+        self.campaign.delivery_from = '2026-11-20'
+        response = self.url_open(feed.url)
+        self.assertEqual(response.status_code, 200)
+        ns = {'g': 'http://base.google.com/ns/1.0'}
+        items = {item.findtext('g:title', namespaces=ns): item for item in etree.XML(response.content).iter('item')}
+        seasonal, stock = items['Hybrid new harvest'], items['Hybrid stock bottle']
+        self.assertEqual(seasonal.findtext('g:availability', namespaces=ns), 'preorder')
+        # Odoo's template writes the direct attributes on their own indented lines: Google trims them.
+        self.assertEqual(seasonal.findtext('g:availability_date', namespaces=ns).strip(), '2026-11-20T00:00+0100')
+        self.assertEqual(seasonal.findtext('g:brand', namespaces=ns).strip(), self.website.name)
+        self.assertIn('olio extravergine monovarietale Peranzana', seasonal.findtext('g:description', namespaces=ns))
+        self.assertEqual(stock.findtext('g:availability', namespaces=ns), 'in_stock')
+        self.assertIsNone(stock.find('g:availability_date', namespaces=ns))

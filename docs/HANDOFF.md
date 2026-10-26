@@ -94,6 +94,16 @@ Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed s
   entro 14 giorni. Privacy Policy da rifare (generica: cita widget Facebook/YouTube/Maps non usati,
   non cita il Pixel né basi giuridiche e conservazione).
 
+- **Feed Merchant Center** (nativo Odoo 20, `/gmc.xml`, `models/product_feed.py`, tema 3.32.0): sul
+  sito Torrepulia i formati della campagna escono `preorder` con `availability_date` (da "Consegna
+  prevista dal", ora di Roma), `brand` = nome del sito, descrizione di ripiego come la scheda.
+  Attivazione: Sito web → Impostazioni → "Google Merchant Center" → feed con URL e token da dare
+  a Merchant Center.
+- **Test locali lenti:** il `odoo.conf` del container ha `dev_mode = reload,qweb,xml` (template
+  ricompilati a ogni richiesta) e il PC ha poca RAM libera: le schede prodotto nei test arrivano a
+  10-14 s e superano il timeout di `url_open` (12 s) in modo intermittente. La CI non esegue i test
+  Torrepulia (solo moduli dummy). In produzione la scheda risponde in circa 0,55 s.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi
