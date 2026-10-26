@@ -153,7 +153,7 @@ export class SeasonalCampaign extends Interaction {
         // The arrival frame only says where the visitor landed: the first change hands over to the
         // frames of the formats really in the reservation (renderState).
         this.chosen = null;
-        this.holder.querySelector('.tp-campaign-card.is-chosen')?.classList.remove('is-chosen');
+        this.holder?.querySelector('.tp-campaign-card.is-chosen')?.classList.remove('is-chosen');
         const config = JSON.parse(input.closest('[data-campaign-config]').dataset.campaignConfig);
         const key = `${config.product_id}:${config.uom_id}`;
         if (this.quantityBusy.has(key)) return;
