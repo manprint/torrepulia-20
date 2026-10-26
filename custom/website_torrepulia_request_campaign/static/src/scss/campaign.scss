@@ -62,8 +62,10 @@
         details > p { margin: 0; padding: 0 36px 20px 4px; max-width: 62ch; color: var(--tp-muted, #526056); line-height: 1.65; }
     }
     .tp-campaign-faq-link { display: inline-block; margin-left: 4px; color: var(--tp-olive, #2e493b); text-underline-offset: 4px; }
-    // The format chosen elsewhere on the site ("Prenota Latta"): framed like the open row of the home.
-    .tp-campaign-card.is-chosen { border-color: var(--tp-olive, #2e493b); box-shadow: inset 0 0 0 1px var(--tp-olive, #2e493b); }
+    // Framed: the format the visitor arrived for ("Prenota Latta"), until the first change, then
+    // every format with at least one pack in the reservation.
+    .tp-campaign-card:is(.is-chosen, .has-quantity) { border-color: var(--tp-olive, #2e493b); box-shadow: inset 0 0 0 1px var(--tp-olive, #2e493b); }
+    .tp-campaign-card { transition: border-color .2s ease, box-shadow .2s ease; }
     .tp-campaign-card { scroll-margin-top: 110px; }
     .tp-campaign-photo { width: 100%; height: 340px; object-fit: cover; }
     .tp-campaign-content, .tp-campaign-review, #tp-campaign-formats { scroll-margin-top: 100px; }
@@ -160,7 +162,7 @@
 @keyframes tp-campaign-dock-in { from { transform: translateY(100%); } }
 @media (prefers-reduced-motion: reduce) {
     .tp-campaign .tp-campaign-dock:not([hidden]) { animation: none; }
-    .tp-campaign .tp-quantity-stepper button { transition: none; }
+    .tp-campaign .tp-quantity-stepper button, .tp-campaign .tp-campaign-card { transition: none; }
     .tp-campaign .tp-quantity-stepper button:active:not(:disabled) { transform: none; }
 }
 // Section titles below the opening stay one step under the h1: the theme's generic h2 rule is more specific.

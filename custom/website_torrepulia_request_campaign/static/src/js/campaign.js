@@ -150,6 +150,10 @@ export class SeasonalCampaign extends Interaction {
     }
 
     setCardQuantity(input, quantity) {
+        // The arrival frame only says where the visitor landed: the first change hands over to the
+        // frames of the formats really in the reservation (renderState).
+        this.chosen = null;
+        this.holder.querySelector('.tp-campaign-card.is-chosen')?.classList.remove('is-chosen');
         const config = JSON.parse(input.closest('[data-campaign-config]').dataset.campaignConfig);
         const key = `${config.product_id}:${config.uom_id}`;
         if (this.quantityBusy.has(key)) return;
@@ -176,6 +180,10 @@ export class SeasonalCampaign extends Interaction {
                 button.disabled = input.disabled || (Number(button.dataset.campaignStep) < 0
                     ? !Number(input.value) : Number(input.value) >= state.limits.max);
             }
+        }
+        // A format with at least one pack in the reservation is framed, like a line of the summary.
+        for (const card of this.holder.querySelectorAll('.tp-campaign-card')) {
+            card.classList.toggle('has-quantity', [...card.querySelectorAll('.tp-campaign-quantity')].some(input => Number(input.value) > 0));
         }
         const number = value => new Intl.NumberFormat(document.documentElement.lang || 'it').format(value);
         const packs = value => value === 1 ? _t('1 confezione') : _t('%s confezioni', number(value));

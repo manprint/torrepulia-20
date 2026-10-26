@@ -130,7 +130,8 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 
 - **Ancora sul formato:** `_torrepulia_preorder_product_url` restituisce
   `/prenotailtuoolio#tp-format-<template>` (home, shop, scheda prodotto); la card ha quell'id, il JS
-  la segna `is-chosen` a ogni caricamento, la porta in vista una volta e dà il focus al suo "+".
+  la segna `is-chosen` (segnale d'arrivo, sparisce al primo +/−), la porta in vista una volta e dà il focus
+  al suo "+"; poi sono incorniciate (`has-quantity`) le card con almeno una confezione.
   Menu "Olio nuovo" e fascia dello shop restano senza ancora.
 - **Barra di completamento** (`tp-campaign-dock`) a tutte le larghezze, non più solo su telefono:
   compare al primo "+", sparisce quando il modulo è in vista.
