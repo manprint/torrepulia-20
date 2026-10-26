@@ -130,6 +130,11 @@ class Website(models.Model):
         self.ensure_one()
         return False
 
+    def _torrepulia_preorder_available_from(self, product):
+        """First delivery date of a reserved format, else False; the campaign addon provides it."""
+        self.ensure_one()
+        return False
+
     # Builder font values pointing at the self-hosted brand fonts: no Google Fonts request.
     TORREPULIA_FONTS = {'font': "'Manrope'", 'headings-font': "'Libre Caslon Display'",
                         'navbar-font': "'Manrope'", 'buttons-font': "'Manrope'"}

@@ -179,6 +179,8 @@ class Website(models.Model):
                 'returnPolicyCategory': 'https://schema.org/MerchantReturnFiniteReturnWindow',
                 'merchantReturnDays': RETURN_DAYS,
                 'returnMethod': 'https://schema.org/ReturnByMail',
+                # Sales terms 10.3: the return shipment is paid by the customer.
+                'returnFees': 'https://schema.org/ReturnFeesCustomerResponsibility',
             },
         }
         vals.update({key: value for key, value in extra.items() if value})
@@ -288,6 +290,9 @@ class ProductProduct(models.Model):
             preorder = bool(website._torrepulia_format_preorder(self))
             if preorder:
                 offer['availability'] = 'https://schema.org/PreOrder'
+                # Merchant Center requires the availability date of a preorder.
+                if available_from := website._torrepulia_preorder_available_from(self):
+                    offer['availabilityStarts'] = available_from.isoformat()
             if shipping := website._torrepulia_shipping_jsonld(offer.get('price') or 0, preorder):
                 offer['shippingDetails'] = shipping
         return _product_jsonld(vals, self.product_tmpl_id, website)

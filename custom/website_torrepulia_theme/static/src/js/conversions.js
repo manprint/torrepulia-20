@@ -1,9 +1,20 @@
 import { Interaction } from '@web/public/interaction';
 import { registry } from '@web/core/registry';
 
-// Conversions for GA4 (Odoo's gtag, Consent Mode) and the Meta Pixel (loaded only after
-// consent): sent once per reference in the tab, a reload of the page does not count again.
+// Conversions for GA4 (Odoo's gtag) and the Meta Pixel, both loaded only after consent: sent
+// once per reference in the tab, a reload of the page does not count again. Without consent
+// nothing is sent or stored, not even the marker.
+function consented() {
+    const match = document.cookie.match(/(?:^|; )website_cookies_bar=([^;]*)/);
+    try {
+        return Boolean(match && JSON.parse(decodeURIComponent(match[1])).optional);
+    } catch {
+        return false;
+    }
+}
+
 function once(key) {
+    if (!consented()) return false;
     try {
         if (sessionStorage.getItem(key)) return false;
         sessionStorage.setItem(key, '1');

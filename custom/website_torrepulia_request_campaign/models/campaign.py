@@ -16,6 +16,8 @@ class Campaign(models.Model):
     opens_at = fields.Datetime('Apertura dal')
     closes_at = fields.Datetime('Chiusura al')
     delivery_period = fields.Char('Periodo indicativo di consegna', translate=True)
+    delivery_from = fields.Date('Consegna prevista dal',
+        help="Prima data in cui l'olio può arrivare. Google Merchant Center la chiede per i prodotti in preordine.")
     introduction = fields.Text('Testo editoriale', translate=True,
         default='Filtrato o non filtrato, anche insieme: scegli le quantità per ogni formato.')
     shipping_note = fields.Char('Indicazione spedizione', translate=True)
@@ -120,6 +122,13 @@ class Website(models.Model):
         if product._name == 'product.template':
             return url if product.id in products.product_tmpl_id.ids else False
         return url if product.id in products.ids else False
+
+    def _torrepulia_preorder_available_from(self, product):
+        """First delivery date of a reserved format, for the product markup."""
+        self.ensure_one()
+        if not self._torrepulia_preorder_product_url(product):
+            return False
+        return self._public_request_campaign().delivery_from
 
     def _torrepulia_preorder_season(self):
         """Shop band of the open default campaign, hybrid mode only."""

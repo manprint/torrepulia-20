@@ -13,7 +13,9 @@ import json
 import re
 from datetime import datetime
 
-from lxml import etree
+from lxml import etree, html
+
+from odoo.tools import file_open
 
 from .home_copy import recopy_section, refine_section
 from .website import MODULE, inline_puglia_map
@@ -291,6 +293,54 @@ def add_portrait_hero(env):
         view.copy({'name': 'Before the portrait hero', 'active': False, 'arch_fs': False,
                    'key': '%s.before_portrait_hero_%s_%s' % (MODULE, view.id, stamp)})
         env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+# 20.0.3.31.0: the cookie policy names what the site really sets (technical cookies, GA4, Meta Pixel),
+# who provides it, for how long, and how to change the choice. Only the old generic text is replaced.
+COOKIE_POLICY_OLD = 'Internet Explorer'
+COOKIE_DESCRIPTION_OLD = 'Informazioni sui cookie e sul titolare del trattamento di torrepulia.it.'
+COOKIE_DESCRIPTION = ('Quali cookie usa torrepulia.it, a che cosa servono, per quanto tempo restano nel browser '
+                      'e come cambiare la tua scelta.')
+
+
+def cookie_policy_arch(arch, policy):
+    """The legal section keeps its title and takes the new text; anything else in the page stays."""
+    root = etree.fromstring(arch)
+    for container in root.xpath('.//section[contains(concat(" ", @class, " "), " tp-legal ")]'
+                                '/div[contains(concat(" ", @class, " "), " tp-reading ")]'):
+        if COOKIE_POLICY_OLD not in etree.tostring(container, encoding='unicode'):
+            continue
+        for node in list(container):
+            if node.tag != 'h1':
+                container.remove(node)
+        for node in policy:
+            container.append(copy.deepcopy(node))
+    return etree.tostring(root, encoding='unicode')
+
+
+def recopy_cookie_policy(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    with file_open(MODULE + '/docs/source/cookie-policy.html', 'rb') as source:
+        fragment = html.fromstring(source.read().decode('utf-8'))
+    # Serialized as XML once: the saved page is an XML arch.
+    policy = etree.fromstring(etree.tostring(fragment, method='xml'))
+    for page in env['website.page'].sudo().search([('url', '=', '/cookie-policy')]):
+        view = page.view_id
+        env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        stored = env.cr.fetchone()[0] or {}
+        updated = {lang: cookie_policy_arch(arch, policy) if COOKIE_POLICY_OLD in arch else arch
+                   for lang, arch in stored.items()}
+        if updated != stored:
+            view.copy({'name': 'Before the cookie policy of 26/10', 'active': False, 'arch_fs': False,
+                       'key': '%s.before_cookie_policy_%s_%s' % (MODULE, view.id, stamp)})
+            env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+        for code, _name in env['res.lang'].get_installed():
+            translated = view.with_context(lang=code)
+            if (translated.website_meta_description or '').strip() in ('', COOKIE_DESCRIPTION_OLD):
+                translated.website_meta_description = COOKIE_DESCRIPTION
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')
 

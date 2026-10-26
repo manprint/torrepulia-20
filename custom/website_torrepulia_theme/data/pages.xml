@@ -43,5 +43,5 @@
     </page>
     <page key="terms" url="/termini-e-condizioni" title="Termini e condizioni di vendita | Torrepulia" description="Condizioni generali di vendita dell'azienda agricola Michele Leone."><legal file="termini-e-condizioni.html"/></page>
     <page key="privacy" url="/privacy-policy" title="Privacy Policy | Torrepulia" description="Informativa sul trattamento dei dati personali di torrepulia.it."><legal file="privacy-policy.html"/></page>
-    <page key="cookies" url="/cookie-policy" title="Cookie Policy | Torrepulia" description="Informazioni sui cookie e sul titolare del trattamento di torrepulia.it."><legal file="cookie-policy.html"/></page>
+    <page key="cookies" url="/cookie-policy" title="Cookie Policy | Torrepulia" description="Quali cookie usa torrepulia.it, a che cosa servono, per quanto tempo restano nel browser e come cambiare la tua scelta."><legal file="cookie-policy.html"/></page>
 </pages>

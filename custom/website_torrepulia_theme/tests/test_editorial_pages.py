@@ -8,7 +8,7 @@ from odoo.tools import file_open
 
 from ..models.editorial_pages import (
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
-    add_portrait_hero, retext_aroma, retext_home)
+    COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, add_portrait_hero, recopy_cookie_policy, retext_aroma, retext_home)
 
 OIL_KEY, STORY_KEY, LAND_KEY = list(PAGES)
 OIL_SAVED = ('<t t-name="oil"><t t-call="website.layout"><div id="wrap" class="oe_structure">'
@@ -268,3 +268,34 @@ class TestEditorialPages(TransactionCase):
         backups = self.env['ir.ui.view'].with_context(active_test=False).search_count(
             [('key', '=like', 'website_torrepulia_theme.before_portrait_hero_%s_%%' % view.id)])
         self.assertEqual(backups, 1)
+
+    def test_cookie_policy_lists_the_real_cookies_once(self):
+        website = self.env['website'].search([], limit=1)
+        saved = ('<t t-name="cookies"><t t-call="website.layout"><div id="wrap" class="oe_structure tp-page">'
+                 '<section class="tp-section tp-legal" data-snippet="s_text_block"><div class="container tp-reading">'
+                 '<h1>Cookie Policy</h1><section><p>Apri Internet Explorer</p></section></div></section>'
+                 '<section data-snippet="s_text_block"><p>Nota del gestore</p></section></div></t></t>')
+        # The website points at its cookie page (cookie_policy_id): reuse it when it exists.
+        page = self.env['website.page'].search([('url', '=', '/cookie-policy')], limit=1)
+        if not page:
+            view = self.env['ir.ui.view'].create({'name': 'Cookie', 'type': 'qweb', 'arch': '<t t-name="cookies"><p>x</p></t>',
+                                                  'key': 'website_torrepulia_theme.test_cookies', 'website_id': website.id})
+            page = self.env['website.page'].create({'url': '/cookie-policy', 'view_id': view.id, 'website_id': website.id})
+        self.env['website.page'].search([('url', '=', '/cookie-policy'), ('id', '!=', page.id)]).url = '/cookie-policy-altra'
+        view = page.view_id
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved}), view.id])
+        view.invalidate_recordset(['arch_db'])
+        view.website_meta_description = COOKIE_DESCRIPTION_OLD
+        Views = self.env['ir.ui.view'].with_context(active_test=False)
+        backup_key = [('key', '=like', 'website_torrepulia_theme.before_cookie_policy_%s_%%' % view.id)]
+        before = Views.search_count(backup_key)  # The module update may already have migrated this page.
+        recopy_cookie_policy(self.env)
+        recopy_cookie_policy(self.env)  # The new text has no Internet Explorer: nothing more to do.
+        arch = view.arch
+        self.assertNotIn('Internet Explorer', arch)
+        for kept in ('<h1>Cookie Policy</h1>', 'Nota del gestore', '_ga_XXXXXXXXXX', '_fbp', 'website_cookies_bar',
+                     'Preferenze cookie', 'Data Privacy Framework'):
+            self.assertIn(kept, arch)
+        self.assertEqual(arch.count('class="tp-cookie-table"'), 3)
+        self.assertEqual(view.website_meta_description, COOKIE_DESCRIPTION)
+        self.assertEqual(Views.search_count(backup_key), before + 1)

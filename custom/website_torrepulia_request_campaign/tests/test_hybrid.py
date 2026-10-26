@@ -248,6 +248,10 @@ class TestHybridMode(HttpCase):
             blocks = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', page, re.S)]
             return next(node for block in blocks for node in block.get('@graph', [block]) if node.get('@type') == 'Product')['offers']
         self.assertEqual(offer(self.seasonal)['availability'], 'https://schema.org/PreOrder')
+        self.assertNotIn('availabilityStarts', offer(self.seasonal))
+        # Merchant Center needs the availability date of a preorder: the campaign's first delivery day.
+        self.campaign.delivery_from = '2026-11-20'
+        self.assertEqual(offer(self.seasonal)['availabilityStarts'], '2026-11-20')
         self.assertNotEqual(offer(self.stock).get('availability'), 'https://schema.org/PreOrder')
         self.campaign.state = 'closed'
         self.assertNotEqual(offer(self.seasonal).get('availability'), 'https://schema.org/PreOrder')

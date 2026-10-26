@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
           <form><sheet>
             <group><group><field name="name"/><field name="reference"/><field name="website_id"/><field name="company_id" invisible="1"/><field name="state"/></group>
-                <group><field name="opens_at"/><field name="closes_at"/><field name="delivery_period"/></group></group>
+                <group><field name="opens_at"/><field name="closes_at"/><field name="delivery_period"/><field name="delivery_from"/></group></group>
             <field name="introduction" placeholder="Testo editoriale della campagna"/><field name="closed_message"/>
             <group string="Indicazioni commerciali approvate"><field name="shipping_note"/><field name="payment_note" placeholder="Nessun anticipo, paghi alla conferma dell'ordine"/><field name="price_note"/><field name="confirmation_days"/></group>
             <group string="Shop durante la campagna">

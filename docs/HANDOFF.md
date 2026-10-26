@@ -76,6 +76,24 @@ Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed s
 - Sitemap rigenerata e inviata, termini corretti dall'utente (26/10). I "caratteri rovinati"
   segnalati il 25/10 erano un errore di lettura della console: il file era in UTF-8 corretto.
 
+## 26/10 sera: cookie policy e Merchant Center (tema 3.31.0, campagne 1.12.0)
+
+- **Consenso verificato in locale con ID di prova:** con la barra attiva Odoo blocca gtag.js e il
+  Pixel fino ad "Accetta" (`block_third_party_domains`); prima del consenso solo `session_id`,
+  `frontend_lang`, `tz`; dopo `_ga`, `_ga_<ID>` (400 giorni), `website_cookies_bar` (180 giorni).
+  `conversions.js` non manda né salva nulla senza il consenso registrato nel cookie della barra.
+- **Cookie policy riscritta** (`docs/source/cookie-policy.html`, migrazione `recopy_cookie_policy`
+  solo se la pagina ha ancora il vecchio testo con "Internet Explorer", backup
+  `before_cookie_policy_*`): titolare, scelta e revoca ("Preferenze cookie"), tabelle dei cookie
+  tecnici, di statistica (GA4) e di marketing (Pixel, utm_*), fornitori, Data Privacy Framework,
+  browser, diritti. Titoli `h2` delle pagine legali a misura di lettura.
+- **Preordini per Merchant Center:** campo campagna "Consegna prevista dal" (`delivery_from`) →
+  `availabilityStarts` nell'offerta; politica di reso con `returnFees` a carico del cliente (10.3).
+- **Da rivedere con chi ha scritto i termini:** 10.4 esclude le spese di spedizione dal rimborso e
+  rimborsa entro 30 giorni; il Codice del Consumo (art. 56) chiede la consegna standard inclusa ed
+  entro 14 giorni. Privacy Policy da rifare (generica: cita widget Facebook/YouTube/Maps non usati,
+  non cita il Pixel né basi giuridiche e conservazione).
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi
