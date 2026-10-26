@@ -186,8 +186,18 @@ class Website(models.Model):
             state['liters_display'] = _('%s L', formatLang(self.env, liters_sum, digits=3))
         if all_prices:
             state['products_total_display'] = format_amount(self.env, products_sum, currency)
+            state.update(self._request_review_shipping(products_sum, currency))
         state['can_submit'] = bool(state['enabled'] and state['lines'] and all(line['available'] for line in state['lines']))
         return state
+
+    def _request_review_shipping(self, products_total, currency):
+        """Shipping and expected total of the review, as display strings; none without a known carrier.
+
+        Keys: shipping_display, estimated_total_display, free_shipping_gap_display, free_shipping_progress.
+        The theme bridge reads the shop carrier.
+        """
+        self.ensure_one()
+        return {}
 
     def _request_receipt(self, review_digest, selection_id=None, *, submission=False):
         self.ensure_one()

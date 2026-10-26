@@ -87,3 +87,18 @@
 #wrapwrap .tp-campaign .tp-campaign-review { max-width: none; }
 #wrapwrap .tp-campaign form.tp-review-layout-compact { margin-top: 16px; }
 #wrapwrap .tp-review-layout-compact .tp-review-summary-line > div { min-width: 0; overflow-wrap: anywhere; }
+
+// Reservation totals: products, shipping, the distance from free shipping and the expected total.
+#wrapwrap .tp-review-layout-compact .tp-review-totals {
+    display: grid; gap: 8px; margin: 20px 0 0; padding-top: 20px; border-top: 1px solid var(--tp-line, #d2dcd4);
+    font-size: .9375rem; font-variant-numeric: tabular-nums;
+    > div:not([hidden]) { display: flex; justify-content: space-between; gap: 16px; }
+    dt { font-weight: 400; color: var(--tp-muted, #526056); }
+    dd { margin: 0; text-align: right; white-space: nowrap; color: var(--tp-ink, #18231f); }
+    .tp-review-free-shipping:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .tp-review-free-shipping p { margin: 0; font-size: .8125rem; color: var(--tp-olive, #2e493b); }
+    .tp-review-free-bar { display: block; width: 100%; height: 3px; border-radius: 2px; overflow: hidden; background: var(--tp-pale, #eef2ed); }
+    .tp-review-free-bar > span { display: block; height: 100%; width: 0; background: var(--tp-olive, #2e493b); }
+    .tp-review-estimated { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--tp-line, #d2dcd4); }
+    .tp-review-estimated :is(dt, dd) { font-weight: 700; color: var(--tp-ink, #18231f); }
+}

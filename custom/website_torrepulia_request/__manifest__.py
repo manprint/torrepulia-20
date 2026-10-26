@@ -1,7 +1,7 @@
 {
     'name': 'Torrepulia Website Quote Requests',
     'author': 'Torrepulia',
-    'version': '20.0.1.16.0',
+    'version': '20.0.1.17.0',
     'license': 'LGPL-3',
     'category': 'Website/eCommerce',
     'summary': 'Website-scoped quote request collection, separate from the shopping cart',

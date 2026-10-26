@@ -1,6 +1,9 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+# Id prefix of a format card on the campaign page, followed by the product template id.
+FORMAT_ANCHOR = 'tp-format-'
+
 
 class Campaign(models.Model):
     _name = 'torrepulia.request.campaign'
@@ -114,14 +117,20 @@ class Website(models.Model):
         return bool(self._request_preorder_url())
 
     def _torrepulia_preorder_product_url(self, product):
-        """Hybrid mode: products of the open default campaign are reserved, not bought."""
+        """Hybrid mode: products of the open default campaign are reserved, not bought.
+
+        The address opens the campaign page on the card of that format (views/snippet.xml).
+        """
         self.ensure_one()
         if self._torrepulia_request_enabled() or not product or not (url := self._request_preorder_url()):
             return False
         products = self._public_request_campaign().line_ids.product_id
         if product._name == 'product.template':
-            return url if product.id in products.product_tmpl_id.ids else False
-        return url if product.id in products.ids else False
+            reserved = product.id in products.product_tmpl_id.ids
+        else:
+            reserved = product.id in products.ids
+            product = product.product_tmpl_id
+        return '%s#%s%s' % (url, FORMAT_ANCHOR, product.id) if reserved else False
 
     def _torrepulia_preorder_available_from(self, product):
         """First delivery date of a reserved format, for the product markup."""

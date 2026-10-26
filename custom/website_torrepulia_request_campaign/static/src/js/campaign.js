@@ -34,6 +34,11 @@ export class SeasonalCampaign extends Interaction {
         this.holder = this.el.querySelector('.tp-campaign-content');
         const original = this.holder.innerHTML;
         this.registerCleanup(() => { this.active = false; this.holder.innerHTML = original; });
+        this.faq = this.el.querySelector('[data-campaign-faq]');
+        const originalFaq = this.faq?.innerHTML;
+        this.registerCleanup(() => { if (this.faq) this.faq.innerHTML = originalFaq; });
+        // "Prenota <format>" from the home, the shop or a product page opens on that format's card.
+        this.chosen = /^#tp-format-\d+$/.test(window.location.hash) ? window.location.hash.slice(1) : null;
         if (!this.editing) {
             this.store = this.services['torrepulia.request'];
             this.registerCleanup(this.store.subscribe(state => this.renderState(state)));
@@ -85,7 +90,11 @@ export class SeasonalCampaign extends Interaction {
             this.registerCleanup(() => reviewObserver.disconnect());
         }
         await this.load();
-        if (!this.editing) await this.perform(() => this.store.read());
+        if (!this.editing) {
+            await this.perform(() => this.store.read());
+            // The counters are enabled once the selection is read: the chosen format's "+" takes the focus then.
+            this.holder.querySelector(`#${this.chosen} [data-campaign-step="1"]:not(:disabled)`)?.focus({ preventScroll: true });
+        }
     }
 
     async load() {
@@ -101,6 +110,8 @@ export class SeasonalCampaign extends Interaction {
             if (!this.active || this.generation !== generation) return;
             // Server-rendered QWeb only; visitor strings are never assigned to HTML.
             this.holder.innerHTML = result.html;
+            if (this.faq) this.faq.innerHTML = result.faq_html || '';
+            this.markChosen();
             this.open = result.open;
             this.configs = result.configurations || [];
             clearTimeout(this.refreshTimer);
@@ -126,6 +137,16 @@ export class SeasonalCampaign extends Interaction {
 
     configurations() {
         return this.configs || [];
+    }
+
+    markChosen() {
+        const card = !this.editing && this.chosen && this.holder.querySelector(`#${this.chosen}`);
+        if (!card) return;
+        card.classList.add('is-chosen');
+        if (this.chosenShown) return;
+        // Once, on arrival: the card in view; later reloads (focus, pageshow) keep the visitor's scroll.
+        this.chosenShown = true;
+        card.scrollIntoView({ block: 'start' });
     }
 
     setCardQuantity(input, quantity) {

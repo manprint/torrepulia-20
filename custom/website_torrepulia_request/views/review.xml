@@ -57,6 +57,16 @@
                     <h2 t-out="'Riepilogo Prenotazione' if campaign_review else 'Riepilogo'"/><div t-if="campaign_review" data-review-compact-lines="" aria-live="polite"/>
                     <p data-review-liters="" hidden="hidden"/>
                     <p data-review-sum="" hidden="hidden"/>
+                    <!-- Reservation: what the order confirmation will ask, before anyone has to wonder. -->
+                    <dl t-if="campaign_review" class="tp-review-totals" data-review-totals="" hidden="hidden">
+                        <div><dt>Prodotti</dt><dd data-review-products=""/></div>
+                        <div data-review-shipping-row=""><dt>Spedizione</dt><dd data-review-shipping=""/></div>
+                        <div class="tp-review-free-shipping" data-review-free-shipping="" hidden="hidden">
+                            <p data-review-free-gap=""/>
+                            <span class="tp-review-free-bar" aria-hidden="true"><span data-review-free-bar=""/></span>
+                        </div>
+                        <div class="tp-review-estimated" data-review-estimated-row=""><dt>Totale alla conferma d&#8217;ordine</dt><dd data-review-estimated=""/></div>
+                    </dl>
                     <!-- Shipping as the shop states it (website setting), so one change updates both. -->
                     <p t-if="campaign_review" data-review-delivery-note="" t-out="('torrepulia_shipping_note' in website._fields and website.torrepulia_shipping_note) or 'Spese di spedizione indicate nella conferma d’ordine.'"/>
                     <p class="tp-review-pay-today" data-review-pay-today="">Totale da pagare oggi: 0,00 €</p>

@@ -10,6 +10,8 @@
             </div>
             <div class="tp-campaign-content o_not_editable"><p>Caricamento della campagna…</p></div>
             <div class="tp-campaign-review tp-request-review o_not_editable" data-tp-review="" data-review-lazy=""><p>Il modulo e il riepilogo della richiesta vengono caricati durante la visita. Nessun dato personale viene salvato nella pagina.</p></div>
+            <!-- After the form: the doubts are answered at the end, not between the choice and the contacts. -->
+            <div class="tp-campaign-faq-holder o_not_editable" data-campaign-faq=""></div>
         </section>
     </template>
     <template id="campaign_content" name="Prodotti della campagna">
@@ -27,13 +29,15 @@
                     <li><strong>Confermi l&#8217;ordine</strong><span>Qualche giorno prima della molitura ti mandiamo la conferma d&#8217;ordine, con il prezzo di oggi e le spese di spedizione. Hai <t t-out="campaign.confirmation_days"/> giorni per confermarla e completare il pagamento.</span></li>
                     <li><strong>Lo ricevi a casa</strong><span>Ricevuto il pagamento, ti spediamo l&#8217;olio nuovo direttamente da Torremaggiore.</span></li>
                 </ol>
-                <p class="tp-campaign-steps-note">Fino alla conferma d&#8217;ordine puoi cambiare o annullare la prenotazione, senza costi.</p>
+                <p class="tp-campaign-steps-note">Fino alla conferma d&#8217;ordine puoi cambiare o annullare la prenotazione, senza costi.
+                    <a t-if="cards" href="#tp-campaign-faq-title" class="tp-campaign-faq-link">Hai dubbi? Leggi le domande frequenti</a></p>
             </section>
             <h2 id="tp-campaign-formats" class="tp-campaign-formats-title">Scegli i tuoi formati</h2>
             <p class="tp-campaign-formats-description" t-if="campaign.introduction" t-out="campaign.introduction"/>
             <p t-if="editing" class="tp-campaign-demo">Anteprima dimostrativa: nessuna modifica alla richiesta del visitatore.</p>
             <div class="tp-campaign-grid">
-                <article t-foreach="cards" t-as="card" class="tp-campaign-card">
+                <!-- Id read by "Prenota <format>" elsewhere on the site (models/campaign.py, FORMAT_ANCHOR). -->
+                <article t-foreach="cards" t-as="card" class="tp-campaign-card" t-att-id="'tp-format-%s' % card['product'].product_tmpl_id.id">
                     <a t-att-href="card['product'].website_url" class="tp-campaign-image-link" tabindex="-1" aria-hidden="true">
                         <img t-att-src="'/web/image/product.template/%s/image_512' % card['product'].product_tmpl_id.id" alt="" loading="lazy" class="tp-campaign-product-image"/>
                     </a>
@@ -63,23 +67,7 @@
                 </article>
             </div>
             <p t-if="not cards">Il gestore sta preparando i formati di questa campagna. Puoi scegliere dal <a href="/shop">catalogo</a>.</p>
-            <!-- The doubts before reserving, answered in the page (and to search engines, which read it rendered). -->
-            <section t-if="cards" class="tp-campaign-faq" aria-labelledby="tp-campaign-faq-title">
-                <h2 id="tp-campaign-faq-title">Domande frequenti</h2>
-                <details><summary>Devo pagare qualcosa adesso?</summary>
-                    <p>No. La prenotazione &#232; gratuita e non &#232; un ordine: oggi scegli soltanto formati e quantit&#224;.</p></details>
-                <details><summary>Quando confermo l&#8217;ordine?</summary>
-                    <p>Qualche giorno prima della molitura ti mandiamo per email la conferma d&#8217;ordine, con il prezzo di oggi e le spese di spedizione. Hai <t t-out="campaign.confirmation_days"/> giorni per confermarla e completare il pagamento.</p></details>
-                <details><summary>Posso cambiare o annullare la prenotazione?</summary>
-                    <p>S&#236;, senza costi, fino alla conferma d&#8217;ordine: basta rispondere all&#8217;email di riepilogo che ricevi dopo la prenotazione.</p></details>
-                <details><summary>Quando arriva l&#8217;olio?</summary>
-                    <p>Ricevuto il pagamento, ti spediamo l&#8217;olio nuovo direttamente da Torremaggiore, appena &#232; confezionato in frantoio.</p></details>
-                <details t-if="website.torrepulia_shipping_note"><summary>Quanto costa la spedizione?</summary>
-                    <p t-out="website.torrepulia_shipping_note"/></details>
-                <details><summary>Filtrato o non filtrato?</summary>
-                    <p>Il filtrato &#232; limpido ed &#232; quello che proponiamo di solito. Il non filtrato &#232; l&#8217;olio come esce dal frantoio, velato e dal gusto pi&#249; pieno: va consumato nei primi mesi.</p></details>
-            </section>
-            <!-- Phones: the selection stays in view until the visitor reaches the review form. -->
+            <!-- The selection stays in view until the visitor reaches the review form. -->
             <div t-if="cards and not editing" class="tp-campaign-dock" data-campaign-dock="" hidden="hidden"
                  t-att-data-currency="cards[0].get('currency')">
                 <p><strong data-campaign-dock-count=""/> <span data-campaign-dock-total=""/></p>
@@ -97,6 +85,31 @@
             <p data-campaign-message="" role="status"/>
             <button type="button" data-campaign-retry="" hidden="hidden" class="btn btn-outline-primary">Riprova aggiornamento</button>
         </div>
+    </template>
+    <!-- The doubts, answered after the form (and to search engines, which read the page rendered). -->
+    <template id="campaign_faq" name="Domande frequenti della campagna">
+        <section t-if="campaign and opened and cards" class="tp-campaign-faq" aria-labelledby="tp-campaign-faq-title">
+            <t t-set="company" t-value="website.company_id.sudo()"/>
+            <div class="tp-campaign-faq-intro">
+                <h2 id="tp-campaign-faq-title">Domande frequenti</h2>
+                <p t-if="company.phone or company.email">Non trovi la risposta?
+                    <t t-if="company.phone">Chiamaci al <a t-att-href="'tel:%s' % company.phone.replace(' ', '')" t-out="company.phone"/></t><t t-if="company.phone and company.email"> o </t><t t-if="company.email">scrivi a <a t-att-href="'mailto:%s' % company.email" t-out="company.email"/></t>.</p>
+            </div>
+            <div class="tp-campaign-faq-list">
+                <details><summary>Devo pagare qualcosa adesso?</summary>
+                    <p>No. La prenotazione &#232; gratuita e non &#232; un ordine: oggi scegli soltanto formati e quantit&#224;.</p></details>
+                <details><summary>Quando confermo l&#8217;ordine?</summary>
+                    <p>Qualche giorno prima della molitura ti mandiamo per email la conferma d&#8217;ordine, con il prezzo di oggi e le spese di spedizione. Hai <t t-out="campaign.confirmation_days"/> giorni per confermarla e completare il pagamento.</p></details>
+                <details><summary>Posso cambiare o annullare la prenotazione?</summary>
+                    <p>S&#236;, senza costi, fino alla conferma d&#8217;ordine: basta rispondere all&#8217;email di riepilogo che ricevi dopo la prenotazione.</p></details>
+                <details><summary>Quando arriva l&#8217;olio?</summary>
+                    <p>Ricevuto il pagamento, ti spediamo l&#8217;olio nuovo direttamente da Torremaggiore, appena &#232; confezionato in frantoio.</p></details>
+                <details t-if="website.torrepulia_shipping_note"><summary>Quanto costa la spedizione?</summary>
+                    <p t-out="website.torrepulia_shipping_note"/></details>
+                <details><summary>Filtrato o non filtrato?</summary>
+                    <p>Il filtrato &#232; limpido ed &#232; quello che proponiamo di solito. Il non filtrato &#232; l&#8217;olio come esce dal frantoio, velato e dal gusto pi&#249; pieno: va consumato nei primi mesi.</p></details>
+            </div>
+        </section>
     </template>
     <template id="campaign_snippet_palette" inherit_id="website.snippets" priority="110">
         <xpath expr="//t[@t-snippet='website_torrepulia_theme.s_torrepulia_reservation_form']" position="replace">

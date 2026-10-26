@@ -1,6 +1,7 @@
 from markupsafe import Markup
 
-from odoo import fields, models
+from odoo import _, fields, models
+from odoo.tools.misc import format_amount
 
 # 25/10: the product pages still described the oil of before the owner's words ("fruttato
 # medio", "oliva appena colta", grass and wheat). Only a text with one of these changes.
@@ -43,6 +44,25 @@ class Website(models.Model):
 
     def _torrepulia_format_preorder(self, product):
         return self._torrepulia_preorder_product_url(product)
+
+    def _request_review_shipping(self, products_total, currency):
+        # The review counts shipping as the checkout does: same carrier, free over the same threshold.
+        shipping = super()._request_review_shipping(products_total, currency)
+        carrier = self._torrepulia_shipping_carrier() if self.torrepulia_theme_enabled else False
+        if not carrier:
+            return shipping
+        free = bool(carrier.free_over and products_total >= carrier.amount)
+        cost = 0 if free else carrier.fixed_price
+        shipping.update({
+            'shipping_display': _('Gratuita') if free else format_amount(self.env, cost, currency),
+            'estimated_total_display': format_amount(self.env, products_total + cost, currency),
+        })
+        if carrier.free_over and not free and carrier.amount > 0:
+            shipping.update({
+                'free_shipping_gap_display': format_amount(self.env, carrier.amount - products_total, currency),
+                'free_shipping_progress': min(round(products_total / carrier.amount * 100), 100),
+            })
+        return shipping
 
     def _torrepulia_shop_rows_enabled(self):
         # A request-only catalogue keeps the native tiles with their request controls.

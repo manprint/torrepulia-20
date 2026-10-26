@@ -19,6 +19,7 @@ OLD_HERO_INTRO = 'Prenota oggi senza alcun anticipo la tua quota di La Regina: l
 DEFAULT_PHOTO = '/website_torrepulia_theme/static/src/cinematic/campaign/land-'
 NEW_OIL_PATH = '/olio-nuovo'
 # The holder of the formats as the snippet saves it: one loading paragraph.
+FAQ_PLACEHOLDER = re.compile(r'(<div[^>]*\bdata-campaign-faq\b[^>]*>)\s*(</div>)')
 CONTENT_PLACEHOLDER = re.compile(r'(<div[^>]*class="[^"]*\btp-campaign-content\b[^"]*"[^>]*>)\s*<p>[^<]*</p>\s*(</div>)')
 
 
@@ -99,6 +100,11 @@ def replace_legacy(arch, snippet):
             if not section.xpath('.//*[@data-review-lazy]'):
                 target = snippet.xpath('.//*[@data-review-lazy]')[0]
                 section.append(copy.deepcopy(target))
+                changed = True
+            # 20.0.1.13.0: the questions move after the form, into their own holder.
+            faq_holder = snippet.xpath('.//*[@data-campaign-faq]')
+            if faq_holder and not section.xpath('.//*[@data-campaign-faq]'):
+                section.append(copy.deepcopy(faq_holder[0]))
                 changed = True
         if not legacy:
             if changed:
@@ -216,12 +222,13 @@ class WebsitePage(models.Model):
         html = response.get_data(as_text=True)
         if not CONTENT_PLACEHOLDER.search(html):
             return response
-        content = campaign_content(website)['html']
+        content = campaign_content(website)
+        html = CONTENT_PLACEHOLDER.sub(lambda match: match.group(1) + content['html'] + match.group(2), html, count=1)
+        html = FAQ_PLACEHOLDER.sub(lambda match: match.group(1) + content['faq_html'] + match.group(2), html, count=1)
         # A new response: the one from super() may be the object kept in the page cache.
         headers = response.headers.copy()
         headers.pop('Content-Length', None)
-        served = Response(headers=headers, mimetype=response.mimetype, status=response.status,
-                          response=[CONTENT_PLACEHOLDER.sub(lambda match: match.group(1) + content + match.group(2), html, count=1)])
+        served = Response(headers=headers, mimetype=response.mimetype, status=response.status, response=[html])
         for name in ('_cached_view_id', '_cached_page'):
             if hasattr(response, name):
                 setattr(served, name, getattr(response, name))

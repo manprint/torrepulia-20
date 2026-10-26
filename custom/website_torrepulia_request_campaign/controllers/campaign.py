@@ -70,8 +70,10 @@ def campaign_content(website, selected=None, editing=False):
             card['same_price'] = len({choice['price'] for choice in card['choices']}) == 1
     values = {'campaign': campaign, 'cards': cards, 'opened': opened, 'editing': editing,
               'summary_url': website._torrepulia_request_url(), 'website': website}
-    rendered = request.env['ir.ui.view']._render_template('website_torrepulia_request_campaign.campaign_content', values)
-    return {'html': str(rendered), 'campaign': campaign, 'opened': opened,
+    views = request.env['ir.ui.view']
+    rendered = views._render_template('website_torrepulia_request_campaign.campaign_content', values)
+    faq = views._render_template('website_torrepulia_request_campaign.campaign_faq', values)
+    return {'html': str(rendered), 'faq_html': str(faq), 'campaign': campaign, 'opened': opened,
             'configurations': configurations, 'transitions': transitions, 'now': now}
 
 
@@ -132,7 +134,7 @@ class SeasonalCampaign(http.Controller):
             return request.make_json_response({'error': _('Campagna non valida.')}, status=422)
         content = campaign_content(website, selected, editing)
         campaign, now, transitions = content['campaign'], content['now'], content['transitions']
-        response = request.make_json_response({'html': content['html'],
+        response = request.make_json_response({'html': content['html'], 'faq_html': content['faq_html'],
             'configurations': content['configurations'],
             'refresh_after': max(1, int((min(transitions) - now).total_seconds()) + 1) if transitions else None,
             'campaign_reference': campaign.reference if campaign else None,

@@ -182,8 +182,31 @@ export class RequestReview extends Interaction {
             ? _t('Totale da pagare oggi: 0,00 €') : _t('Nessun pagamento richiesto oggi.');
         liters.textContent = state.liters_display ? _t('Contenuto complessivo della richiesta: %s', state.liters_display) : '';
         this.el.querySelector('[data-review-delivery-note]').hidden = empty;
+        if (compact) this.renderTotals(state, empty);
         this.el.querySelector('[data-review-retry]').hidden = !this.store.pending;
         this.setBusy(Boolean(this.busy));
+    }
+
+    // Reservation summary: products, shipping (or how far it is from free) and the expected total.
+    renderTotals(state, empty) {
+        const totals = this.el.querySelector('[data-review-totals]');
+        if (!totals) return;
+        totals.hidden = empty || !state.products_total_display;
+        if (totals.hidden) return;
+        const set = (selector, value) => { totals.querySelector(selector).textContent = value || ''; };
+        set('[data-review-products]', state.products_total_display);
+        set('[data-review-shipping]', state.shipping_display);
+        set('[data-review-estimated]', state.estimated_total_display);
+        totals.querySelector('[data-review-shipping-row]').hidden = !state.shipping_display;
+        totals.querySelector('[data-review-estimated-row]').hidden = !state.estimated_total_display;
+        const free = totals.querySelector('[data-review-free-shipping]');
+        free.hidden = !state.free_shipping_gap_display;
+        set('[data-review-free-gap]', state.free_shipping_gap_display
+            ? _t('Ti mancano %s per la spedizione gratuita.', state.free_shipping_gap_display) : '');
+        totals.querySelector('[data-review-free-bar]').style.width = `${state.free_shipping_progress || 0}%`;
+        // The shop's shipping sentence would repeat the figures above.
+        const note = this.el.querySelector('[data-review-delivery-note]');
+        if (note && state.shipping_display) note.hidden = true;
     }
 
     renderLines(state) {

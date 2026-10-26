@@ -126,6 +126,24 @@ Telefono: foto grande nascosta (bastano le miniature). Desktop: foto ferma accan
 (`position: sticky`). Stessa struttura nella modalità solo richieste (`request_formats`). Sulla
 scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascosti.
 
+## 26/10 notte: pagina di prenotazione (richieste 1.17.0, richieste-tema 1.10.0, campagne 1.13.0)
+
+- **Ancora sul formato:** `_torrepulia_preorder_product_url` restituisce
+  `/prenotailtuoolio#tp-format-<template>` (home, shop, scheda prodotto); la card ha quell'id, il JS
+  la segna `is-chosen` a ogni caricamento, la porta in vista una volta e dà il focus al suo "+".
+  Menu "Olio nuovo" e fascia dello shop restano senza ancora.
+- **Barra di completamento** (`tp-campaign-dock`) a tutte le larghezze, non più solo su telefono:
+  compare al primo "+", sparisce quando il modulo è in vista.
+- **FAQ dopo il modulo:** template `campaign_faq` in un contenitore proprio
+  (`data-campaign-faq`, aggiunto una volta alle pagine salvate da `replace_legacy`, riempito lato
+  server come i formati e dall'endpoint `faq_html`); link "Hai dubbi?" sotto "Come funziona".
+  Grafica: due colonne su desktop (titolo e contatti dell'azienda, domande), "+" che diventa "×".
+- **Riepilogo con i totali:** prodotti, spedizione (o "Gratuita"), "Ti mancano X € per la
+  spedizione gratuita" con barra, totale alla conferma d'ordine; "Totale da pagare oggi: 0,00 €"
+  resta. Aggancio `_request_review_shipping` (richieste, vuoto) compilato da richieste-tema con il
+  corriere di `_torrepulia_shipping_carrier`; la nota di spedizione del sito si nasconde quando
+  ci sono le cifre.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

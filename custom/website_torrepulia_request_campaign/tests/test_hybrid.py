@@ -47,8 +47,10 @@ class TestHybridMode(HttpCase):
         site = self.website
         self.assertTrue(site._torrepulia_selection_enabled())
         self.assertFalse(site._torrepulia_request_enabled())
-        self.assertEqual(site._torrepulia_preorder_product_url(self.seasonal), '/prenotailtuoolio')
-        self.assertEqual(site._torrepulia_preorder_product_url(self.seasonal.product_tmpl_id), '/prenotailtuoolio')
+        # The address opens the campaign page on the card of that format.
+        card = '/prenotailtuoolio#tp-format-%s' % self.seasonal.product_tmpl_id.id
+        self.assertEqual(site._torrepulia_preorder_product_url(self.seasonal), card)
+        self.assertEqual(site._torrepulia_preorder_product_url(self.seasonal.product_tmpl_id), card)
         self.assertFalse(site._torrepulia_preorder_product_url(self.stock))
         self.assertTrue(site._torrepulia_selection_allows(self.seasonal))
         self.assertFalse(site._torrepulia_selection_allows(self.stock))
@@ -109,7 +111,8 @@ class TestHybridMode(HttpCase):
         seasonal = rows['Hybrid new harvest']
         self.assertEqual(seasonal.xpath('string(.//*[contains(@class, "tp-shop-state")])').split(),
                          ['Raccolto', year, '·', 'in', 'prenotazione'])
-        self.assertEqual(seasonal.xpath('.//div[@class="tp-shop-row-action"]/a/@href'), ['/prenotailtuoolio'])
+        self.assertEqual(seasonal.xpath('.//div[@class="tp-shop-row-action"]/a/@href'),
+                         ['/prenotailtuoolio#tp-format-%s' % self.seasonal.product_tmpl_id.id])
         stock = rows['Hybrid stock bottle']
         self.assertIn('Disponibile subito', stock.text_content())
         self.assertEqual(stock.xpath('.//div[@class="tp-shop-row-action"]/a/@href'),
@@ -123,7 +126,7 @@ class TestHybridMode(HttpCase):
         self.assertFalse(tree.xpath('//*[contains(concat(" ", @class, " "), " products_header ")] | //*[@id="o_wsale_products_grid"]'))
         self.assertFalse(tree.xpath('//*[contains(@class, "o_add_wishlist")]'))
         seasonal = html.fromstring(self.url_open(self.seasonal.product_tmpl_id.website_url).content)
-        self.assertTrue(seasonal.xpath('//*[@class="tp-preorder-cta"]//a[@href="/prenotailtuoolio"]'))
+        self.assertTrue(seasonal.xpath('//*[@class="tp-preorder-cta"]//a[@href="/prenotailtuoolio#tp-format-%s"]' % self.seasonal.product_tmpl_id.id))
         stock = html.fromstring(self.url_open(self.stock.product_tmpl_id.website_url).content)
         self.assertFalse(stock.xpath('//*[@class="tp-preorder-cta"]'))
         self.assertTrue(stock.xpath('//button[@name="add_to_cart"]'))
@@ -156,7 +159,8 @@ class TestHybridMode(HttpCase):
         self.assertIn('Disponibile subito', options['Hybrid stock bottle'].text_content())
         summaries = {summary.get('data-summary'): summary for summary in tree.xpath('//div[@data-summary]')}
         seasonal = summaries[str(self.seasonal.product_tmpl_id.id)]
-        self.assertEqual(seasonal.xpath('.//a[contains(@class, "format-link")]/@href'), ['/prenotailtuoolio'])
+        self.assertEqual(seasonal.xpath('.//a[contains(@class, "format-link")]/@href'),
+                         ['/prenotailtuoolio#tp-format-%s' % self.seasonal.product_tmpl_id.id])
         stock = summaries[str(self.stock.product_tmpl_id.id)]
         self.assertEqual(stock.xpath('.//a[contains(@class, "format-link")]/@href'), [self.stock.product_tmpl_id.website_url])
         # Each row carries its own action right under its button; the first one is open.
@@ -198,8 +202,11 @@ class TestHybridMode(HttpCase):
         self.assertIn('La scorta di famiglia.', cards[1].text_content())
         self.assertTrue(tree.xpath('//*[@data-campaign-dock]//button[@data-campaign-dock-go]'))
         # An empty selection keeps the visitor on the page, pointing back to the formats.
-        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-steps-title', 'tp-campaign-formats', 'tp-campaign-faq-title'])
-        self.assertIn('giorni per confermarla', tree.xpath('string(//section[@class="tp-campaign-faq"])'))
+        self.assertEqual(tree.xpath('//h2/@id'), ['tp-campaign-steps-title', 'tp-campaign-formats'])
+        # Each card answers to its anchor; the questions come apart, after the form.
+        self.assertEqual(cards[1].get('id'), 'tp-format-%s' % tin.id)
+        faq = html.fromstring(self.url_open('/torrepulia/campaign/content').json()['faq_html'])
+        self.assertIn('giorni per confermarla', faq.xpath('string(//section[@class="tp-campaign-faq"])'))
         form = html.fromstring(self.url_open('/torrepulia/request/form?layout=campaign').content)
         self.assertEqual(form.xpath('//*[@data-review-empty]//a/@href'), ['#tp-campaign-formats'])
 
@@ -302,3 +309,31 @@ class TestHybridMode(HttpCase):
         self.assertIn('olio extravergine monovarietale Peranzana', seasonal.findtext('g:description', namespaces=ns))
         self.assertEqual(stock.findtext('g:availability', namespaces=ns), 'in_stock')
         self.assertIsNone(stock.find('g:availability_date', namespaces=ns))
+
+    def test_questions_come_after_the_form_and_the_review_counts_shipping(self):
+        self.website._install_request_campaign_pages()
+        tree = html.fromstring(self.url_open('/prenotailtuoolio').content)
+        section = tree.xpath('//section[@data-snippet="s_torrepulia_request_campaign"]')[0]
+        children = [child.get('class', '') for child in section]
+        review = next(i for i, name in enumerate(children) if 'tp-campaign-review' in name)
+        faq = next(i for i, name in enumerate(children) if 'tp-campaign-faq-holder' in name)
+        self.assertGreater(faq, review)
+        self.assertTrue(section[faq].xpath('.//section[@class="tp-campaign-faq"]//details'))
+        self.assertFalse(section.xpath('.//*[contains(@class, "tp-campaign-content")]//*[@class="tp-campaign-faq"]'))
+        # The summary tells products, shipping, the distance from free shipping and the expected total.
+        self.env['delivery.carrier'].search([]).is_published = False
+        self.env['delivery.carrier'].create({
+            'name': 'Corriere di prova', 'delivery_type': 'fixed', 'fixed_price': 9.9, 'is_published': True,
+            'free_over': True, 'amount': 99, 'website_id': self.website.id,
+            'product_id': self.env['product.product'].create({'name': 'Spedizione di prova', 'type': 'service'}).id})
+        self.seasonal.taxes_id = False
+        self.update('set_configuration', self.seasonal, 1)
+        state = self.url_open('/torrepulia/request/preview').json()['state']
+        self.assertIn('9,90', state['shipping_display'].replace('.', ','))
+        self.assertIn('79,90', state['estimated_total_display'].replace('.', ','))
+        self.assertIn('29,00', state['free_shipping_gap_display'].replace('.', ','))
+        self.assertEqual(state['free_shipping_progress'], 71)
+        self.update('set_configuration', self.seasonal, 2)
+        state = self.url_open('/torrepulia/request/preview').json()['state']
+        self.assertEqual(state['shipping_display'], 'Gratuita')
+        self.assertNotIn('free_shipping_gap_display', state)
