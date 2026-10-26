@@ -41,7 +41,9 @@ class TestCinematicFormats(TransactionCase):
         tree = self.render_format(0)
         self.assertEqual(len(tree.xpath('//*[@disabled][contains(@class, "format-link")]')), 1)
         self.assertFalse(tree.xpath('//a[contains(@class, "format-link")]'))
-        self.assertIn('Temporaneamente esaurito', tree.xpath('//*[contains(@class, "format-option")]')[0].text_content())
+        # One format, one state: said once above the list, not repeated in the row.
+        self.assertIn('Temporaneamente esaurito', tree.xpath('//*[contains(@class, "mc-formats-state")]')[0].text_content())
+        self.assertFalse(tree.xpath('//*[contains(@class, "format-option")]//*[contains(@class, "tp-shop-state")]'))
         self.assertIn('Ritorna presto', tree.xpath('//*[contains(@class, "mc-format-stock-message")]')[0].text_content())
         self.assertEqual(tree.xpath('//*[contains(@class, "mc-format-details-link")]')[0].get('href'), self.product.website_url)
         self.assertFalse(tree.xpath('//*[@disabled][contains(@class, "format-option")]'))

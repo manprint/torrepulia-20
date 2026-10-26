@@ -1,6 +1,6 @@
 {
     'name': 'Torrepulia Request Theme Integration',
-    'version': '20.0.1.8.0',
+    'version': '20.0.1.9.0',
     'author': 'Torrepulia',
     'license': 'LGPL-3',
     'depends': ['website_torrepulia_request', 'website_torrepulia_theme'],

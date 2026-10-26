@@ -42,7 +42,7 @@ export class CinematicCommerce extends Interaction {
         const options = [...holder.querySelectorAll('[data-product]')];
         if(this.el.classList.contains('mc-product-formats')){
             const list=holder.querySelector('.format-options');
-            if(list){list.setAttribute('role','navigation');list.removeAttribute('aria-orientation');}
+            if(list)list.setAttribute('role','navigation');
         }
         for (const button of options) {
             const id = button.dataset.product;
@@ -58,12 +58,20 @@ export class CinematicCommerce extends Interaction {
             const panel = holder.querySelector(`[data-summary="${id}"]`);
             panel.id = `${prefix}-panel-${id}`;
             panel.setAttribute('aria-labelledby', button.id);
+            // One format open at a time, its action right under it: choosing never closes the open one.
             const select = (ev) => {
-                options.forEach(b => { b.setAttribute('aria-selected', String(b === button)); b.tabIndex = b === button ? 0 : -1; });
+                options.forEach(b => b.setAttribute('aria-expanded', String(b === button)));
                 holder.querySelectorAll('[data-preview], [data-summary]').forEach(el => { el.hidden = (el.dataset.preview || el.dataset.summary) !== id; });
                 this.selectionAnimation?.cancel();
                 if (!this.editing && !reduced.matches && ev?.detail) {
-                    this.selectionAnimation=holder.querySelector(`[data-preview="${id}"]`).animate([{opacity:.65,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:300,easing:'cubic-bezier(.23,1,.32,1)'});
+                    const preview = holder.querySelector(`[data-preview="${id}"]`);
+                    // On phones the large photo is hidden: the opening panel carries the motion instead.
+                    const target = preview?.offsetParent ? preview : panel;
+                    this.selectionAnimation=target.animate([{opacity:.65,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:300,easing:'cubic-bezier(.23,1,.32,1)'});
+                }
+                // The panel of a row near the bottom of the screen opens below the fold: bring its button into view.
+                if (!this.editing && ev?.detail && panel.getBoundingClientRect().bottom > window.innerHeight) {
+                    panel.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'auto' : 'smooth' });
                 }
             };
             this.addListener(button, 'click', select);

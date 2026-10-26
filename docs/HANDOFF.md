@@ -115,6 +115,17 @@ Dall'audit di torrepulia.it del 25/10 (misure con curl e Playwright; PageSpeed s
   10-14 s e superano il timeout di `url_open` (12 s) in modo intermittente. La CI non esegue i test
   Torrepulia (solo moduli dummy). In produzione la scheda risponde in circa 0,55 s.
 
+## 26/10 notte: formati a righe che si aprono (tema 3.34.0, richieste-tema 1.9.0)
+
+Decisione dell'utente (soluzione A): ogni formato è una riga a fisarmonica (`.format-row`:
+pulsante `aria-expanded` + pannello `data-summary` subito sotto) con il suo pulsante Prenota /
+Acquista, la nota (nessun anticipo o spedizione) e "Dettagli"; una sola riga aperta, la prima
+aperta all'arrivo; niente pulsante unico in fondo. Lo stato comune a tutti i formati
+(`mc-formats-state`) compare una volta sopra la lista, sulla riga solo se gli stati differiscono.
+Telefono: foto grande nascosta (bastano le miniature). Desktop: foto ferma accanto alla lista
+(`position: sticky`). Stessa struttura nella modalità solo richieste (`request_formats`). Sulla
+scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascosti.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

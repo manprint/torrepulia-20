@@ -109,3 +109,28 @@ html:has(.tp-cinematic) .o-website-builder_wrapper {
     .tp-product-page{padding-bottom:100px;}
 }}
 @media(prefers-reduced-motion:reduce){.tp-site.tp-cinematic *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+
+// Formats (home and request catalogue): each row opens its own action under it, one open at a time.
+.tp-site.tp-cinematic {
+    .mc-formats-state { margin: 0 0 12px; }
+    .format-row { border-bottom: 1px solid #babfba; }
+    .format-row .format-option { border-bottom: 0; padding-left: 12px; background: transparent; }
+    .format-row:has(> .format-option[aria-expanded=true]) { background: var(--tp-white, #fff); box-shadow: inset 3px 0 0 var(--green); border-bottom-color: var(--green); }
+    .format-row .format-option[aria-expanded=true] { color: inherit; }
+    .format-row .format-option[aria-expanded=true] strong { color: var(--green); }
+    .format-option:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+    .format-row .format-summary { padding: 0 20px 24px 102px; }
+    .format-row .format-description { min-height: 0; margin: 0 0 16px; }
+    .format-row .format-link { margin-top: 0; }
+    .mc-format-note { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin: 12px 0 0; }
+    .mc-format-note .mc-format-details-link { margin-top: 0; }
+    // Wide screens: the photo of the chosen format stays in view next to the list.
+    .shop-layout > .shop-stage { position: sticky; top: 112px; align-self: start; }
+}
+@media (max-width: 760px) {
+    .tp-site.tp-cinematic {
+        // Phones: the thumbnails are enough, the list and its action come up by the height of the photo.
+        .shop-layout > .shop-stage { display: none; }
+        .format-row .format-summary { padding: 0 16px 20px 12px; }
+    }
+}

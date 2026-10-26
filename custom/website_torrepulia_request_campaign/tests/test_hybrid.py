@@ -159,6 +159,15 @@ class TestHybridMode(HttpCase):
         self.assertEqual(seasonal.xpath('.//a[contains(@class, "format-link")]/@href'), ['/prenotailtuoolio'])
         stock = summaries[str(self.stock.product_tmpl_id.id)]
         self.assertEqual(stock.xpath('.//a[contains(@class, "format-link")]/@href'), [self.stock.product_tmpl_id.website_url])
+        # Each row carries its own action right under its button; the first one is open.
+        for row in tree.xpath('//div[@class="format-row"]'):
+            button, panel = row.xpath('./button[@data-product]')[0], row.xpath('./div[@data-summary]')[0]
+            self.assertEqual(button.get('data-product'), panel.get('data-summary'))
+            self.assertEqual(button.get('aria-expanded') == 'true', panel.get('hidden') is None)
+        expanded = tree.xpath('//button[@data-product]/@aria-expanded')
+        self.assertEqual(expanded, ['true'] + ['false'] * (len(expanded) - 1))
+        # Different states: each row says its own, no common line above the list.
+        self.assertFalse(tree.xpath('//*[contains(@class, "mc-formats-state")]'))
         self.assertFalse(tree.xpath('//*[contains(@class, "mc-format-ribbon")] | //*[contains(@class, "o_ribbon")]'))
 
     def test_checkout_speaks_the_theme_language(self):

@@ -23,22 +23,25 @@
                 </div>
             </div>
             <div class="shop-choice">
-                <div class="format-options" role="tablist" aria-label="Formati La Regina" aria-orientation="vertical">
-                    <button t-foreach="products" t-as="p" type="button" class="format-option" role="tab" t-att-data-product="p.id" t-att-data-product-url="p.website_url" t-att-aria-selected="'true' if p_index == 0 else 'false'" t-att-tabindex="0 if p_index == 0 else -1">
-                        <span class="format-thumb" t-att-data-count="p.torrepulia_unit_count if p.torrepulia_composite else 1" aria-hidden="true"><img t-foreach="range(p.torrepulia_unit_count if p.torrepulia_composite and p.torrepulia_unit_count in [2,6] else 1)" t-as="unit" t-att-src="'/web/image/product.template/%s/image_128' % p.id" alt=""/></span>
-                        <span class="mc-format-details"><strong t-out="p.torrepulia_format_name or p.name"/><small t-out="p.torrepulia_format_detail"/>
-                            <t t-set="ribbon" t-value="ribbons[p.id]"/>
-                            <span t-if="ribbon" class="mc-format-ribbon" t-attf-style="color: #{ribbon.text_color}; background-color: #{ribbon.bg_color};" t-out="ribbon.name"/>
-                            <span class="mc-format-badges"><span t-foreach="p._torrepulia_format_badges(website)" t-as="badge" class="mc-format-badge" t-attf-style="background-color: #{badge['color']}; color: #{badge['text_color']};" t-out="badge['name']"/></span>
-                        </span>
-                        <span t-if="website._torrepulia_request_prices_visible()" class="option-price" t-out="format_amount(prices[p.id]['price_reduce'])"/>
-                    </button>
-                </div>
-                <div t-foreach="products" t-as="p" class="format-summary" t-att-data-summary="p.id" t-att-hidden="p_index != 0" role="tabpanel">
-                    <p class="format-description" t-out="p.description_sale"/>
-                    <t t-set="product" t-value="p"/>
-                    <t t-call="website_torrepulia_request.request_card_controls"/>
-                    <a class="text-link tp-format-details-link" t-att-href="p.website_url">Scegli le opzioni e scopri il prodotto</a>
+                <!-- Each format opens its own action under it, as in the shop formats of the theme. -->
+                <div class="format-options" aria-label="Formati La Regina">
+                    <div t-foreach="products" t-as="p" class="format-row">
+                        <button type="button" class="format-option" t-att-data-product="p.id" t-att-data-product-url="p.website_url" t-att-aria-expanded="'true' if p_index == 0 else 'false'">
+                            <span class="format-thumb" t-att-data-count="p.torrepulia_unit_count if p.torrepulia_composite else 1" aria-hidden="true"><img t-foreach="range(p.torrepulia_unit_count if p.torrepulia_composite and p.torrepulia_unit_count in [2,6] else 1)" t-as="unit" t-att-src="'/web/image/product.template/%s/image_128' % p.id" alt=""/></span>
+                            <span class="mc-format-details"><strong t-out="p.torrepulia_format_name or p.name"/><small t-out="p.torrepulia_format_detail"/>
+                                <t t-set="ribbon" t-value="ribbons[p.id]"/>
+                                <span t-if="ribbon" class="mc-format-ribbon" t-attf-style="color: #{ribbon.text_color}; background-color: #{ribbon.bg_color};" t-out="ribbon.name"/>
+                                <span class="mc-format-badges"><span t-foreach="p._torrepulia_format_badges(website)" t-as="badge" class="mc-format-badge" t-attf-style="background-color: #{badge['color']}; color: #{badge['text_color']};" t-out="badge['name']"/></span>
+                            </span>
+                            <span t-if="website._torrepulia_request_prices_visible()" class="option-price" t-out="format_amount(prices[p.id]['price_reduce'])"/>
+                        </button>
+                        <div class="format-summary" t-att-data-summary="p.id" t-att-hidden="p_index != 0" role="region">
+                            <p t-if="p.description_sale" class="format-description" t-out="p.description_sale"/>
+                            <t t-set="product" t-value="p"/>
+                            <t t-call="website_torrepulia_request.request_card_controls"/>
+                            <a class="text-link tp-format-details-link" t-att-href="p.website_url">Scegli le opzioni e scopri il prodotto</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
