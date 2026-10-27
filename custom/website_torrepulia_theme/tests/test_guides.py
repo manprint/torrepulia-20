@@ -79,3 +79,21 @@ class TestGuides(TransactionCase):
         self.assertIn('Consiglio Oleicolo Internazionale', post.content)
         self.assertLessEqual(len(FILTER_GUIDE['meta_title']), 60)
         self.assertLessEqual(len(FILTER_GUIDE['meta_description']), 160)
+
+    def test_storage_guide_links_the_filter_guide_once_published(self):
+        from ..models.guides import FILTER_GUIDE, link_filter_guide_from_storage_guide
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        for guide in (STORAGE_GUIDE, FILTER_GUIDE):
+            existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', guide['xmlid'])])
+            self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+            existing.unlink()
+        storage = self.env['blog.post'].browse(create_guide(self.env, STORAGE_GUIDE).res_id)
+        guide = self.env['blog.post'].browse(create_guide(self.env, FILTER_GUIDE).res_id)
+        link_filter_guide_from_storage_guide(self.env)  # A draft is not linked.
+        self.assertNotIn('href="%s"' % guide.website_url, storage.content)
+        guide.is_published = True
+        link_filter_guide_from_storage_guide(self.env)
+        link_filter_guide_from_storage_guide(self.env)
+        self.assertEqual(storage.content.count('href="%s"' % guide.website_url), 1)
+        self.assertEqual(website._torrepulia_filter_guide_url(), guide.website_url)

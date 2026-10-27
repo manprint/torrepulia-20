@@ -1,6 +1,6 @@
 from odoo import fields, models
 
-from .guides import STORAGE_GUIDE, published_guide_url
+from .guides import FILTER_GUIDE, STORAGE_GUIDE, published_guide_url
 
 
 class WebsiteMenu(models.Model):
@@ -90,6 +90,11 @@ class Website(models.Model):
         """The storage guide, linked from the product pages once published."""
         self.ensure_one()
         return published_guide_url(self.env, STORAGE_GUIDE)
+
+    def _torrepulia_filter_guide_url(self):
+        """The filtered or unfiltered guide, linked from the reservation FAQ once published."""
+        self.ensure_one()
+        return published_guide_url(self.env, FILTER_GUIDE)
 
     def _torrepulia_hide_blog_menu(self):
         """The guides live in the footer: the menu Odoo adds for the blog leaves the main navigation."""

@@ -107,7 +107,9 @@
                 <details t-if="website.torrepulia_shipping_note"><summary>Quanto costa la spedizione?</summary>
                     <p t-out="website.torrepulia_shipping_note"/></details>
                 <details><summary>Filtrato o non filtrato?</summary>
-                    <p>Il filtrato &#232; limpido ed &#232; quello che proponiamo di solito. Il non filtrato &#232; l&#8217;olio come esce dal frantoio, velato e dal gusto pi&#249; pieno: va consumato nei primi mesi.</p></details>
+                    <p>Il filtrato &#232; limpido ed &#232; quello che proponiamo di solito. Il non filtrato &#232; l&#8217;olio come esce dal frantoio, velato e dal gusto pi&#249; pieno: va consumato nei primi mesi. Se lo preferisci, indicalo nella prenotazione.</p>
+                    <t t-set="tp_filter_guide" t-value="website._torrepulia_filter_guide_url()"/>
+                    <p t-if="tp_filter_guide"><a t-att-href="tp_filter_guide">Le differenze, nella nostra guida</a></p></details>
             </div>
         </section>
     </template>

@@ -128,3 +128,24 @@ def link_guide_from_oil_page(env, guide):
         env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')
+
+
+# The storage guide, "Filtrato o non filtrato": the full answer is in the filter guide, once published.
+STORAGE_FILTER_SENTENCE = 'il non filtrato va consumato nei primi mesi</strong>.'
+STORAGE_FILTER_LINK = ('il non filtrato va consumato nei primi mesi</strong>. Le differenze, nel gusto e nella durata, '
+                       'le spieghiamo nella guida <a href="%s">olio filtrato o non filtrato</a>.')
+
+
+def link_filter_guide_from_storage_guide(env):
+    """Only the sentence as written: an owner rewrite stays untouched."""
+    url = published_guide_url(env, FILTER_GUIDE)
+    post = env.ref('%s.%s' % (MODULE, STORAGE_GUIDE['xmlid']), raise_if_not_found=False) if url else None
+    if not post:
+        return
+    env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+    stored = env.cr.fetchone()[0] or {}
+    updated = {lang: text if 'href="%s"' % url in text else text.replace(STORAGE_FILTER_SENTENCE, STORAGE_FILTER_LINK % url, 1)
+               for lang, text in stored.items()}
+    if updated != stored:
+        env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
+        post.invalidate_recordset(['content'])
