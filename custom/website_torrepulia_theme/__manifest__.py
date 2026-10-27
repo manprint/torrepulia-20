@@ -8,7 +8,7 @@ Includes editable editorial snippets, a curated homepage, product/shop styling,
 and local brand imagery sourced from the current Torrepulia website.
     """,
     "category": "Theme",
-    "version": "20.0.3.43.0",
+    "version": "20.0.3.44.0",
     "author": "Torrepulia",
     "license": "LGPL-3",
     "depends": [

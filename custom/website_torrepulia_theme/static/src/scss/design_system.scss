@@ -153,6 +153,14 @@
         padding-block: .6875rem;
         margin-block: -.6875rem;
     }
+    // Links inside running text: the cinematic reset (a { color: inherit }) hid them as plain text.
+    // Links with a class keep their own style; dark sections keep their white links.
+    main :where(p, li):not(:where(.tp-section-dark *, .o_cc3 *, .o_cc4 *, .o_cc5 *)) > a:where(:not([class])) {
+        color: var(--tp-olive); font-weight: 600;
+        text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+        transition: text-decoration-thickness 150ms ease-out;
+        &:hover { text-decoration-thickness: 2px; }
+    }
     .s_website_form input[type='checkbox'] { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; accent-color: var(--tp-olive); }
 
     // Value proofs are the first section titles under the hero H1.
