@@ -11,4 +11,15 @@
             <h2 class="h6">Indice</h2>
         </xpath>
     </template>
+    <template id="blog_next_label" inherit_id="website_blog.blog_post_next_compact" name="Torrepulia: articolo consigliato">
+        <xpath expr="//a[@t-att-title]" position="attributes">
+            <attribute name="t-att-title">'Leggi anche: ' + next_post.name</attribute>
+        </xpath>
+    </template>
+    <template id="blog_next_cover_label" inherit_id="website_blog.blog_post_next_full_cover" name="Torrepulia: articolo successivo">
+        <xpath expr="//i[@data-icon='keyboard_arrow_right']" position="attributes">
+            <attribute name="aria-label">Leggi anche</attribute>
+            <attribute name="title">Leggi anche</attribute>
+        </xpath>
+    </template>
 </odoo>

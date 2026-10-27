@@ -149,3 +149,30 @@ def link_filter_guide_from_storage_guide(env):
     if updated != stored:
         env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
         post.invalidate_recordset(['content'])
+
+
+# The filter guide, published 27/10: how the oil is filtered here, the filter press with cellulose sheets.
+FILTER_PRESS_SOURCE = 'guida-filtro-cartoni.html'
+FILTER_PRESS_BEFORE = '<h2>Il non filtrato ha più polifenoli?</h2>'
+FILTER_PRESS_CTA = ('La Regina è <strong>filtrata</strong> tutto l’anno,',
+                    'La Regina è <strong>filtrata</strong> con il filtro a cartoni tutto l’anno,')
+
+
+def add_filter_press_section(env):
+    """Before the polyphenols, once; the closing box names the method. Owner rewrites stay untouched."""
+    post = env.ref('%s.%s' % (MODULE, FILTER_GUIDE['xmlid']), raise_if_not_found=False) if 'blog.post' in env else None
+    if not post:
+        return
+    with file_open(MODULE + '/docs/source/' + FILTER_PRESS_SOURCE, 'rb') as stream:
+        section = stream.read().decode('utf-8').strip()
+    env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+    stored = env.cr.fetchone()[0] or {}
+    updated = {}
+    for lang, text in stored.items():
+        if 'filtro a cartoni' not in text:
+            text = text.replace(FILTER_PRESS_BEFORE, section + '\n' + FILTER_PRESS_BEFORE, 1)
+            text = text.replace(*FILTER_PRESS_CTA)
+        updated[lang] = text
+    if updated != stored:
+        env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
+        post.invalidate_recordset(['content'])

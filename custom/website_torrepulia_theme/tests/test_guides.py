@@ -1,3 +1,5 @@
+import json
+
 from odoo.tests import TransactionCase, tagged
 
 from ..models.guides import STORAGE_GUIDE, create_guide
@@ -97,3 +99,26 @@ class TestGuides(TransactionCase):
         link_filter_guide_from_storage_guide(self.env)
         self.assertEqual(storage.content.count('href="%s"' % guide.website_url), 1)
         self.assertEqual(website._torrepulia_filter_guide_url(), guide.website_url)
+
+    def test_filter_press_section_is_added_once_before_the_polyphenols(self):
+        from ..models.guides import FILTER_GUIDE, add_filter_press_section
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', FILTER_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        post = self.env['blog.post'].browse(create_guide(self.env, FILTER_GUIDE).res_id)
+        # As published before the section existed.
+        self.env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+        old = {lang: text.replace('con il filtro a cartoni ', '') for lang, text in self.env.cr.fetchone()[0].items()}
+        start, end = old['en_US'].index('<h2>Come filtriamo noi'), old['en_US'].index('<h2>Il non filtrato ha più polifenoli?</h2>')
+        old = {lang: text[:start] + text[end:] for lang, text in old.items()}
+        self.env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(old), post.id])
+        post.invalidate_recordset(['content'])
+        self.assertNotIn('filtro a cartoni', post.content)
+        add_filter_press_section(self.env)
+        add_filter_press_section(self.env)
+        self.assertEqual(post.content.count('<h2>Come filtriamo noi'), 1)
+        self.assertLess(post.content.index('Come filtriamo noi'), post.content.index('Il non filtrato ha più polifenoli?'))
+        self.assertIn('filtrata</strong> con il filtro a cartoni', post.content)
+        self.assertIn('filtro-cartoni-frantoio-900.webp', post.content)

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="t d">
+  <title id="t">Come funziona il filtro a cartoni</title>
+  <desc id="d">L'olio velato entra sotto pressione nelle piastre di alimentazione, attraversa i cartoni filtranti che trattengono particelle e acqua, ed esce limpido dalle piastre di raccolta.</desc>
+  <defs>
+    <pattern id="fibre" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#fbfaf6"/>
+      <path d="M0 8 L8 0" stroke="#cfc8b4" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2e493b"/>
+    </marker>
+  </defs>
+  <rect width="720" height="520" fill="#f4f6f1"/>
+  <g font-family="Manrope, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#18231f">
+    <!-- 1. Velato in -->
+    <text x="40" y="58" font-size="24" font-weight="700">1 · Entra l’olio velato</text>
+    <text x="40" y="88" font-size="20" fill="#526056">spinto sotto pressione nelle piastre</text>
+    <path d="M40 118 H458" stroke="#b99b5a" stroke-width="10" fill="none"/>
+    <path d="M80 118 V160 M272 118 V160 M464 118 V160" stroke="#b99b5a" stroke-width="10" fill="none"/>
+    <!-- Plates and filter sheets -->
+    <g>
+      <!-- feed plates: cloudy oil with particles -->
+      <rect x="40" y="160" width="80" height="210" fill="#ead9a8" stroke="#18231f" stroke-width="2"/>
+      <rect x="232" y="160" width="80" height="210" fill="#ead9a8" stroke="#18231f" stroke-width="2"/>
+      <rect x="424" y="160" width="80" height="210" fill="#ead9a8" stroke="#18231f" stroke-width="2"/>
+      <g fill="#8a6d2c">
+        <circle cx="62" cy="196" r="4"/><circle cx="94" cy="232" r="3"/><circle cx="72" cy="280" r="4"/><circle cx="104" cy="318" r="3"/><circle cx="58" cy="344" r="3"/>
+        <circle cx="254" cy="204" r="3"/><circle cx="288" cy="246" r="4"/><circle cx="260" cy="296" r="3"/><circle cx="294" cy="336" r="4"/>
+        <circle cx="446" cy="198" r="4"/><circle cx="480" cy="240" r="3"/><circle cx="452" cy="290" r="4"/><circle cx="488" cy="330" r="3"/>
+      </g>
+      <!-- filter sheets -->
+      <rect x="120" y="150" width="22" height="230" fill="url(#fibre)" stroke="#18231f" stroke-width="2"/>
+      <rect x="210" y="150" width="22" height="230" fill="url(#fibre)" stroke="#18231f" stroke-width="2"/>
+      <rect x="312" y="150" width="22" height="230" fill="url(#fibre)" stroke="#18231f" stroke-width="2"/>
+      <rect x="402" y="150" width="22" height="230" fill="url(#fibre)" stroke="#18231f" stroke-width="2"/>
+      <!-- particles caught on the sheets -->
+      <g fill="#8a6d2c">
+        <circle cx="118" cy="210" r="3"/><circle cx="118" cy="262" r="3"/><circle cx="118" cy="330" r="3"/>
+        <circle cx="234" cy="230" r="3"/><circle cx="234" cy="300" r="3"/>
+        <circle cx="310" cy="220" r="3"/><circle cx="310" cy="310" r="3"/>
+        <circle cx="426" cy="240" r="3"/><circle cx="426" cy="320" r="3"/>
+      </g>
+      <!-- collecting plates: clear oil -->
+      <rect x="142" y="160" width="68" height="210" fill="#f2d35b" stroke="#18231f" stroke-width="2"/>
+      <rect x="334" y="160" width="68" height="210" fill="#f2d35b" stroke="#18231f" stroke-width="2"/>
+      <!-- flow through the sheets -->
+      <path d="M96 214 H160" stroke="#2e493b" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+      <path d="M288 214 H224" stroke="#2e493b" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+      <path d="M288 300 H352" stroke="#2e493b" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+      <path d="M480 300 H416" stroke="#2e493b" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    </g>
+    <!-- 2. Sheets -->
+    <text x="540" y="200" font-size="22" font-weight="700">2 · I cartoni</text>
+    <text x="540" y="230" font-size="19" fill="#526056">trattengono</text>
+    <text x="540" y="256" font-size="19" fill="#526056">particelle,</text>
+    <text x="540" y="282" font-size="19" fill="#526056">acqua e lieviti</text>
+    <!-- 3. Clear out -->
+    <path d="M176 370 V420 M368 370 V420" stroke="#d9b22f" stroke-width="10" fill="none"/>
+    <path d="M160 420 H390" stroke="#d9b22f" stroke-width="10" fill="none"/>
+    <path d="M390 420 H450" stroke="#2e493b" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    <text x="40" y="470" font-size="24" font-weight="700">3 · Esce l’olio limpido</text>
+    <text x="40" y="500" font-size="20" fill="#526056">raccolto dalle piastre e pronto da confezionare</text>
+    <!-- legend -->
+    <g font-size="16" fill="#526056">
+      <rect x="540" y="330" width="22" height="22" fill="#ead9a8" stroke="#18231f" stroke-width="1.5"/><text x="570" y="347">olio velato</text>
+      <rect x="540" y="364" width="22" height="22" fill="url(#fibre)" stroke="#18231f" stroke-width="1.5"/><text x="570" y="381">cartone</text>
+      <rect x="540" y="398" width="22" height="22" fill="#f2d35b" stroke="#18231f" stroke-width="1.5"/><text x="570" y="415">olio limpido</text>
+    </g>
+  </g>
+</svg>
