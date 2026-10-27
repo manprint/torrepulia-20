@@ -42,9 +42,11 @@
                     <summary>Abbinamenti in cucina</summary>
                     <div t-field="product.torrepulia_food_pairings"/>
                 </details>
-                <details t-if="not is_html_empty(product.torrepulia_shipping_storage)">
+                <t t-set="tp_storage_guide" t-value="website._torrepulia_storage_guide_url()"/>
+                <details t-if="not is_html_empty(product.torrepulia_shipping_storage) or tp_storage_guide">
                     <summary>Spedizione e conservazione</summary>
-                    <div t-field="product.torrepulia_shipping_storage"/>
+                    <div t-if="not is_html_empty(product.torrepulia_shipping_storage)" t-field="product.torrepulia_shipping_storage"/>
+                    <p t-if="tp_storage_guide" class="tp-product-guide"><a t-att-href="tp_storage_guide">Leggi la guida: come conservare l&#8217;olio extravergine</a></p>
                 </details>
             </div>
         </xpath>

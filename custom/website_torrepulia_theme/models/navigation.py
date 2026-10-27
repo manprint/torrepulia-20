@@ -1,5 +1,7 @@
 from odoo import fields, models
 
+from .guides import STORAGE_GUIDE, published_guide_url
+
 
 class WebsiteMenu(models.Model):
     _inherit = 'website.menu'
@@ -83,6 +85,11 @@ class Website(models.Model):
         post = self.env['blog.post'].sudo().search([('website_id', 'in', [self.id, False]), ('is_published', '=', True),
                                                     ('blog_id.website_id', 'in', [self.id, False])], limit=1)
         return post.blog_id.website_url if post else False
+
+    def _torrepulia_storage_guide_url(self):
+        """The storage guide, linked from the product pages once published."""
+        self.ensure_one()
+        return published_guide_url(self.env, STORAGE_GUIDE)
 
     def _torrepulia_hide_blog_menu(self):
         """The guides live in the footer: the menu Odoo adds for the blog leaves the main navigation."""

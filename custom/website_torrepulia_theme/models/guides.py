@@ -5,6 +5,9 @@ products by internal reference, so they follow each database's addresses. Nothin
 without the blog module, and a guide already created is never touched again: from then on it
 belongs to the owner's editor.
 """
+import json
+from datetime import datetime
+
 from lxml import etree, html
 
 from odoo.tools import file_open
@@ -77,3 +80,35 @@ def create_guide(env, guide):
     })
     return env['ir.model.data'].create({'module': MODULE, 'name': guide['xmlid'], 'model': 'blog.post',
                                         'res_id': post.id, 'noupdate': True})
+
+
+def published_guide_url(env, guide):
+    post = env.ref('%s.%s' % (MODULE, guide['xmlid']), raise_if_not_found=False) if 'blog.post' in env else None
+    post = post.sudo() if post else post
+    return post.website_url if post and post.is_published else False
+
+
+# La Peranzana, "Il confezionamento": the oil leaves for home, the guide tells what to do when it arrives.
+OIL_PAGE_SENTENCE = 'Da lì lo spediamo a casa tua.</p>'
+OIL_PAGE_LINK = 'Da lì lo spediamo a casa tua. <a href="%s">Come conservarlo, una volta arrivato</a>.</p>'
+
+
+def link_guide_from_oil_page(env, guide):
+    """Once the guide is published; only the sentence as written, an owner rewrite stays untouched."""
+    url = published_guide_url(env, guide)
+    if not url:
+        return
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    for view in Views.search([('key', '=', MODULE + '.page_oil_view')]):
+        env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        stored = env.cr.fetchone()[0] or {}
+        updated = {lang: arch if 'href="%s"' % url in arch else arch.replace(OIL_PAGE_SENTENCE, OIL_PAGE_LINK % url, 1)
+                   for lang, arch in stored.items()}
+        if updated == stored:
+            continue
+        view.copy({'name': 'Before the storage guide link', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_guide_link_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')

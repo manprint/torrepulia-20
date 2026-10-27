@@ -8,6 +8,8 @@
         summary:focus-visible { outline: 2px solid var(--tp-olive, #2e493b); outline-offset: 2px; }
         details > div { padding: 0 4px 16px; font: 15px/1.65 Manrope, sans-serif; }
         p:last-child { margin-bottom: 0; }
+        .tp-product-guide { padding: 0 4px 16px; font: 600 15px/1.65 Manrope, sans-serif; }
+        .tp-product-guide a { color: var(--tp-olive, #2e493b); text-decoration: underline; text-underline-offset: 3px; }
     }
     .tp-product-editorial:not(:has(details)) { display: none; }
 }

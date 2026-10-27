@@ -70,6 +70,13 @@ class TestThemeRequestCommerce(HttpCase):
         self.assertIn('<summary>Abbinamenti in cucina</summary>', page.text)
         self.assertIn('<summary>Spedizione e conservazione</summary>', page.text)
         self.assertIn('Note sensoriali approvate QA', page.text)
+        # The storage guide, once published, closes the storage section.
+        guide = self.env.ref('website_torrepulia_theme.blog_post_storage_guide', raise_if_not_found=False)
+        if guide:
+            guide.is_published = False
+            self.assertNotIn('tp-product-guide', self.url_open(product.website_url).text)
+            guide.is_published = True
+            self.assertIn('<a href="%s">Leggi la guida' % guide.website_url, self.url_open(product.website_url).text)
         # Subtitle: format (not in the title), default denomination, contents.
         self.assertIn('Editorial format · Olio extravergine di oliva Peranzana', page.text)
         product.write({'torrepulia_web_title': False, 'torrepulia_sensory_profile': '<p><br></p>'})

@@ -40,3 +40,25 @@ class TestGuides(TransactionCase):
         self.assertEqual(post.website_meta_description, 'Scritta dal gestore')
         self.assertLessEqual(len(STORAGE_GUIDE['meta_title']), 60)
         self.assertLessEqual(len(STORAGE_GUIDE['meta_description']), 160)
+
+    def test_oil_page_links_the_guide_once_published(self):
+        import json
+        from ..models.guides import OIL_PAGE_SENTENCE, link_guide_from_oil_page
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        post = self.env['blog.post'].browse(create_guide(self.env, STORAGE_GUIDE).res_id)
+        view = self.env['ir.ui.view'].create({'name': 'La Peranzana', 'type': 'qweb', 'arch': '<t t-name="oil"><p>x</p></t>',
+                                              'key': 'website_torrepulia_theme.page_oil_view'})
+        saved = '<t t-name="oil"><h3>Il confezionamento</h3><p>Da lì lo spediamo a casa tua.</p></t>'
+        self.env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps({'en_US': saved}), view.id])
+        self.env['ir.ui.view'].invalidate_model(['arch_db'])
+        post.is_published = False
+        link_guide_from_oil_page(self.env, STORAGE_GUIDE)  # A draft is not linked.
+        post.is_published = True
+        link_guide_from_oil_page(self.env, STORAGE_GUIDE)
+        link_guide_from_oil_page(self.env, STORAGE_GUIDE)
+        self.env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+        arch = self.env.cr.fetchone()[0]['en_US']
+        self.assertEqual(arch.count('href="%s"' % post.website_url), 1)
+        self.assertNotIn(OIL_PAGE_SENTENCE, arch)
+        self.assertEqual(website._torrepulia_storage_guide_url(), post.website_url)
