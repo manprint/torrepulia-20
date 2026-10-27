@@ -28,3 +28,15 @@ class TestGuides(TransactionCase):
         create_guide(self.env, STORAGE_GUIDE)
         self.assertEqual(self.env['blog.post'].search_count([('name', '=', STORAGE_GUIDE['name'])]), 1)
         self.assertIn('Testo del gestore', post.content)
+
+    def test_first_meta_is_replaced_unless_edited(self):
+        from ..models.guides import FIRST_STORAGE_META, refresh_guide_meta
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        post = self.env['blog.post'].browse(create_guide(self.env, STORAGE_GUIDE).res_id)
+        post.write({'website_meta_title': False, 'website_meta_description': 'Scritta dal gestore'})
+        refresh_guide_meta(self.env, STORAGE_GUIDE, FIRST_STORAGE_META)
+        self.assertEqual(post.website_meta_title, STORAGE_GUIDE['meta_title'])
+        self.assertEqual(post.website_meta_description, 'Scritta dal gestore')
+        self.assertLessEqual(len(STORAGE_GUIDE['meta_title']), 60)
+        self.assertLessEqual(len(STORAGE_GUIDE['meta_description']), 160)

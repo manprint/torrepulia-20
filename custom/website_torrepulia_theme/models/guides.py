@@ -16,9 +16,10 @@ STORAGE_GUIDE = {
     'source': 'guida-conservare-olio.html',
     'name': "Come conservare l'olio extravergine di oliva",
     'subtitle': "Luce, calore e aria: dove tenerlo, quale contenitore scegliere e quanto dura dopo l'apertura.",
-    'meta_title': "Come conservare l'olio extravergine di oliva | Torrepulia",
-    'meta_description': ("Dove tenere l'olio extravergine, a che temperatura, quale contenitore scegliere e quanto dura "
-                         "dopo l'apertura: la guida basata sul Consiglio Oleicolo Internazionale e su studi universitari."),
+    # At most 60 and 160 characters: Google cuts what is longer.
+    'meta_title': "Come conservare l'olio extravergine (e quanto dura aperto)",
+    'meta_description': ("Dove tenere l'olio extravergine, a che temperatura, in quale contenitore e quanto dura aperto: "
+                         "le regole del Consiglio Oleicolo Internazionale e degli studi."),
     'tag': 'Conservazione',
     'cover': '/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-1920.webp',
 }
@@ -34,6 +35,23 @@ def guide_content(env, website, source):
     for token, url in links.items():
         text = text.replace(token, url)
     return text
+
+
+# What the first release wrote: replaced only while the owner has not changed it.
+FIRST_STORAGE_META = {
+    'website_meta_title': "Come conservare l'olio extravergine di oliva | Torrepulia",
+    'website_meta_description': ("Dove tenere l'olio extravergine, a che temperatura, quale contenitore scegliere e quanto dura "
+                                 "dopo l'apertura: la guida basata sul Consiglio Oleicolo Internazionale e su studi universitari."),
+}
+
+
+def refresh_guide_meta(env, guide, first):
+    data = env['ir.model.data'].search([('module', '=', MODULE), ('name', '=', guide['xmlid'])], limit=1)
+    post = env['blog.post'].browse(data.res_id).exists() if data and 'blog.post' in env else None
+    if not post:
+        return
+    values = {'website_meta_title': guide['meta_title'], 'website_meta_description': guide['meta_description']}
+    post.write({field: values[field] for field, old in first.items() if (post[field] or '') in ('', old)})
 
 
 def create_guide(env, guide):

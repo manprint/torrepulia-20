@@ -75,6 +75,20 @@ class Website(models.Model):
             ('website_id', 'in', [False, self.id])])
         return providers.filtered(lambda p: not p.module_id or p.module_state == 'installed').mapped('name')
 
+    def _torrepulia_footer_guides(self):
+        """The blog of the guides, once one of them is published (website_blog is optional)."""
+        self.ensure_one()
+        if 'blog.post' not in self.env:
+            return False
+        post = self.env['blog.post'].sudo().search([('website_id', 'in', [self.id, False]), ('is_published', '=', True),
+                                                    ('blog_id.website_id', 'in', [self.id, False])], limit=1)
+        return post.blog_id.website_url if post else False
+
+    def _torrepulia_hide_blog_menu(self):
+        """The guides live in the footer: the menu Odoo adds for the blog leaves the main navigation."""
+        self.ensure_one()
+        self.env['website.menu'].search([('website_id', '=', self.id), ('manual_url', '=like', '/blog%')]).torrepulia_navigation_hidden = True
+
     def _torrepulia_footer_pages(self, keys):
         self.ensure_one()
         # Like website.menu._compute_visible in installed Odoo 20, inspect page
