@@ -27,14 +27,30 @@ STORAGE_GUIDE = {
     'cover': '/website_torrepulia_theme/static/src/cinematic/owner/uliveto-file-1920.webp',
 }
 
+FILTER_GUIDE = {
+    'xmlid': 'blog_post_filter_guide',
+    'source': 'guida-filtrato-non-filtrato.html',
+    'name': 'Olio filtrato o non filtrato: le differenze e quale scegliere',
+    'subtitle': "Cos'è l'olio velato, cosa cambia nel gusto e nella durata, e perché il non filtrato va consumato nei primi mesi.",
+    'meta_title': 'Olio filtrato o non filtrato: differenze e quale scegliere',
+    'meta_description': ('Olio velato o limpido? Cosa cambia tra filtrato e non filtrato in gusto, polifenoli e durata, '
+                         'e perché il non filtrato va consumato nei primi mesi.'),
+    'tag': "Conoscere l'olio",
+    'cover': '/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1600.webp',
+}
+
 
 def guide_content(env, website, source):
     with file_open(MODULE + '/docs/source/' + source, 'rb') as stream:
         text = etree.tostring(html.fromstring(stream.read().decode('utf-8')), method='html', encoding='unicode')
     # The old shop's internal references, the same lookup as the redirects (models/seo.py).
+    # The other guides and the reservation page, where they exist in this database.
+    reservation = website._torrepulia_footer_pages(['reservation'])[:1]
     links = {'__SHOP_URL__': '/shop',
              '__LATTA_URL__': website._torrepulia_old_product_url('LARGLAT5'),
-             '__BIB_URL__': website._torrepulia_old_product_url('LARGBIB5')}
+             '__BIB_URL__': website._torrepulia_old_product_url('LARGBIB5'),
+             '__RESERVATION_URL__': reservation.url or '/shop',
+             '__STORAGE_GUIDE_URL__': published_guide_url(env, STORAGE_GUIDE) or '/blog'}
     for token, url in links.items():
         text = text.replace(token, url)
     return text

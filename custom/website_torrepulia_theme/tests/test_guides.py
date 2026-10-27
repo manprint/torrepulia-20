@@ -62,3 +62,20 @@ class TestGuides(TransactionCase):
         self.assertEqual(arch.count('href="%s"' % post.website_url), 1)
         self.assertNotIn(OIL_PAGE_SENTENCE, arch)
         self.assertEqual(website._torrepulia_storage_guide_url(), post.website_url)
+
+    def test_filter_guide_links_the_storage_guide_and_the_reservation(self):
+        from ..models.guides import FILTER_GUIDE
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', FILTER_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        storage = self.env['blog.post'].browse(create_guide(self.env, STORAGE_GUIDE).res_id)
+        storage.is_published = True
+        post = self.env['blog.post'].browse(create_guide(self.env, FILTER_GUIDE).res_id)
+        self.assertFalse(post.is_published)
+        self.assertIn('href="%s"' % storage.website_url, post.content)
+        self.assertNotIn('__', post.content)
+        self.assertIn('Consiglio Oleicolo Internazionale', post.content)
+        self.assertLessEqual(len(FILTER_GUIDE['meta_title']), 60)
+        self.assertLessEqual(len(FILTER_GUIDE['meta_description']), 160)
