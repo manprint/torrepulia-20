@@ -1,0 +1,31 @@
+// Product reviews: the portal chatter lives in a shadow root with Odoo's own colours, out of the
+// theme's reach. These rules load inside it (portal.assets_chatter_style) and apply only where the
+// theme script marked the host (static/src/js/reviews.js), that is on the Torrepulia site.
+:host(.tp-chatter) {
+    font-family: Manrope, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: #18231f;
+
+    .btn-primary {
+        padding: .75rem 1.5rem; border-radius: 3px; font-weight: 600;
+        background-color: #2e493b; border-color: #2e493b; color: #fff;
+        &:hover, &:focus-visible { background-color: #243a2f; border-color: #243a2f; color: #fff; }
+        &:focus-visible { outline: 2px solid #2e493b; outline-offset: 2px; box-shadow: none; }
+    }
+    .text-muted { color: #526056 !important; }
+
+    // The average in the site's serif, gold stars, olive bars.
+    .o_website_rating_card_container .display-3 { font-family: Caslon, 'Libre Caslon Display', Georgia, serif; font-weight: 400 !important; }
+    .o_website_rating_static { color: #746014; }
+    .o_website_rating_static .text-black-25 { color: #d2dcd4 !important; }
+    .o_website_rating_table .progress { background-color: #eef2ed; }
+    .o_website_rating_table .o_rating_progressbar { background-color: #2e493b; }
+    // Odoo draws letter avatars in its own palette (an image, not a colour): neutral grey here.
+    .o-mail-Message-avatar { filter: grayscale(1); }
+
+    // No review yet: one line of invitation and the button, across the section.
+    .tp-reviews-empty { margin-bottom: 1.25rem; max-width: 36rem; }
+    .tp-reviews-empty p { margin: 0 0 .5rem; color: #526056; line-height: 1.6; }
+    .tp-reviews-empty .tp-reviews-empty-title { font-family: Caslon, 'Libre Caslon Display', Georgia, serif; font-size: 1.625rem; line-height: 1.2; color: #18231f; }
+    .o-review-Chatter:has(.tp-reviews-empty) > .o-mail-Chatter-top { flex: 0 0 100%; width: 100%; max-width: none; }
+    .o-review-Chatter:has(.tp-reviews-empty) > .o-mail-Chatter-content { display: none; }
+}

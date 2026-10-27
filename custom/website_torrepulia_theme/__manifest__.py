@@ -8,7 +8,7 @@ Includes editable editorial snippets, a curated homepage, product/shop styling,
 and local brand imagery sourced from the current Torrepulia website.
     """,
     "category": "Theme",
-    "version": "20.0.3.35.0",
+    "version": "20.0.3.36.0",
     "author": "Torrepulia",
     "license": "LGPL-3",
     "depends": [
@@ -89,9 +89,17 @@ and local brand imagery sourced from the current Torrepulia website.
             "website_torrepulia_theme/static/src/js/checkout.js",
             "website_torrepulia_theme/static/src/js/cart_feedback.js",
             "website_torrepulia_theme/static/src/js/conversions.js",
+            "website_torrepulia_theme/static/src/js/reviews.js",
             "website_torrepulia_theme/static/src/js/navigation.js",
             "website_torrepulia_theme/static/src/scss/reservation_campaign.scss",
             "website_torrepulia_theme/static/src/js/reservation_campaign.js",
+        ],
+        # Product reviews: the portal chatter renders in a shadow root with its own bundles.
+        "portal.assets_chatter": [
+            "website_torrepulia_theme/static/src/xml/reviews.xml",
+        ],
+        "portal.assets_chatter_style": [
+            "website_torrepulia_theme/static/src/scss/reviews_chatter.scss",
         ],
         "website.website_builder_assets": [
             "website_torrepulia_theme/static/src/scss/builder.scss",
