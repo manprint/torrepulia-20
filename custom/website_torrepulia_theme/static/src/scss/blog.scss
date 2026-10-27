@@ -1,0 +1,35 @@
+// Blog guides ("Radici d'olio"): a reading page in the site's type, not the cinematic display sizes.
+.tp-site.tp-cinematic .website_blog {
+    .o_wblog_post_content_field {
+        font-size: 1.0625rem; line-height: 1.75; color: var(--tp-ink);
+        h2 { margin: 3rem 0 1rem; font: 400 clamp(1.75rem, 2.4vw, 2.25rem)/1.15 Caslon, Georgia, serif; color: var(--tp-ink); }
+        h3 { margin: 2rem 0 .5rem; font: 600 1.1875rem/1.4 Manrope, sans-serif; color: var(--tp-ink); }
+        p { margin: 0 0 1rem; }
+        ul { margin: 0 0 1.25rem; padding-left: 1.25rem; }
+        li { margin-bottom: .5rem; }
+        li::marker { color: var(--tp-olive); }
+        a:not(.btn) { color: var(--tp-olive); text-decoration: underline; text-underline-offset: 3px; }
+        strong { font-weight: 600; }
+    }
+    // "In breve": the answer first, for whoever reads only this.
+    .tp-guide-summary {
+        margin: 0 0 2.5rem; padding: 24px 28px; border-left: 3px solid var(--tp-olive); background: var(--tp-pale);
+        ul { margin-bottom: .75rem; }
+        .tp-guide-summary-title { margin: 0 0 .75rem; font: 600 .8125rem/1.4 Manrope, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--tp-gold-text, #746014); }
+        .tp-guide-summary-source { margin: 0; font-size: .875rem; color: var(--tp-muted); }
+    }
+    .tp-guide-photo { display: block; width: 100%; max-width: 420px; height: auto; margin: 1.5rem 0; border-radius: 4px; }
+    // The formats at the end: where a guide meets the oil.
+    .tp-guide-cta {
+        margin: 3rem 0; padding: 28px; border: 1px solid var(--tp-line); border-radius: 4px; background: var(--tp-white);
+        .tp-guide-cta-title { margin: 0 0 .5rem; font: 400 1.625rem/1.2 Caslon, Georgia, serif; color: var(--tp-ink); }
+        p:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 1.25rem 0 0; }
+        .btn-primary { padding: .75rem 1.5rem; border-radius: 3px; background: var(--tp-olive); border-color: var(--tp-olive); color: var(--tp-white); font-weight: 600; }
+    }
+    .tp-guide-sources { padding-left: 1rem; font-size: .875rem; line-height: 1.6; color: var(--tp-muted); }
+    // Table of contents and post header in the site's colours.
+    .o_wblog_toc a { color: var(--tp-ink); }
+    .o_wblog_toc a.active, .o_wblog_toc a:hover { color: var(--tp-olive); }
+    .o_wblog_post_name { font: 400 clamp(2.25rem, 4vw, 3.5rem)/1.1 Caslon, Georgia, serif; }
+    .o_wblog_post_subtitle { color: var(--tp-muted); }
+}

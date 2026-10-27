@@ -159,6 +159,25 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - **A cura dell'utente:** spuntare "Richiedi valutazioni" (accende anche le recensioni con stelle
   sulle schede) e incollare il link del Profilo dell'attività su Google ("Chiedi recensioni").
 
+## 27/10: recensioni nello stile del sito e prima guida del blog (tema 3.36.0-3.37.0)
+
+- **Recensioni sulle schede** (portal chatter in shadow DOM): `static/src/xml/reviews.xml` nel pacchetto
+  `portal.assets_chatter` (testi italiani, stato vuoto "Ancora nessuna recensione" al posto di 0 e barre
+  vuote, "Accedi per scrivere una recensione"), `scss/reviews_chatter.scss` in
+  `portal.assets_chatter_style` sotto `:host(.tp-chatter)`; `js/reviews.js` mette la classe sull'host solo
+  sul sito Torrepulia. I testi OWL valgono per tutto il database (Odoo 20 non li traduce). Per scrivere
+  una recensione sul sito serve l'accesso: la via principale resta Google.
+- **Blog** (`website_blog` installato dall'utente, ora dipendenza del tema; in produzione si chiama
+  "Radici d'olio", `/blog/radici-d-olio-1`): `views/blog.xml` traduce "On this page"/"Table of contents",
+  `scss/blog.scss` lo stile di lettura (titoli Caslon, riquadro "In breve", invito ai formati, fonti).
+- **Prima guida** "Come conservare l'olio extravergine di oliva" (`docs/source/guida-conservare-olio.html`,
+  `models/guides.py`, migrazione 3.37.0): creata **non pubblicata**, una volta sola (xmlid
+  `blog_post_storage_guide`), poi è dell'editor. Fonti: COI/CBPS/Doc. n. 1 (2020), Reg. UE 2022/2104 e
+  1169/2011, L. 9/2013 art. 7, studi Bari 2025, Ioannina 2019/2020, Perugia 2026, Barcellona 2023,
+  rassegna 2023 sulla filtrazione. Copertina `uliveto-file-1920.webp`.
+- **A cura dell'utente:** rileggere e pubblicare la guida; decidere se tenere "Blog" nel menu principale
+  (aggiunto dal modulo) o spostarlo nel footer, e con che nome.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi

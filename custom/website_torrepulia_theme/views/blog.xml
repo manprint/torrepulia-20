@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Blog (website_blog): Odoo 20 ships the table of contents labels without an Italian translation. -->
+    <template id="blog_toc_label" inherit_id="website_blog.opt_blog_post_toc_display" name="Torrepulia: indice dell'articolo">
+        <xpath expr="//div[hasclass('o_wblog_toc')]/h2[1]" position="replace">
+            <h2 class="small mb-3">In questa pagina</h2>
+        </xpath>
+    </template>
+    <template id="blog_toc_mobile_label" inherit_id="website_blog.blog_post_content_mobile_toc" name="Torrepulia: indice dell'articolo su telefono">
+        <xpath expr="//div[hasclass('o_wblog_toc_mobile')]/h2[1]" position="replace">
+            <h2 class="h6">Indice</h2>
+        </xpath>
+    </template>
+</odoo>

@@ -8,7 +8,7 @@ Includes editable editorial snippets, a curated homepage, product/shop styling,
 and local brand imagery sourced from the current Torrepulia website.
     """,
     "category": "Theme",
-    "version": "20.0.3.36.0",
+    "version": "20.0.3.37.0",
     "author": "Torrepulia",
     "license": "LGPL-3",
     "depends": [
@@ -17,6 +17,7 @@ and local brand imagery sourced from the current Torrepulia website.
         "website_sale_stock",
         "website_crm",
         "payment_custom",
+        "website_blog",
     ],
     "data": [
         "security/ir.access.csv",
@@ -52,6 +53,7 @@ and local brand imagery sourced from the current Torrepulia website.
         "views/footer_editorial.xml",
         "views/consent.xml",
         "views/portal_order.xml",
+        "views/blog.xml",
         "views/mail_order.xml",
         "data/mail_order.xml",
         "data/branding.xml",
@@ -90,6 +92,7 @@ and local brand imagery sourced from the current Torrepulia website.
             "website_torrepulia_theme/static/src/js/cart_feedback.js",
             "website_torrepulia_theme/static/src/js/conversions.js",
             "website_torrepulia_theme/static/src/js/reviews.js",
+            "website_torrepulia_theme/static/src/scss/blog.scss",
             "website_torrepulia_theme/static/src/js/navigation.js",
             "website_torrepulia_theme/static/src/scss/reservation_campaign.scss",
             "website_torrepulia_theme/static/src/js/reservation_campaign.js",

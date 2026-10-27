@@ -9,3 +9,4 @@ from . import test_other_websites
 from . import test_seo
 from . import test_order_confirmation
 from . import test_reviews
+from . import test_guides
