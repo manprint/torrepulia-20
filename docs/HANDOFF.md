@@ -178,6 +178,24 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - **A cura dell'utente:** rileggere e pubblicare la guida; decidere se tenere "Blog" nel menu principale
   (aggiunto dal modulo) o spostarlo nel footer, e con che nome.
 
+## 27/10 (giorno): guide pubblicate e collegate (tema 3.38.0-3.43.0, richieste-tema 1.11.0, campagne 1.14.0)
+
+- **Menu e footer:** "Blog" nascosto dal menu (`torrepulia_navigation_hidden`, reversibile), "Guide
+  all'olio" nel footer (gruppo L'olio) solo con almeno una guida pubblicata.
+- **Prima guida** pubblicata dall'utente; titolo/descrizione SEO entro 60/160 caratteri (3.38.0).
+  Collegata da /l-olio ("Il confezionamento", 3.39.0) e dalle schede in "Spedizione e conservazione".
+- **Seconda guida** "Olio filtrato o non filtrato" (`docs/source/guida-filtrato-non-filtrato.html`,
+  xmlid `blog_post_filter_guide`, 3.40.0), pubblicata dall'utente. Fonti: rassegna Tuscia 2023,
+  Barcellona 2023, Firenze 2020, Castilla-La Mancha 2006, Molise 2021, COI (conservazione e metodo
+  sensoriale Rev. 11), Reg. UE 1308/2013. Collegata dalla prima guida e dalle FAQ della prenotazione
+  (3.41.0). Sezione "Come filtriamo noi: il filtro a cartoni" con le foto del frantoio dell'utente e
+  lo schema `static/src/cinematic/guides/filtro-cartoni-schema.svg` (3.43.0, `guida-filtro-cartoni.html`).
+- Fatti dell'utente: non filtrato solo in campagna, su richiesta, in latta e Bag in Box, si chiede
+  dalla prenotazione; filtrato tutto l'anno con filtro a cartoni (pressa MORI-TEM). Didascalie foto
+  lasciate generiche su richiesta.
+- "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
+- Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi
