@@ -297,6 +297,28 @@ def add_portrait_hero(env):
     env.transaction.invalidate_ormcache('templates')
 
 
+# 20.0.3.45.0: La Regina shows the new studio bottle, cut out on a transparent background, in place
+# of the old photo that needed multiply and brightness to lose its white background.
+REGINA_BOTTLE_OLD = '/website_torrepulia_theme/static/src/cinematic/owner/image-615.webp'
+REGINA_BOTTLE = HERO_PHOTO + 'la-regina-bottiglia-500ml.webp'
+
+
+def swap_regina_bottle(env):
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE %s AND active", ['%' + REGINA_BOTTLE_OLD + '%'])
+    for view_id, stored in env.cr.fetchall():
+        updated = {lang: arch.replace(REGINA_BOTTLE_OLD, REGINA_BOTTLE) for lang, arch in (stored or {}).items()}
+        if updated == stored:
+            continue
+        view = Views.browse(view_id)
+        view.copy({'name': 'Before the new Regina bottle', 'active': False, 'arch_fs': False,
+                   'key': '%s.before_regina_bottle_%s_%s' % (MODULE, view.id, stamp)})
+        env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
 # 20.0.3.31.0: the cookie policy names what the site really sets (technical cookies, GA4, Meta Pixel),
 # who provides it, for how long, and how to change the choice. 20.0.3.33.0: the privacy policy says
 # what the site really processes. Only the old generic texts are replaced, with a disabled backup.
