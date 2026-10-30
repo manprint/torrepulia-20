@@ -191,3 +191,43 @@ def add_filter_press_section(env):
     if updated != stored:
         env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
         post.invalidate_recordset(['content'])
+
+
+# The new oil guide, 31/10: the back label with callouts, acidity, the value behind the price, no "novello".
+# Each section: where it starts, where the next one starts, and a sentence only the first release had.
+NEW_OIL_GUIDE_SECTIONS = [
+    ('<div class="tp-guide-summary">', '<h2>Cos’è l’olio nuovo</h2>', 'si può indicare solo se tutto l’olio viene da quella raccolta.</li>'),
+    ('<h2>Cos’è l’olio nuovo</h2>', '<h2>Quando arriva l’olio nuovo</h2>', 'o olio novello'),
+    ('<h2>Come riconoscere l’olio nuovo in etichetta</h2>', '<h2>Quanto costa l’olio nuovo nel 2026</h2>',
+     'ti dice da dove vengono le olive, per esempio'),
+    ('<h2>Quanto costa l’olio nuovo nel 2026</h2>', '<h2>Come gustarlo</h2>', 'è quello che ritrovi nella conferma d’ordine'),
+    ('<h2>Domande veloci</h2>', '<h2>Fonti</h2>', 'la quantità di acidi grassi liberi: per essere extravergine'),
+    ('<h2>Fonti</h2>', '</section>', '(definizione di olio extravergine di oliva).</li>'),
+]
+
+
+def _section(text, start, end):
+    begin = text.find(start)
+    stop = text.find(end, begin + len(start)) if begin >= 0 else -1
+    return text[begin:stop] if stop >= 0 else None
+
+
+def refresh_guide_sections(env, guide, sections):
+    """A section is rewritten from the source only while it still has its first wording: owner rewrites stay."""
+    post = env.ref('%s.%s' % (MODULE, guide['xmlid']), raise_if_not_found=False) if 'blog.post' in env else None
+    website = env['website'].search([('torrepulia_theme_enabled', '=', True)], limit=1)
+    if not post or not website:
+        return
+    source = guide_content(env, website, guide['source'])
+    env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+    stored = env.cr.fetchone()[0] or {}
+    updated = {}
+    for lang, text in stored.items():
+        for start, end, first in sections:
+            old, new = _section(text, start, end), _section(source, start, end)
+            if old and new and first in old:
+                text = text.replace(old, new, 1)
+        updated[lang] = text
+    if updated != stored:
+        env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
+        post.invalidate_recordset(['content'])

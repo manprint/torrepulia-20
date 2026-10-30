@@ -214,6 +214,14 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
   e alla prenotazione (`__FILTER_GUIDE_URL__` nuovo segnaposto in `guide_content`).
 - **A cura dell'utente:** rileggere e pubblicare entro inizio novembre; aggiornare il prezzo Ismea e
   l'anno ogni ottobre.
+- **31/10, correzioni dell'utente (tema 3.47.0):** retro dell'etichetta da 0,5 L con 7 richiami
+  (`static/src/cinematic/guides/etichetta-retro-500ml-1200.webp`, dal PDF `../Retro_etichetta_500ml.pdf`
+  renderizzato a 600 dpi: tolte le righe dello stabilimento di confezionamento e la riga di
+  conservazione, che sull'etichetta ha un refuso: "al riparo dalla e dal calore"); TMC di 18 mesi
+  (L. 9/2013 art. 7), non una scadenza; sezione sull'acidità (0,8% limite di legge, sotto 0,5%
+  qualità, sotto 0,3% eccellenza, regola pratica dell'utente); prezzo spiegato con il valore
+  (sfuso Ismea vs olio del produttore); niente "olio novello". In produzione il post esiste già: la
+  migrazione riscrive solo le sezioni ancora come nella prima versione (`refresh_guide_sections`).
 
 ## Prossima sessione: verso l'apertura
 

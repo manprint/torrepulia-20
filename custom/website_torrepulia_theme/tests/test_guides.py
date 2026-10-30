@@ -142,3 +142,28 @@ class TestGuides(TransactionCase):
         self.assertIn('Consiglio Oleicolo Internazionale', post.content)
         self.assertLessEqual(len(NEW_OIL_GUIDE['meta_title']), 60)
         self.assertLessEqual(len(NEW_OIL_GUIDE['meta_description']), 160)
+
+    def test_new_oil_guide_sections_are_rewritten_unless_edited(self):
+        from ..models.guides import NEW_OIL_GUIDE, NEW_OIL_GUIDE_SECTIONS, refresh_guide_sections
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', NEW_OIL_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        post = self.env['blog.post'].browse(create_guide(self.env, NEW_OIL_GUIDE).res_id)
+        # As first released (the price) and as rewritten by the owner (the questions).
+        self.env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+        text = self.env.cr.fetchone()[0]['en_US']
+        price = text[text.index('<h2>Quanto costa'):text.index('<h2>Come gustarlo</h2>')]
+        faq = text[text.index('<h2>Domande veloci</h2>'):text.index('<h2>Fonti</h2>')]
+        text = text.replace(price, '<h2>Quanto costa l’olio nuovo nel 2026</h2><p>Il prezzo è quello che ritrovi nella conferma d’ordine.</p>')
+        text = text.replace(faq, '<h2>Domande veloci</h2><p>Testo del gestore</p>')
+        self.env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps({'en_US': text}), post.id])
+        post.invalidate_recordset(['content'])
+        refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_SECTIONS)
+        refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_SECTIONS)
+        self.assertIn('Cosa c’è in una latta di olio nuovo del produttore', post.content)
+        self.assertEqual(post.content.count('<h2>Quanto costa'), 1)
+        self.assertIn('Testo del gestore', post.content)
+        self.assertIn('etichetta-retro-500ml-1200.webp', post.content)
+        self.assertNotIn('novello', post.content)
