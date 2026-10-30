@@ -39,6 +39,20 @@ FILTER_GUIDE = {
     'cover': '/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1600.webp',
 }
 
+# The most searched topic of the season (Google Trends, October-November): the name stays without the
+# year so the address holds every season, the year lives in the SEO title.
+NEW_OIL_GUIDE = {
+    'xmlid': 'blog_post_new_oil_guide',
+    'source': 'guida-olio-nuovo.html',
+    'name': 'Olio nuovo: quando arriva, perché pizzica e quanto costa',
+    'subtitle': "Cos'è l'olio appena franto, perché è amaro e piccante, come riconoscerlo e quanto si paga nella campagna 2026/2027.",
+    'meta_title': 'Olio nuovo 2026: quando arriva, perché pizzica, quanto costa',
+    'meta_description': ("Quando arriva l'olio nuovo, perché pizzica in gola ed è amaro, come riconoscerlo in etichetta "
+                         "e quanto costa nella campagna 2026/2027."),
+    'tag': "Conoscere l'olio",
+    'cover': '/website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1920.webp',
+}
+
 
 def guide_content(env, website, source):
     with file_open(MODULE + '/docs/source/' + source, 'rb') as stream:
@@ -50,7 +64,8 @@ def guide_content(env, website, source):
              '__LATTA_URL__': website._torrepulia_old_product_url('LARGLAT5'),
              '__BIB_URL__': website._torrepulia_old_product_url('LARGBIB5'),
              '__RESERVATION_URL__': reservation.url or '/shop',
-             '__STORAGE_GUIDE_URL__': published_guide_url(env, STORAGE_GUIDE) or '/blog'}
+             '__STORAGE_GUIDE_URL__': published_guide_url(env, STORAGE_GUIDE) or '/blog',
+             '__FILTER_GUIDE_URL__': published_guide_url(env, FILTER_GUIDE) or '/blog'}
     for token, url in links.items():
         text = text.replace(token, url)
     return text

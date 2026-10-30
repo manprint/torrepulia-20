@@ -196,6 +196,25 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 30/10: piano editoriale da Google Trends e terza guida (tema 3.46.0)
+
+- **Google Trends** (export dell'utente in `../Google_Trends_Report`, Italia, 5 anni): "olio nuovo"
+  ha il picco tra ottobre e novembre (ottobre 2026 = 100, il massimo) ed è quasi a zero da gennaio ad
+  agosto; "polifenoli" resta tra 35 e 75 tutto l'anno; conservazione, frittura e prezzo
+  dell'extravergine sono quasi a zero al confronto. Scaletta: 1) olio nuovo (ora), 2) polifenoli,
+  cosa sono e dove si trovano (dicembre-gennaio), 3) polifenoli nell'olio e analisi (febbraio),
+  4) sezione "olio appena spremuto" nella guida alla conservazione.
+- **Terza guida** "Olio nuovo: quando arriva, perché pizzica e quanto costa"
+  (`docs/source/guida-olio-nuovo.html`, xmlid `blog_post_new_oil_guide`, migrazione 3.46.0), creata
+  non pubblicata. Nome senza anno (l'indirizzo resta valido ogni stagione), anno nel titolo SEO.
+  Fonti: COI (metodo sensoriale Rev. 11, bicchiere Doc. 5 Rev. 2), Nature 2005 e J. Neurosci 2011
+  sull'oleocantale, Pisa 2026 (maturazione), Molise 2022 (amaro della Coratina in decantazione),
+  Ismea (4,75 €/kg all'origine a metà ottobre 2026, −48%), Reg. UE 2022/2104 e 1308/2013. Niente
+  valori delle analisi 2024 né claim salutistici. Collegata alle guide su conservazione e filtrazione
+  e alla prenotazione (`__FILTER_GUIDE_URL__` nuovo segnaposto in `guide_content`).
+- **A cura dell'utente:** rileggere e pubblicare entro inizio novembre; aggiornare il prezzo Ismea e
+  l'anno ogni ottobre.
+
 ## Prossima sessione: verso l'apertura
 
 1. **HTTPS e compressione** (rinviato dall'utente il 24/10, bloccante per l'apertura): oggi
