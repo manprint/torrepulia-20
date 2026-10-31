@@ -249,6 +249,18 @@ class TestQuoteRequest(RequestCase):
         self.assertTrue(sent.exists())
         self.assertTrue(lead.exists())
 
+    def test_emptied_drafts_go_after_a_day_drafts_with_products_stay(self):
+        _, _, empty = self._draft()
+        _, _, recent = self._draft()
+        site, _, full = self._draft()
+        self._line(full, site)
+        for draft in (empty, full):
+            draft.last_activity = fields.Datetime.now() - timedelta(hours=25)
+        self.env['torrepulia.request']._cron_expire_drafts()
+        self.assertFalse(empty.exists())
+        self.assertTrue(recent.exists())
+        self.assertTrue(full.exists())
+
     def test_invalid_contact_and_unpublished_at_submission(self):
         site, session, draft = self._draft()
         with self.assertRaises(ValidationError):

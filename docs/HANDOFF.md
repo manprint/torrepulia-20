@@ -196,6 +196,22 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 1/11: bozze richieste e spam dei moduli (richieste 1.18.0, tema 3.51.0)
+
+- **Bozze:** prima ogni visita a una pagina col selettore (anche i bot di Google) creava una
+  bozza vuota. Ora la lettura non crea nulla: la bozza nasce al primo prodotto (payload con
+  `selection_id: null` e revisione 0); un tentativo ripetuto dopo l'invio non la ricrea
+  (`operation_id` già usato). Dopo l'invio non si prepara più una bozza vuota. Le bozze svuotate si
+  cancellano dopo 24 h (`EMPTY_DRAFT_HOURS`), quelle con prodotti dopo i giorni d'impostazione;
+  la migrazione 1.18.0 elimina subito le vuote. "Richieste website" si apre filtrata su "Inviate".
+- **Spam da /contactus** (76 lead con nomi a caso, 1/11): il modulo non aveva captcha e Odoo non
+  chiede il CSRF ai visitatori. `js/form_guard.js` aggiunge `tp_human=1` 3 secondi dopo
+  l'apertura della pagina; senza, `_handle_website_form` del tema non crea la lead.
+  **A cura dell'utente:** modulo Cloudflare Turnstile (`website_cf_turnstile`) con le chiavi in
+  Impostazioni → Sito web; eliminare le lead di spam.
+- Test in locale: alcuni test HTTP vanno in timeout (12 s) per la lentezza del PC, anche sul
+  codice precedente; fa fede la CI.
+
 ## 1/11: olio ai colori originali (tema 3.50.0)
 
 - Il video verde e il filo d'olio ricolorato sembravano fluo sul telefono: tornano ai colori

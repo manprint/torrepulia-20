@@ -182,6 +182,21 @@ class TestSelection(RequestCase):
         with self.assertRaises(AccessError):
             self.env['torrepulia.request.operation'].with_user(self.public).search([])
 
+    def test_reading_creates_no_draft_until_the_first_product(self):
+        requests = self.env['torrepulia.request'].sudo()
+        before = requests.search_count([])
+        self.assertIsNone(self.state()['selection_id'])
+        self.assertTrue(self.apply(self.payload('clear'))['ok'])
+        with self.assertRaises(ValidationError):
+            self.apply(self.payload('set', line_key='a' * 64, quantity=2))
+        self.assertEqual(requests.search_count([]), before)
+        result = self.add(quantity=2)
+        self.assertTrue(result['ok'])
+        draft = self.site._torrepulia_session_request(self.session)
+        self.assertEqual(requests.search_count([]), before + 1)
+        self.assertEqual(result['state']['selection_id'], draft.selection_id)
+        self.assertEqual(self.state()['quantity'], 2)
+
     def test_submission_is_not_resurrected_by_stale_retry(self):
         payload = self.payload(product_id=self.product.id, quantity=2)
         self.apply(payload)

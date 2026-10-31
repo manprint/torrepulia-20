@@ -38,8 +38,9 @@ class Website(models.Model):
                 raise ValidationError(_('Minimo e massimo devono essere multipli del passo positivo.'))
 
     def _request_selection_state(self, session):
+        """Reading never creates a draft: visitors and crawlers that only open a page leave no record."""
         self.ensure_one()
-        draft = self._torrepulia_session_request(session, create=True)
+        draft = self._torrepulia_session_request(session)
         if draft:
             draft._lock_draft()
             return draft._selection_state(self)
@@ -62,7 +63,18 @@ class Website(models.Model):
         if operation == 'add' and not self._torrepulia_request_enabled():
             # Hybrid mode: catalogue additions belong to the native cart.
             raise AccessError(_('Aggiungi il prodotto al carrello per acquistarlo.'))
-        draft = self._torrepulia_session_request(session, create=True)
+        draft = self._torrepulia_session_request(session)
+        if not draft and payload['selection_id'] is None:
+            # The empty selection has no draft yet: the first product creates it. An operation
+            # already applied to an earlier (now submitted) draft is a stale retry, never a new one.
+            if operation in ('set', 'remove'):
+                raise ValidationError(_('La riga non appartiene alla selezione corrente.'))
+            if operation == 'clear':
+                return {'ok': True, 'state': self._request_selection_state(session)}
+            if not self.env['torrepulia.request.operation'].sudo().search_count(
+                    [('operation_id', '=', payload['operation_id'])], limit=1):
+                draft = self._torrepulia_session_request(session, create=True)
+                payload = dict(payload, selection_id=draft.selection_id) if draft else payload
         if not draft:
             return {'ok': False, 'code': 'conflict', 'state': self._request_selection_state(session)}
         return draft._apply_selection(self, payload, fingerprint)
@@ -96,7 +108,10 @@ class QuoteRequest(models.Model):
         if isinstance(revision, bool) or not isinstance(revision, int) or revision < 0:
             raise ValidationError(_('Revisione non valida.'))
         selection_id = payload.get('selection_id')
-        if not isinstance(selection_id, str) or not re.fullmatch(r'[0-9a-f]{32}', selection_id):
+        # No identity only for the first operation on an empty selection (see _request_selection_apply).
+        if selection_id is None and revision == 0:
+            pass
+        elif not isinstance(selection_id, str) or not re.fullmatch(r'[0-9a-f]{32}', selection_id):
             raise ValidationError(_('Selezione non valida.'))
         if 'quantity' in fields_by_operation[operation]:
             quantity_value(payload.get('quantity'))
@@ -269,7 +284,7 @@ class RequestOperation(models.Model):
 
     request_id = fields.Many2one('torrepulia.request', required=True, ondelete='cascade', index=True)
     company_id = fields.Many2one(related='request_id.company_id', store=True)
-    operation_id = fields.Char(required=True)
+    operation_id = fields.Char(required=True, index=True)
     fingerprint = fields.Char(required=True)
     revision = fields.Integer(required=True)
     _operation_unique = models.Constraint('UNIQUE(request_id, operation_id)', 'Operazione già elaborata.')

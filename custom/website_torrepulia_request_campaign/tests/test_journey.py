@@ -143,7 +143,8 @@ class TestRequestJourney(HttpCase):
         self.assertEqual(old.description, original)
         before = self.env['crm.lead'].search_count([])
         sent = self.url_open('/website/form/crm.lead', data={'name': 'Il tuo messaggio',
-            'contact_name': 'Contatto sintetico', 'email_from': 'contact-qa@example.invalid', 'description': 'General contact QA'})
+            'contact_name': 'Contatto sintetico', 'email_from': 'contact-qa@example.invalid', 'description': 'General contact QA',
+            'tp_human': '1'})
         self.assertIn('id', sent.json(), sent.text)
         self.assertEqual(self.env['crm.lead'].search_count([]), before + 1)
         thanks = self.url_open('/richiesta-inviata')

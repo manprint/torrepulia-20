@@ -125,13 +125,13 @@ class Website(models.Model):
             if candidate and candidate.state == 'draft' and candidate.last_activity >= fields.Datetime.now() - timedelta(days=self.torrepulia_request_draft_days):
                 session[key] = token
                 return candidate
-            if not create:
-                return drafts.browse()
             if candidate:
                 # Deterministic rotation also handles simultaneous first writes
                 # after expiry/submission without losing one tab's selection.
                 token = hashlib.sha256((token + ':next').encode()).hexdigest()
                 continue
+            if not create:
+                return drafts.browse()
             # Read team/user config under a narrowly scoped elevation: public users
             # cannot read arbitrary sales teams or users.
             config = self.sudo()

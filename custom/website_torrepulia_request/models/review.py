@@ -244,9 +244,5 @@ class Website(models.Model):
             'submission_fingerprint': fingerprint, 'public_receipt': receipt,
             'privacy_accepted_at': fields.Datetime.now()})
         draft._submit(self, clean)
-        # Prepare the next selection in the same transaction. Replays return
-        # above and must never clear a later, intentionally composed request.
-        # Session storage is outside PostgreSQL: do not rotate the live token
-        # before commit. The next read deterministically resolves this draft.
-        self._torrepulia_session_request(dict(session), create=True)
+        # The next selection starts empty and gets its draft with its first product.
         return dict(receipt, replayed=False)

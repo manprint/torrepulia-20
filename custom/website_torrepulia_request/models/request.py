@@ -6,6 +6,9 @@ from odoo import api, fields, models, _, tools
 from odoo.fields import Domain
 from odoo.exceptions import AccessError, ValidationError
 
+# Hours an emptied draft is kept before the daily cleanup removes it.
+EMPTY_DRAFT_HOURS = 24
+
 
 class QuoteRequest(models.Model):
     _name = 'torrepulia.request'
@@ -240,16 +243,21 @@ class QuoteRequest(models.Model):
 
     @api.model
     def _cron_expire_drafts(self):
+        # An empty draft is a selection emptied with the minus button (or one left by earlier
+        # versions on a page view): it goes after a day, a draft with products after the setting.
+        empty_cutoff = fields.Datetime.now() - timedelta(hours=EMPTY_DRAFT_HOURS)
         for website in self.env['website'].search([]):
             cutoff = fields.Datetime.now() - timedelta(days=website.torrepulia_request_draft_days)
-            drafts = self.search([('website_id', '=', website.id), ('state', '=', 'draft'),
-                                  ('last_activity', '<', cutoff)], limit=500)
+            drafts = self.search([('website_id', '=', website.id), ('state', '=', 'draft'), '|',
+                                  ('last_activity', '<', cutoff),
+                                  '&', ('line_ids', '=', False), ('last_activity', '<', empty_cutoff)], limit=500)
             for draft in drafts:
                 self.env.cr.execute('SELECT id FROM torrepulia_request WHERE id = %s FOR UPDATE SKIP LOCKED', [draft.id])
                 if not self.env.cr.fetchone():
                     continue
                 draft.invalidate_recordset()
-                if draft.state == 'draft' and draft.last_activity < cutoff:
+                if draft.state == 'draft' and (draft.last_activity < cutoff
+                                               or not draft.line_ids and draft.last_activity < empty_cutoff):
                     draft.unlink()
 
 

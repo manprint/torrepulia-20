@@ -1,11 +1,14 @@
 import json
 import re
 
-from odoo import tools
+from odoo import _, tools
 from odoo.http import request
 from odoo.addons.website_crm.controllers.website_form import WebsiteForm
 
 
+# Set by js/form_guard.js a few seconds after the page opens: bots that post the form
+# directly, or fill it in an instant, never send it (1/11, spam leads from /contactus).
+HUMAN_FIELD, HUMAN_VALUE = 'tp_human', '1'
 QUANTITIES = ('bib_filtrato', 'bib_non_filtrato', 'latta_filtrata', 'latta_non_filtrata')
 
 
@@ -30,6 +33,8 @@ def reservation_errors(values):
 
 class TorrepuliaReservationForm(WebsiteForm):
     def _handle_website_form(self, model_name, **kwargs):
+        if request.env.website.torrepulia_theme_enabled and kwargs.pop(HUMAN_FIELD, None) != HUMAN_VALUE:
+            return json.dumps({'error': _('Il messaggio non è partito. Attendi qualche secondo e invialo di nuovo.')})
         if (model_name == 'crm.lead' and request.env.website.torrepulia_theme_enabled
                 and (kwargs.get('torrepulia_reservation') == '2026/2027'
                      or kwargs.get('name') == 'Prenotazione olio nuovo 2026/2027')):

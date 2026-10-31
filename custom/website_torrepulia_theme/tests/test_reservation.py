@@ -14,7 +14,7 @@ class TestTorrepuliaReservation(TransactionCase):
             'contact_name': 'Reservation QA', 'email_from': 'reservation-qa@local.invalid',
             'phone': '+390000000000', 'delivery_address': 'Torremaggiore 71017',
             'privacy_accepted': 'on', 'bib_filtrato': '1', 'bib_non_filtrato': '0',
-            'latta_filtrata': '2', 'latta_non_filtrata': '0',
+            'latta_filtrata': '2', 'latta_non_filtrata': '0', 'tp_human': '1',
         }
 
     def test_reservation_validation(self):
@@ -53,6 +53,19 @@ class TestTorrepuliaReservation(TransactionCase):
                 'crm.lead', **dict(self.valid_values(), privacy_accepted='')))
         self.assertIn('privacy_accepted', result['error_fields'])
         self.assertEqual(self.env['crm.lead'].search_count([]), before)
+
+    def test_a_form_posted_without_the_page_creates_no_lead(self):
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        before = self.env['crm.lead'].search_count([])
+        spam = {'name': 'wthhtjlBod', 'partner_name': 'wqtMThDNcB', 'email_from': 'spam@example.invalid'}
+        with MockRequest(self.env, website=website):
+            for values in (spam, dict(spam, tp_human='')):
+                self.assertIn('error', json.loads(TorrepuliaReservationForm()._handle_website_form('crm.lead', **values)))
+            sent = json.loads(TorrepuliaReservationForm()._handle_website_form('crm.lead', **dict(spam, tp_human='1')))
+        self.assertIn('id', sent, sent)
+        self.assertEqual(self.env['crm.lead'].search_count([]), before + 1)
+        self.assertNotIn('tp_human', self.env['crm.lead'].browse(sent['id']).description or '')
 
     def test_reservation_subject_also_enforces_validation(self):
         website = self.env['website'].search([], limit=1)

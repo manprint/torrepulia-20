@@ -56,10 +56,8 @@ class TestFinalSubmission(RequestCase):
         self.assertEqual(lead.torrepulia_request_ids, draft)
         self.assertEqual(draft.line_ids.snapshot['quantity'], 2)
         self.assertEqual(set(draft.notification_ids.mapped('kind')), {'customer', 'internal'})
-        # A fresh empty draft already exists, before the next public read.
-        fresh = self.env['torrepulia.request'].search([('website_id', '=', site.id), ('state', '=', 'draft')])
-        self.assertEqual(len(fresh), 1)
-        self.assertFalse(fresh.line_ids)
+        # No empty draft waits for the next selection: it is created with its first product.
+        self.assertFalse(self.env['torrepulia.request'].search([('website_id', '=', site.id), ('state', '=', 'draft')]))
         for model, count in before.items():
             self.assertEqual(self.env[model].search_count([]), count, model)
 
