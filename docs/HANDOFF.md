@@ -221,6 +221,10 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
   campagne, guida, llms.txt; nel database `six_hour_milling` (viste attive, articoli del blog,
   `website.llms_txt`; i backup inattivi restano come sono).
 - Michele Leone è il padre di Franco e Salvatore e titolare dell'azienda.
+- **Da fare a mano in produzione:** /l-olio, passo "La raccolta" ha ancora la foto caricata dal
+  gestore (`/web/image/.../process-harvest.webp`): sostituirla dal Builder con `olive-cassone-1600`.
+- **Campagne 1.16.0:** su richiesta dell'utente la foto caricata in testata a /prenotailtuoolio
+  (`olive-cassone`) diventa il video olio-verde, una volta sola (flag `harvest_clip_owner_v1`).
 
 ## 30/10: piano editoriale da Google Trends e terza guida (tema 3.46.0)
 

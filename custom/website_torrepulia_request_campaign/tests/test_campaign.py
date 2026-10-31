@@ -42,6 +42,10 @@ class TestCampaign(RequestCase):
         self.assertEqual(harvest_clip(theme, snippet), theme)
         owner = page % '/web/image/912-foto-gestore'
         self.assertEqual(harvest_clip(owner, snippet), owner)
+        self.assertEqual(harvest_clip(owner, snippet, '/olive-cassone-'), owner)
+        olives = page % '/web/image/1124-ad9374a0/olive-cassone-1600.webp'
+        self.assertEqual(harvest_clip(olives, snippet), olives)
+        self.assertIn('data-tp-clip="olio-verde"', harvest_clip(olives, snippet, '/olive-cassone-'))
 
     def test_visual_copy_migration_preserves_editorial_and_later_changes(self):
         snippet = etree.fromstring('<section><div data-review-lazy=""/></section>')

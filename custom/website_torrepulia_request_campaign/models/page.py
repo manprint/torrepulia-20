@@ -20,6 +20,8 @@ DEFAULT_PHOTO = '/website_torrepulia_theme/static/src/cinematic/campaign/land-'
 NEW_OIL_PATH = '/olio-nuovo'
 # 20.0.1.15.0: the new oil leaving the separator opens the page, in place of any photo of the theme.
 THEME_STATIC = '/website_torrepulia_theme/static/'
+# 20.0.1.16.0: the owner asked for the clip in place of the olives they uploaded, once.
+OWNER_OLIVES = '/olive-cassone-'
 # The holder of the formats as the snippet saves it: one loading paragraph.
 FAQ_PLACEHOLDER = re.compile(r'(<div[^>]*\bdata-campaign-faq\b[^>]*>)\s*(</div>)')
 CONTENT_PLACEHOLDER = re.compile(r'(<div[^>]*class="[^"]*\btp-campaign-content\b[^"]*"[^>]*>)\s*<p>[^<]*</p>\s*(</div>)')
@@ -48,14 +50,15 @@ def refresh_opening(section, snippet):
             photo.getparent().replace(photo, new)
 
 
-def harvest_clip(arch, snippet):
-    """The opening photo becomes the new oil clip, unless the owner uploaded their own photo."""
+def harvest_clip(arch, snippet, owner_photo=None):
+    """The opening photo becomes the new oil clip, unless the owner uploaded their own photo
+    (`owner_photo`: part of the address of an uploaded photo the owner asked to replace)."""
     root = etree.fromstring(arch.encode())
     fresh = snippet.xpath('.//img[contains(concat(" ", @class, " "), " tp-campaign-photo ")]')[0]
     changed = False
     for photo in root.xpath('.//section[@data-snippet="%s"]//img[contains(concat(" ", @class, " "), " tp-campaign-photo ")]' % SNIPPET):
         source = photo.get('src') or ''
-        if source == fresh.get('src') or not source.startswith(THEME_STATIC):
+        if source == fresh.get('src') or not (source.startswith(THEME_STATIC) or owner_photo and owner_photo in source):
             continue
         new = copy.deepcopy(fresh)
         new.tail = photo.tail
@@ -211,14 +214,16 @@ class Website(models.Model):
                 after = {lang: replace_legacy(arch, snippet) for lang, arch in before.items()}
                 if 'harvest_clip_v1' not in (website.torrepulia_campaign_page_backup or {}):
                     after = {lang: harvest_clip(arch, snippet) for lang, arch in after.items()}
+                if 'harvest_clip_owner_v1' not in (website.torrepulia_campaign_page_backup or {}):
+                    after = {lang: harvest_clip(arch, snippet, OWNER_OLIVES) for lang, arch in after.items()}
                 if after != before:
                     backup = dict(website.torrepulia_campaign_page_backup or {})
                     backup.setdefault(str(view.id), {'key': view.key, 'translations': before})
                     website.torrepulia_campaign_page_backup = backup
                     view.write({'arch_db': StoredTranslations(after), 'arch_fs': False, 'arch_updated': True})
             backup = dict(website.torrepulia_campaign_page_backup or {})
-            if 'harvest_clip_v1' not in backup:
-                backup['harvest_clip_v1'] = True
+            if 'harvest_clip_v1' not in backup or 'harvest_clip_owner_v1' not in backup:
+                backup.update(harvest_clip_v1=True, harvest_clip_owner_v1=True)
                 website.torrepulia_campaign_page_backup = backup
             # The menu says "Olio nuovo": the address people type leads to the campaign page.
             if not self.env['website.rewrite'].search_count([('website_id', '=', website.id), ('url_from', '=', NEW_OIL_PATH)]):

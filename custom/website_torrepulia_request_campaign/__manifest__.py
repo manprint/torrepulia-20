@@ -1,6 +1,6 @@
 {
     'name': 'Torrepulia Seasonal Request Campaigns',
-    'version': '20.0.1.15.0',
+    'version': '20.0.1.16.0',
     'author': 'Torrepulia',
     'description': 'Configurable seasonal showcase using the shared quote request selection. Operational and migration instructions are in README.md.',
     'license': 'LGPL-3',
