@@ -36,7 +36,7 @@ class TestCampaign(RequestCase):
         page = ('<t><div id="wrap"><section data-snippet="s_torrepulia_request_campaign"><div class="tp-campaign-hero"><h1>Titolo del gestore</h1>'
                 '<img class="img-fluid tp-campaign-photo" src="%s"/></div></section></div></t>')
         theme = harvest_clip(page % '/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp', snippet)
-        self.assertIn('data-tp-clip="olio-verde"', theme)
+        self.assertIn('data-tp-clip="olio-frantoio"', theme)
         self.assertIn('Titolo del gestore', theme)
         self.assertNotIn('olive-raccolta', theme)
         self.assertEqual(harvest_clip(theme, snippet), theme)
@@ -45,7 +45,7 @@ class TestCampaign(RequestCase):
         self.assertEqual(harvest_clip(owner, snippet, '/olive-cassone-'), owner)
         olives = page % '/web/image/1124-ad9374a0/olive-cassone-1600.webp'
         self.assertEqual(harvest_clip(olives, snippet), olives)
-        self.assertIn('data-tp-clip="olio-verde"', harvest_clip(olives, snippet, '/olive-cassone-'))
+        self.assertIn('data-tp-clip="olio-frantoio"', harvest_clip(olives, snippet, '/olive-cassone-'))
 
     def test_visual_copy_migration_preserves_editorial_and_later_changes(self):
         snippet = etree.fromstring('<section><div data-review-lazy=""/></section>')

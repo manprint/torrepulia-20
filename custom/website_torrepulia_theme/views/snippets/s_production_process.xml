@@ -33,14 +33,14 @@
                                 </div>
                             </li>
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/clips/olio-verde-poster.webp" data-tp-clip="olio-verde" alt="L&#8217;olio appena estratto scende dal separatore nella vasca, in frantoio" width="576" height="720" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/clips/olio-frantoio-poster.webp" data-tp-clip="olio-frantoio" alt="L&#8217;olio appena estratto scende dal separatore nella vasca, in frantoio" width="576" height="720" loading="lazy"/>
                                 <div>
                                     <h3>La molitura</h3>
                                     <p>Entro 6 ore dalla raccolta moliamo le olive nel nostro frantoio di fiducia, con estrazione a freddo sotto i 27 &#176;C. Seguiamo la molitura di persona.</p>
                                 </div>
                             </li>
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde.webp 586w" sizes="(min-width: 992px) 240px, 128px" alt="L&#8217;olio nuovo entra nella bottiglia La Regina, in frantoio" width="586" height="586" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp 586w" sizes="(min-width: 992px) 240px, 128px" alt="L&#8217;olio nuovo entra nella bottiglia La Regina, in frantoio" width="586" height="586" loading="lazy"/>
                                 <div>
                                     <h3>Il confezionamento</h3>
                                     <p>Confezioniamo l&#8217;olio direttamente in frantoio, in bottiglia, latta o Bag in Box, filtrato o, per chi lo preferisce, non filtrato. Da l&#236; lo spediamo a casa tua.</p>

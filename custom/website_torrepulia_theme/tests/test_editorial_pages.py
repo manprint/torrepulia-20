@@ -7,7 +7,7 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
-    HARVEST_MEDIA, add_harvest_media, chapter_photos, six_hour_milling, six_hours, snippet_section,
+    HARVEST_MEDIA, add_harvest_media, chapter_photos, original_oil_colours, six_hour_milling, six_hours, snippet_section,
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
     COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, PRIVACY_DESCRIPTION, PRIVACY_DESCRIPTION_OLD, REFUND_CLAUSE, add_portrait_hero,
     recopy_cookie_policy, recopy_privacy_policy, retext_aroma, retext_home, retext_refund_clause)
@@ -210,7 +210,7 @@ class TestEditorialPages(TransactionCase):
                '<li class="tp-process-step"><img src="%sowner/process-mill.webp"/><div><h3>La molitura</h3></div></li>'
                '</ol></section></div></t>') % (static, static, static)
         updated = add_harvest_media(oil, fresh)
-        for expected in ('clips/raccolta-michele-poster.webp', 'clips/olio-verde-poster.webp', 'olive-cassone-1280.webp', '/web/image/912', '/web/image/5-gestore'):
+        for expected in ('clips/raccolta-michele-poster.webp', 'clips/olio-frantoio-poster.webp', 'olive-cassone-1280.webp', '/web/image/912', '/web/image/5-gestore'):
             self.assertIn(expected, updated)
         for gone in ('raccolta-reti', 'process-mill', 'process-harvest'):
             self.assertNotIn(gone, updated)
@@ -240,6 +240,16 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('entro 6 ore', live.arch_db)
         self.assertIn('entro 8 ore', backup.arch_db)
         self.assertEqual(website.llms_txt, '- la moliamo entro 6 ore dalla raccolta')
+
+    def test_the_oil_goes_back_to_its_original_colours(self):
+        arch = ('<t t-name="x"><div><img src="/website_torrepulia_theme/static/src/cinematic/clips/olio-verde-poster.webp" data-tp-clip="olio-verde"/>'
+                '<img src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde-480.webp"/><img src="/web/image/7-verde"/></div></t>')
+        live = self.env['ir.ui.view'].create({'name': 'live', 'type': 'qweb', 'arch': arch})
+        original_oil_colours(self.env)
+        for gone in ('olio-verde', 'bottling-verde'):
+            self.assertNotIn(gone, live.arch_db)
+        for kept in ('clips/olio-frantoio-poster.webp', 'data-tp-clip="olio-frantoio"', 'owner/process-bottling-480.webp', '/web/image/7-verde'):
+            self.assertIn(kept, live.arch_db)
 
     def test_copy_2510_rewrites_only_the_owner_words(self):
         home = recopy_arch(HOME_SAVED, HOME_KEY)

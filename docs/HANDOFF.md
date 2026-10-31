@@ -196,6 +196,13 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 1/11: olio ai colori originali (tema 3.50.0)
+
+- Il video verde e il filo d'olio ricolorato sembravano fluo sul telefono: tornano ai colori
+  originali. Clip rinominata `olio-frantoio` (cache del browser), foto `process-bottling`;
+  i file `olio-verde*` e `process-bottling-verde*` sono eliminati. Migrazione
+  `original_oil_colours` su tutte le viste, backup compresi.
+
 ## 31/10: foto e video della raccolta 2026 (tema 3.49.0, campagne 1.15.0)
 
 - **Clip** (`static/src/cinematic/clips/`, MP4 H.264 + poster webp): `olio-verde` (WhatsApp

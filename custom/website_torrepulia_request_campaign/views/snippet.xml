@@ -6,7 +6,7 @@
                     <p class="tp-campaign-intro">Scegli adesso i formati: raccogliamo, moliamo entro 6 ore dalla raccolta e te lo spediamo appena &#232; pronto.</p>
                     <a class="btn btn-primary tp-campaign-hero-cta" href="#tp-campaign-formats">Scegli i formati</a>
                 </div>
-                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/clips/olio-verde-poster.webp" data-tp-clip="olio-verde" alt="L&#8217;olio nuovo appena estratto scende dal separatore nella vasca, in frantoio" width="576" height="720" loading="eager" fetchpriority="high"/>
+                <img class="img-fluid tp-campaign-photo" src="/website_torrepulia_theme/static/src/cinematic/clips/olio-frantoio-poster.webp" data-tp-clip="olio-frantoio" alt="L&#8217;olio nuovo appena estratto scende dal separatore nella vasca, in frantoio" width="576" height="720" loading="eager" fetchpriority="high"/>
             </div>
             <div class="tp-campaign-content o_not_editable"><p>Caricamento della campagna…</p></div>
             <div class="tp-campaign-review tp-request-review o_not_editable" data-tp-review="" data-review-lazy=""><p>Il modulo e il riepilogo della richiesta vengono caricati durante la visita. Nessun dato personale viene salvato nella pagina.</p></div>

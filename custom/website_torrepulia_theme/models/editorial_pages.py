@@ -545,8 +545,8 @@ STEP = './/li[contains(@class, "tp-process-step")][.//h3[normalize-space()="%s"]
 HARVEST_MEDIA = [
     ('s_torrepulia_production_process', PROCESS_PHOTO, '', '/clips/raccolta-michele-poster'),
     ('s_torrepulia_production_process', STEP % 'La raccolta', '', '/owner/olive-cassone'),
-    ('s_torrepulia_production_process', STEP % 'La molitura', '', '/clips/olio-verde-poster'),
-    ('s_torrepulia_production_process', STEP % 'Il confezionamento', '', '/owner/process-bottling-verde'),
+    ('s_torrepulia_production_process', STEP % 'La molitura', '', '/clips/olio-frantoio-poster'),
+    ('s_torrepulia_production_process', STEP % 'Il confezionamento', '', '/owner/process-bottling'),
     ('s_torrepulia_cultivar_opening', './/img[contains(concat(" ", @class, " "), " tp-oil-photo ")]', '/campaign/olive-', '/owner/chioma-carica'),
 ]
 CHAPTER_PHOTO = './figure[contains(concat(" ", @class, " "), " tp-about-chapter-photo ")]'
@@ -609,6 +609,27 @@ def add_harvest_media_to_pages(env):
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')
 
+
+# 1/11: the greener oil looked fluorescent on the phone: the clip and the bottling go back to the
+# original colours. The clip has a new name, so browsers do not keep the green one. Backups too:
+# the green files are gone.
+ORIGINAL_OIL = [('/clips/olio-verde-poster.webp', '/clips/olio-frantoio-poster.webp'),
+                ('data-tp-clip="olio-verde"', 'data-tp-clip="olio-frantoio"'),
+                ('/owner/process-bottling-verde', '/owner/process-bottling')]
+
+
+def original_oil_colours(env):
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE '%%-verde%%'")
+    for view_id, stored in env.cr.fetchall():
+        updated = {}
+        for lang, text in stored.items():
+            for old, new in ORIGINAL_OIL:
+                text = text.replace(old, new)
+            updated[lang] = text
+        if updated != stored:
+            env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
 
 # 31/10: the olives are milled within 6 hours of the harvest, not 8: pages, guides and /llms.txt.
 # Inactive views are the backups of earlier migrations and keep their words.
