@@ -537,6 +537,103 @@ def add_process_photos(env):
     env.transaction.invalidate_ormcache('templates')
 
 
+# 31/10: the harvest of 2026 on the pages. A photo is replaced only while it is still one of the theme's
+# own files: a photo the owner uploaded in the Builder (/web/image/...) stays.
+THEME_STATIC = '/website_torrepulia_theme/static/'
+STEP = './/li[contains(@class, "tp-process-step")][.//h3[normalize-space()="%s"]]/img'
+# (snippet, image, a source to replace, the new source)
+HARVEST_MEDIA = [
+    ('s_torrepulia_production_process', PROCESS_PHOTO, '', '/clips/raccolta-michele-poster'),
+    ('s_torrepulia_production_process', STEP % 'La raccolta', '', '/owner/olive-cassone'),
+    ('s_torrepulia_production_process', STEP % 'La molitura', '', '/clips/olio-verde-poster'),
+    ('s_torrepulia_production_process', STEP % 'Il confezionamento', '', '/owner/process-bottling-verde'),
+    ('s_torrepulia_cultivar_opening', './/img[contains(concat(" ", @class, " "), " tp-oil-photo ")]', '/campaign/olive-', '/owner/chioma-carica'),
+]
+CHAPTER_PHOTO = './figure[contains(concat(" ", @class, " "), " tp-about-chapter-photo ")]'
+YEAR = 'string(.//p[contains(concat(" ", @class, " "), " tp-about-year ")])'
+
+
+def chapter_photos(env):
+    section = snippet_section(env, 's_torrepulia_story_chapters')
+    photos = {}
+    for article in section.xpath('.//article'):
+        figure = article.xpath(CHAPTER_PHOTO)[0]
+        figure.tail = None
+        photos[article.xpath(YEAR).strip()] = figure
+    return photos
+
+
+def add_harvest_media(arch, fresh, chapters=None):
+    root = etree.fromstring(arch)
+    changed = False
+    for (name, path, marker), new in fresh.items():
+        for section in root.xpath('.//section[@data-snippet="%s"]' % name):
+            for image in section.xpath(path):
+                source = image.get('src') or ''
+                if source == new.get('src') or not source.startswith(THEME_STATIC) or marker not in source:
+                    continue
+                replacement = copy.deepcopy(new)
+                replacement.tail = image.tail
+                image.getparent().replace(image, replacement)
+                changed = True
+    for article in root.xpath('.//section[@data-snippet="s_torrepulia_story_chapters"]//article') if chapters else ():
+        figure = chapters.get(article.xpath(YEAR).strip())
+        if figure is None or article.xpath(CHAPTER_PHOTO):
+            continue
+        photo = copy.deepcopy(figure)
+        photo.tail = article.text
+        article.insert(0, photo)
+        changed = True
+    return etree.tostring(root, encoding='unicode') if changed else arch
+
+
+def add_harvest_media_to_pages(env):
+    fresh = {}
+    for name, path, marker, new in HARVEST_MEDIA:
+        image = next(node for node in snippet_section(env, name).xpath(path) if new in node.get('src'))
+        image.tail = None
+        fresh[(name, path, marker)] = image
+    plans = {MODULE + '.page_oil_view': (fresh, None), MODULE + '.page_story_view': ({}, chapter_photos(env))}
+    Views = env['ir.ui.view'].sudo().with_context(active_test=False)
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    for key, (images, chapters) in plans.items():
+        for view in Views.search([('key', '=', key)]):
+            env.cr.execute('SELECT arch_db FROM ir_ui_view WHERE id = %s', [view.id])
+            stored = env.cr.fetchone()[0] or {}
+            updated = {lang: add_harvest_media(arch, images, chapters) for lang, arch in stored.items()}
+            if updated == stored:
+                continue
+            view.copy({'name': 'Before the 2026 harvest media', 'active': False, 'arch_fs': False,
+                       'key': '%s.before_harvest_media_%s_%s' % (MODULE, view.id, stamp)})
+            env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view.id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+# 31/10: the olives are milled within 6 hours of the harvest, not 8: pages, guides and /llms.txt.
+# Inactive views are the backups of earlier migrations and keep their words.
+SIX_HOURS = re.compile(r'\b([Ee]ntro) 8 ore\b')
+
+
+def six_hours(text):
+    return SIX_HOURS.sub(r'\1 6 ore', text) if text else text
+
+
+def six_hour_milling(env):
+    for table, column, where in (('ir_ui_view', 'arch_db', 'active'), ('blog_post', 'content', 'TRUE')):
+        env.cr.execute('SELECT id, %s FROM %s WHERE %s AND %s::text ~ %%s' % (column, table, where, column),
+                       [SIX_HOURS.pattern.replace('\\b', '\\y')])
+        for record_id, stored in env.cr.fetchall():
+            updated = {lang: six_hours(text) for lang, text in stored.items()}
+            env.cr.execute('UPDATE %s SET %s = %%s WHERE id = %%s' % (table, column), [json.dumps(updated), record_id])
+    for website in env['website'].search([]):
+        if website.llms_txt and six_hours(website.llms_txt) != website.llms_txt:
+            website.llms_txt = six_hours(website.llms_txt)
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env['blog.post'].invalidate_model(['content'])
+    env.transaction.invalidate_ormcache('templates')
+
+
 # 25/10: the owner's tasting words, the harvest at veraison and the "trusted" mill, in every saved page.
 OIL_SENSORY = {
     'lead': 'Un fruttato medio-intenso, elegante e armonico.',

@@ -13,13 +13,13 @@
                                 <p>[SEGNAPOSTO, NON PUBBLICATO] Qui una frase vera di pap&#224; Michele o di nonno Santino Vincenzo sulla raccolta.</p>
                                 <footer>[Chi l&#8217;ha detta]</footer>
                             </blockquote>
-                            <img class="img img-fluid tp-process-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1280.webp 1280w, /website_torrepulia_theme/static/src/cinematic/owner/raccolta-reti-1920.webp 1920w" sizes="(min-width: 1200px) 520px, (min-width: 992px) 40vw, 100vw" alt="Un collaboratore trascina il telo della raccolta sotto gli ulivi" width="1280" height="853" loading="lazy"/>
+                            <img class="img img-fluid tp-process-photo" src="/website_torrepulia_theme/static/src/cinematic/clips/raccolta-michele-poster.webp" data-tp-clip="raccolta-michele" alt="Pap&#224; Michele scuote un ulivo con l&#8217;abbacchiatore, sopra le reti della raccolta" width="720" height="480" loading="lazy"/>
                         </div>
                     </div>
                     <div class="col-12 col-lg-7 o_colored_level">
                         <ol class="tp-process-steps">
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-harvest.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-harvest-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-harvest.webp 960w" sizes="(min-width: 992px) 240px, 128px" alt="Ramo carico di olive Peranzana; sullo sfondo un collaboratore scuote la pianta sopra i teli" width="960" height="960" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp 1280w" sizes="(min-width: 992px) 240px, 128px" alt="Olive Peranzana appena raccolte, con una mano nel guanto da lavoro" width="1280" height="960" loading="lazy"/>
                                 <div>
                                     <h3>La raccolta</h3>
                                     <p>Tra ottobre e novembre raccogliamo le olive dalla pianta all&#8217;inizio dell&#8217;invaiatura, quando il frutto comincia a cambiare colore: &#232; il momento in cui l&#8217;oliva &#232; pi&#249; ricca di polifenoli e di profumi.</p>
@@ -33,14 +33,14 @@
                                 </div>
                             </li>
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-mill-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-mill.webp 950w" sizes="(min-width: 992px) 240px, 128px" alt="Olio appena estratto all'uscita dell'impianto in frantoio" width="950" height="960" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/clips/olio-verde-poster.webp" data-tp-clip="olio-verde" alt="L&#8217;olio appena estratto scende dal separatore nella vasca, in frantoio" width="576" height="720" loading="lazy"/>
                                 <div>
                                     <h3>La molitura</h3>
-                                    <p>Entro 8 ore dalla raccolta moliamo le olive nel nostro frantoio di fiducia, con estrazione a freddo sotto i 27 &#176;C. Seguiamo la molitura di persona.</p>
+                                    <p>Entro 6 ore dalla raccolta moliamo le olive nel nostro frantoio di fiducia, con estrazione a freddo sotto i 27 &#176;C. Seguiamo la molitura di persona.</p>
                                 </div>
                             </li>
                             <li class="tp-process-step">
-                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-bottling.webp 586w" sizes="(min-width: 992px) 240px, 128px" alt="Confezionamento dell'olio La Regina in frantoio" width="586" height="586" loading="lazy"/>
+                                <img class="img img-fluid" src="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde.webp" srcset="/website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde-480.webp 480w, /website_torrepulia_theme/static/src/cinematic/owner/process-bottling-verde.webp 586w" sizes="(min-width: 992px) 240px, 128px" alt="L&#8217;olio nuovo entra nella bottiglia La Regina, in frantoio" width="586" height="586" loading="lazy"/>
                                 <div>
                                     <h3>Il confezionamento</h3>
                                     <p>Confezioniamo l&#8217;olio direttamente in frantoio, in bottiglia, latta o Bag in Box, filtrato o, per chi lo preferisce, non filtrato. Da l&#236; lo spediamo a casa tua.</p>

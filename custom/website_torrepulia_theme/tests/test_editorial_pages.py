@@ -7,6 +7,7 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
+    HARVEST_MEDIA, add_harvest_media, chapter_photos, six_hour_milling, six_hours, snippet_section,
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
     COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, PRIVACY_DESCRIPTION, PRIVACY_DESCRIPTION_OLD, REFUND_CLAUSE, add_portrait_hero,
     recopy_cookie_policy, recopy_privacy_policy, retext_aroma, retext_home, retext_refund_clause)
@@ -176,10 +177,10 @@ class TestEditorialPages(TransactionCase):
             's_cinematic_0', 's_torrepulia_home_facts', 's_cinematic_1', 's_cinematic_5', 's_torrepulia_bib_line',
             's_cinematic_3', 's_cinematic_6'])
         for gone in ('Da Torremaggiore alla tua tavola', 'Dalla nostra terra', 'product-note',
-                     'Foglia di pomodoro', 'mela', 'grano appena tagliati', 'frantoio partner', 'Entro 6', 'antiossidanti', 'habitat ideale',
+                     'Foglia di pomodoro', 'mela', 'grano appena tagliati', 'frantoio partner', 'Entro 6 Ore', 'antiossidanti', 'habitat ideale',
                      'mailto:', '100% Olive'):
             self.assertNotIn(gone, refined)
-        for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 8 ore', 'elegante e armonico', 'frantoio di fiducia',
+        for kept in ('LA NOSTRA TERRA. IL TUO OLIO.', 'Olio extravergine Peranzana', 'Entro 6 ore', 'elegante e armonico', 'frantoio di fiducia',
                      'href="/shop/bag-in-box-5-l#come-funziona"', 'href="/territorio"', 'dai secolari del nonno', 'Il formato che consigliamo', 'Dal 1945'):
             self.assertIn(kept, refined)
         self.assertIsNone(UNDOCUMENTED.search(refined))
@@ -191,9 +192,54 @@ class TestEditorialPages(TransactionCase):
                  '<ol><li><img src="/web/image/912"/><h3>La raccolta</h3></li></ol></section></div></t>')
         photo = etree.fromstring(self.env.ref('website_torrepulia_theme.s_torrepulia_production_process').arch_db).xpath(PROCESS_PHOTO)[0]
         updated = add_process_photo(saved, photo)
-        self.assertIn('raccolta-reti-1280.webp', updated)
+        self.assertIn('raccolta-michele-poster.webp', updated)
         self.assertIn('/web/image/912', updated)
         self.assertEqual(add_process_photo(updated, photo), updated)
+
+    def test_harvest_media_replaces_only_theme_photos_and_adds_the_family_once(self):
+        fresh = {}
+        for name, path, marker, new in HARVEST_MEDIA:
+            fresh[(name, path, marker)] = next(node for node in snippet_section(self.env, name).xpath(path) if new in node.get('src'))
+        static = '/website_torrepulia_theme/static/src/cinematic/'
+        oil = ('<t t-name="oil"><div id="wrap">'
+               '<section data-snippet="s_torrepulia_cultivar_opening"><img class="img tp-oil-photo" src="/web/image/5-gestore"/></section>'
+               '<section data-snippet="s_torrepulia_production_process"><div class="tp-process-intro">'
+               '<img class="img img-fluid tp-process-photo" src="%sowner/raccolta-reti-1280.webp"/></div><ol>'
+               '<li class="tp-process-step"><img src="%sowner/process-harvest.webp"/><div><h3>La raccolta</h3></div></li>'
+               '<li class="tp-process-step"><img src="/web/image/912"/><div><h3>Le cassette forate</h3></div></li>'
+               '<li class="tp-process-step"><img src="%sowner/process-mill.webp"/><div><h3>La molitura</h3></div></li>'
+               '</ol></section></div></t>') % (static, static, static)
+        updated = add_harvest_media(oil, fresh)
+        for expected in ('clips/raccolta-michele-poster.webp', 'clips/olio-verde-poster.webp', 'olive-cassone-1280.webp', '/web/image/912', '/web/image/5-gestore'):
+            self.assertIn(expected, updated)
+        for gone in ('raccolta-reti', 'process-mill', 'process-harvest'):
+            self.assertNotIn(gone, updated)
+        self.assertEqual(add_harvest_media(updated, fresh), updated)
+        theme_opening = oil.replace('/web/image/5-gestore', static + 'campaign/olive-1280.webp')
+        self.assertIn('chioma-carica-1280.webp', add_harvest_media(theme_opening, fresh))
+        chapters = chapter_photos(self.env)
+        story = ('<t t-name="story"><div id="wrap"><section data-snippet="s_torrepulia_story_chapters"><div class="tp-about-grid">'
+                 '<article><p class="tp-about-year">1945</p><p>Capitolo del gestore</p></article>'
+                 '<article><p class="tp-about-year">2020</p><p>Noi</p></article></div></section></div></t>')
+        story = add_harvest_media(story, {}, chapters)
+        self.assertEqual(story.count('tp-about-chapter-photo'), 2)
+        self.assertLess(story.index('ulivo-secolare-bn-960.webp'), story.index('1945'))
+        self.assertIn('franco-raccolta-960.webp', story)
+        self.assertIn('Capitolo del gestore', story)
+        self.assertEqual(add_harvest_media(story, {}, chapters), story)
+
+    def test_milling_within_six_hours_everywhere_but_the_backups(self):
+        self.assertEqual(six_hours('<strong>Entro 8 ore</strong> e si macinano entro 8 ore; spedito entro 48 ore'),
+                         '<strong>Entro 6 ore</strong> e si macinano entro 6 ore; spedito entro 48 ore')
+        arch = '<t t-name="x"><div><p>Moliamo entro 8 ore dalla raccolta.</p></div></t>'
+        live = self.env['ir.ui.view'].create({'name': 'live', 'type': 'qweb', 'arch': arch})
+        backup = self.env['ir.ui.view'].create({'name': 'backup', 'type': 'qweb', 'arch': arch, 'active': False})
+        website = self.env['website'].search([], limit=1)
+        website.llms_txt = '- la moliamo entro 8 ore dalla raccolta'
+        six_hour_milling(self.env)
+        self.assertIn('entro 6 ore', live.arch_db)
+        self.assertIn('entro 8 ore', backup.arch_db)
+        self.assertEqual(website.llms_txt, '- la moliamo entro 6 ore dalla raccolta')
 
     def test_copy_2510_rewrites_only_the_owner_words(self):
         home = recopy_arch(HOME_SAVED, HOME_KEY)

@@ -1,0 +1,42 @@
+// A photo that comes alive (js/clips.js): the frame keeps the photo's classes and box.
+.tp-clip {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--tp-olive, #2e493b);
+    video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+.tp-clip-toggle {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: 50%;
+    background: rgba(9, 20, 13, .45);
+    opacity: .8;
+    transition: opacity 160ms ease-out;
+    img { width: 16px; height: 16px; filter: invert(1); }
+    &:hover, &:focus-visible { opacity: 1; }
+    &:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+}
+// The steps size their photo by tag: the clip frame takes the same box.
+.tp-process .tp-process-step > .tp-clip {
+    width: 100% !important;
+    aspect-ratio: 4 / 3;
+    border-radius: 6px;
+    .tp-clip-toggle { right: 8px; bottom: 8px; width: 32px; height: 32px; }
+}
+@media (max-width: 767px) {
+    .tp-process .tp-process-step > .tp-clip { aspect-ratio: 1; }
+}

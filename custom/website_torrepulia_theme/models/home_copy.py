@@ -34,7 +34,7 @@ PROCESS = (
     ("Ottobre e novembre", "La raccolta",
      "Raccogliamo le olive dalla pianta all&#8217;inizio dell&#8217;invaiatura, quando il frutto comincia a "
      "cambiare colore: &#232; il momento in cui l&#8217;oliva &#232; pi&#249; ricca di polifenoli e di profumi."),
-    ("Entro 8 ore", "La molitura",
+    ("Entro 6 ore", "La molitura",
      "Moliamo le olive nel nostro frantoio di fiducia, con estrazione a freddo sotto i 27 &#176;C, e seguiamo la "
      "molitura di persona."),
 )

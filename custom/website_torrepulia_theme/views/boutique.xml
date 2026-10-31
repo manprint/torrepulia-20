@@ -74,9 +74,9 @@
     <template id="shop_season" name="New oil season band">
         <t t-set="tp_season" t-value="website._torrepulia_preorder_season()"/>
         <section t-if="tp_season" class="tp-season" aria-labelledby="tp-season-title">
-            <img class="tp-season-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp"
-                 srcset="/website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/olive-cassone-1280.webp 1280w"
-                 sizes="(max-width: 760px) 100vw, 260px" alt="Olive Peranzana appena raccolte nel cassone" width="640" height="480"/>
+            <img class="tp-season-photo" src="/website_torrepulia_theme/static/src/cinematic/owner/mani-olive-640.webp"
+                 srcset="/website_torrepulia_theme/static/src/cinematic/owner/mani-olive-640.webp 640w, /website_torrepulia_theme/static/src/cinematic/owner/mani-olive-1280.webp 1280w"
+                 sizes="(max-width: 760px) 100vw, 260px" alt="Mani che raccolgono dalle reti olive Peranzana verdi e invaiate" width="640" height="480"/>
             <div class="tp-season-copy">
                 <h2 id="tp-season-title" t-out="tp_season['title']"/>
                 <p t-if="tp_season['text']" t-out="tp_season['text']"/>

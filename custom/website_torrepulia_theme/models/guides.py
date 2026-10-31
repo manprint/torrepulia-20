@@ -238,3 +238,11 @@ NEW_OIL_GUIDE_PHOTO_SECTIONS = [
     ('<h2>Perché è amaro</h2>', '<h2>Perché è torbido', 'Quanto amaro e quanto piccante dipende anche dalla varietà'),
     ('<h2>Quanto costa l’olio nuovo nel 2026</h2>', '<h2>Come gustarlo</h2>', 'Il risultato è un olio di cui conosci tutto'),
 ]
+
+# The new oil guide, 31/10 evening: the owner's photo of the olives on the branch, before the harvest,
+# the abbacchiatore in the caption of Michele at the harvest, and the price without the wheat and the bread.
+NEW_OIL_GUIDE_OLIVES_SECTIONS = [
+    ('<h2>Quanto costa l’olio nuovo nel 2026</h2>', '<h2>Come gustarlo</h2>', 'coltiviamo anche grano'),
+    ('<h2>Quando arriva l’olio nuovo</h2>', '<h2>Perché l’olio nuovo pizzica in gola</h2>', 'l’asta scuote i rami'),
+    ('<h2>Perché è amaro</h2>', '<h2>Perché è torbido', 'olive-raccolta-1280.webp'),
+]

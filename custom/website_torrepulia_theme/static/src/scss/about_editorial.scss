@@ -94,8 +94,8 @@
         }
         article { position: relative; isolation: isolate; min-width: 0; padding: 0; border: 0; margin: 0; }
         // Real margins preserve the editorial stagger regardless of paragraph length.
-        article:nth-child(2) { margin-top: 80px; }
-        article:nth-child(3) { margin-top: 160px; }
+        article:nth-child(2) { margin-top: 64px; }
+        article:nth-child(3) { margin-top: 128px; }
         // The year is information, not a watermark: readable and announced.
         .tp-about-year {
             margin: 0 0 16px;
@@ -131,6 +131,12 @@
             transition-timing-function: var(--tp-ease-out);
         }
         &.has-editorial-reveal:focus-within article { opacity: 1; transform: none; transition: none; }
+        // A photo opens each chapter: the grandfather's trees in black and white, then Michele and Franco today.
+        .tp-about-chapter-photo {
+            margin: 0 0 28px;
+            img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 6px; }
+            figcaption { margin-top: 10px; color: var(--tp-muted); font-size: 13px; line-height: 1.5; }
+        }
     }
     @media (max-width: 1199px) {
         .tp-about-container { padding: 0 40px; }
@@ -144,6 +150,7 @@
         .tp-about-generations { padding: 72px 0 88px; }
         .tp-about-generations .tp-about-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
         .tp-about-generations article:nth-child(n) { margin-top: 0; }
+        .tp-about-generations .tp-about-chapter-photo { max-width: 420px; }
         .tp-about-generations article > p:not(.tp-about-year) { max-width: 68ch; }
     }
     @media (max-width: 575px) {

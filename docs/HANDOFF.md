@@ -196,6 +196,32 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 31/10: foto e video della raccolta 2026 (tema 3.49.0, campagne 1.15.0)
+
+- **Clip** (`static/src/cinematic/clips/`, MP4 H.264 + poster webp): `olio-verde` (WhatsApp
+  13.17.07, olio dal separatore, 4:5, ricolorato verso il verde con `hue=h=12:s=0.9` perché
+  WhatsApp lo aveva spinto sul giallo, 180 KB) e `raccolta-michele` (originale IMG_9966.MOV 1080p,
+  papà Michele con l'asta, 3:2 960x640, 7 s, 1,8 MB). La pagina salva un
+  `<img data-tp-clip="nome">` col poster; `js/clips.js` la trasforma in video muto in loop solo
+  se visibile, mai con "riduci movimento" o risparmio dati, con pulsante pausa.
+- **Dove:** /prenotailtuoolio apertura = olio-verde (campagne, `harvest_clip`, una volta sola:
+  flag `harvest_clip_v1`); /l-olio: foto d'apertura `chioma-carica`, foto del processo =
+  raccolta-michele, passo "La raccolta" = `olive-cassone` (olive col guanto), passo "La molitura" = olio-verde,
+  passo "Il confezionamento" = `process-bottling-verde` (filo d'olio ricolorato come il video);
+  /aboutus: una foto 4:5 in cima a ogni capitolo (`tp-about-chapter-photo`): 1945
+  `ulivo-secolare-bn` (FOT_9639 in bianco e nero), 1980 `michele-raccolta`, 2020
+  `franco-raccolta` (Franco di spalle); fascia stagione dello shop = `mani-olive`; guida olio
+  nuovo, "Perché è amaro" = `olive-ramo` (foto 246651144).
+- Migrazione `20.0.3.49.0`: sostituisce solo foto del tema, mai `/web/image/...` caricate dal
+  gestore; copia di backup della vista.
+- Locale: Odoo era lentissimo (RAM del PC quasi esaurita, log debug, `--dev=xml`). Si avvia
+  più leggero con `ODOO_LOG_LEVEL=info ODOO_DEV_MODE=reload docker compose up -d odoo` da
+  `torrepulia-20-local-dev`.
+- **Molitura entro 6 ore** (non più 8), deciso dall'utente il 31/10: file del tema, richieste,
+  campagne, guida, llms.txt; nel database `six_hour_milling` (viste attive, articoli del blog,
+  `website.llms_txt`; i backup inattivi restano come sono).
+- Michele Leone è il padre di Franco e Salvatore e titolare dell'azienda.
+
 ## 30/10: piano editoriale da Google Trends e terza guida (tema 3.46.0)
 
 - **Google Trends** (export dell'utente in `../Google_Trends_Report`, Italia, 5 anni): "olio nuovo"

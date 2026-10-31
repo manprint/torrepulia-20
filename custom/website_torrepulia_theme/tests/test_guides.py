@@ -186,4 +186,27 @@ class TestGuides(TransactionCase):
         refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_PHOTO_SECTIONS)
         self.assertEqual(post.content.count('raccolta-michele-960.webp'), 1)
         self.assertEqual(post.content.count('olive-reti-960.webp'), 1)
-        self.assertEqual(post.content.count('olive-raccolta-1280.webp'), 1)
+        self.assertEqual(post.content.count('olive-ramo-1280.webp'), 1)
+
+    def test_new_oil_guide_gets_the_olives_on_the_branch_unless_edited(self):
+        from ..models.guides import NEW_OIL_GUIDE, NEW_OIL_GUIDE_OLIVES_SECTIONS, refresh_guide_sections
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', NEW_OIL_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        post = self.env['blog.post'].browse(create_guide(self.env, NEW_OIL_GUIDE).res_id)
+        self.env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+        text = self.env.cr.fetchone()[0]['en_US']
+        # As deployed on 31/10: the photo from the theme, then a photo the owner chose in the Builder.
+        published = text.replace('olive-ramo-1280.webp', 'olive-raccolta-1280.webp').replace(
+            'l’abbacchiatore scuote le olive, che cadono', 'l’asta scuote i rami e le olive cadono').replace(
+            'Non si può mettere accanto alla bottiglia di un produttore:', 'Come il grano col pane (coltiviamo anche grano).')
+        edited = published.replace('/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp', '/web/image/77-gestore')
+        for content, photo in ((published, 'olive-ramo-1280.webp'), (edited, '/web/image/77-gestore')):
+            self.env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps({'en_US': content}), post.id])
+            post.invalidate_recordset(['content'])
+            refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_OLIVES_SECTIONS)
+            self.assertEqual(post.content.count(photo), 1)
+            self.assertIn('l’abbacchiatore scuote le olive', post.content)
+            self.assertNotIn('grano', post.content)

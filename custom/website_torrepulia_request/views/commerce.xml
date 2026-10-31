@@ -61,7 +61,7 @@
         <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="before">
             <t t-set="tp_preorder_url" t-value="website._torrepulia_preorder_product_url(product)"/>
             <div t-if="tp_preorder_url" class="tp-preorder-cta">
-                <p class="tp-preorder-note"><strong>Olio nuovo, in prenotazione</strong> Lo moliamo entro 8 ore dalla raccolta. Oggi non paghi nulla: prima della molitura ti mandiamo la conferma d’ordine.</p>
+                <p class="tp-preorder-note"><strong>Olio nuovo, in prenotazione</strong> Lo moliamo entro 6 ore dalla raccolta. Oggi non paghi nulla: prima della molitura ti mandiamo la conferma d’ordine.</p>
                 <a class="btn btn-primary tp-request-preorder-link" t-att-href="tp_preorder_url">Prenota l'olio nuovo</a>
             </div>
         </xpath>

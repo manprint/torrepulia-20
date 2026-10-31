@@ -8,7 +8,7 @@ from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
 from odoo.addons.website_torrepulia_request.tests.test_request import RequestCase
 
-from ..models.page import replace_legacy
+from ..models.page import harvest_clip, replace_legacy
 from odoo.addons.website_torrepulia_theme.controllers.reservation import QUANTITIES
 from odoo.addons.base.models.ir_ui_view import get_view_arch_from_file
 from odoo.tools import file_path
@@ -30,6 +30,18 @@ class TestCampaign(RequestCase):
         for retained in ('Titolo del gestore', '/foto-gestore', 'data-columns="2"', 'Testo approvato del gestore'):
             self.assertIn(retained, result)
         self.assertEqual(replace_legacy(result, snippet), result)
+
+    def test_harvest_clip_replaces_only_a_theme_photo(self):
+        snippet = etree.fromstring(self.env.ref('website_torrepulia_request_campaign.s_torrepulia_request_campaign').arch_db.encode()).find('section')
+        page = ('<t><div id="wrap"><section data-snippet="s_torrepulia_request_campaign"><div class="tp-campaign-hero"><h1>Titolo del gestore</h1>'
+                '<img class="img-fluid tp-campaign-photo" src="%s"/></div></section></div></t>')
+        theme = harvest_clip(page % '/website_torrepulia_theme/static/src/cinematic/owner/olive-raccolta-1280.webp', snippet)
+        self.assertIn('data-tp-clip="olio-verde"', theme)
+        self.assertIn('Titolo del gestore', theme)
+        self.assertNotIn('olive-raccolta', theme)
+        self.assertEqual(harvest_clip(theme, snippet), theme)
+        owner = page % '/web/image/912-foto-gestore'
+        self.assertEqual(harvest_clip(owner, snippet), owner)
 
     def test_visual_copy_migration_preserves_editorial_and_later_changes(self):
         snippet = etree.fromstring('<section><div data-review-lazy=""/></section>')
