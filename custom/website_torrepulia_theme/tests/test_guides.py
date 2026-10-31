@@ -167,3 +167,23 @@ class TestGuides(TransactionCase):
         self.assertIn('Testo del gestore', post.content)
         self.assertIn('etichetta-retro-500ml-1200.webp', post.content)
         self.assertNotIn('novello', post.content)
+
+    def test_new_oil_guide_gets_the_harvest_photos(self):
+        from ..models.guides import NEW_OIL_GUIDE, NEW_OIL_GUIDE_PHOTO_SECTIONS, refresh_guide_sections
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', NEW_OIL_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        post = self.env['blog.post'].browse(create_guide(self.env, NEW_OIL_GUIDE).res_id)
+        # As published before the photos: the green olives where Michele is now, nothing on the nets.
+        self.env.cr.execute('SELECT content FROM blog_post WHERE id = %s', [post.id])
+        text = self.env.cr.fetchone()[0]['en_US']
+        text = text.replace('raccolta-michele-960.webp', 'olive-raccolta-1280.webp').replace('olive-reti-960.webp', 'x.webp')
+        self.env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps({'en_US': text}), post.id])
+        post.invalidate_recordset(['content'])
+        refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_PHOTO_SECTIONS)
+        refresh_guide_sections(self.env, NEW_OIL_GUIDE, NEW_OIL_GUIDE_PHOTO_SECTIONS)
+        self.assertEqual(post.content.count('raccolta-michele-960.webp'), 1)
+        self.assertEqual(post.content.count('olive-reti-960.webp'), 1)
+        self.assertEqual(post.content.count('olive-raccolta-1280.webp'), 1)

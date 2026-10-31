@@ -222,6 +222,10 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
   qualità, sotto 0,3% eccellenza, regola pratica dell'utente); prezzo spiegato con il valore
   (sfuso Ismea vs olio del produttore); niente "olio novello". In produzione il post esiste già: la
   migrazione riscrive solo le sezioni ancora come nella prima versione (`refresh_guide_sections`).
+- **31/10 notte (tema 3.48.0):** foto della raccolta del 30/10 (`Torrepulia foto webp/Nuove foto raccolta`,
+  nella foto con l'asta c'è Michele Leone): `owner/raccolta-michele-960.webp` in "Quando arriva", le olive
+  verdi sul ramo spostate in "Perché è amaro", `owner/olive-reti-960.webp` nel prezzo. Restano da usare
+  l'ulivo carico (22.01.19) e le versioni in bianco e nero (22.02.57, 22.03.19).
 
 ## Prossima sessione: verso l'apertura
 

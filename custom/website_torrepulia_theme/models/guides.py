@@ -225,9 +225,16 @@ def refresh_guide_sections(env, guide, sections):
     for lang, text in stored.items():
         for start, end, first in sections:
             old, new = _section(text, start, end), _section(source, start, end)
-            if old and new and first in old:
+            if old and new and old != new and first in old:
                 text = text.replace(old, new, 1)
         updated[lang] = text
     if updated != stored:
         env.cr.execute('UPDATE blog_post SET content = %s WHERE id = %s', [json.dumps(updated), post.id])
         post.invalidate_recordset(['content'])
+
+# The new oil guide, 31/10 night: the harvest photos of Michele Leone and of the olives on the nets.
+NEW_OIL_GUIDE_PHOTO_SECTIONS = [
+    ('<h2>Quando arriva l’olio nuovo</h2>', '<h2>Perché l’olio nuovo pizzica in gola</h2>', 'olive-raccolta-1280.webp'),
+    ('<h2>Perché è amaro</h2>', '<h2>Perché è torbido', 'Quanto amaro e quanto piccante dipende anche dalla varietà'),
+    ('<h2>Quanto costa l’olio nuovo nel 2026</h2>', '<h2>Come gustarlo</h2>', 'Il risultato è un olio di cui conosci tutto'),
+]
