@@ -631,6 +631,23 @@ def original_oil_colours(env):
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env.transaction.invalidate_ormcache('templates')
 
+# 1/11: Odoo serves cached pages to a visitor with a cart by rewriting the header's
+# <sup class="my_cart_quantity">; with the theme's <span> it found none and answered 500.
+# The data-order-id also keeps a visitor's own count out of the cache, as in Odoo's header.
+CART_COUNT = ('''<span class="cart-count my_cart_quantity" t-out="request.session.get('website_sale_cart_quantity', 0)"/>''',
+              '''<sup class="my_cart_quantity cart-count" t-att-data-order-id="request.session.get('website_sale_cart_quantity') and request.session.get('sale_order_id') or None" t-out="request.session.get('website_sale_cart_quantity', 0)"/>''')
+
+
+def cart_count_for_the_cache(env):
+    """The header copies saved by the Builder get the counter Odoo's page cache expects."""
+    env.cr.execute("SELECT id, arch_db FROM ir_ui_view WHERE arch_db::text LIKE '%%cart-count my_cart_quantity%%'")
+    for view_id, stored in env.cr.fetchall():
+        updated = {lang: text.replace(*CART_COUNT) for lang, text in stored.items()}
+        if updated != stored:
+            env.cr.execute('UPDATE ir_ui_view SET arch_db = %s WHERE id = %s', [json.dumps(updated), view_id])
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env.transaction.invalidate_ormcache('templates')  # with the pages cached under the old header
+
 # 31/10: the olives are milled within 6 hours of the harvest, not 8: pages, guides and /llms.txt.
 # Inactive views are the backups of earlier migrations and keep their words.
 SIX_HOURS = re.compile(r'\b([Ee]ntro) 8 ore\b')

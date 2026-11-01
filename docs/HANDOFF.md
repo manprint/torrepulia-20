@@ -196,6 +196,19 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 1/11: errore 500 con il carrello pieno (tema 3.52.0)
+
+- Trovato nel collaudo dei flussi, era già in produzione: un visitatore con un prodotto nel
+  carrello riceveva 500 su tutte le pagine in cache (Home, La famiglia, L'olio, Territorio,
+  Contatti, Prenota). `website_sale` riscrive nella pagina in cache il
+  `<sup class="my_cart_quantity">` dell'header; il tema aveva uno `<span>` e la regex non trovava
+  nulla. Ora l'header ha il `<sup>` con `data-order-id` (come Odoo: le pagine con il conteggio di
+  un visitatore non entrano in cache) e il CSS ne annulla l'allineamento da apice. La migrazione
+  3.52.0 (`cart_count_for_the_cache`) aggiorna anche la copia dell'header salvata dal Builder.
+- Collaudo nel browser in locale (Playwright): visita senza bozze, carrello normale, prenotazione
+  su /prenotailtuoolio fino alla conferma, nuova selezione svuotata con "−", /contactus respinto
+  entro 3 secondi e accettato dopo.
+
 ## 1/11: bozze richieste e spam dei moduli (richieste 1.18.0, tema 3.51.0)
 
 - **Bozze:** prima ogni visita a una pagina col selettore (anche i bot di Google) creava una

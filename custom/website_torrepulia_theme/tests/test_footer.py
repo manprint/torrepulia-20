@@ -36,3 +36,19 @@ class TestFooter(HttpCase):
         self.assertNotIn('Guide all&#8217;olio', self.url_open('/shop').text.replace('’', '&#8217;'))
         post.is_published = True
         self.assertIn('href="%s">Guide all&#8217;olio' % blog.website_url, self.url_open('/shop').text.replace('’', '&#8217;'))
+
+    def test_a_visitor_with_a_cart_gets_the_cached_pages(self):
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        view = self.env['ir.ui.view'].create({
+            'name': 'Pagina in cache', 'type': 'qweb', 'key': 'website_torrepulia_theme.test_cached_page',
+            'arch': '<t t-name="website_torrepulia_theme.test_cached_page"><t t-call="website.layout"><div id="wrap">Pagina in cache</div></t></t>',
+        })
+        self.env['website.page'].create({'url': '/pagina-in-cache', 'view_id': view.id, 'website_id': website.id, 'is_published': True})
+        self.authenticate(None, None)
+        self.assertIn('Pagina in cache', self.url_open('/pagina-in-cache').text)  # fills the cache
+        order = self.env['sale.order'].create({'partner_id': website.user_id.partner_id.id, 'website_id': website.id})
+        self.authenticate(None, None, session_extra={'sale_order_id': order.id, 'website_sale_cart_quantity': 2})
+        response = self.url_open('/pagina-in-cache')
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(response.text, r'<sup class="my_cart_quantity cart-count[^"]*" data-order-id="%d">2</sup>' % order.id)
