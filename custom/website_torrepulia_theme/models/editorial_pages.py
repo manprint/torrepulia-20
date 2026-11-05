@@ -503,6 +503,33 @@ def link_report_2024(env):
         ('harvest_year', '=', 2024), ('report_url', '=', False)]).report_url = REPORT_2024
 
 
+# 5/11: the owner's test report of the 2026 harvest (4 November 2026). /l-olio shows it as the latest
+# analysis; the formats still on the 2024 card, or on none, move to it. A 2025 card set by the owner stays.
+REPORT_2026 = '/%s/static/src/docs/rapporto-di-prova-raccolto-2026.pdf' % MODULE
+HARVEST_2026 = {
+    'name': 'Raccolto 2026', 'harvest_year': 2026, 'cultivar': 'Peranzana, 100%',
+    'origin': 'Alto Tavoliere, Torremaggiore', 'harvest_period': 'Ottobre e novembre',
+    'lab': 'Frantoio Sacco Oliveti, Torremaggiore', 'report_date': '2026-11-04', 'report_url': REPORT_2026,
+    'acidity': 0.14, 'peroxides': 4.71, 'k232': 1.84, 'k270': 0.12,
+    'polyphenols': 504.95, 'oleic_acid': 70.64, 'tocopherols': 285.30,
+}
+
+
+def add_analysis_2026(env):
+    Profiles = env['torrepulia.oil.profile']
+    profile = Profiles.search([('harvest_year', '=', 2026)], limit=1)
+    if not profile:
+        profile = Profiles.create(HARVEST_2026)
+    elif not profile._torrepulia_lab_rows():
+        # a card made by hand before the report: the values fill it, the owner's own words stay
+        profile.write({key: value for key, value in HARVEST_2026.items() if not profile[key]})
+    env['product.template'].with_context(active_test=False).search([
+        ('torrepulia_format_name', '!=', False), '|', ('torrepulia_oil_profile_id', '=', False),
+        ('torrepulia_oil_profile_id.harvest_year', '=', 2024),
+    ]).torrepulia_oil_profile_id = profile
+    return profile
+
+
 # 20.0.3.21.0: the harvest photo under the process intro. Only the photo is added: the steps keep the owner's Builder edits.
 PROCESS_PHOTO = './/img[contains(concat(" ", @class, " "), " tp-process-photo ")]'
 
@@ -669,6 +696,38 @@ def six_hour_milling(env):
             website.llms_txt = six_hours(website.llms_txt)
     env['ir.ui.view'].invalidate_model(['arch_db'])
     env['blog.post'].invalidate_model(['content'])
+    env.transaction.invalidate_ormcache('templates')
+
+
+# 5/11: our cold extraction runs at 21 °C, not "below 27 °C". The guide's sentence on the legal
+# 27 °C threshold for "estratto a freddo" is worded differently and stays.
+COLD_EXTRACTION = re.compile(r'(estrazione a freddo) sotto i 27(\s|&nbsp;|&#160;)?(°|&#176;|&deg;)C')
+COLD_EXTRACTION_FIELDS = (('ir_ui_view', 'arch_db', 'active'), ('blog_post', 'content', 'TRUE'),
+                          ('product_template', 'description_ecommerce', 'TRUE'),
+                          ('product_template', 'website_description', 'TRUE'))
+
+
+def extraction_at_21(text):
+    return COLD_EXTRACTION.sub(r'\1 a 21\2\3C', text) if text else text
+
+
+def extraction_at_21_everywhere(env):
+    for table, column, where in COLD_EXTRACTION_FIELDS:
+        env.cr.execute('SELECT 1 FROM information_schema.columns WHERE table_name = %s AND column_name = %s',
+                       [table, column])
+        if not env.cr.fetchone():
+            continue
+        env.cr.execute("SELECT id, %s FROM %s WHERE %s AND %s::text LIKE '%%estrazione a freddo sotto i 27%%'"
+                       % (column, table, where, column))
+        for record_id, stored in env.cr.fetchall():
+            updated = {lang: extraction_at_21(text) for lang, text in stored.items()}
+            env.cr.execute('UPDATE %s SET %s = %%s WHERE id = %%s' % (table, column), [json.dumps(updated), record_id])
+    for website in env['website'].search([]):
+        if website.llms_txt and extraction_at_21(website.llms_txt) != website.llms_txt:
+            website.llms_txt = extraction_at_21(website.llms_txt)
+    env['ir.ui.view'].invalidate_model(['arch_db'])
+    env['blog.post'].invalidate_model(['content'])
+    env['product.template'].invalidate_model()
     env.transaction.invalidate_ormcache('templates')
 
 

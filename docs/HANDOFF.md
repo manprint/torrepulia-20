@@ -196,6 +196,26 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 5/11: estrazione a 21 °C e analisi 2026 (tema 3.53.0)
+
+- **Estrazione a freddo a 21 °C** (deciso dall'utente il 5/11, prima "sotto i 27 °C"): file del tema
+  (`home_copy.PROCESS`, `cinematic.xml`, `s_production_process.xml`, guida olio nuovo) e, con
+  `extraction_at_21_everywhere`, viste attive, articoli del blog, descrizioni prodotto e `llms.txt`.
+  La frase della guida sul **limite di legge** («estratto a freddo» riservato agli oli ottenuti sotto i
+  27 °C) resta: ha un'altra formulazione e la regex non la tocca.
+- **Analisi del raccolto 2026** (rapporto del frantoio del 4/11/2026, `static/src/docs/rapporto-di-prova-raccolto-2026.pdf`):
+  acidità 0,14 %, perossidi 4,71, K232 1,84, K270 0,12, ΔK 0,00, acido oleico 70,64 %, polifenoli totali
+  505 mg/kg, tocoferoli totali 285 mg/kg (alfa 273), esteri etilici 6,53 mg/kg. `add_analysis_2026` crea la
+  carta "Raccolto 2026" (o riempie una carta 2026 vuota) e ci collega i formati che erano sulla carta 2024 o
+  senza carta; una carta 2025 messa dall'utente resta. /l-olio la mostra da sola (`_torrepulia_published_analysis`).
+  Il rapporto viene da un analizzatore rapido in frantoio (XDS Rapid Liquid Analyzer): la nota
+  `analysis_note` è lasciata vuota, la scrive l'utente se vuole.
+- **Video del 4/11** (`Social/olio-nuovo-2026/`): `Video.mov`, `Video_1.mov` (olive nel cassone dal basso,
+  320×568) e `olio_separatore_2026.mp4` (separatore in campo largo, 464×832). Il separatore **non** sostituisce
+  la clip `olio-frantoio` del sito: risoluzione più bassa, sfondo con piastrelle, portarotoli e panno, giallo
+  più acceso. Usati nel Reel `reel-raccolto-2026.mp4` (`monta_reel_raccolto.py`). Servono gli originali dal
+  telefono per una qualità piena.
+
 ## 1/11: errore 500 con il carrello pieno (tema 3.52.0)
 
 - Trovato nel collaudo dei flussi, era già in produzione: un visitatore con un prodotto nel

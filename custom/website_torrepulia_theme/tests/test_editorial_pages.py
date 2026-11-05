@@ -7,7 +7,7 @@ from odoo.tests import TransactionCase, tagged
 from odoo.tools import file_open
 
 from ..models.editorial_pages import (
-    HARVEST_MEDIA, add_harvest_media, chapter_photos, original_oil_colours, six_hour_milling, six_hours, snippet_section,
+    HARVEST_MEDIA, add_harvest_media, add_analysis_2026, chapter_photos, extraction_at_21, extraction_at_21_everywhere, original_oil_colours, six_hour_milling, six_hours, snippet_section,
     HOME_REPLACEMENTS, HOME_KEY, PAGES, PROCESS_PHOTO, recopy_arch, REPORT_2024, add_process_photo, move_bag_in_box, rebuild_arch, refine_home, refresh_editorial_pages,
     COOKIE_DESCRIPTION, COOKIE_DESCRIPTION_OLD, PRIVACY_DESCRIPTION, PRIVACY_DESCRIPTION_OLD, REFUND_CLAUSE, add_portrait_hero,
     recopy_cookie_policy, recopy_privacy_policy, retext_aroma, retext_home, retext_refund_clause)
@@ -240,6 +240,38 @@ class TestEditorialPages(TransactionCase):
         self.assertIn('entro 6 ore', live.arch_db)
         self.assertIn('entro 8 ore', backup.arch_db)
         self.assertEqual(website.llms_txt, '- la moliamo entro 6 ore dalla raccolta')
+
+    def test_extraction_at_21_degrees_but_the_legal_threshold_stays(self):
+        self.assertEqual(extraction_at_21('con estrazione a freddo sotto i 27 &#176;C, e'), 'con estrazione a freddo a 21 &#176;C, e')
+        self.assertEqual(extraction_at_21('estrazione a freddo sotto i 27 °C.'), 'estrazione a freddo a 21 °C.')
+        legal = 'riservata agli oli ottenuti sotto i 27 °C.'
+        self.assertEqual(extraction_at_21(legal), legal)
+        arch = '<t t-name="x"><div><p>Moliamo con estrazione a freddo sotto i 27 °C.</p><p>%s</p></div></t>' % legal
+        live = self.env['ir.ui.view'].create({'name': 'live', 'type': 'qweb', 'arch': arch})
+        backup = self.env['ir.ui.view'].create({'name': 'backup', 'type': 'qweb', 'arch': arch, 'active': False})
+        website = self.env['website'].search([], limit=1)
+        website.llms_txt = '- estrazione a freddo sotto i 27 °C'
+        extraction_at_21_everywhere(self.env)
+        self.assertIn('estrazione a freddo a 21 °C', live.arch_db)
+        self.assertIn(legal, live.arch_db)
+        self.assertIn('sotto i 27 °C.</p><p>', backup.arch_db)
+        self.assertEqual(website.llms_txt, '- estrazione a freddo a 21 °C')
+
+    def test_the_2026_analysis_replaces_the_2024_card(self):
+        Profiles = self.env['torrepulia.oil.profile']
+        old = Profiles.create({'name': 'Raccolto 2024', 'harvest_year': 2024, 'acidity': 0.17})
+        kept = Profiles.create({'name': 'Raccolto 2025', 'harvest_year': 2025})
+        on_2024 = self.env['product.template'].create({'name': 'Latta', 'torrepulia_format_name': 'Latta',
+                                                       'torrepulia_oil_profile_id': old.id})
+        on_2025 = self.env['product.template'].create({'name': 'Bottiglia', 'torrepulia_format_name': 'Bottiglia',
+                                                       'torrepulia_oil_profile_id': kept.id})
+        profile = add_analysis_2026(self.env)
+        self.assertEqual((profile.acidity, profile.polyphenols, profile.harvest_year), (0.14, 505, 2026))
+        self.assertTrue(profile._torrepulia_report_link().endswith('rapporto-di-prova-raccolto-2026.pdf'))
+        self.assertEqual(on_2024.torrepulia_oil_profile_id, profile)
+        self.assertEqual(on_2025.torrepulia_oil_profile_id, kept)
+        self.assertEqual(add_analysis_2026(self.env), profile)
+        self.assertEqual(Profiles.search_count([('harvest_year', '=', 2026)]), 1)
 
     def test_the_oil_goes_back_to_its_original_colours(self):
         arch = ('<t t-name="x"><div><img src="/website_torrepulia_theme/static/src/cinematic/clips/olio-verde-poster.webp" data-tp-clip="olio-verde"/>'
