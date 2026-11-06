@@ -196,6 +196,21 @@ scheda prodotto (`mc-product-formats`) le righe restano link e i pannelli nascos
 - "Read next" del riquadro consigliato tradotto in "Leggi anche" (3.42.0).
 - Le migrazioni sulle guide toccano solo il testo originale: le modifiche dall'editor restano.
 
+## 5/11 pomeriggio: guida alla Peranzana e titolo della guida all'olio nuovo (tema 3.54.0)
+
+- **Search Console (5/11):** "olio torremaggiore" e "olio peranzana torremaggiore" hanno 44 impressioni e
+  5 clic; "quanto costa l'olio nuovo quest'anno" ha 41 impressioni e 0 clic.
+- **Quarta guida** "La Peranzana: l'oliva di Torremaggiore e dell'Alto Tavoliere"
+  (`docs/source/guida-peranzana.html`, xmlid `blog_post_peranzana_guide`), creata e **pubblicata dalla migrazione** (l'utente l'ha riletta in locale e ha chiesto di pubblicarla).
+  Fonti solo ufficiali o scientifiche: disciplinare DOP Dauno (valori dell'Alto Tavoliere verificati sul testo:
+  Peranzana ≥80%, acidità ≤0,6, perossidi ≤12, polifenoli ≥100 ppm, molitura entro 3 giorni, brucatura),
+  documento unico e regolamento dell'Oliva Alta Daunia DOP (ottobre 2026), catalogo COI, Molecules 2026,
+  Foods 2022. Il legame con i di Sangro è raccontato come tradizione. Il nostro olio non viene presentato
+  come DOP (la raccolta con l'abbacchiatore non è brucatura). Nuovo segnaposto `__NEW_OIL_GUIDE_URL__`.
+- **Guida all'olio nuovo:** meta title "Olio nuovo 2026: quanto costa, quando arriva, perché pizzica",
+  sostituito solo se il gestore non l'aveva cambiato (`refresh_guide_meta`).
+- **Verifica dopo il deploy:** la guida alla Peranzana è online e compare in /blog.
+
 ## 5/11: estrazione a 21 °C e analisi 2026 (tema 3.53.0)
 
 - **Estrazione a freddo a 21 °C** (deciso dall'utente il 5/11, prima "sotto i 27 °C"): file del tema

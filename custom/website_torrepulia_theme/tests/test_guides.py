@@ -210,3 +210,40 @@ class TestGuides(TransactionCase):
             self.assertEqual(post.content.count(photo), 1)
             self.assertIn('l’abbacchiatore scuote le olive', post.content)
             self.assertNotIn('grano', post.content)
+
+    def test_peranzana_guide_links_the_new_oil_guide_and_names_its_sources(self):
+        from ..models.guides import NEW_OIL_GUIDE, PERANZANA_GUIDE
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        for guide in (NEW_OIL_GUIDE, PERANZANA_GUIDE):
+            existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', guide['xmlid'])])
+            self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+            existing.unlink()
+        new_oil = self.env['blog.post'].browse(create_guide(self.env, NEW_OIL_GUIDE).res_id)
+        new_oil.is_published = True
+        post = self.env['blog.post'].browse(create_guide(self.env, PERANZANA_GUIDE).res_id)
+        self.assertFalse(post.is_published)
+        self.assertIn('href="%s"' % new_oil.website_url, post.content)
+        self.assertNotIn('__', post.content)
+        for source in ('Dauno', 'Oliva Alta Daunia', 'World Catalogue of Olive Varieties', 'Molecules'):
+            self.assertIn(source, post.content)
+        # The legend stays a legend; no health claims; the mill is never named.
+        self.assertIn('è una tradizione', post.content)
+        for word in ('antiossidant', 'salute', 'Sacco'):
+            self.assertNotIn(word, post.content)
+        self.assertLessEqual(len(PERANZANA_GUIDE['meta_title']), 60)
+        self.assertLessEqual(len(PERANZANA_GUIDE['meta_description']), 160)
+
+    def test_new_oil_guide_title_puts_the_price_first_unless_edited(self):
+        from ..models.guides import NEW_OIL_FIRST_META, NEW_OIL_GUIDE, NEW_OIL_PRICE_META, refresh_guide_meta
+        website = self.env['website'].search([], limit=1)
+        website.torrepulia_theme_enabled = True
+        existing = self.env['ir.model.data'].search([('module', '=', 'website_torrepulia_theme'), ('name', '=', NEW_OIL_GUIDE['xmlid'])])
+        self.env['blog.post'].browse(existing.mapped('res_id')).unlink()
+        existing.unlink()
+        post = self.env['blog.post'].browse(create_guide(self.env, NEW_OIL_GUIDE).res_id)
+        post.website_meta_description = 'Scritta dal gestore'
+        refresh_guide_meta(self.env, NEW_OIL_PRICE_META, NEW_OIL_FIRST_META)
+        self.assertTrue(post.website_meta_title.startswith('Olio nuovo 2026: quanto costa'))
+        self.assertLessEqual(len(post.website_meta_title), 60)
+        self.assertEqual(post.website_meta_description, 'Scritta dal gestore')

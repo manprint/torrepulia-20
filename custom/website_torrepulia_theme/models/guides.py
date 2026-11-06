@@ -54,6 +54,32 @@ NEW_OIL_GUIDE = {
 }
 
 
+# The Peranzana guide, 5/11: Search Console shows "olio torremaggiore" and "olio peranzana torremaggiore"
+# with the most clicks of the season. Only official and peer-reviewed sources, legend told as legend.
+PERANZANA_GUIDE = {
+    'xmlid': 'blog_post_peranzana_guide',
+    'source': 'guida-peranzana.html',
+    'name': "La Peranzana: l'oliva di Torremaggiore e dell'Alto Tavoliere",
+    'subtitle': "Perché si chiama anche Provenzale, dove si coltiva, cosa chiede la DOP Dauno e com'è il suo olio.",
+    'meta_title': 'Olio Peranzana di Torremaggiore: storia, zona e gusto',
+    'meta_description': ("Peranzana o Provenzale: l'oliva dell'Alto Tavoliere e di Torremaggiore. Dove nasce, le regole "
+                         "della DOP Dauno, il gusto dell'olio e l'Oliva Alta Daunia DOP."),
+    'tag': "Conoscere l'olio",
+    'cover': '/website_torrepulia_theme/static/src/cinematic/owner/orizzonte-tavoliere-1920.webp',
+}
+
+# The new oil guide, 5/11: "quanto costa l'olio nuovo quest'anno" has impressions and no clicks, the price
+# goes first in what Google shows. Replaced only while the post still has the first values.
+NEW_OIL_FIRST_META = {
+    'website_meta_title': NEW_OIL_GUIDE['meta_title'],
+    'website_meta_description': NEW_OIL_GUIDE['meta_description'],
+}
+NEW_OIL_PRICE_META = dict(NEW_OIL_GUIDE,
+                          meta_title='Olio nuovo 2026: quanto costa, quando arriva, perché pizzica',
+                          meta_description=("Quanto costa l'olio nuovo nella campagna 2026/2027, quando arriva, perché "
+                                            "pizzica in gola ed è amaro e come riconoscerlo in etichetta."))
+
+
 def guide_content(env, website, source):
     with file_open(MODULE + '/docs/source/' + source, 'rb') as stream:
         text = etree.tostring(html.fromstring(stream.read().decode('utf-8')), method='html', encoding='unicode')
@@ -65,7 +91,8 @@ def guide_content(env, website, source):
              '__BIB_URL__': website._torrepulia_old_product_url('LARGBIB5'),
              '__RESERVATION_URL__': reservation.url or '/shop',
              '__STORAGE_GUIDE_URL__': published_guide_url(env, STORAGE_GUIDE) or '/blog',
-             '__FILTER_GUIDE_URL__': published_guide_url(env, FILTER_GUIDE) or '/blog'}
+             '__FILTER_GUIDE_URL__': published_guide_url(env, FILTER_GUIDE) or '/blog',
+             '__NEW_OIL_GUIDE_URL__': published_guide_url(env, NEW_OIL_GUIDE) or '/blog'}
     for token, url in links.items():
         text = text.replace(token, url)
     return text
